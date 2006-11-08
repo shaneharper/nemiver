@@ -1,7 +1,0 @@
-Name: nemiver-gdb-plugin
-Description: A backend debugger engine based on the GNU debugger gdb
-Version: @VERSION@
-Requires: libdbgengine
-# no libs to link, only a dynamically loadable module
-Libs:
-Cflags:

@@ -1,9 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Encoding=UTF-8
-Type=Application
-Name=Nemiver
-_Comment=Debug Applications
-#Icon=icon.png
-Exec=nemiver
-Categories=GNOME;Application;Development;

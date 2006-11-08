@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<ui>
-    <popup name="BreakpointsPopup">
-        <menuitem action="GoToSourceBreakpointMenuItemAction"
-            name="GoToSourceBreakpointMenuItem" />
-        <menuitem action="DeleteBreakpointMenuItemAction"
-            name="DeleteBreakpointMenuItem" />
-    </popup>
-</ui>
