@@ -4036,6 +4036,11 @@ struct OnBreakPointHandler: OutputHandler {
                     (iter->second, iter->first) ;
                     breaks.erase (iter) ;
                 }
+                m_engine->state_changed_signal ().emit (IDebugger::READY) ;
+            } else {
+                LOG_ERROR ("Got deleted breakpoint number '"
+                           << tmp
+                           << "', but that's not a well formed number dude.") ;
             }
         } else if (has_breaks){
             LOG_DD ("firing IDebugger::breakpoint_set_signal()") ;

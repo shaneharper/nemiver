@@ -1,3 +1,9 @@
+Sat, 16 Dec 2006 13:26:08 +0100 Dodji Seketeli
+
+	* src/dbgengine/nmv-gdb-engine.cc: emit set the debugger state to
+	  IDebugger::READY when a breakpoint gets deleted. This
+	  fixes #386473.
+
 Sat, 16 Dec 2006 13:23:54 +0100 Dodji Seketeli
 
 	* configure.ac: bump the version number to 0.2.1 for this bugfix
