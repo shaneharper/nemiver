@@ -2791,7 +2791,7 @@ DBGPerspective::open_file (const UString &a_path,
     if (a_path == "") {return false;}
     if (get_source_editor_from_path (a_path)) {return true ;}
 
-    ifstream file (Glib::locale_from_utf8 (a_path).c_str ()) ;
+    ifstream file (Glib::filename_from_utf8 (a_path).c_str ()) ;
     if (!file.good () && !file.eof ()) {
         LOG_ERROR ("Could not open file " + a_path) ;
         ui_utils::display_error ("Could not open file: " + a_path) ;
@@ -2801,7 +2801,7 @@ DBGPerspective::open_file (const UString &a_path,
     NEMIVER_TRY
 
     UString base_name = Glib::locale_to_utf8
-        (Glib::path_get_basename (Glib::locale_from_utf8 (a_path))) ;
+        (Glib::path_get_basename (Glib::filename_from_utf8 (a_path))) ;
 
     UString mime_type = gnome_vfs_get_mime_type_for_name (base_name.c_str ()) ;
     if (mime_type == "") {

@@ -1,3 +1,8 @@
+Sat, 23 Dec 2006 10:37:18 +0100 Dodji Seketeli
+
+	* src/persp/dbgperspective/nmv-dbg-perspective.cc:
+	  DBGPerspective::open_file(): proper utf8 conversion for filepaths.
+
 Sat, 16 Dec 2006 13:26:08 +0100 Dodji Seketeli
 
 	* src/dbgengine/nmv-gdb-engine.cc: emit set the debugger state to
