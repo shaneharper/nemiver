@@ -1,3 +1,13 @@
+2008-03-17  Dodji Seketgeli <dodji@gnome.org>
+	* src/common/nmv-proc-utils.cc,h:
+	  added  is_libtool_executable_wrapper () entry point to detect whever
+	  if a file is a litbool wrapper to an executable. If so, it returns
+	  the path to the actual executable that is wrapped.
+	* tests/test-libtool-wrapper-detection.cc: added a regression test.
+	* src/dbgengine/nmv-gdb-engine.cc:
+	  (GDBEngine::load_program): check if the program to load is a litbool
+	  wrapper. If yes, load the actuall binary instead.
+
 2008-03-16  Jonathon Jongsma  <jjongsma@gnome.org>
 
 	patch by: Peter Gordon <peter@thecodergeek.com>
@@ -5,6 +15,10 @@
 	* src/confmgr/nmv-gconf-mgr.cc:
 	* src/confmgr/nmv-i-conf-mgr.h: fix repeated use of the same argument name
 	in one function.
+	* src/dbgengine/nmv-gdbmi-parser.cc:
+	* src/langs/nmv-cpp-lexer.cc:
+	* src/persp/dbgperspective/nmv-dbg-perspective.cc: fix build for gcc 4.3
+	which streamlines a bunch of header includes
 
 2008-03-16  Jonathon Jongsma  <jjongsma@gnome.org>
 
@@ -17,13 +31,8 @@
 	* src/common/nmv-ustring.cc:
 	* src/dbdimpl/sqlite/nmv-sqlite-cnx-drv.cc:
 	* src/dbdimpl/sqlite/nmv-sqlite-cnx-mgr-drv.cc:
-	* src/dbgengine/nmv-gdb-engine.cc:
-	* src/dbgengine/nmv-gdbmi-parser.cc:
-	* src/langs/nmv-cpp-lexer.cc:
-	* src/persp/dbgperspective/nmv-dbg-perspective.cc: fix build for gcc 4.3
-	which streamlines a bunch of header includes
 
-2008-03-23  Dodji Seketeli <dodji@gnome.org>
+2008-03-16  Dodji Seketeli <dodji@gnome.org>
 
 	* data/nemiver.desktop.in: add SartupNotify to desktop file.
 	  Patch from Sven Arvidsson.

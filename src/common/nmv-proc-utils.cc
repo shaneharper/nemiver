@@ -31,6 +31,7 @@
 #include <termios.h>
 #include <vector>
 #include <memory>
+#include <fstream>
 #include "nmv-proc-utils.h"
 #include "nmv-exception.h"
 #include "nmv-log-stream-utils.h"
@@ -201,6 +202,76 @@ attach_channel_to_loop_context_as_source
     io_source->connect (a_slot) ;
     io_source->attach (a_ctxt) ;
 }
+
+/// open the file name a_path and test if it is a litbool
+/// wrapper shell script. If it is, its first line
+/// would ressembles:
+/// # bar - temporary wrapper script for .libs/bar
+/// In that case, the function extracts the string ".libs/bar",
+/// which is the path to the actual binary that is being wrapped
+/// and returns.
+/// \param a_path path to the possible libtool wrapper script.
+/// \a_path_to_real_exec out parameter. The path to the actual
+/// executable that has been wrapped by a_path. This out parameter
+/// is set if and only the function returns true.
+/// \return true if a_path is a libtool wrapper script, false otherwise.
+bool
+is_libtool_executable_wrapper (const UString &a_path,
+                               UString &a_path_to_real_exec)
+{
+    if (a_path.empty ()) {
+        return false;
+    }
+    string path = Glib::filename_from_utf8 (a_path);
+    if (!Glib::file_test (path, Glib::FILE_TEST_IS_REGULAR)) {
+        return FALSE;
+    }
+    ifstream file (path.c_str ());
+    if (!file.good ()) {
+        return false;
+    }
+    int c = 0;
+    c = file.get ();
+    if (file.eof () || !file.good ()) {
+        return false;
+    }
+    if (c != '#') {
+        return false;
+    }
+    //goto dash, skip the white space that comes after
+    while (file.good () && !file.eof () && c != '-') {c = file.get ();}
+    if (c != '-')
+        return false;
+    c = file.get ();
+    if (!isspace (c))
+        return false;
+    //now go get the string "temporary wrapper script for "
+    string str;
+    for (int i=0; i < 29/*length of the string we are looking for*/; ++i) {
+        c = file.get ();
+        if (file.eof () || !file.good ())
+            return false;
+        str += c;
+    }
+    if (str != "temporary wrapper script for ") {
+        LOG_ERROR ("got wrong magic string: " << str);
+        return false;
+    }
+    str.clear ();
+    //now go get the path that comes next.
+    //that path is terminated normally by an '\n'
+    while (true) {
+        c = file.get ();
+        if (file.eof () || c == '\n')
+            break;
+        else if (!file.good ())
+            return false;
+        str += c;
+    }
+    a_path_to_real_exec = Glib::filename_to_utf8 (str);
+    return true;
+}
+
 }//end namespace
 }//end namespace nemiver
 

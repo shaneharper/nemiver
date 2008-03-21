@@ -2016,12 +2016,27 @@ GDBEngine::load_program (const vector<UString> &a_argv,
     LOG_FUNCTION_SCOPE_NORMAL_DD;
     THROW_IF_FAIL (m_priv);
     THROW_IF_FAIL (!a_argv.empty ());
+    vector<UString> argv (a_argv);
+
+    //first, check if the the inferior is a libtool wrapper or not.
+    //if yes, bet the real path of the actual binary and use that instead
+    UString real_path;
+    if (is_libtool_executable_wrapper (argv[0], real_path)
+        && !real_path.empty ()) {
+        LOG_DD ("handling libtool wrapper script ...");
+        string tmp_str = Glib::filename_from_utf8 (real_path);
+        string dir_name = Glib::path_get_dirname
+                                    (Glib::filename_to_utf8 (argv[0]));
+        string path = Glib::build_filename (dir_name, tmp_str);
+        argv[0] = Glib::filename_to_utf8 (path);
+        LOG_DD ("got path to real binary from libtool wrapper: " << path);
+    }
 
     if (!m_priv->is_gdb_running ()) {
         vector<UString> gdb_opts;
         THROW_IF_FAIL (m_priv->launch_gdb_and_set_args
                                     (working_dir, a_source_search_dirs, 
-                                     a_argv, gdb_opts));
+                                     argv, gdb_opts));
 
         Command command;
 
@@ -2041,13 +2056,13 @@ GDBEngine::load_program (const vector<UString> &a_argv,
         }
     } else {
         UString args;
-        UString::size_type len (a_argv.size ());
+        UString::size_type len (argv.size ());
         for (UString::size_type i = 1; i < len; ++i) {
-            args += " " + a_argv[i];
+            args += " " + argv[i];
         }
 
         Command command ("load-program",
-                         UString ("-file-exec-and-symbols ") + a_argv[0]);
+                         UString ("-file-exec-and-symbols ") + argv[0]);
         queue_command (command);
 
         command.value ("set args " + args);
