@@ -4,6 +4,8 @@
 New Features
 -------------
 
+[Dodji Seketeli]
+
     * ability to debug programs that are actually libtool wrapper shell scripts.
       In that case, nemiver analyses the wrapper script and launches
       the actual binary wrapped by the script.
