@@ -1,3 +1,5 @@
+================ 0.5.1 release ===================
+
 2008-03-17  Dodji Seketgeli <dodji@gnome.org>
 	* src/common/nmv-proc-utils.cc,h:
 	  added  is_libtool_executable_wrapper () entry point to detect whever

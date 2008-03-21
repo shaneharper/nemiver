@@ -1,3 +1,29 @@
+0.5.1 Release
+=============
+
+New Features
+-------------
+
+    * ability to debug programs that are actually libtool wrapper shell scripts.
+      In that case, nemiver analyses the wrapper script and launches
+      the actual binary wrapped by the script.
+
+Fixes
+--------------
+
+[Peter Gordon]
+
+     * fix build for gcc 4.3
+
+[Sven Arvidsson]
+
+    * add StartupNotify to desktop file
+
+Translations
+--------------
+
+    * [es] Jorge Gonzalez
+
 0.5.0 Release
 =============
 
