@@ -2,12 +2,18 @@
 =============
 
 Fixes
---------------
-
+-------
     * unplug some immature non regression tests for now
     * fix an infinite loop when parsing an output record having a line starting
       with '='
+    * support setting breakpoints on functions that are in not-yet-loaded shared
+      libraries.
     * fix #526291 – Nemiver doesn't propose to stop the debugging application
+
+Translations
+-------------
+    * [ja] Takeshi AIHANA
+
 
 0.5.1 Release
 =============

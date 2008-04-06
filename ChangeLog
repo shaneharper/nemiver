@@ -4,6 +4,30 @@
 
 2008-04-06 Dodji Seketeli <dodji@gnome.org>
 
+	* NEWS: updated.
+
+2008-04-06 Dodji Seketeli <dodji@gnome.org>
+
+	* src/dbgengine/nmv-gdbmi-parser.cc:
+	  (parse_breakpoint): fix PENDING breakpoint parsing. This was leading
+	  to a crash in cases where the breakpoint was being set using
+	  "break function-name". It was okay for "break file-name:line-num"
+	  though.
+	* tests/test-gdbmi.cc: add regression testing for this bugfix.
+	* src/dbgengine/nmv-gdb-engine.cc:
+	  (GDBEngine::load_program): make sure to "set breakpoint pending on"
+	  and not "set breakpoint pending auto", otherwise, pending breakpoint
+	  will not be supported in nemiver.
+	  (GDBEngine::set_breakpoint): when setting breakpoint on a function
+	  name that is a not-yet-loaded library, give gdb a chance to set the
+	  breakpoint 'pending'. For that, do not use the the MI syntax to set
+	  the breakpoint because MI does not support pending breakpoints.
+	  As the syntax is not MI, gdb won't return an MI notification about the
+	  breakpoint being set. That is why we need to query gdb for the list of
+	  breakpoints right after setting it this breakpoint.
+
+2008-04-06 Dodji Seketeli <dodji@gnome.org>
+
 	* NEWS, configure.ac: bump version number to 0.5.2
 
 2008-04-06 Dodji Seketeli <dodji@gnome.org>

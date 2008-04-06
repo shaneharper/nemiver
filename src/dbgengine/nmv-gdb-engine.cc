@@ -2038,7 +2038,7 @@ GDBEngine::load_program (const vector<UString> &a_argv,
 
         Command command;
 
-        queue_command (Command ("set breakpoint pending auto"));
+        queue_command (Command ("set breakpoint pending on"));
         //tell gdb not to pass the SIGINT signal to the target.
         queue_command (Command ("handle SIGINT stop print nopass"));
         //tell the linker to do all relocations at program load
@@ -2819,8 +2819,9 @@ GDBEngine::set_breakpoint (const UString &a_func_name,
     LOG_FUNCTION_SCOPE_NORMAL_DD;
     THROW_IF_FAIL (m_priv);
     queue_command (Command ("set-breakpoint",
-                            "-break-insert " + a_func_name,
+                            "break " + a_func_name,
                             a_cookie));
+    list_breakpoints (a_cookie);
 }
 
 void
@@ -3528,5 +3529,4 @@ NEMIVER_API nemiver_common_create_dynamic_module_instance (void **a_new_instance
 }
 
 }//end extern C
-
 

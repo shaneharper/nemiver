@@ -211,21 +211,26 @@ parse_breakpoint (const UString &a_input,
         LOG_D ("got pending breakpoint: '" << pending << "'",
                GDBMI_OUTPUT_DOMAIN);
         vector<UString> str_tab = pending.split (":");
-        LOG_D ("filepath: '" << str_tab[0] << "'", GDBMI_OUTPUT_DOMAIN);
-        LOG_D ("linenum: '" << str_tab[1] << "'", GDBMI_OUTPUT_DOMAIN);
-        if (str_tab.size () != 2) {
+        if (str_tab.size () > 1) {
+            LOG_D ("filepath: '" << str_tab[0] << "'", GDBMI_OUTPUT_DOMAIN);
+            LOG_D ("linenum: '" << str_tab[1] << "'", GDBMI_OUTPUT_DOMAIN);
+        }
+        if (str_tab.size () == 2) {
+            string path = Glib::locale_from_utf8 (str_tab[0]);
+            if (Glib::path_is_absolute (path)) {
+                attrs["file"] = Glib::locale_to_utf8
+                                        (Glib::path_get_basename (path));
+                attrs["fullname"] = Glib::locale_to_utf8 (path);
+            } else {
+                attrs["file"] = Glib::locale_to_utf8 (path);;
+            }
+            attrs["line"] = str_tab[1];
+        } else if (str_tab.size () == 1) {
+            attrs["func"] = str_tab[0];
+        } else {
             LOG_PARSING_ERROR (a_input, cur);
             return false;
         }
-        string path = Glib::locale_from_utf8 (str_tab[0]);
-        if (Glib::path_is_absolute (path)) {
-            attrs["file"] = Glib::locale_to_utf8
-                                    (Glib::path_get_basename (path));
-            attrs["fullname"] = Glib::locale_to_utf8 (path);
-        } else {
-            attrs["file"] = Glib::locale_to_utf8 (path);;
-        }
-        attrs["line"] = str_tab[1];
     }
 
     map<UString, UString>::iterator iter, null_iter = attrs.end ();
