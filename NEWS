@@ -1,3 +1,14 @@
+0.5.2 Release
+=============
+
+Fixes
+--------------
+
+    * unplug some immature non regression tests for now
+    * fix an infinite loop when parsing an output record having a line starting
+      with '='
+    * fix #526291 – Nemiver doesn't propose to stop the debugging application
+
 0.5.1 Release
 =============
 

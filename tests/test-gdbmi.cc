@@ -14,8 +14,20 @@ static const char* gv_str2 = "\"No symbol \\\"events_ecal\\\" in current context
 
 static const char* gv_attrs0 = "msg=\"No symbol \\\"g_return_if_fail\\\" in current context.\"" ;
 
-static const char* gv_stopped_async_output =
+static const char* gv_stopped_async_output0 =
 "*stopped,reason=\"breakpoint-hit\",bkptno=\"1\",thread-id=\"1\",frame={addr=\"0x0804afb0\",func=\"main\",args=[{name=\"argc\",value=\"1\"},{name=\"argv\",value=\"0xbfc79ed4\"}],file=\"today-main.c\",fullname=\"/home/dodji/devel/gitstore/omoko.git/applications/openmoko-today/src/today-main.c\",line=\"285\"}\n" ;
+
+static const char* gv_stopped_async_output1 =
+"*stopped,reason=\"breakpoint-hit\",bkptno=\"1\",thread-id=\"1\",frame={addr=\"0x08048d38\",func=\"main\",args=[],file=\"fooprog.cc\",fullname=\"/opt/dodji/git/nemiver.git/tests/fooprog.cc\",line=\"80\"}\n";
+
+
+static const char *gv_output_record0 =
+"&\"Failed to read a valid object file image from memory.\\n\"\n"
+"~\"[Thread debugging using libthread_db enabled]\\n\"\n"
+"~\"[New Thread 0xb7892720 (LWP 20182)]\\n\"\n"
+"=thread-created,id=1\n"
+"*stopped,reason=\"breakpoint-hit\",bkptno=\"1\",thread-id=\"1\",frame={addr=\"0x08048d38\",func=\"main\",args=[],file=\"fooprog.cc\",fullname=\"/opt/dodji/git/nemiver.git/tests/fooprog.cc\",line=\"80\"}\n"
+"(gdb)";
 
 //the partial result of a gdbmi command: -stack-list-argument 1 command
 //this command is used to implement IDebugger::list_frames_arguments()
@@ -135,18 +147,35 @@ test_attr0 ()
 void
 test_stoppped_async_output ()
 {
-    bool is_ok=false,got_frame=false ;
+    bool is_ok=false, got_frame=false ;
     UString::size_type to=0 ;
     IDebugger::Frame frame ;
     map<UString, UString> attrs ;
 
-    is_ok = parse_stopped_async_output (gv_stopped_async_output, 0, to,
+    is_ok = parse_stopped_async_output (gv_stopped_async_output0, 0, to,
+                                        got_frame, frame, attrs) ;
+    BOOST_REQUIRE (is_ok) ;
+    BOOST_REQUIRE (got_frame) ;
+    BOOST_REQUIRE (attrs.size ()) ;
+
+    to=0;
+    is_ok = parse_stopped_async_output (gv_stopped_async_output1, 0, to,
                                         got_frame, frame, attrs) ;
     BOOST_REQUIRE (is_ok) ;
     BOOST_REQUIRE (got_frame) ;
     BOOST_REQUIRE (attrs.size ()) ;
 }
 
+void
+test_output_record ()
+{
+    bool is_ok=false;
+    UString::size_type to=0;
+    Output output;
+
+    is_ok = parse_output_record (gv_output_record0, 0, to, output);
+    BOOST_REQUIRE (is_ok) ;
+}
 
 void
 test_stack_arguments0 ()
@@ -488,6 +517,7 @@ init_unit_test_suite (int argc, char **argv)
     suite->add (BOOST_TEST_CASE (&test_str2)) ;
     suite->add (BOOST_TEST_CASE (&test_attr0)) ;
     suite->add (BOOST_TEST_CASE (&test_stoppped_async_output)) ;
+    suite->add (BOOST_TEST_CASE (&test_output_record)) ;
     suite->add (BOOST_TEST_CASE (&test_stack_arguments0)) ;
     suite->add (BOOST_TEST_CASE (&test_stack_arguments1)) ;
     suite->add (BOOST_TEST_CASE (&test_local_vars)) ;

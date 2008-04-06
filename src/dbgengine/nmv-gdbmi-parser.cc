@@ -2730,6 +2730,15 @@ parse_out_of_band_record (const UString &a_input,
         record.stream_record (stream_record);
 
         while (cur < end && isspace (a_input.raw ()[cur])) {++cur;}
+    } else if (a_input.raw ()[cur] == '=') {
+        //this is a notification sent by gdb. For now, the only one
+        //I have seen like this is of the form:
+        //'=thread-created,id=1',
+        //and the notification ends with a '\n' character.
+        //Of course it is not documented
+        //Let's ignore this by now
+        while (a_input.raw ()[cur] != '\n') {++cur;}
+        ++cur;//consume the '\n' character
     }
 
     if (!a_input.raw ().compare (cur, 9,"*stopped,")) {

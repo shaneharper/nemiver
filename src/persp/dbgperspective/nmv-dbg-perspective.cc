@@ -1989,6 +1989,7 @@ DBGPerspective::on_program_finished_signal ()
     unset_where () ;
     attached_to_target_signal ().emit (true) ;
     display_info (_("Program exited")) ;
+    workbench ().set_title_extension ("");
 
     //****************************
     //grey out all the menu

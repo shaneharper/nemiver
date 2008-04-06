@@ -1,13 +1,16 @@
 if AUTOTESTS
 # 'make check' automatically runs programs listed in the TESTS variable
-#
+
+
+#runtestoverloads
+#runtestglobalvariables
 TESTS=\
 runtestgdbmi runtestunicode \
 runtestcpptrait runtestvarlist \
 runtestvarwalker runtestbreakpoint \
-runtestoverloads runtestderef \
+runtestderef \
 runtestlocalvarslist runtestcpplexer \
-runtestcppparser runtestglobalvariables \
+runtestcppparser  \
 runtestlibtoolwrapperdetection
 
 

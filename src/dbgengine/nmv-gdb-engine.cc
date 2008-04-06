@@ -652,7 +652,7 @@ public:
         NEMIVER_TRY
 
         if ((a_cond & Glib::IO_IN) || (a_cond & Glib::IO_PRI)) {
-            gsize nb_read (0), CHUNK_SIZE(512);
+            gsize nb_read (0), CHUNK_SIZE(10*1024);
             char buf[CHUNK_SIZE+1];
             Glib::IOStatus status (Glib::IO_STATUS_NORMAL);
             UString meaningful_buffer;
@@ -664,8 +664,6 @@ public:
                     std::string raw_str(buf, nb_read);
                     UString tmp = Glib::locale_to_utf8 (raw_str);
                     gdb_stdout_buffer.append (tmp);
-
-
                 } else {
                     break;
                 }
@@ -674,9 +672,9 @@ public:
             LOG_DD ("gdb_stdout_buffer: <buf>" << gdb_stdout_buffer << "</buf>");
 
             UString::size_type i=0;
-            while ((i = gdb_stdout_buffer.raw ().find ("(gdb)")) !=
+            while ((i = gdb_stdout_buffer.raw ().find ("\n(gdb)")) !=
                     std::string::npos) {
-                i += 4;/*is the offset in the buffer of the end of
+                i += 6;/*is the offset in the buffer of the end of
                          *of the '(gdb)' prompt
                          */
                 int size = i+1;

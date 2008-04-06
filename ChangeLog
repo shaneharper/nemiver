@@ -1,6 +1,43 @@
+2008-04-06 Dodji Seketeli <dodji@gnome.org>
+
+	* NEWS, configure.ac: bump version number to 0.5.2
+
+2008-04-06 Dodji Seketeli <dodji@gnome.org>
+
+	* src/persp/dbgperspective/nmv-dbg-perspective.cc:
+	  (DBGPerspective::on_program_finished_signal): update the title of the
+	  workbench window when the inferior dies. This should fix bug
+	  "526291 – Nemiver doesn't propose to stop the debugging application"
+
+2008-04-06 Dodji Seketeli <dodji@gnome.org>
+
+	* src/dbgengine/nmv-gdbmi-parser.cc:
+	  (parse_out_of_band_record): recognise lines starting with '='
+	  - i.e =thread-created,id=1\n - in gdbmi output records, parse them
+	  and ignore them. Otherwise, the output record parsing code goes into
+	  and infinite loop, leading to nemiver taking 100% CPU for ever.
+	  I don't understand why this is happening now, with a gdb version
+	  6.8.50 from CVS.
+	* tests/test-gdbmi.cc: update this test to catch a regression on this
+	  fix.
+
+2008-04-06 Dodji Seketeli <dodji@gnome.org>
+
+	* tests/Makefile.am: don't run runtestoverloads automatically because
+	  gdb has broken it. Also, don't run runtestglobalvariables because
+	  the functionality is not mature yet. When the version of libstdc++
+	  changes the result of the test changes.
+
+2008-03-24  Dodji Seketeli <dodji@gnome.org>
+
+	* src/dbgengine/nmv-gdb-engine.cc: fix an annoying packet buffer
+	  management buffer that lead to some random errors when
+	  GDBEngine receives large gdb output in chunk.
+
 ================ 0.5.1 release ===================
 
-2008-03-17  Dodji Seketgeli <dodji@gnome.org>
+2008-03-17  Dodji Seketeli <dodji@gnome.org>
+
 	* src/common/nmv-proc-utils.cc,h:
 	  added  is_libtool_executable_wrapper () entry point to detect whever
 	  if a file is a litbool wrapper to an executable. If so, it returns
@@ -15,8 +52,8 @@
 	patch by: Peter Gordon <peter@thecodergeek.com>
 
 	* src/confmgr/nmv-gconf-mgr.cc:
-	* src/confmgr/nmv-i-conf-mgr.h: fix repeated use of the same argument name
-	in one function.
+	* src/confmgr/nmv-i-conf-mgr.h:
+	  fix repeated use of the same argument name in one function.
 	* src/dbgengine/nmv-gdbmi-parser.cc:
 	* src/langs/nmv-cpp-lexer.cc:
 	* src/persp/dbgperspective/nmv-dbg-perspective.cc: fix build for gcc 4.3
