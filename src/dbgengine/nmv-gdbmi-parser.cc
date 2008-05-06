@@ -210,7 +210,26 @@ parse_breakpoint (const UString &a_input,
         }
         LOG_D ("got pending breakpoint: '" << pending << "'",
                GDBMI_OUTPUT_DOMAIN);
-        vector<UString> str_tab = pending.split (":");
+        vector<UString> str_tab;
+        //pending contains either the name of the function the breakpoint
+        //has been set on, or the filename:linenumber location of the
+        //breakpoint.
+        //So either pending has the form:
+        //"ns::functionname" or it has the form "filename:linenumber"
+        bool breakpoint_on_function_name = false;
+        if (pending.raw ().find ("::") != std::string::npos) {
+            breakpoint_on_function_name = true;
+        }
+        if (!breakpoint_on_function_name) {
+            str_tab = pending.split (":");
+        } else {
+            str_tab.push_back (pending);
+        }
+        //from now on, if str_tab.size () == 2 then it contains
+        //the filename and line number of the breakpoint.
+        //if it str_tab.size () == 1 then it contains the function name
+        //the breakpoint was set on.
+        //Otherwise an error occured
         if (str_tab.size () > 1) {
             LOG_D ("filepath: '" << str_tab[0] << "'", GDBMI_OUTPUT_DOMAIN);
             LOG_D ("linenum: '" << str_tab[1] << "'", GDBMI_OUTPUT_DOMAIN);

@@ -96,6 +96,10 @@ static const char* gv_breakpoint_table0 =
 static const char* gv_breakpoint_table1 =
 "BreakpointTable={nr_rows=\"2\",nr_cols=\"6\",hdr=[{width=\"7\",alignment=\"-1\",col_name=\"number\",colhdr=\"Num\"},{width=\"14\",alignment=\"-1\",col_name=\"type\",colhdr=\"Type\"},{width=\"4\",alignment=\"-1\",col_name=\"disp\",colhdr=\"Disp\"},{width=\"3\",alignment=\"-1\",col_name=\"enabled\",colhdr=\"Enb\"},{width=\"10\",alignment=\"-1\",col_name=\"addr\",colhdr=\"Address\"},{width=\"40\",alignment=\"2\",col_name=\"what\",colhdr=\"What\"}],body=[bkpt={number=\"1\",type=\"breakpoint\",disp=\"keep\",enabled=\"y\",addr=\"0x0805e404\",func=\"main\",file=\"/usr/include/boost/test/minimal.hpp\",fullname=\"/usr/include/boost/test/minimal.hpp\",line=\"113\",times=\"1\"},bkpt={number=\"2\",type=\"breakpoint\",disp=\"keep\",enabled=\"y\",addr=\"<PENDING>\",pending=\"nemiver_common_create_dynamic_module_instance\",times=\"0\"}]}";
 
+static const char* gv_breakpoint_table2 =
+"BreakpointTable={nr_rows=\"5\",nr_cols=\"6\",hdr=[{width=\"3\",alignment=\"-1\",col_name=\"number\",colhdr=\"Num\"},{width=\"14\",alignment=\"-1\",col_name=\"type\",colhdr=\"Type\"},{width=\"4\",alignment=\"-1\",col_name=\"disp\",colhdr=\"Disp\"},{width=\"3\",alignment=\"-1\",col_name=\"enabled\",colhdr=\"Enb\"},{width=\"10\",alignment=\"-1\",col_name=\"addr\",colhdr=\"Address\"},{width=\"40\",alignment=\"2\",col_name=\"what\",colhdr=\"What\"}],body=[bkpt={number=\"1\",type=\"breakpoint\",disp=\"keep\",enabled=\"y\",addr=\"0x0806f8f8\",func=\"main\",file=\"main.cc\",fullname=\"/home/jonathon/Projects/agave.git/src/main.cc\",line=\"73\",times=\"1\"},bkpt={number=\"2\",type=\"breakpoint\",disp=\"keep\",enabled=\"y\",addr=\"<PENDING>\",pending=\"gcs::MainWindow::MainWindow()\",times=\"0\"},bkpt={number=\"3\",type=\"breakpoint\",disp=\"keep\",enabled=\"y\",addr=\"0x0805f91e\",func=\"gcs::MainWindow::Instance()\",file=\"gcs-mainwindow.cc\",fullname=\"/home/jonathon/Projects/agave.git/src/gcs-mainwindow.cc\",line=\"70\",times=\"1\"},bkpt={number=\"4\",type=\"breakpoint\",disp=\"keep\",enabled=\"y\",addr=\"0x0805f91e\",func=\"gcs::MainWindow::Instance()\",file=\"gcs-mainwindow.cc\",fullname=\"/home/jonathon/Projects/agave.git/src/gcs-mainwindow.cc\",line=\"70\",times=\"1\"},bkpt={number=\"5\",type=\"breakpoint\",disp=\"keep\",enabled=\"y\",addr=\"0x0805db44\",func=\"MainWindow\",file=\"gcs-mainwindow.cc\",fullname=\"/home/jonathon/Projects/agave.git/src/gcs-mainwindow.cc\",line=\"95\",times=\"0\"}]}";
+
+
 void
 test_str0 ()
 {
@@ -505,6 +509,10 @@ test_breakpoint_table ()
 
     cur = 0, cur = 0, breakpoints.clear();
     BOOST_REQUIRE (parse_breakpoint_table (gv_breakpoint_table1,
+                                           cur, cur, breakpoints)) ;
+
+    cur = 0, cur = 0, breakpoints.clear();
+    BOOST_REQUIRE (parse_breakpoint_table (gv_breakpoint_table2,
                                            cur, cur, breakpoints)) ;
 }
 

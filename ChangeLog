@@ -1,3 +1,10 @@
+2008-04-11 Dodji Seketeli <dodji@gnome.org>
+
+	* src/dbgengine/nmv-gdbmi-parser.cc: fix a parsing bug that happens
+	  when setting a pending breakpoint on a fully qualified function.
+	* tests/test-gdbmi.cc: add a regression test for this bugfix.
+	  This entry should fix bug #526866
+
 2008-04-08  Jonathon Jongsma  <jjongsma@gnome.org>
 
 	* src/persp/dbgperspective/nmv-memory-view.cc: properly set memory editor
