@@ -182,6 +182,14 @@ public:
 
     void on_debugger_stdout_signal (CommandAndOutput &a_cao) ;
     void on_got_target_info_signal (int a_pid, const UString& a_exe_path) ;
+    void on_stopped_signal (const UString &a_reason,
+                            bool has_frame,
+                            const IDebugger::Frame &a_frame,
+                            int a_thread_id,
+                            const UString &a_cookie);
+    void on_detached_from_target_signal ();
+
+    void on_program_finished_signal ();
     //***************
     //</signal handlers>
     //***************
@@ -227,6 +235,10 @@ public:
     bool attach_to_remote_target (const UString &a_serial_line) ;
 
     void detach_from_target (const UString &a_cookie="") ;
+
+    bool is_attached_to_target () const;
+
+    void set_attached_to_target (bool a_is_attached);
 
     void add_env_variables (const map<UString, UString> &a_vars) ;
 

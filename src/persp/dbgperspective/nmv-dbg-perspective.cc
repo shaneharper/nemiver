@@ -1407,7 +1407,9 @@ DBGPerspective::on_debugger_ready_signal (bool a_is_ready)
         m_priv->debugger_ready_action_group->set_sensitive (true) ;
         m_priv->target_not_started_action_group->set_sensitive (true) ;
         m_priv->debugger_busy_action_group->set_sensitive (false) ;
-        attached_to_target_signal ().emit (true) ;
+        if (debugger ()->is_attached_to_target ()) {
+            attached_to_target_signal ().emit (true) ;
+        }
     } else {
         m_priv->target_not_started_action_group->set_sensitive (false) ;
         m_priv->debugger_ready_action_group->set_sensitive (false) ;
@@ -1813,6 +1815,7 @@ DBGPerspective::on_debugger_got_target_info_signal (int a_pid,
 void
 DBGPerspective::on_debugger_connected_to_remote_target_signal ()
 {
+    LOG_FUNCTION_SCOPE_NORMAL_DD ;
     NEMIVER_TRY
 
     ui_utils::display_info (_("Connected to remote target !")) ;
@@ -1823,10 +1826,22 @@ DBGPerspective::on_debugger_connected_to_remote_target_signal ()
 void
 DBGPerspective::on_debugger_detached_from_target_signal ()
 {
+    LOG_FUNCTION_SCOPE_NORMAL_DD ;
+
     NEMIVER_TRY
 
     clear_status_notebook () ;
     workbench ().set_title_extension ("");
+    //****************************
+    //grey out all the menu
+    //items but those to
+    //to restart the debugger etc
+    //***************************
+    THROW_IF_FAIL (m_priv);
+    m_priv->debugger_ready_action_group->set_sensitive (false) ;
+    m_priv->debugger_busy_action_group->set_sensitive (false) ;
+    m_priv->target_connected_action_group->set_sensitive (false);
+    m_priv->target_not_started_action_group->set_sensitive (true) ;
 
     NEMIVER_CATCH
 }
@@ -1993,11 +2008,10 @@ DBGPerspective::on_program_finished_signal ()
 
     //****************************
     //grey out all the menu
-    //items but the one
-    //to restart the debugger
+    //items but those to
+    //to restart the debugger etc
     //***************************
     THROW_IF_FAIL (m_priv) ;
-
     m_priv->target_not_started_action_group->set_sensitive (true) ;
     m_priv->debugger_ready_action_group->set_sensitive (false) ;
     m_priv->debugger_busy_action_group->set_sensitive (false) ;
@@ -2442,6 +2456,17 @@ DBGPerspective::init_actions ()
             ActionEntry::DEFAULT,
             ""
         },
+        {
+            "DetachFromProgramMenuItemAction",
+            Gtk::Stock::DISCONNECT,
+            _("_Detach From the Running Program"),
+            _("Disconnect the debugger from the running target "
+              "without killing it"),
+            sigc::mem_fun (*this,
+                           &DBGPerspective::on_detach_from_program_action),
+            ActionEntry::DEFAULT,
+            ""
+        },
     };
 
     static ui_utils::ActionEntry s_target_not_started_action_entries [] = {
@@ -2457,17 +2482,6 @@ DBGPerspective::init_actions ()
     };
 
     static ui_utils::ActionEntry s_debugger_ready_action_entries [] = {
-        {
-            "DetachFromProgramMenuItemAction",
-            Gtk::Stock::DISCONNECT,
-            _("_Detach From the Running Program"),
-            _("Disconnect the debugger from the running target "
-              "without killing it"),
-            sigc::mem_fun (*this,
-                           &DBGPerspective::on_detach_from_program_action),
-            ActionEntry::DEFAULT,
-            ""
-        },
         {
             "NextMenuItemAction",
             nemiver::STOCK_STEP_OVER,

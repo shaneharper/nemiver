@@ -687,6 +687,8 @@ public:
 
     virtual void detach_from_target (const UString &a_cookie="") = 0;
 
+    virtual bool is_attached_to_target () const =0;
+
     virtual void add_env_variables (const map<UString, UString> &a_vars) = 0;
 
     virtual map<UString, UString>& get_env_variables () = 0;

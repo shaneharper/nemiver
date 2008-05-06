@@ -1,3 +1,18 @@
+2008-04-08 Dodji Seketeli <dodji@gnome.org>
+
+	* src/dbgengine/nmv-i-debugger.h:
+	  add IDebugger::is_attached_to_target() to let
+	  client know if IDebugger is attached to a target or not.
+	* src/dbgengine/nmv-gdb-engine.cc:
+	  basically track when we are attached to a target or not.
+	* src/persp/dbgperspective/nmv-dbg-perspective.cc:
+	  When we detach from a target, the "detach from target" menu
+	  should be set to insensitive. This should fix #526696.
+
+2008-04-07 Dodji Seketeli <dodji@gnome.org>
+
+	* README: updated.
+
 2008-04-06 Dodji Seketeli <dodji@gnome.org>
 
 =============== 0.5.2 release ===================

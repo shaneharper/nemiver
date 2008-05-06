@@ -81,6 +81,7 @@ public:
     int gdb_stdout_fd;
     int gdb_stderr_fd;
     int master_pty_fd;
+    bool is_attached;
     Glib::RefPtr<Glib::IOChannel> gdb_stdout_channel;
     Glib::RefPtr<Glib::IOChannel> gdb_stderr_channel;
     Glib::RefPtr<Glib::IOChannel> master_pty_channel;
@@ -369,6 +370,7 @@ public:
         gdb_pid (0), target_pid (0),
         gdb_stdout_fd (0), gdb_stderr_fd (0),
         master_pty_fd (0),
+        is_attached (false),
         line_busy (false),
         error_buffer_status (DEFAULT),
         state (IDebugger::NOT_STARTED)
@@ -1208,6 +1210,12 @@ struct OnCommandDoneHandler : OutputHandler {
 
         m_engine->command_done_signal ().emit (a_in.command ().name (),
                                                a_in.command ().cookie ());
+        if (a_in.command ().name () == "attach-to-program") {
+            m_engine->set_attached_to_target (true);
+        }
+        //TODO: this is not necessarily true. Before setting the state
+        //to ready here, one must now which command exactly was fired so
+        //that gdb returned the "DONE" status for it.
         m_engine->set_state (IDebugger::READY);
     }
 };//struct OnCommandDoneHandler
@@ -2148,6 +2156,22 @@ GDBEngine::detach_from_target (const UString &a_cookie)
     queue_command (Command ("detach-from-target", "-target-detach", a_cookie));
 }
 
+bool
+GDBEngine::is_attached_to_target () const
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+    THROW_IF_FAIL (m_priv);
+    return m_priv->is_attached;
+}
+
+void
+GDBEngine::set_attached_to_target (bool a_is_attached)
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+    THROW_IF_FAIL (m_priv);
+    m_priv->is_attached = a_is_attached;
+}
+
 void
 GDBEngine::add_env_variables (const map<UString, UString> &a_vars)
 {
@@ -2524,6 +2548,52 @@ GDBEngine::on_got_target_info_signal (int a_pid, const UString &a_exe_path)
     NEMIVER_CATCH_NOX
 }
 
+void
+GDBEngine::on_stopped_signal (const UString &a_reason,
+                              bool a_has_frame,
+                              const IDebugger::Frame &a_frame,
+                              int a_thread_id,
+                              const UString &a_cookie)
+{
+    if (a_has_frame || a_frame.line () || a_thread_id || a_cookie.empty ()) {
+        //keep compiler happy
+    }
+
+    NEMIVER_TRY
+
+    if (a_reason == "exited-signalled"
+        || a_reason == "exited-normally"
+        || a_reason == "exited") {
+        return;
+    }
+    THROW_IF_FAIL (m_priv);
+    m_priv->is_attached = true;
+
+    NEMIVER_CATCH_NOX
+}
+
+void
+GDBEngine::on_detached_from_target_signal ()
+{
+    NEMIVER_TRY
+
+    THROW_IF_FAIL (m_priv);
+    m_priv->is_attached = false;
+
+    NEMIVER_CATCH_NOX
+}
+
+void
+GDBEngine::on_program_finished_signal ()
+{
+    NEMIVER_TRY
+
+    THROW_IF_FAIL (m_priv);
+    m_priv->is_attached = false;
+
+    NEMIVER_CATCH_NOX
+}
+
 //******************
 //</signal handlers>
 //******************
@@ -2534,6 +2604,12 @@ GDBEngine::init ()
             (*this, &GDBEngine::on_debugger_stdout_signal));
     got_target_info_signal ().connect (sigc::mem_fun
             (*this, &GDBEngine::on_got_target_info_signal));
+    stopped_signal ().connect (sigc::mem_fun
+            (*this, &GDBEngine::on_stopped_signal));
+    detached_from_target_signal ().connect (sigc::mem_fun
+            (*this, &GDBEngine::on_detached_from_target_signal));
+    program_finished_signal ().connect (sigc::mem_fun
+            (*this, &GDBEngine::on_program_finished_signal));
 
     init_output_handlers ();
 }
