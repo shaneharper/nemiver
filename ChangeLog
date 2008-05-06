@@ -1,5 +1,13 @@
 2008-04-11 Dodji Seketeli <dodji@gnome.org>
 
+	* configure.ac: make sure to AC_SUBST the deps versions number
+	  variables so that we can use them in foo.in files like *.pc.in files.
+	* src/common/libnemivercommon.pc.in: make sure to add ligtop to the
+	  list of deps in the generated libnemivercommon.pc file.
+	  This should fix bug #526826 – missing dependency in .pc file
+
+2008-04-11 Dodji Seketeli <dodji@gnome.org>
+
 	* src/dbgengine/nmv-gdbmi-parser.cc: fix a parsing bug that happens
 	  when setting a pending breakpoint on a fully qualified function.
 	* tests/test-gdbmi.cc: add a regression test for this bugfix.

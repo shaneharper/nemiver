@@ -6,6 +6,6 @@ includedir=@NEMIVER_INCLUDE_DIR@
 Name: libnemivercommon
 Description: Common infrastructure for the Nemiver debugger and library
 Version: @VERSION@
-Requires: libxml-2.0 >= @LIBXML2_VERSION@, glibmm-2.4 >= @LIBGLIBMM_VERSION@, gnome-vfs-2.0 >= @LIBGNOMEVFS_VERSION@, gmodule-2.0 >= @LIBGMODULE_VERSION@, gthread-2.0 >= @LIBGTHREAD_VERSION@
+Requires: libxml-2.0 >= @LIBXML2_VERSION@, glibmm-2.4 >= @LIBGLIBMM_VERSION@, gnome-vfs-2.0 >= @LIBGNOMEVFS_VERSION@, gmodule-2.0 >= @LIBGMODULE_VERSION@, gthread-2.0 >= @LIBGTHREAD_VERSION@, libgtop-2.0 >= @LIBGTOP_VERSION@
 Libs: -L${libdir} -lnemivercommon
 Cflags: -I${includedir}
