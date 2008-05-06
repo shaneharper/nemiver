@@ -1,3 +1,9 @@
+2008-05-03 Dodji Seketeli <dodji@gnome.org>
+
+	* src/dbgengine/nmv-gdbmi-parser.h: don't throw exception when trying to
+	  read empty lists of result or values.
+	  This should hopefully fix bug #526863.
+
 2008-04-12 Dodji Seketeli <dodji@gnome.org>
 
 	* src/main.cc: reorganised the command line options parsing.

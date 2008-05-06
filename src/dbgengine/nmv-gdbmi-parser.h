@@ -256,7 +256,8 @@ public:
 
     void get_result_content (list<GDBMIResultSafePtr> &a_list) const
     {
-        THROW_IF_FAIL (!empty () && content_type () == RESULT_TYPE) ;
+        if (empty ()) {return;}
+        THROW_IF_FAIL (content_type () == RESULT_TYPE) ;
         list<boost::variant<GDBMIResultSafePtr,GDBMIValueSafePtr> >::const_iterator it;
         for (it= m_content.begin () ; it!= m_content.end () ; ++it) {
             a_list.push_back (boost::get<GDBMIResultSafePtr> (*it)) ;
@@ -265,7 +266,8 @@ public:
 
     void get_value_content (list<GDBMIValueSafePtr> &a_list) const
     {
-        THROW_IF_FAIL (!empty () && content_type () == VALUE_TYPE) ;
+        if (empty ()) {return;}
+        THROW_IF_FAIL (content_type () == VALUE_TYPE) ;
         list<boost::variant<GDBMIResultSafePtr,GDBMIValueSafePtr> >::const_iterator it;
         for (it= m_content.begin () ; it!= m_content.end () ; ++it) {
             a_list.push_back (boost::get<GDBMIValueSafePtr> (*it)) ;
