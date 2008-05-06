@@ -1,3 +1,16 @@
+2008-04-12 Dodji Seketeli <dodji@gnome.org>
+
+	* src/main.cc: reorganised the command line options parsing.
+	  Added init_option_context() to - guess what - initialize the option
+	  context and add the nemiver and gtk+ groups to it, so that both gtk+
+	  and nemiver options can be available. That way, both nemiver and gtk+
+	  help messages can be displayed.
+	  Make sure parse_command_line() does initialize the option context
+	  by calling the brand new init_option_context(), before actually
+	  trying to parse the command line.
+	  This should fix
+	  #527696 – nemiver --help only shows libgnome related help messages
+
 2008-04-11 Dodji Seketeli <dodji@gnome.org>
 
 	* configure.ac: make sure to AC_SUBST the deps versions number

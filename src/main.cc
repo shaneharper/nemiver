@@ -134,14 +134,30 @@ struct GOptionContextUnref {
             g_option_context_free (a_opt);
         }
     }
-};//end struct GOptoinContextUnref
+};//end struct GOptionContextUnref
+
+struct GOptionGroupUnref {
+    void operator () (GOptionGroup *a_group)
+    {
+        if (a_group) {
+            g_option_group_free (a_group);
+        }
+    }
+};//end struct GOptionGroupUnref
 
 struct GOptionContextRef {
     void operator () (GOptionContext *a_opt)
     {
         if (a_opt) {}
     }
-};//end struct GOptoinContextRef
+};//end struct GOptionContextRef
+
+struct GOptionGroupRef {
+    void operator () (GOptionGroup *a_group)
+    {
+        if (a_group) {}
+    }
+};//end struct GOptionGroupRef
 
 static IWorkbench *s_workbench=0;
 
@@ -158,13 +174,17 @@ sigint_handler (int a_signum)
         s_got_down = true;
     }
 }
+typedef SafePtr<GOptionContext,
+                GOptionContextRef,
+                GOptionContextUnref> GOptionContextSafePtr;
 
-void
-parse_command_line (int& a_argc, char** a_argv)
+typedef SafePtr<GOptionGroup,
+                GOptionGroupRef,
+                GOptionGroupUnref> GOptionGroupSafePtr;
+
+static GOptionContext*
+init_option_context ()
 {
-    typedef SafePtr<GOptionContext,
-                    GOptionContextRef,
-                    GOptionContextUnref> GOptionContextSafePtr;
     GOptionContextSafePtr context;
     context.reset (g_option_context_new
                                 (_(" [<prog-to-debug> [prog-args]]")));
@@ -177,10 +197,22 @@ parse_command_line (int& a_argc, char** a_argv)
                                        entries,
                                        GETTEXT_PACKAGE);
     g_option_context_set_ignore_unknown_options (context.get (), true);
+    GOptionGroupSafePtr gtk_option_group (gtk_get_option_group (FALSE));
+    THROW_IF_FAIL (gtk_option_group);
+    g_option_context_add_group (context.get (), gtk_option_group.release ());
+    return context.release ();
+}
+
+static void
+parse_command_line (int& a_argc,
+                    char** a_argv)
+{
+    GOptionContextSafePtr context (init_option_context ());
+    THROW_IF_FAIL (context);
     g_option_context_parse (context.get (), &a_argc, &a_argv, 0);
 }
 
-bool
+static bool
 process_command_line (int& a_argc, char** a_argv, int &a_return)
 {
     if (gv_log_debugger_output) {
@@ -399,17 +431,19 @@ main (int a_argc, char *a_argv[])
     bindtextdomain (GETTEXT_PACKAGE, NEMIVERLOCALEDIR);
     bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
     textdomain (GETTEXT_PACKAGE);
+
+    NEMIVER_TRY
+
     Initializer::do_init ();
     Gtk::Main gtk_kit (a_argc, a_argv);
+
+    parse_command_line (a_argc, a_argv);
 
     //intialize gnome libraries
     gnome_program_init (PACKAGE, PACKAGE_VERSION,
                         LIBGNOME_MODULE, a_argc, a_argv,
                         GNOME_PROGRAM_STANDARD_PROPERTIES, NULL);
 
-    parse_command_line (a_argc, a_argv);
-
-    NEMIVER_TRY
 
     //**********************************
     //load the workbench dynamic module
