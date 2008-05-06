@@ -228,6 +228,7 @@ public:
         THROW_IF_FAIL (m_address_entry && m_jump_button);
         m_address_entry->set_sensitive (a_enable);
         m_jump_button->set_sensitive (a_enable);
+        m_editor->get_widget ().set_sensitive (a_enable);
     }
 
     void on_memory_read_response (size_t a_addr,
