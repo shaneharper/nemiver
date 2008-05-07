@@ -1,3 +1,8 @@
+2008-05-04 Dodji Seketeli <dodji@gnome.org>
+
+	* data/nemiver.desktop.in: remove obsolete fields.
+	  A courtesy from Luca Bruno <lucab@debian.org>
+
 2008-05-03 Dodji Seketeli <dodji@gnome.org>
 
 	* src/dbgengine/nmv-gdbmi-parser.h: don't throw exception when trying to

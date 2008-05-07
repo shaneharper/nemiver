@@ -1,11 +1,10 @@
 [Desktop Entry]
 Version=1.0
-Encoding=UTF-8
 Type=Application
 _Name=Nemiver Debugger
 _GenericName=C/C++ Debugger
 _Comment=Debug Applications
 Icon=nemiver
 Exec=nemiver
-Categories=GNOME;Application;Development;
+Categories=GNOME;Development;
 StartupNotify=true
