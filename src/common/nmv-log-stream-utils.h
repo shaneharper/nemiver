@@ -35,6 +35,10 @@
 #include "nmv-log-stream.h"
 #include "nmv-scope-logger.h"
 
+#ifndef __ASSERT_FUNCTION
+#define __ASSERT_FUNCTION __PRETTY_FUNCTION__
+#endif
+
 #ifndef HERE
 #define HERE __ASSERT_FUNCTION << ":" <<__FILE__<< ":" << __LINE__ << ":"
 #endif

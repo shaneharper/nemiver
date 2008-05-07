@@ -27,7 +27,13 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <signal.h>
-#include <pty.h>
+#if defined(_GNU_SOURCE)
+# include <pty.h>
+#elif defined(__FreeBSD__)
+# include <sys/types.h>
+# include <sys/ioctl.h>
+# include <libutil.h>
+#endif
 #include <termios.h>
 #include <vector>
 #include <memory>
@@ -35,6 +41,10 @@
 #include "nmv-proc-utils.h"
 #include "nmv-exception.h"
 #include "nmv-log-stream-utils.h"
+
+#if defined(__FreeBSD__) && !defined(__MAX_BAUD)
+# define __MAX_BAUD B38400
+#endif
 
 namespace nemiver {
 namespace common {

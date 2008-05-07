@@ -38,6 +38,18 @@ using namespace std ;
 NEMIVER_BEGIN_NAMESPACE (nemiver)
 NEMIVER_BEGIN_NAMESPACE (common)
 
+#if defined(__FreeBSD__)
+int
+strnlen (const gchar *string, gulong a_len)
+{
+  gchar *pos = (gchar*) memchr ((void*)string, '\0', a_len);
+  if (pos)
+    return (pos - string);
+  else
+    return (a_len);
+}
+#endif
+
 UString
 UString::from_int (long long an_int)
 {

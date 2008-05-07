@@ -1,3 +1,39 @@
+2008-05-06 Dodji Seketeli <dodji@gnome.org>
+
+	* src/uicommon/nmv-terminal.cc: _GNU_SOURCE is defined on freebsd
+	  as well, so use don't use it to discriminate that platform.
+	  This should hopefully close #529718
+
+2008-05-05 Dodji Seketeli <dodji@gnome.org>
+
+	* src/uicommon/nmv-terminal.cc: include the right headers in lieu
+	  of pty.h, on FreeBSD.
+	  Patch from Romain Tartière <romain@blogreen.org>
+
+2008-05-05 Dodji Seketeli <dodji@gnome.org>
+
+	* src/dbgengine/nmv-gdb-engine.cc: don't include pty.h
+	  It is useless here and breaks FreeBSD builds.
+	  Patch from Romain Tartière <romain@blogreen.org>
+
+2008-05-05 Dodji Seketeli <dodji@gnome.org>
+
+	* src/common/nmv-ustring.cc: on FreeBSD, define strnlen().
+	  Patch from Romain Tartière <romain@blogreen.org>.
+
+2008-05-05 Dodji Seketeli <dodji@gnome.org>
+
+	* src/common/nmv-proc-utils.cc:
+	 Define __MAX_BAUD for FreeBSD.
+	 Include specific FreeBSD headers for process manipulation.
+	 Patch from Romain Tartière <romain@blogreen.org>
+
+2008-05-05 Dodji Seketeli <dodji@gnome.org>
+
+	* src/common/nmv-log-stream-utils.h:
+	  For freebsd, make sure __ASSERT_FUNCTION is defined.
+	  Patch from Romain Tartière <romain@blogreen.org>.
+
 2008-05-04 Dodji Seketeli <dodji@gnome.org>
 
 	* data/nemiver.desktop.in: remove obsolete fields.
