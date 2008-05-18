@@ -207,7 +207,7 @@ struct CallStack::Priv {
     }
 
 
-    void on_debugger_stopped_signal (const UString &a_reason,
+    void on_debugger_stopped_signal (IDebugger::StopReason a_reason,
                                      bool a_has_frame,
                                      const IDebugger::Frame &a_frame,
                                      int a_thread_id,
@@ -220,9 +220,9 @@ struct CallStack::Priv {
 
         if (a_has_frame || a_frame.line () || a_thread_id || a_cookie.empty ()) {}
 
-        if (a_reason == "exited-signaled"
-            || a_reason == "exited-normally"
-            || a_reason == "exited") {
+        if (a_reason == IDebugger::EXITED_SIGNALLED
+            || a_reason == IDebugger::EXITED_NORMALLY
+            || a_reason == IDebugger::EXITED) {
             return ;
         }
 

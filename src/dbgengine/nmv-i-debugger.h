@@ -482,6 +482,21 @@ public:
         return str;
     }
 
+    enum StopReason {
+        UNDEFINED_REASON=0,
+        BREAKPOINT_HIT,
+        WATCHPOINT_TRIGGER,
+        READ_WATCHPOINT_TRIGGER,
+        ACCESS_WATCHPOINT_TRIGGER,
+        FUNCTION_FINISHED,
+        LOCATION_REACHED,
+        WATCHPOINT_SCOPE,
+        END_STEPPING_RANGE,
+        EXITED_SIGNALLED,
+        EXITED,
+        EXITED_NORMALLY,
+        SIGNAL_RECEIVED
+    };//end enum StopReason
 
     virtual ~IDebugger () {}
 
@@ -532,7 +547,7 @@ public:
                                         got_overloads_choice_signal () const=0;
 
     virtual sigc::signal<void,
-                         const UString&/*reason*/,
+                         IDebugger::StopReason /*reason*/,
                          bool /*has frame*/,
                          const IDebugger::Frame&/*the frame*/,
                          int /*thread id*/,

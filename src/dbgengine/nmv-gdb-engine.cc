@@ -144,7 +144,7 @@ public:
     mutable sigc::signal<void, const IDebugger::BreakPoint&, int>
                                                 breakpoint_enabled_signal;
 
-    mutable sigc::signal<void, const UString&,
+    mutable sigc::signal<void, IDebugger::StopReason,
                          bool, const IDebugger::Frame&,
                          int, const UString&> stopped_signal;
 
@@ -1079,18 +1079,19 @@ struct OnStoppedHandler: OutputHandler {
         int thread_id = m_out_of_band_record.thread_id ();
 
         m_engine->stopped_signal ().emit
-                    (m_out_of_band_record.stop_reason_as_str (),
+                    (m_out_of_band_record.stop_reason (),
                      m_out_of_band_record.has_frame (),
                      m_out_of_band_record.frame (),
                      thread_id,
                      a_in.command ().cookie ());
 
-        UString reason = m_out_of_band_record.stop_reason_as_str ();
+        IDebugger::StopReason reason = m_out_of_band_record.stop_reason ();
 
-        if (reason == "exited-signalled"
-            || reason == "exited-normally"
-            || reason == "exited") {
+        if (reason == IDebugger::EXITED_SIGNALLED
+            || reason == IDebugger::EXITED_NORMALLY
+            || reason == IDebugger::EXITED) {
             m_engine->set_state (IDebugger::PROGRAM_EXITED);
+            m_engine->detached_from_target_signal ().emit ();
             m_engine->program_finished_signal ().emit ();
         } else {
             m_engine->set_state (IDebugger::READY);
@@ -1737,7 +1738,7 @@ struct OnSignalReceivedHandler : OutputHandler {
         for (it = a_in.output ().out_of_band_records ().begin ();
              it != a_in.output ().out_of_band_records ().end ();
              ++it) {
-            if (it->stop_reason () == Output::OutOfBandRecord::SIGNAL_RECEIVED) {
+            if (it->stop_reason () == IDebugger::SIGNAL_RECEIVED) {
                 oo_record = *it;
                 LOG_DD ("output handler selected");
                 return true;
@@ -2210,6 +2211,7 @@ GDBEngine::get_state () const
     LOG_FUNCTION_SCOPE_NORMAL_DD;
     THROW_IF_FAIL (m_priv);
 
+    LOG_DD ("state: " << m_priv->state);
     return m_priv->state;
 }
 
@@ -2346,7 +2348,9 @@ GDBEngine::got_overloads_choice_signal () const
     return m_priv->got_overloads_choice_signal;
 }
 
-sigc::signal<void, const UString&, bool, const IDebugger::Frame&, int, const UString&>&
+sigc::signal<void, IDebugger::StopReason,
+             bool, const IDebugger::Frame&,
+             int, const UString&>&
 GDBEngine::stopped_signal () const
 {
     return m_priv->stopped_signal;
@@ -2548,7 +2552,7 @@ GDBEngine::on_got_target_info_signal (int a_pid, const UString &a_exe_path)
 }
 
 void
-GDBEngine::on_stopped_signal (const UString &a_reason,
+GDBEngine::on_stopped_signal (IDebugger::StopReason a_reason,
                               bool a_has_frame,
                               const IDebugger::Frame &a_frame,
                               int a_thread_id,
@@ -2560,9 +2564,9 @@ GDBEngine::on_stopped_signal (const UString &a_reason,
 
     NEMIVER_TRY
 
-    if (a_reason == "exited-signalled"
-        || a_reason == "exited-normally"
-        || a_reason == "exited") {
+    if (a_reason == IDebugger::EXITED_SIGNALLED
+        || a_reason == IDebugger::EXITED_NORMALLY
+        || a_reason == IDebugger::EXITED) {
         return;
     }
     THROW_IF_FAIL (m_priv);

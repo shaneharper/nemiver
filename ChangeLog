@@ -1,3 +1,48 @@
+2008-05-18 Dodji Seketeli <dodji@gnome.org>
+
+	* src/dbgengine/nmv-gdb-engine.cc: emit the
+	  IDebugger::detached_from_target_signal() when the inferior program
+	  exits.
+	* src/persp/dbgperspective/nmv-dbg-perspective.cc:
+	  (DBGPerspective::on_attached_to_target_signal (bool a_is_ready)):
+	  when the debugger detaches from the inferior, update the different
+	  sentivity related menu states. Also stop the throbber and the
+	  busy cursor.
+	  (DBGPerspective::on_program_finished_signal()): make sure to
+	  notify the world that we detached from target.
+	  Also make sure in this case to "de-sensitivate" the menu items
+	  accessible when the debugger is connected to the target.
+	  (DBGPerspective::on_debugger_state_changed_signal()): don't act
+	  upon states that are different from IDebugger::READY because
+	  those are notified to client code via proper signals and are thus
+	  taken in account elsewhere. Don't do more work than needed.
+	* src/persp/dbgperspective/nmv-memory-view.cc: 
+	  (on_debugger_stopped): don't try to query the debugger when we
+	  it the inferior is exiting. This leads to further errors and
+	  and will later change the state of the debugger, likely bringing
+	  it to a IDebugger::READY state, for instance. At some point the
+	  current implementation of IDebugger must do what is necessary to
+	  to not switch to the IDebugger::READY state in those erratic
+	  cases. For now, let's just behave gently.
+	* src/persp/dbgperspective/nmv-registers-view.cc: same thing as
+	  above.
+	  This entry should fix bug #482806.
+
+2008-05-18 Dodji Seketeli <dodji@gnome.org>
+
+	* src/dbgengine/nmv-dbg-common.h,
+	  src/dbgengine/nmv-gdb-engine.[cc,h],
+	  src/dbgengine/nmv-gdbmi-parser.cc,
+	  src/dbgengine/nmv-i-debugger.h,
+	  src/persp/dbgperspective/nmv-call-stack.cc,
+	  src/persp/dbgperspective/nmv-dbg-perspective.cc,
+	  src/persp/dbgperspective/nmv-local-vars-inspector.cc,:
+	  Replace stop reasons string use by the enum StopReason use.
+	  Move StopReason from the OutOfBandRecord type to the IDebugger
+	  interface type. That way, it can be used from within clients of
+	  IDebugger. Change the code of the client code accordingly.
+
+
 2008-05-12 Dodji Seketeli <dodji@gnome.org>
 
 	* src/common/Makefile.am,

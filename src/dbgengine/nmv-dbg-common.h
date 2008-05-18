@@ -161,27 +161,12 @@ public:
     class OutOfBandRecord {
     public:
 
-        enum StopReason {
-            UNDEFINED=0,
-            BREAKPOINT_HIT,
-            WATCHPOINT_TRIGGER,
-            READ_WATCHPOINT_TRIGGER,
-            ACCESS_WATCHPOINT_TRIGGER,
-            FUNCTION_FINISHED,
-            LOCATION_REACHED,
-            WATCHPOINT_SCOPE,
-            END_STEPPING_RANGE,
-            EXITED_SIGNALLED,
-            EXITED,
-            EXITED_NORMALLY,
-            SIGNAL_RECEIVED
-        };//end enum StopReason
 
     private:
         bool m_has_stream_record;
         StreamRecord m_stream_record ;
         bool m_is_stopped ;
-        StopReason m_stop_reason ;
+        IDebugger::StopReason m_stop_reason ;
         bool m_has_frame ;
         IDebugger::Frame m_frame ;
         long m_breakpoint_number ;
@@ -193,48 +178,48 @@ public:
 
         OutOfBandRecord () {clear ();}
 
-        UString stop_reason_to_string (StopReason a_reason) const
+        UString stop_reason_to_string (IDebugger::StopReason a_reason) const
         {
             UString result ("undefined") ;
 
             switch (a_reason) {
-                case UNDEFINED:
+                case IDebugger::UNDEFINED_REASON:
                     return "undefined" ;
                     break ;
-                case BREAKPOINT_HIT:
+                case IDebugger::BREAKPOINT_HIT:
                     return "breakpoint-hit" ;
                     break ;
-                case WATCHPOINT_TRIGGER:
+                case IDebugger::WATCHPOINT_TRIGGER:
                     return "watchpoint-trigger" ;
                     break ;
-                case READ_WATCHPOINT_TRIGGER:
+                case IDebugger::READ_WATCHPOINT_TRIGGER:
                     return "read-watchpoint-trigger" ;
                     break ;
-                case ACCESS_WATCHPOINT_TRIGGER:
+                case IDebugger::ACCESS_WATCHPOINT_TRIGGER:
                     return "access-watchpoint-trigger" ;
                     break ;
-                case FUNCTION_FINISHED:
+                case IDebugger::FUNCTION_FINISHED:
                     return "function-finished" ;
                     break ;
-                case LOCATION_REACHED:
+                case IDebugger::LOCATION_REACHED:
                     return "location-reached" ;
                     break ;
-                case WATCHPOINT_SCOPE:
+                case IDebugger::WATCHPOINT_SCOPE:
                     return "watchpoint-scope" ;
                     break ;
-                case END_STEPPING_RANGE:
+                case IDebugger::END_STEPPING_RANGE:
                     return "end-stepping-range" ;
                     break ;
-                case EXITED_SIGNALLED:
+                case IDebugger::EXITED_SIGNALLED:
                     return "exited-signaled" ;
                     break ;
-                case EXITED:
+                case IDebugger::EXITED:
                     return "exited" ;
                     break ;
-                case EXITED_NORMALLY:
+                case IDebugger::EXITED_NORMALLY:
                     return "exited-normally" ;
                     break ;
-                case SIGNAL_RECEIVED:
+                case IDebugger::SIGNAL_RECEIVED:
                     return "signal-received" ;
                     break ;
             }
@@ -255,12 +240,12 @@ public:
         bool is_stopped () const {return m_is_stopped;}
         void is_stopped (bool a_in) {m_is_stopped = a_in;}
 
-        StopReason stop_reason () const {return m_stop_reason ;}
+        IDebugger::StopReason stop_reason () const {return m_stop_reason ;}
         UString stop_reason_as_str () const
         {
             return stop_reason_to_string (m_stop_reason) ;
         }
-        void stop_reason (StopReason a_in) {m_stop_reason = a_in;}
+        void stop_reason (IDebugger::StopReason a_in) {m_stop_reason = a_in;}
 
         bool has_frame () const {return m_has_frame;}
         void has_frame (bool a_in) {m_has_frame = a_in;}
@@ -290,7 +275,7 @@ public:
             m_has_stream_record = false ;
             m_stream_record.clear () ;
             m_is_stopped = false ;
-            m_stop_reason = UNDEFINED ;
+            m_stop_reason = IDebugger::UNDEFINED_REASON ;
             m_has_frame = false ;
             m_frame.clear () ;
             m_breakpoint_number = 0 ;

@@ -85,7 +85,7 @@ public:
 
 
     sigc::signal<void,
-                const UString&,
+                IDebugger::StopReason,
                 bool,
                 const IDebugger::Frame&,
                 int,
@@ -182,7 +182,7 @@ public:
 
     void on_debugger_stdout_signal (CommandAndOutput &a_cao) ;
     void on_got_target_info_signal (int a_pid, const UString& a_exe_path) ;
-    void on_stopped_signal (const UString &a_reason,
+    void on_stopped_signal (IDebugger::StopReason a_reason,
                             bool has_frame,
                             const IDebugger::Frame &a_frame,
                             int a_thread_id,

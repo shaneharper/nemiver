@@ -93,7 +93,7 @@ on_variable_type_set_signal (const IDebugger::VariableSafePtr &a_var,
     }
 }
 void
-on_stopped_signal (const UString &a_reason,
+on_stopped_signal (IDebugger::StopReason a_reason,
                    bool a_has_frame,
                    const IDebugger::Frame &a_frame,
                    int a_thread_id,
@@ -104,15 +104,15 @@ on_stopped_signal (const UString &a_reason,
 
     BOOST_REQUIRE (a_debugger) ;
 
-    if (a_reason == "exited-normally") {
-        loop->quit () ;
+    if (a_reason == IDebugger::EXITED_NORMALLY) {
+        loop->quit ();
         BOOST_REQUIRE_MESSAGE (nb_derefed == 3,
-                "nb_derefed is " << nb_derefed) ;
+                               "nb_derefed is " << nb_derefed) ;
         BOOST_REQUIRE_MESSAGE (nb_type_set == 3,
-                "nb_type_set is " << nb_type_set) ;
-        return ;
+                               "nb_type_set is " << nb_type_set) ;
+        return;
     }
-    ++nb_stops ;
+    ++nb_stops;
 
     if (a_frame.function_name () == "main" && nb_stops == 4) {
         a_debugger->print_variable_value ("foo_ptr") ;

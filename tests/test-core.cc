@@ -26,7 +26,7 @@ on_engine_died_signal ()
 }
 
 void
-on_stopped_signal (const UString &a_reason,
+on_stopped_signal (IDebugger::StopReason a_reason,
                    bool a_has_frame,
                    const IDebugger::Frame &a_frame,
                    int a_thread_id,
@@ -34,7 +34,7 @@ on_stopped_signal (const UString &a_reason,
 {
     if (a_cookie.empty ()) {}
 
-    std::cout << "stopped, reason: " << a_reason << " " ;
+    std::cout << "stopped, reason: " << (int)a_reason << " " ;
     if (a_has_frame) {
         std::cout << "in frame: " << a_frame.function_name () ;
     }

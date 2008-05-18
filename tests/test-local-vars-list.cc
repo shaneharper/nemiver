@@ -18,7 +18,7 @@ static int nb_var_type_set=0 ;
 static int nb_var_value_set=0 ;
 
 void
-on_stopped_signal (const UString &a_reason,
+on_stopped_signal (IDebugger::StopReason a_reason,
                    bool a_has_frame,
                    const IDebugger::Frame &a_frame,
                    int a_thread_id,
@@ -31,9 +31,9 @@ on_stopped_signal (const UString &a_reason,
     BOOST_REQUIRE (a_debugger) ;
     BOOST_REQUIRE (a_var_list) ;
 
-    MESSAGE ("stopped, reason: " << a_reason) ;
+    MESSAGE ("stopped, reason: " << (int)a_reason) ;
 
-    if (a_reason == "exited-normally") {
+    if (a_reason == IDebugger::EXITED_NORMALLY) {
         //okay, time to get out. Let's check if the overall test
         //went like we want
         BOOST_REQUIRE_MESSAGE (nb_var_type_set == 3,

@@ -2697,33 +2697,33 @@ parse_stopped_async_output (const UString &a_input,
     return true;
 }
 
-Output::OutOfBandRecord::StopReason
+IDebugger::StopReason
 str_to_stopped_reason (const UString &a_str)
 {
     if (a_str == "breakpoint-hit") {
-        return Output::OutOfBandRecord::BREAKPOINT_HIT;
+        return IDebugger::BREAKPOINT_HIT;
     } else if (a_str == "watchpoint-trigger") {
-        return Output::OutOfBandRecord::WATCHPOINT_TRIGGER;
+        return IDebugger::WATCHPOINT_TRIGGER;
     } else if (a_str == "read-watchpoint-trigger") {
-        return Output::OutOfBandRecord::READ_WATCHPOINT_TRIGGER;
+        return IDebugger::READ_WATCHPOINT_TRIGGER;
     } else if (a_str == "function-finished") {
-        return Output::OutOfBandRecord::FUNCTION_FINISHED;
+        return IDebugger::FUNCTION_FINISHED;
     } else if (a_str == "location-reached") {
-        return Output::OutOfBandRecord::LOCATION_REACHED;
+        return IDebugger::LOCATION_REACHED;
     } else if (a_str == "watchpoint-scope") {
-        return Output::OutOfBandRecord::WATCHPOINT_SCOPE;
+        return IDebugger::WATCHPOINT_SCOPE;
     } else if (a_str == "end-stepping-range") {
-        return Output::OutOfBandRecord::END_STEPPING_RANGE;
+        return IDebugger::END_STEPPING_RANGE;
     } else if (a_str == "exited-signalled") {
-        return Output::OutOfBandRecord::EXITED_SIGNALLED;
+        return IDebugger::EXITED_SIGNALLED;
     } else if (a_str == "exited") {
-        return Output::OutOfBandRecord::EXITED;
+        return IDebugger::EXITED;
     } else if (a_str == "exited-normally") {
-        return Output::OutOfBandRecord::EXITED_NORMALLY;
+        return IDebugger::EXITED_NORMALLY;
     } else if (a_str == "signal-received") {
-        return Output::OutOfBandRecord::SIGNAL_RECEIVED;
+        return IDebugger::SIGNAL_RECEIVED;
     } else {
-        return Output::OutOfBandRecord::UNDEFINED;
+        return IDebugger::UNDEFINED_REASON;
     }
 }
 

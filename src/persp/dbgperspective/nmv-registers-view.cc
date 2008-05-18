@@ -77,8 +77,8 @@ public:
         debugger->register_value_changed_signal ().connect (sigc::mem_fun
                 (*this, &Priv::on_debugger_register_value_changed)) ;
 
-        debugger->stopped_signal ().connect (sigc::mem_fun (*this,
-                    &Priv::on_debugger_stopped));
+        debugger->stopped_signal ().connect (sigc::mem_fun
+                (*this, &Priv::on_debugger_stopped));
     }
 
     void build_tree_view ()
@@ -103,20 +103,23 @@ public:
                     &Priv::on_register_value_edited));
     }
 
-    void on_debugger_stopped (const UString,
+    void on_debugger_stopped (IDebugger::StopReason a_reason,
                               bool,
                               const IDebugger::Frame &,
                               int,
                               const UString&)
     {
+        if (a_reason == IDebugger::EXITED_SIGNALLED
+            || a_reason == IDebugger::EXITED_NORMALLY
+            || a_reason == IDebugger::EXITED) {
+            return ;
+        }
         static bool first_run = true;
-        if (first_run)
-        {
+        if (first_run) {
             first_run = false;
             debugger->list_register_names ();
         }
-        else
-        {
+        else {
             debugger->list_changed_registers ();
         }
     }

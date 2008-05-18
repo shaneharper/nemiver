@@ -42,7 +42,7 @@ on_running_signal ()
 }
 
 void
-on_stopped_signal (const UString &a_reason,
+on_stopped_signal (IDebugger::StopReason a_reason,
                    bool a_has_frame,
                    const IDebugger::Frame &a_frame,
                    int a_thread_id,
@@ -51,12 +51,12 @@ on_stopped_signal (const UString &a_reason,
 {
     BOOST_REQUIRE (a_debugger) ;
 
-    if (a_reason.empty () || a_has_frame || a_frame.level () || a_thread_id ||
+    if (a_has_frame || a_frame.level () || a_thread_id ||
         a_cookie.empty () || a_debugger) {
         /*keeps compiler happy*/
     }
 
-    if (a_reason == "exited-normally") {
+    if (a_reason == IDebugger::EXITED_NORMALLY) {
         MESSAGE ("program exited normally") ;
         s_loop->quit () ;
         return ;
@@ -231,7 +231,7 @@ test_main (int argc, char **argv)
     debugger->program_finished_signal ().connect (&on_program_finished_signal);
     debugger->running_signal ().connect (&on_running_signal) ;
     debugger->stopped_signal ().connect (sigc::bind (&on_stopped_signal,
-                                                      debugger)) ;
+                                                     debugger)) ;
     debugger->variable_value_signal ().connect
                         (sigc::bind (&on_variable_value_signal, var_list)) ;
     debugger->variable_type_signal ().connect

@@ -461,7 +461,7 @@ public:
     }
 
 
-    void on_stopped_signal (const UString &a_reason,
+    void on_stopped_signal (IDebugger::StopReason a_reason,
                             bool a_has_frame,
                             const IDebugger::Frame &a_frame,
                             int a_thread_id,
@@ -473,9 +473,9 @@ public:
         NEMIVER_TRY
         LOG_DD ("stopped, reason: " << a_reason) ;
 
-        if (a_reason == "exited-signaled"
-            || a_reason == "exited-normally"
-            || a_reason == "exited") {
+        if (a_reason == IDebugger::EXITED_SIGNALLED
+            || a_reason == IDebugger::EXITED_NORMALLY
+            || a_reason == IDebugger::EXITED) {
             return ;
         }
 

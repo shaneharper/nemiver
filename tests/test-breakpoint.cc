@@ -70,7 +70,7 @@ on_got_proc_info_signal (int a_pid, const UString &a_exe_path)
 }
 
 void
-on_stopped_signal (const UString &a_reason,
+on_stopped_signal (IDebugger::StopReason a_reason,
                    bool a_has_frame,
                    const IDebugger::Frame &a_frame,
                    int a_thread_id,
@@ -86,7 +86,7 @@ on_stopped_signal (const UString &a_reason,
     MESSAGE ("stopped, reason is '" << a_reason << "'") ;
     MESSAGE ("thread-id is '" << a_thread_id) ;
 
-    if (a_reason == "breakpoint-hit") {
+    if (a_reason == IDebugger::BREAKPOINT_HIT) {
         ++nb_bp ;
     }
 

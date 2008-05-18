@@ -297,7 +297,7 @@ private:
                     (const vector<IDebugger::OverloadsChoiceEntry> &entries,
                      const UString &a_cookie) ;
 
-    void on_debugger_stopped_signal (const UString &a_reason,
+    void on_debugger_stopped_signal (IDebugger::StopReason a_reason,
                                      bool a_has_frame,
                                      const IDebugger::Frame &,
                                      int a_thread_id,
@@ -1466,7 +1466,15 @@ DBGPerspective::on_attached_to_target_signal (bool a_is_ready)
     if (a_is_ready) {
         m_priv->target_connected_action_group->set_sensitive (true) ;
     } else {
+        //reset to default cursor, in case the busy cursor was spinning
+        workbench ().get_root_window ().get_window ()->set_cursor ();
+        m_priv->throbber->stop () ;
         m_priv->target_connected_action_group->set_sensitive (false) ;
+        m_priv->default_action_group->set_sensitive (true) ;
+        m_priv->target_not_started_action_group->set_sensitive (false) ;
+        m_priv->debugger_ready_action_group->set_sensitive (false) ;
+        m_priv->debugger_busy_action_group->set_sensitive (false) ;
+        m_priv->opened_file_action_group->set_sensitive (false);
     }
 
     NEMIVER_CATCH
@@ -1597,9 +1605,12 @@ DBGPerspective::on_mouse_immobile_timer_signal ()
     NEMIVER_TRY
 
     if (get_contextual_menu ()
-        && get_contextual_menu ()->is_visible ())
-    {
+        && get_contextual_menu ()->is_visible ()) {
         return false ;
+    }
+
+    if (!debugger ()->is_attached_to_target ()) {
+        return false;
     }
 
     try_to_request_show_variable_value_at_position
@@ -1945,7 +1956,7 @@ DBGPerspective::on_debugger_breakpoints_set_signal
 
 
 void
-DBGPerspective::on_debugger_stopped_signal (const UString &a_reason,
+DBGPerspective::on_debugger_stopped_signal (IDebugger::StopReason a_reason,
                                             bool a_has_frame,
                                             const IDebugger::Frame &a_frame,
                                             int a_thread_id,
@@ -1953,11 +1964,11 @@ DBGPerspective::on_debugger_stopped_signal (const UString &a_reason,
 {
 
     LOG_FUNCTION_SCOPE_NORMAL_DD ;
-    if (a_reason == "" || a_thread_id || a_cookie.empty ()) {}
+    if (a_thread_id || a_cookie.empty ()) {}
 
     NEMIVER_TRY
 
-    LOG_DD ("stopped, reason: " << a_reason) ;
+    LOG_DD ("stopped, reason: " << (int)a_reason) ;
 
     THROW_IF_FAIL (m_priv) ;
 
@@ -2002,7 +2013,7 @@ DBGPerspective::on_program_finished_signal ()
     NEMIVER_TRY
 
     unset_where () ;
-    attached_to_target_signal ().emit (true) ;
+    attached_to_target_signal ().emit (false) ;
     display_info (_("Program exited")) ;
     workbench ().set_title_extension ("");
 
@@ -2015,6 +2026,7 @@ DBGPerspective::on_program_finished_signal ()
     m_priv->target_not_started_action_group->set_sensitive (true) ;
     m_priv->debugger_ready_action_group->set_sensitive (false) ;
     m_priv->debugger_busy_action_group->set_sensitive (false) ;
+    m_priv->target_connected_action_group->set_sensitive (false);
 
     //**********************
     //clear threads list and
@@ -2149,12 +2161,6 @@ DBGPerspective::on_debugger_state_changed_signal (IDebugger::State a_state)
 
     if (a_state == IDebugger::READY) {
         debugger_ready_signal ().emit (true) ;
-    } else if (a_state == IDebugger::PROGRAM_EXITED) {
-        debugger_ready_signal ().emit (true) ;
-    } else if (a_state == IDebugger::NOT_STARTED) {
-        debugger_not_started_signal ().emit () ;
-    } else {
-        debugger_ready_signal ().emit (false) ;
     }
 
     NEMIVER_CATCH

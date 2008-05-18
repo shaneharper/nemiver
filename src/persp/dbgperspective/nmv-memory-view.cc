@@ -130,8 +130,8 @@ public:
         THROW_IF_FAIL (m_debugger);
         m_debugger->state_changed_signal ().connect (sigc::mem_fun (this,
                     &Priv::on_debugger_state_changed));
-        m_debugger->stopped_signal ().connect (sigc::mem_fun (this,
-                    &Priv::on_debugger_stopped));
+        m_debugger->stopped_signal ().connect (sigc::mem_fun
+                (this, &Priv::on_debugger_stopped));
         m_debugger->read_memory_signal ().connect (sigc::mem_fun (this,
                     &Priv::on_memory_read_response));
         THROW_IF_FAIL (m_jump_button);
@@ -191,14 +191,21 @@ public:
         NEMIVER_CATCH
     }
 
-    void on_debugger_stopped (const UString& /*a_reason*/,
+    void on_debugger_stopped (IDebugger::StopReason a_reason/*a_reason*/,
                               bool /*a_has_frame*/,
                               const IDebugger::Frame& /*a_frame*/,
                               int /*a_thread_id*/,
                               const UString& /*a_cookie*/)
     {
         NEMIVER_TRY
+
+        if (a_reason == IDebugger::EXITED_SIGNALLED
+            || a_reason == IDebugger::EXITED_NORMALLY
+            || a_reason == IDebugger::EXITED) {
+            return ;
+        }
         do_memory_read ();
+
         NEMIVER_CATCH
     }
 
