@@ -1,3 +1,18 @@
+2008-05-11 Dodji Seketeli <dodji@gnome.org>
+
+	* src/common/nmv-env.cc,h:
+	  added build_path_to_help_file() entry point to compute the path
+	  the a nemiver help file. That is needed to avoid using
+	  gnome_help_display() and thus libgnome.
+	* tests/test-env.cc: added this test file for the new entry point.
+	* src/workbench/nmv-workbench.cc:
+	  (Workbench::on_contents_menu_item_action): don't use
+	  gnome_help_display(). Instead, spawn yelp with the path to
+	  to the nemiver help file. Okay this is a bit rude but there
+	  is no better way right now.
+	* configure.ac: don't detect libgnome anymore.
+	* src/main.cc: don't initialize libgnome anymore.
+
 2008-05-06 Dodji Seketeli <dodji@gnome.org>
 
 	* src/uicommon/nmv-terminal.cc: _GNU_SOURCE is defined on freebsd

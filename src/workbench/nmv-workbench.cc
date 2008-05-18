@@ -27,7 +27,6 @@
 #include <vector>
 #include <iostream>
 #include <glib/gi18n.h>
-#include <libgnome/gnome-help.h>
 #ifdef WITH_GIO
 #include <giomm/init.h>
 #else
@@ -227,9 +226,20 @@ Workbench::on_quit_menu_item_action ()
 void
 Workbench::on_contents_menu_item_action ()
 {
-    gnome_help_display("nemiver.xml",
-                       NULL, /*link id*/
-                       NULL /*GError*/);
+    NEMIVER_TRY
+
+    UString help_url = "ghelp:nemiver";
+    LOG_DD ("launching help url: " << help_url);
+    UString path_to_help =
+        nemiver::common::env::build_path_to_help_file ("nemiver.xml");
+    THROW_IF_FAIL (!path_to_help.empty ());
+    UString cmd_line ("yelp " + path_to_help);
+    LOG_DD ("going to spawn: " << cmd_line);
+    bool is_ok = g_spawn_command_line_async (cmd_line.c_str (), NULL);
+    if (!is_ok) {
+        LOG_ERROR ("failed to spawn " << is_ok);
+    }
+    NEMIVER_CATCH
 }
 
 void

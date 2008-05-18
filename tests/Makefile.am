@@ -11,7 +11,8 @@ runtestvarwalker runtestbreakpoint \
 runtestderef \
 runtestlocalvarslist runtestcpplexer \
 runtestcppparser  \
-runtestlibtoolwrapperdetection
+runtestlibtoolwrapperdetection \
+runtestenv
 
 
 else
@@ -102,6 +103,11 @@ runtestlibtoolwrapperdetection_SOURCES=test-libtool-wrapper-detection.cc
 runtestlibtoolwrapperdetection_LDADD=@NEMIVERCOMMON_LIBS@ \
 @BOOST_UNIT_TEST_FRAMEWORK_STATIC_LIB@ \
 $(top_builddir)/src/langs/libnemivercparser.la \
+$(top_builddir)/src/common/libnemivercommon.la
+
+runtestenv_SOURCES=test-env.cc
+runtestenv_LDADD=@NEMIVERCOMMON_LIBS@ \
+@BOOST_UNIT_TEST_FRAMEWORK_STATIC_LIB@ \
 $(top_builddir)/src/common/libnemivercommon.la
 
 docore_SOURCES=do-core.cc

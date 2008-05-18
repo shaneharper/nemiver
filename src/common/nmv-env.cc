@@ -39,9 +39,9 @@
 
 using namespace std ;
 
-namespace nemiver {
-namespace common {
-namespace env {
+NEMIVER_BEGIN_NAMESPACE (nemiver)
+NEMIVER_BEGIN_NAMESPACE (common)
+NEMIVER_BEGIN_NAMESPACE (env)
 
 class Initializer
 {
@@ -279,6 +279,86 @@ build_path_to_image_file (const UString &a_image_file_name)
     return result ;
 }
 
-}//end namespace env
-}//end namespace common
-}//end namespace nemiver
+UString
+build_path_to_help_file (const UString &a_file_name)
+{
+    //So, before all, don't forget that a locale name has the general form:
+    //language[_territory][.codeset][@modifier]
+    //
+    //Once that is said, let's not forget either that
+    //the help file is located under the directory:
+    //$prefix/share/gnome/help/nemiver/language[_territory]
+    //So the goal of this function is to go look in that directory
+    //to see if a_file_name exists there. If so, return the path to it.
+    //Otherwise, return an empty string.
+    UString result;
+    UString prefix (get_install_prefix ());
+    vector<string> path_elems;
+    path_elems.push_back (prefix.c_str ());
+    path_elems.push_back ("share");
+    path_elems.push_back ("gnome");
+    path_elems.push_back ("help");
+    path_elems.push_back ("nemiver");
+
+    string help_dir = Glib::build_filename (path_elems);
+
+    if (!Glib::file_test (help_dir, Glib::FILE_TEST_IS_DIR)) {
+        LOG_ERROR ("help dir " << help_dir << " does not exist");
+        return "";
+    }
+
+    locale loc ("");
+    UString loc_name (loc.name ());
+    LOG_DD ("locale name: " << loc_name);
+    string lang_dir = Glib::build_filename (help_dir, loc_name.c_str ());
+    if (!Glib::file_test (lang_dir, Glib::FILE_TEST_IS_DIR)) {
+        LOG_DD ("lang dir '" << lang_dir << "' does not exist");
+        //let's try now to extract the <language>_<territory> part of the
+        //locale, that can be of the more general form:
+        //language[_territory][.codeset][@modifier]
+        vector<UString> tmp;
+        tmp = loc_name.split (".");
+        if (tmp.empty ()) {
+            goto locale_language;
+        }
+        loc_name = tmp[0];
+        lang_dir = Glib::build_filename (help_dir, loc_name.c_str ());
+        LOG_DD ("trying locale name: " << lang_dir);
+        if (!Glib::file_test (lang_dir, Glib::FILE_TEST_IS_DIR)) {
+            LOG_DD ("lang dir '" << lang_dir << "' does not exist");
+            //let's try to extract the <language> part of the locale now.
+locale_language:
+            tmp.clear ();
+            tmp = loc_name.split ("_");
+            if (tmp.empty ()) {
+                goto c_locale;
+            }
+            loc_name = tmp[0];
+            lang_dir = Glib::build_filename (help_dir, loc_name.c_str ());
+            LOG_DD ("trying locale name: " << lang_dir);
+            if (!Glib::file_test (lang_dir, Glib::FILE_TEST_IS_DIR)) {
+                LOG_DD ("lang dir '" << lang_dir << "' does not exist");
+                //okay so let's fall back to the C locale then.
+c_locale:
+                loc_name = "C";
+                lang_dir = Glib::build_filename (help_dir, loc_name.c_str ());
+                LOG_DD ("trying locale name: " << lang_dir);
+                if (!Glib::file_test (lang_dir, Glib::FILE_TEST_IS_DIR)) {
+                    LOG_ERROR ("could not find a proper help dir");
+                    return result;
+                }
+            }
+        }
+    }
+    result = Glib::build_filename (lang_dir, a_file_name);
+    if (!Glib::file_test (result, Glib::FILE_TEST_IS_REGULAR)) {
+        LOG_ERROR ("file " << result << " does not exist!");
+        result.clear ();
+    }
+    return result;
+}
+
+NEMIVER_END_NAMESPACE (env)
+NEMIVER_END_NAMESPACE (common)
+NEMIVER_END_NAMESPACE (nemiver)
+

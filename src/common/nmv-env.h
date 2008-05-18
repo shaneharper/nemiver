@@ -34,9 +34,9 @@
 #include "nmv-ustring.h"
 #include "nmv-exception.h"
 
-namespace nemiver {
-namespace common {
-namespace env {
+NEMIVER_BEGIN_NAMESPACE (nemiver)
+NEMIVER_BEGIN_NAMESPACE (common)
+NEMIVER_BEGIN_NAMESPACE (env)
 
 void do_init () ;
 
@@ -76,10 +76,11 @@ NEMIVER_API UString build_path_to_menu_file (const UString &a_ui_file_name) ;
 
 NEMIVER_API UString build_path_to_image_file (const UString &a_image_file_name) ;
 
-}//end namespace env
-}//end namespace common
-}//end namespace nemiver
+NEMIVER_API UString build_path_to_help_file (const UString &a_file_name);
 
+NEMIVER_END_NAMESPACE (env)
+NEMIVER_END_NAMESPACE (common)
+NEMIVER_END_NAMESPACE (nemiver)
 
 #endif //__NEMIVER_ENV_H__
 
