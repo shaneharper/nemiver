@@ -90,7 +90,7 @@ memoryview_sources =
 endif
 
 libdbgperspectiveplugin_la_SOURCES=$(sources) $(memoryview_sources)
-libdbgperspectiveplugin_la_LDFLAGS= -module -avoid-version
+libdbgperspectiveplugin_la_LDFLAGS= -module -avoid-version -Wl,--as-needed
 libdbgperspectiveplugin_la_LIBADD= \
 @NEMIVERDBGPERSP_LIBS@ \
 $(top_builddir)/src/common/libnemivercommon.la \

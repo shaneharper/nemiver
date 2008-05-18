@@ -21,10 +21,10 @@ nmv-source-editor.h
 
 if BUILD_MEMORYVIEW
 memoryview_sources = \
-					 nmv-hex-editor.h \
-					 nmv-hex-editor.cc \
-					 nmv-hex-document.h \
-					 nmv-hex-document.cc
+nmv-hex-editor.h \
+nmv-hex-editor.cc \
+nmv-hex-document.h \
+nmv-hex-document.cc
 else
 memoryview_sources =
 endif

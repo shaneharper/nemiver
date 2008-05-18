@@ -75,7 +75,7 @@ libgdbengine_la_CFLAGS=-fPIC -DPIC
 publicheaders_DATA=$(dynmodheaders)
 publicheadersdir=$(NEMIVER_INCLUDE_DIR)/dynmods
 
-libgdbmod_la_LDFLAGS=-module -avoid-version
+libgdbmod_la_LDFLAGS=-module -avoid-version -Wl,--as-needed
 libgdbmod_la_LIBADD=libdbgcommon.la libgdbmiparser.la libgdbengine.la \
 @NEMIVERCOMMON_LIBS@ \
 $(top_builddir)/src/langs/libnemivercparser.la \

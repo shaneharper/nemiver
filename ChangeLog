@@ -1,3 +1,15 @@
+2008-05-12 Dodji Seketeli <dodji@gnome.org>
+
+	* src/common/Makefile.am,
+	  src/confmgr/Makefile.am,
+	  src/dbdimpl/sqlite/Makefile.am,
+	  src/dbgengine/Makefile.am,
+	  src/persp/dbgperspective/Makefile.am,
+	  src/uicommon/Makefile.am,
+	  src/workbench/Makefile.am: added the -Wl,--as-needed link flags
+	  to remove useless libraries from the .dynamic section of the
+	  DSOs.
+
 2008-05-11 Dodji Seketeli <dodji@gnome.org>
 
 	* src/common/nmv-env.cc,h:

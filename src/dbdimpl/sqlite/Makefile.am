@@ -8,7 +8,7 @@ nmv-sqlite-cnx-drv.h
 
 libnemiverdbdsqlite_la_SOURCES=$(sources)
 
-libnemiverdbdsqlite_la_LDFLAGS= -module -avoid-version
+libnemiverdbdsqlite_la_LDFLAGS= -module -avoid-version -Wl,--as-needed
 libnemiverdbdsqlite_la_LIBADD= \
 @SQLITE3_LIBS@ @NEMIVERCOMMON_LIBS@ \
 $(top_builddir)/src/common/libnemivercommon.la

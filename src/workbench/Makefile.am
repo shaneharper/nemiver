@@ -25,7 +25,7 @@ nmv-pref-mgr.cc
 publicheaders_DATA=$(headers)
 publicheadersdir=$(NEMIVER_INCLUDE_DIR)/dynmods
 
-libworkbenchmod_la_LDFLAGS=-module -avoid-version
+libworkbenchmod_la_LDFLAGS=-module -avoid-version -Wl,--as-needed
 libworkbenchmod_la_LIBADD=@NEMIVERWORKBENCH_LIBS@ \
         $(top_builddir)/src/common/libnemivercommon.la \
         $(top_builddir)/src/uicommon/libnemiveruicommon.la
