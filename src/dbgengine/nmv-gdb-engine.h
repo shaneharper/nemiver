@@ -266,6 +266,8 @@ public:
 
     void step_out (const UString &a_cookie) ;
 
+    void step_instruction (const UString &a_cookie);
+
     void step_over (const UString &a_cookie) ;
 
     void continue_to_position (const UString &a_path,

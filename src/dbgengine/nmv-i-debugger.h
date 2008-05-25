@@ -730,6 +730,8 @@ public:
 
     virtual void step_out (const UString &a_cookie="") = 0;
 
+    virtual void step_instruction (const UString &a_cookie="") = 0;
+
     virtual void continue_to_position (const UString &a_path,
                                        gint a_line_num,
                                        const UString &a_cookie="") = 0;

@@ -1905,7 +1905,7 @@ DBGPerspective::on_debugger_command_done_signal (const UString &a_command,
     NEMIVER_TRY
     if (a_command == "attach-to-program") {
         //attached_to_target_signal ().emit (true) ;
-        debugger ()->step_over () ;
+        debugger ()->step_instruction () ;
         debugger ()->get_target_info () ;
     }
     NEMIVER_CATCH

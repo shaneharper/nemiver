@@ -1,5 +1,16 @@
 2008-05-25 Dodji Seketeli <dodji@gnome.org>
 
+	* src/dbgengine/nmv-gdb-engine.cc, nmv-i-debugger: 
+	  Added the IDebugger::step_instruction() call to step into the
+	  next machine instruction, instead of stepping into the next C
+	  instruction.
+	* src/persp/dbgperspective/nmv-dbg-perspective.cc:
+	  (DBGPerspective::on_debugger_command_done_signal): step into the
+	  next machine instruction instead of over the next instruction.
+	  This might help in fixing bug #534695
+
+2008-05-25 Dodji Seketeli <dodji@gnome.org>
+
 	* src/dbgengine/nmv-gdb-engine.cc:
 	  (in the OnCommandDoneHandler): don't set the engine state to
 	  IDebugger::READY when the command that has been DONE is

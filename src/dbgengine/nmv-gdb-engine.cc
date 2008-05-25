@@ -2835,6 +2835,16 @@ GDBEngine::step_over (const UString &a_cookie)
 }
 
 void
+GDBEngine::step_instruction (const UString &a_cookie)
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+    THROW_IF_FAIL (m_priv);
+    queue_command (Command ("step-instruction",
+                            "-exec-next-instruction",
+                            a_cookie));
+}
+
+void
 GDBEngine::continue_to_position (const UString &a_path,
                                  gint a_line_num,
                                  const UString &a_cookie)
