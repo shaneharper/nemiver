@@ -1400,6 +1400,8 @@ DBGPerspective::on_debugger_ready_signal (bool a_is_ready)
     THROW_IF_FAIL (m_priv->debugger_ready_action_group) ;
     THROW_IF_FAIL (m_priv->throbber) ;
 
+    LOG_DD ("a_is_ready: " << (int)a_is_ready);
+
     if (a_is_ready) {
         // reset to default cursor
         workbench ().get_root_window ().get_window ()->set_cursor ();

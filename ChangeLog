@@ -1,3 +1,10 @@
+2008-05-25 Dodji Seketeli <dodji@gnome.org>
+
+	* src/dbgengine/nmv-gdb-engine.cc:
+	  (in the OnCommandDoneHandler): don't set the engine state to
+	  IDebugger::READY when the command that has been DONE is
+	  "detach-from-target". This should fix #534619
+
 2008-05-18 Dodji Seketeli <dodji@gnome.org>
 
 	* src/dbgengine/nmv-gdb-engine.cc: emit the
