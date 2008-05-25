@@ -1,3 +1,36 @@
+0.5.3 Release
+
+Fixes
+-----
+
+[Dodji Seketeli]
+
+    * #526696 – "Detach from the running program" not properly unsensitived"
+    * #526866 – breakpoint parsing failures
+    * #526826 – missing dependency in .pc file
+    * #527696 – nemiver --help only shows libgnome related help messages
+    * #526863 – Parsing error leaves nemiver in unusable state
+    * #527796 – remove libgnome dependency
+    * #482806 – Debugger state and Menu item sensitivity problems
+    * #534619 – Once detached of a program, you're not sure you're really disconnected
+    * add -Wl,--as-needed link flag for DSOs
+
+[Jonathon Jongsma]
+
+    * properly set memory editor sensitivity when debugger is running
+
+[Luca Bruno]
+
+    * remove obsolete fields from nemiver.desktop file
+
+New ports
+---------
+
+[Romain Tartière]
+
+    * Port nemiver to FreeBSD.
+
+
 0.5.2 Release
 =============
 
