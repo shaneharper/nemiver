@@ -68,8 +68,11 @@ libnemivercommon_la_LDFLAGS=@NEMIVERCOMMON_LIBS@ -lutil \
 		-avoid-version -rpath $(libdir)/nemiver \
 		 -Wl,--as-needed
 
-pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = libnemivercommon.pc
+#don't install libnemivercommon.pc yet, as no other program
+#but nemiver uses the libnemivercommon library yet.
+#pkgconfigdir = $(libdir)/pkgconfig
+#pkgconfig_DATA = libnemivercommon.pc
+#EXTRA_DIST = $(pkgconfig_DATA)
 
 INCLUDES=@NEMIVERCOMMON_CFLAGS@ \
 -DENABLE_NLS=1 -DDATADIR=\"${datadir}\" \
@@ -81,4 +84,3 @@ INCLUDES=@NEMIVERCOMMON_CFLAGS@ \
 -DNEMIVER_VERSION=\"@NEMIVER_VERSION@\" \
 -DGDB_PROG=\"@GDB_PROG@\"
 
-EXTRA_DIST = $(pkgconfig_DATA)
