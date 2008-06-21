@@ -1,3 +1,11 @@
+2008-06-20 Dodji Seketeli <dodji@gnome.org>
+
+	* src/dbgengine/nmv-gdb-engine.cc: 
+	  (GDBEngine::load_program()): don't set LD_BIND_NOW by default.
+	  Now, the NMV_LD_BIND_NOW env variable has to be set to 1 when you
+	  want to instruct gdb to set LD_BIND_NOW.
+	  This should fix: #539311 - rhythmbox can loads its plugins under nemiver
+
 2008-06-19 Dodji Seketeli <dodji@gnome.org>
 
 	* src/persp/dbgperspective/nmv-local-vars-inspector2.cc:
