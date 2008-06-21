@@ -1512,8 +1512,8 @@ Parser::parse_simple_type_specifier (SimpleTypeSpecPtr &a_str)
 
     if (!LEXER.peek_next_token (token)) {goto error;}
 
-    if (token.get_kind () == Token::KEYWORD
-        && (token.get_str_value () == "char")
+    if ((token.get_kind () == Token::KEYWORD)
+        && (token.get_str_value () == "char"
             || token.get_str_value () == "wchar_t"
             || token.get_str_value () == "bool"
             || token.get_str_value () == "short"
@@ -1523,7 +1523,7 @@ Parser::parse_simple_type_specifier (SimpleTypeSpecPtr &a_str)
             || token.get_str_value () == "unsigned"
             || token.get_str_value () == "float"
             || token.get_str_value () == "double"
-            || token.get_str_value () == "void") {
+            || token.get_str_value () == "void")) {
         LEXER.consume_next_token ();
         result.reset (new SimpleTypeSpec (scope, token.get_str_value ()));
         goto okay;

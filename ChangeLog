@@ -1,3 +1,9 @@
+2008-06-01 Dodji Seketeli <dodji@gnome.org>
+
+	* src/langs/nmv-cpp-parser.cc:
+	  (Parser::parse_simple_type_specifier): fix a gcc warning that
+	  could have lead to a bug.
+
 2008-05-31 Dodji Seketeli <dodji@gnome.org>
 
 	* configure.ac: allow deprecated constructs because of the use the
