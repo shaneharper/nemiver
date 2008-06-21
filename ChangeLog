@@ -1,3 +1,16 @@
+2008-06-19 Dodji Seketeli <dodji@gnome.org>
+
+	* tests/Makefile: don't call the binary gtkmm-test but rather
+	  gtkmmtest to comply with the other binaries names. Let's be
+	  homogeneous :-)
+
+2008-06-19 Dodji Seketeli <dodji@gnome.org>
+
+	* src/persp/dbgperspective/nmv-dbg-perspective.cc: 
+	  (DBGPerspective::on_debugger_state_changed_signal()): don't
+	  forget to signal when the debugger is busy. That should fix
+	  #539109 – can't stop running inferior
+
 2008-06-16  Jonathon Jongsma  <jonathon.jongsma@collabora.co.uk>
 
 	* tests/Makefile.am:

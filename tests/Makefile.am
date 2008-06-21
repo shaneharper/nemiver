@@ -29,7 +29,7 @@ docore inout \
 pointerderef \
 fooprog \
 templatedvar \
-gtkmm-test
+gtkmmtest
 
 runtestgdbmi_SOURCES=test-gdbmi.cc
 runtestgdbmi_LDADD= @NEMIVERCOMMON_LIBS@ \
@@ -37,11 +37,12 @@ runtestgdbmi_LDADD= @NEMIVERCOMMON_LIBS@ \
 $(top_builddir)/src/common/libnemivercommon.la \
 $(top_builddir)/src/dbgengine/libgdbmiparser.la
 
-gtkmm_test_SOURCES=gtkmm-test.cc
-gtkmm_test_CXXFLAGS= @LIBGTKMM_CFLAGS@
-gtkmm_test_LDADD= @LIBGTKMM_LIBS@
+gtkmmtest_SOURCES=gtkmm-test.cc
+gtkmmtest_CXXFLAGS= @LIBGTKMM_CFLAGS@
+gtkmmtest_LDADD= @LIBGTKMM_LIBS@
 
 fooprog_SOURCES=fooprog.cc
+
 fooprog_LDADD=@NEMIVERCOMMON_LIBS@ \
 $(top_builddir)/src/common/libnemivercommon.la
 
