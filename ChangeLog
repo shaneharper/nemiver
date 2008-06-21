@@ -1,3 +1,8 @@
+2008-06-08 Dodji Seketeli <dodji@gnome.org>
+
+	* src/confmgr/nmv-i-conf-mgr.h, src/confmgr/nmv-gconf-mgr.cc:
+	  At end of lines, remove the space before the ";" <grin/>.
+
 2008-06-01 Dodji Seketeli <dodji@gnome.org>
 
 	* src/common/nmv-initializer.cc:

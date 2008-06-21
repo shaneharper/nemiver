@@ -26,26 +26,27 @@
 #define __NMV_CONF_MGR_H__
 
 #include <boost/variant.hpp>
+#include <list>
 #include "common/nmv-dynamic-module.h"
 #include "common/nmv-env.h"
 
-using nemiver::common::SafePtr ;
-using nemiver::common::DynamicModule ;
-using nemiver::common::DynamicModuleSafePtr ;
-using nemiver::common::DynModIface ;
-using nemiver::common::ObjectRef ;
-using nemiver::common::ObjectUnref ;
-using nemiver::common::UString ;
+using nemiver::common::SafePtr;
+using nemiver::common::DynamicModule;
+using nemiver::common::DynamicModuleSafePtr;
+using nemiver::common::DynModIface;
+using nemiver::common::ObjectRef;
+using nemiver::common::ObjectUnref;
+using nemiver::common::UString;
 
 NEMIVER_BEGIN_NAMESPACE (nemiver)
 
-class IConfMgr ;
-typedef SafePtr<IConfMgr, ObjectRef, ObjectUnref> IConfMgrSafePtr ;
+class IConfMgr;
+typedef SafePtr<IConfMgr, ObjectRef, ObjectUnref> IConfMgrSafePtr;
 
 class NEMIVER_API IConfMgr : public DynModIface {
     //non copyable
-    IConfMgr (const IConfMgr &) ;
-    IConfMgr& operator= (const IConfMgr &) ;
+    IConfMgr (const IConfMgr &);
+    IConfMgr& operator= (const IConfMgr &);
 
 protected:
 
@@ -55,14 +56,14 @@ protected:
 
 public:
 
-    typedef boost::variant<UString, bool, int, double> Value ;
+    typedef boost::variant<UString, bool, int, double> Value;
 
     virtual ~IConfMgr () {}
 
     virtual void set_key_dir_to_notify (const UString &a_key_dir) = 0;
     virtual void add_key_to_notify (const UString &a_key) = 0;
 
-    virtual bool get_key_value (const UString &a_key, UString &a_value) = 0 ;
+    virtual bool get_key_value (const UString &a_key, UString &a_value) = 0;
     virtual void set_key_value (const UString &a_key, const UString &a_value) = 0;
 
     virtual bool get_key_value (const UString &a_key, bool &a_value) = 0;
@@ -75,7 +76,7 @@ public:
     virtual void set_key_value (const UString &a_key, double a_value) = 0;
 
     virtual sigc::signal<void, const UString&, IConfMgr::Value&>&
-                                                    value_changed_signal () = 0 ;
+                                                    value_changed_signal () = 0;
 
 };//end class IConfMgr
 
