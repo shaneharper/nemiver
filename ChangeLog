@@ -1,5 +1,23 @@
 2008-06-19 Dodji Seketeli <dodji@gnome.org>
 
+	* src/persp/dbgperspective/nmv-local-vars-inspector2.cc:
+	  (Priv::re_init_tree_view()): don't forget to clean the
+	  variable walkers as well as the widget. Otherwise, the content of
+	  the walker won't reflect the content of the widget.
+	  (Priv::on_func_arg_visited_signal()): when stepping in the same
+	  function, while walking a function arguments variable, check if the
+	  function args subtree (in the widget) is empty. If the subtree is
+	  empty, append the variable the function arguments subtree.
+	  Otherwise, if you try to 'update' an empty subtree, you will get an
+	  error message saying "could not find variable in inspector: foo".
+	  The root reason why the subtree is empty in the first place, is that
+	  it must be populated by a call to debugger->list_frames_arguments().
+	  Problem is that for some unknown reason, that call fails often, due
+	  do GDB suckage.
+	  This should fix bug #499873 – Variable 'this' not found.
+
+2008-06-19 Dodji Seketeli <dodji@gnome.org>
+
 	* tests/Makefile: don't call the binary gtkmm-test but rather
 	  gtkmmtest to comply with the other binaries names. Let's be
 	  homogeneous :-)

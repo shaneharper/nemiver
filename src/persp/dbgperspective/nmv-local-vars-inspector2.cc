@@ -132,6 +132,10 @@ public:
         LOG_FUNCTION_SCOPE_NORMAL_DD;
         THROW_IF_FAIL (tree_store);
         tree_store->clear ();
+        IVarListWalkerSafePtr walker_list = get_local_vars_walker_list ();
+        walker_list->remove_variables ();
+        walker_list = get_function_args_vars_walker_list ();
+        walker_list->remove_variables ();
         previous_function_name = "";
         is_new_frame = true;
 
@@ -167,11 +171,20 @@ public:
 
     }
 
-    void get_function_arguments_row_iterator (Gtk::TreeModel::iterator &a_it)
+    void get_function_arguments_row_iterator
+                                    (Gtk::TreeModel::iterator &a_it) const
     {
         THROW_IF_FAIL (function_arguments_row_ref);
         a_it = tree_store->get_iter
                             (function_arguments_row_ref->get_path ());
+    }
+
+    bool is_function_arguments_subtree_empty () const
+    {
+        Gtk::TreeModel::iterator it;
+
+        get_function_arguments_row_iterator (it);
+        return it->children ().empty ();
     }
 
     void get_local_variables_row_iterator (Gtk::TreeModel::iterator &a_it)
@@ -642,9 +655,16 @@ public:
         THROW_IF_FAIL (a_walker->get_variable ());
 
         if (is_new_frame) {
+            LOG_DD ("appending an argument to substree");
             append_a_function_argument (a_walker->get_variable ());
         } else {
-            update_a_function_argument (a_walker->get_variable ());
+            if (is_function_arguments_subtree_empty ()) {
+                LOG_DD ("appending an argument to substree");
+                append_a_function_argument (a_walker->get_variable ());
+            } else {
+                LOG_DD ("updating an argument in substree");
+                update_a_function_argument (a_walker->get_variable ());
+            }
         }
 
         NEMIVER_CATCH
