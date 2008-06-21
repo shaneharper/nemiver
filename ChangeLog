@@ -1,5 +1,10 @@
 2008-06-21 Dodji Seketeli <dodji@gnome.org>
 
+	* Makefile.am: make sure "make release" can be used as:
+	  "make RELEASED_BRANCH=branches/0.5 release"
+
+2008-06-21 Dodji Seketeli <dodji@gnome.org>
+
 	* configure.ac: bump version info to 0.5.4
 
 2008-06-21 Dodji Seketeli <dodji@gnome.org>

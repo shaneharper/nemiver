@@ -42,10 +42,15 @@ sig_file = $(tar_gz_file).sig
 $(sig_file): $(tar_gz_file)
 	gpg --output $@ --detach $^
 
+RELEASED_BRANCH=trunk
+
+echo-released-branch:
+	echo "released-branch=$(RELEASED_BRANCH)"
+
 tag-release: dist tag-release-only
 tag-release-only:
 	svn copy -m "$(PACKAGE_NAME) release $(VERSION)" \
-		$(SVN_ROOT)/trunk $(SVN_ROOT)/tags/$(PACKAGE_NAME)-$(VERSION)
+		$(SVN_ROOT)/$(RELEASED_BRANCH) $(SVN_ROOT)/tags/$(PACKAGE_NAME)-$(VERSION)
 
 release-upload: tag-release $(tar_gz_file) release-upload-only
 release-upload-only:
