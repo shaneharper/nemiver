@@ -33,6 +33,7 @@ namespace common {
 Initializer::Initializer ()
 {
     setlocale (LC_ALL, "") ;
+    Glib::init ();
     Glib::thread_init () ;
     ConfManager::init () ;
 }
