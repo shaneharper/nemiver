@@ -361,7 +361,7 @@ dnl Set Dodji devel environment.
 dnl ***************************
 if test  "x$NEMIVER_DEVEL" = "xon" ; then
     CFLAGS=$DODJI_FLAGS
-    CXXFLAGS="-Wall -g -Werror -Wextra -fuse-cxa-atexit $REQUIRED_FLAGS"
+    CXXFLAGS="-Wall -g -Werror -Wextra -Wno-deprecated -fuse-cxa-atexit $REQUIRED_FLAGS"
     ENABLE_DEBUG=yes
 else
     CXXFLAGS="$CXXFLAGS -fuse-cxa-atexit $REQUIRED_FLAGS"
