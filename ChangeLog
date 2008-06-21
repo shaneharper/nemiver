@@ -1,5 +1,11 @@
 2008-06-08 Dodji Seketeli <dodji@gnome.org>
 
+	* src/persp/dbgperspective/nmv-dbg-perspective.cc: replace static
+	  storage class strings with char*. Using strings for static storage
+	  class variables is useless and just slows down DSO loading time.
+
+2008-06-08 Dodji Seketeli <dodji@gnome.org>
+
 	* src/confmgr/nmv-i-conf-mgr.h, src/confmgr/nmv-gconf-mgr.cc: add
 	  IConfMgr::get_key_value() and IConfMgr::set_key_value() for list
 	  values.

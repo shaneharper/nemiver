@@ -125,27 +125,27 @@ const char *LAST_RUN_TIME= "lastruntime" ;
 const char *DBG_PERSPECTIVE_MOUSE_MOTION_DOMAIN =
                                 "dbg-perspective-mouse-motion-domain" ;
 
-static const UString CONF_KEY_NEMIVER_SOURCE_DIRS =
+static const char* CONF_KEY_NEMIVER_SOURCE_DIRS =
                 "/apps/nemiver/dbgperspective/source-search-dirs" ;
-static const UString CONF_KEY_SHOW_DBG_ERROR_DIALOGS =
+static const char* CONF_KEY_SHOW_DBG_ERROR_DIALOGS =
                 "/apps/nemiver/dbgperspective/show-dbg-error-dialogs";
-static const UString CONF_KEY_SHOW_SOURCE_LINE_NUMBERS =
+static const char* CONF_KEY_SHOW_SOURCE_LINE_NUMBERS =
                 "/apps/nemiver/dbgperspective/show-source-line-numbers" ;
-static const UString CONF_KEY_HIGHLIGHT_SOURCE_CODE =
+static const char* CONF_KEY_HIGHLIGHT_SOURCE_CODE =
                 "/apps/nemiver/dbgperspective/highlight-source-code" ;
 static const UString CONF_KEY_USE_SYSTEM_FONT =
                 "/apps/nemiver/dbgperspective/use-system-font" ;
-static const UString CONF_KEY_CUSTOM_FONT_NAME=
+static const char* CONF_KEY_CUSTOM_FONT_NAME=
                 "/apps/nemiver/dbgperspective/custom-font-name" ;
-static const UString CONF_KEY_SYSTEM_FONT_NAME=
+static const char* CONF_KEY_SYSTEM_FONT_NAME=
                 "/desktop/gnome/interface/monospace_font_name" ;
-static const UString CONF_KEY_STATUS_WIDGET_MINIMUM_WIDTH=
+static const char* CONF_KEY_STATUS_WIDGET_MINIMUM_WIDTH=
                 "/apps/nemiver/dbgperspective/status-widget-minimum-width" ;
-static const UString CONF_KEY_STATUS_WIDGET_MINIMUM_HEIGHT=
+static const char* CONF_KEY_STATUS_WIDGET_MINIMUM_HEIGHT=
                 "/apps/nemiver/dbgperspective/status-widget-minimum-height" ;
-static const UString CONF_KEY_STATUS_PANE_LOCATION=
+static const char* CONF_KEY_STATUS_PANE_LOCATION=
                 "/apps/nemiver/dbgperspective/status-pane-location" ;
-static const UString CONF_KEY_DEBUGGER_ENGINE_DYNMOD_NAME =
+static const char* CONF_KEY_DEBUGGER_ENGINE_DYNMOD_NAME =
                 "/apps/nemiver/dbgperspective/debugger-engine-dynmod" ;
 
 
