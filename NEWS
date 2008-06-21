@@ -1,3 +1,34 @@
+0.5.4 Release
+=============
+
+Fixes
+-----
+
+[Dodji Seketeli]
+
+    * many compilation fixes
+    * #537281 – unable to open some files because their encoding is not
+                known
+    * #539109 – can't stop running inferior
+    * #499873 – Variable 'this' not found
+    * #539311 - rhythmbox can loads its plugins under nemiver
+    * #534990 - don't install libnemivercommon.pc
+
+[Jonathon Jongsma]
+
+    * #535359 – "Clicking on current stack frame should show the correct
+                 source line in the editor"
+
+[Christophe Fergeau]
+
+    * code cleanups
+
+Updated translations
+--------------------
+
+    * [po] Jorge Gonzalez
+    * [oc] Yannig Marchegay
+
 0.5.3 Release
 
 Fixes
