@@ -1,5 +1,13 @@
 2008-06-20 Dodji Seketeli <dodji@gnome.org>
 
+	* src/common/nmv-conf-manager.cc, src/common/nmv-log-stream.cc,
+	  src/dbgengine/nmv-gdb-engine.cc: don't use getenv, but rather
+	  g_getenv(). It's supposed to be more portable.
+	  This patch is a courtesy of Christophe Fergeau <teuf@gnome.org>.
+	  It has been filed at bug #539314 – Use g_getenv instead of getenv.
+
+2008-06-20 Dodji Seketeli <dodji@gnome.org>
+
 	* src/dbgengine/nmv-gdb-engine.cc: 
 	  (GDBEngine::load_program()): don't set LD_BIND_NOW by default.
 	  Now, the NMV_LD_BIND_NOW env variable has to be set to 1 when you

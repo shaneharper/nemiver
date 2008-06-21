@@ -283,9 +283,9 @@ struct LogStream::Priv
 
     void load_enabled_domains_from_env ()
     {
-        char *str = getenv ("nmv_log_domains") ;
+        const char *str = g_getenv ("nmv_log_domains") ;
         if (!str) {
-            str = getenv ("NMV_LOG_DOMAINS") ;
+            str = g_getenv ("NMV_LOG_DOMAINS") ;
         }
         if (!str) {return;}
         UString domains_str = Glib::locale_to_utf8 (str) ;

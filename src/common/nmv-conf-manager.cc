@@ -342,9 +342,9 @@ ConfManager::init ()
     if (initialized)
         return ;
 
-    string configfile = getenv (string ("nemiverconfigfile")) ;
-    if (configfile != "") {
-        parse_config_file (configfile.c_str ()) ;
+    const char* configfile (g_getenv ("nemiverconfigfile"));
+    if (configfile) {
+        parse_config_file (configfile) ;
     } else if (file_test ("nemiver.conf", FILE_TEST_IS_REGULAR)) {
         parse_config_file ("nemiver.conf") ;
     } else {

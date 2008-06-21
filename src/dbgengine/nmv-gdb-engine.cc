@@ -517,7 +517,7 @@ public:
     bool find_prog_in_path (const UString &a_prog,
                             UString &a_prog_path)
     {
-        const char *tmp = getenv ("PATH");
+        const char *tmp = g_getenv ("PATH");
         if (!tmp) {return false;}
         vector<UString> path_dirs = UString (tmp).split (":");
         path_dirs.insert (path_dirs.begin (), ("."));
@@ -2055,7 +2055,7 @@ GDBEngine::load_program (const vector<UString> &a_argv,
         //time so that some "step into" don't take for ever.
         //On GDB, it seems that stepping into a function that is
         //in a share lib takes stepping through GNU ld, so it can take time.
-        const char *nmv_ld_bind_now = getenv ("NMV_LD_BIND_NOW");
+        const char *nmv_ld_bind_now = g_getenv ("NMV_LD_BIND_NOW");
         if (nmv_ld_bind_now && atoi (nmv_ld_bind_now)) {
             LOG_DD ("setting LD_BIND_NOW=1");
             queue_command (Command ("set env LD_BIND_NOW 1"));
@@ -2115,7 +2115,7 @@ GDBEngine::attach_to_target (unsigned int a_pid,
         //time so that some "step into" don't take for ever.
         //On GDB, it seems that stepping into a function that is
         //in a share lib takes stepping through GNU ld, so it can take time.
-        const char *nmv_dont_ld_bind_now = getenv ("NMV_DONT_LD_BIND_NOW");
+        const char *nmv_dont_ld_bind_now = g_getenv ("NMV_DONT_LD_BIND_NOW");
         if (!nmv_dont_ld_bind_now || !atoi (nmv_dont_ld_bind_now)) {
             LOG_DD ("setting LD_BIND_NOW=1");
             queue_command (Command ("set env LD_BIND_NOW environment variable to 1"));
