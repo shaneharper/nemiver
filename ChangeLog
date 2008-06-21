@@ -1,3 +1,10 @@
+2008-06-16  Jonathon Jongsma  <jonathon.jongsma@collabora.co.uk>
+
+	* tests/Makefile.am:
+	* tests/gtkmm-test.cc: add a test which loops infinitely (e.g. a simple
+	gtkmm program) to make it easier to test state behaviors while the program
+	is running in an infinite loop
+
 2008-06-08 Dodji Seketeli <dodji@gnome.org>
 
 	* src/persp/dbgperspective/nmv-dbg-perspective.cc:
