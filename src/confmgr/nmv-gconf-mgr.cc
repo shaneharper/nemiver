@@ -56,8 +56,13 @@ public:
     bool get_key_value (const UString &a_key, int &a_value);
     void set_key_value (const UString &a_key, int a_value);
 
-    bool get_key_value (const UString &a_key, double &a_value) ;
-    void set_key_value (const UString &a_key, double a_value) ;
+    bool get_key_value (const UString &a_key, double &a_value);
+    void set_key_value (const UString &a_key, double a_value);
+
+    bool get_key_value (const UString &a_key,
+                                std::list<UString> &a_value);
+    void set_key_value (const UString &a_key,
+                                const std::list<UString> &a_value);
 
     sigc::signal<void, const UString&, IConfMgr::Value&>& value_changed_signal ();
 
@@ -313,7 +318,72 @@ GConfMgr::set_key_value (const UString &a_key, double a_value)
                             &err);
     GErrorSafePtr error (err);
     if (error) {
-        THROW (error->message) ;
+        THROW (error->message);
+    }
+}
+
+bool
+GConfMgr::get_key_value (const UString &a_key,
+                         std::list<UString> &a_value)
+{
+    bool result=false;
+    THROW_IF_FAIL (m_gconf_client);
+
+    GError *err=NULL;
+    GSList *list=NULL;
+    list = gconf_client_get_list (m_gconf_client,
+                                  a_key.c_str (),
+                                  GCONF_VALUE_STRING,
+                                  &err);
+    GErrorSafePtr error (err);
+    if (error) {
+        LOG_ERROR (error->message);
+        result = false;
+        goto out;
+    }
+    for (GSList *cur = list; cur; cur = cur->next) {
+        a_value.push_back ((char*)cur->data);
+    }
+    result = true;
+out:
+    if (list) {
+        for (GSList *cur = list; cur; cur = cur->next) {
+            g_free (cur->data);
+        }
+        g_slist_free (list);
+        list = NULL;
+    }
+    return result;
+}
+
+void
+GConfMgr::set_key_value (const UString &a_key,
+                         const std::list<UString> &a_value)
+{
+    if (a_value.empty ())
+        return;
+    THROW_IF_FAIL (m_gconf_client);
+    GSList *list=NULL;
+    std::list<UString>::const_iterator it;
+    for (it = a_value.begin (); it != a_value.end (); ++it) {
+        list = g_slist_prepend (list, g_strdup (it->c_str ()));
+    }
+    THROW_IF_FAIL (list);
+    list = g_slist_reverse (list);
+    THROW_IF_FAIL (list);
+
+    GError *err=NULL;
+    gconf_client_set_list (m_gconf_client, a_key.c_str (),
+                           GCONF_VALUE_STRING,
+                           list, &err);
+    for (GSList *cur=list; cur; cur = cur->next) {
+        g_free (cur->data);
+    }
+    g_slist_free (list);
+    list = NULL;
+    GErrorSafePtr error (err);
+    if (error) {
+        THROW (error->message);
     }
 }
 

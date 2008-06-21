@@ -75,6 +75,11 @@ public:
     virtual bool get_key_value (const UString &a_key, double &a_value) = 0;
     virtual void set_key_value (const UString &a_key, double a_value) = 0;
 
+    virtual bool get_key_value (const UString &a_key,
+                                std::list<UString> &a_value) = 0;
+    virtual void set_key_value (const UString &a_key,
+                                const std::list<UString> &a_value) = 0;
+
     virtual sigc::signal<void, const UString&, IConfMgr::Value&>&
                                                     value_changed_signal () = 0;
 
