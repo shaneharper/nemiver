@@ -1,5 +1,18 @@
 2008-06-08 Dodji Seketeli <dodji@gnome.org>
 
+	* src/persp/dbgperspective/nmv-dbg-perspective.cc:
+	  When opening a file, it has to be converted to the UTF-8 encoding.
+	  This has been so for ages. What I just added is a way to specify the
+	  possible encodings of the file we want to open. We need to know the
+	  list of possible encodings of the files we need to open so that
+	  Nemiver can know how to convert the encoding to UTF8. I have then
+	  added a gconf key that lists the possible encodings. Whenever a file
+	  cannot be opened because we don't know its encoding, the file
+	  encoding just has to be added to the value of the gconf key.
+	  This entry should fix bug #537281.
+
+2008-06-08 Dodji Seketeli <dodji@gnome.org>
+
 	* src/persp/dbgperspective/nmv-dbg-perspective.cc: replace static
 	  storage class strings with char*. Using strings for static storage
 	  class variables is useless and just slows down DSO loading time.

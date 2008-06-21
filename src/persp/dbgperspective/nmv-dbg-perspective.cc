@@ -133,7 +133,9 @@ static const char* CONF_KEY_SHOW_SOURCE_LINE_NUMBERS =
                 "/apps/nemiver/dbgperspective/show-source-line-numbers" ;
 static const char* CONF_KEY_HIGHLIGHT_SOURCE_CODE =
                 "/apps/nemiver/dbgperspective/highlight-source-code" ;
-static const UString CONF_KEY_USE_SYSTEM_FONT =
+static const char* CONF_KEY_SOURCE_FILE_ENCODING_LIST =
+                "/apps/nemiver/dbgperspective/source-file-encoding-list" ;
+static const char* CONF_KEY_USE_SYSTEM_FONT =
                 "/apps/nemiver/dbgperspective/use-system-font" ;
 static const char* CONF_KEY_CUSTOM_FONT_NAME=
                 "/apps/nemiver/dbgperspective/custom-font-name" ;
@@ -155,6 +157,17 @@ const Gtk::StockID STOCK_RUN_TO_CURSOR (RUN_TO_CURSOR) ;
 const Gtk::StockID STOCK_STEP_INTO (STEP_INTO) ;
 const Gtk::StockID STOCK_STEP_OVER (STEP_OVER) ;
 const Gtk::StockID STOCK_STEP_OUT (STEP_OUT) ;
+
+const char* SUPPORTED_ENCODINGS[] =
+{
+    "UTF-8",
+    "ISO-8859",
+    "ISO-8859-1",
+    "ISO-8859-15",
+};
+
+#define SIZE_OF_SUPPORTED_ENCODINGS \
+sizeof (SUPPORTED_ENCODINGS)/sizeof (SUPPORTED_ENCODINGS[0])
 
 class DBGPerspective : public IDBGPerspective, public sigc::trackable {
     //non copyable
@@ -859,10 +872,12 @@ struct DBGPerspective::Priv {
     //Try to convert it from user locale to utf8, and make sure the result
     //is valid. if not, throw an exception due to the fact the file is
     //encoded in an unknown encoding.
-    bool ensure_buffer_is_in_utf8 (const std::string &a_input,
+    bool ensure_buffer_is_in_utf8 (const UString &a_path,
+                                   const std::string &a_input,
                                    UString &a_output,
                                    std::string &a_current_charset)
     {
+        LOG_FUNCTION_SCOPE_NORMAL_DD ;
         NEMIVER_TRY
 
         UString buf_content;
@@ -870,18 +885,68 @@ struct DBGPerspective::Priv {
             a_output = a_input;
             return true;
         }
-        if (Glib::get_charset (a_current_charset)) {
-            //User's charset is utf8 but a_buffer is not encoded in utf8.
-            //So there is no way to convert the content of
-            //a_bufer into utf8 as we don't know the encoding of a_buffer
-            //to begin with.
-            return false;
+        UString utf8_content;
+        bool converted=false;
+        //get the list of candidate encodings that could be the encoding of
+        //the a_input. This list is in gconf. So let's kindly ask gconf for
+        //it. If for a reason we cannot reach gconf or the list is empty,
+        //then we will fall back to a hardcoded list of encodings.
+        THROW_IF_FAIL (workbench);
+        IConfMgrSafePtr conf_mgr = workbench->get_configuration_manager ();
+        THROW_IF_FAIL (conf_mgr);
+        std::list<UString> supported_encodings;
+        if (conf_mgr->get_key_value (CONF_KEY_SOURCE_FILE_ENCODING_LIST,
+                                     supported_encodings)
+            && !supported_encodings.empty ()) {
+            LOG_DD ("trying encodings coming from gconf");
+            std::list<UString>::const_iterator it;
+            for (it = supported_encodings.begin ();
+                 it != supported_encodings.end ();
+                 ++it) {
+                try {
+                    LOG_DD ("trying to convert buffer from encoding "
+                             << it->c_str ()
+                             << " to UTF-8");
+                    utf8_content = Glib::convert (a_input,
+                                                  "UTF-8",
+                                                  it->c_str ());
+                } catch (Glib::Exception &e) {
+                    LOG_DD ("tentative encoding conversion failed!");
+                    continue;
+                } catch (...) {
+                    THROW ("unknown exception raised by Glib::convert()");
+                }
+                LOG_DD ("tentative encoding conversion succeeded!");
+                converted = true;
+                break;
+            }
+        } else {
+            //fall back to trying the hardcoded list of supported encodings
+            LOG_DD ("trying hardcoded encodings");
+            for (unsigned int i=0; i < SIZE_OF_SUPPORTED_ENCODINGS; i++) {
+                try {
+                    utf8_content = Glib::convert (a_input,
+                                                  "UTF-8",
+                                                  SUPPORTED_ENCODINGS[i]);
+                } catch (Glib::Exception &e) {
+                    continue;
+                } catch (...) {
+                    THROW ("unknown exception raised by Glib::convert()");
+                }
+                converted = true;
+            }
         }
-        LOG_DD ("user's charset: " << a_current_charset);
-        LOG_DD ("going to convert a_buffer from "
-                << a_current_charset
-                << " to utf8 ...");
-        UString utf8_content = Glib::locale_to_utf8 (a_input);
+        if (!converted) {
+            THROW_IF_FAIL (!a_path.empty ());
+            UString message;
+            message.printf (_("File %s has an encoding that is not listed in "
+                            "the value of gconf key %s. Please add the encoding "
+                            "of that file to the values of the gconf key, and "
+                            "resume debugging"),
+                             a_path.c_str (),
+                             CONF_KEY_SOURCE_FILE_ENCODING_LIST);
+            THROW (message);
+        }
         const char *end=0;
         if (utf8_content.empty ()
             || !g_utf8_validate (utf8_content.raw ().c_str (),
@@ -4070,7 +4135,8 @@ DBGPerspective::load_file (const UString &a_path,
 #endif // WITH_GIO
     UString utf8_content;
     std::string cur_charset;
-    if (!m_priv->ensure_buffer_is_in_utf8 (content,
+    if (!m_priv->ensure_buffer_is_in_utf8 (a_path,
+                                           content,
                                            utf8_content,
                                            cur_charset)) {
         UString msg;

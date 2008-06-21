@@ -133,6 +133,18 @@
 	<long>Do not automatically display call stack wider than this value</long>
       </locale>
     </schema>
+    <schema>
+      <key>/schemas/apps/nemiver/dbgperspective/source-file-encoding-list</key>
+      <applyto>/apps/nemiver/dbgperspective/source-file-encoding-list</applyto>
+      <owner>nemiver</owner>
+      <type>list</type>
+      <list_type>string</list_type>
+      <default>[UTF-8,ISO-8859,ISO-8859-1,ISO-8859-15]</default>
+      <locale name="C">
+	<short>The list of of file encodings supported by nemiver</short>
+	<long>When nemiver opens a file, it will assume the encoding of the file is one of the encodings listed here. Please bear in mind that Nemiver works internally with files in the UTF-8 encoding. So when it loads a file, it must convert the file encoding into UTF-8. Therefore, Nemiver needs to know the possible set of encodings of the source files it has to open</long>
+      </locale>
+    </schema>
   </schemalist>
 </gconfschemafile>
 
