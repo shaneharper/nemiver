@@ -206,6 +206,29 @@ struct CallStack::Priv {
         return callstack_menu;
     }
 
+    void update_selected_frame (Gtk::TreeModel::iterator &a_row_iter)
+    {
+        LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+        THROW_IF_FAIL (a_row_iter);
+
+        cur_frame_index = (*a_row_iter)[columns ().frame_index] ;
+        cur_frame = frames[cur_frame_index] ;
+        THROW_IF_FAIL (cur_frame.level () >= 0) ;
+        in_set_cur_frame_trans = true ;
+
+        //if the selected row is the "expand number of stack lines" row, trigger
+        //a redraw of the with more raws.
+        if ((*a_row_iter)[columns ().is_expansion_row]) {
+            max_frames_to_show += nb_frames_expansion_chunk;
+            set_frame_list (frames, params);
+            return;
+        }
+
+        LOG_DD ("frame selected: '"<<  (int) cur_frame_index << "'") ;
+        LOG_DD ("frame level: '" << (int) cur_frame.level () << "'") ;
+        debugger->select_frame (cur_frame_index) ;
+    }
 
     void on_debugger_stopped_signal (IDebugger::StopReason a_reason,
                                      bool a_has_frame,
@@ -309,24 +332,22 @@ struct CallStack::Priv {
 
         Gtk::TreeModel::iterator row_iter =
                 store->get_iter (selected_rows.front ()) ;
+        update_selected_frame (row_iter);
+        NEMIVER_CATCH
+    }
 
+    void on_row_activated_signal ()
+    {
+        LOG_FUNCTION_SCOPE_NORMAL_DD ;
 
-        cur_frame_index = (*row_iter)[columns ().frame_index] ;
-        cur_frame = frames[cur_frame_index] ;
-        THROW_IF_FAIL (cur_frame.level () >= 0) ;
-        in_set_cur_frame_trans = true ;
+        NEMIVER_TRY
 
-        //if the selected row is the "expand number of stack lines" row, trigger
-        //a redraw of the with more raws.
-        if ((*row_iter)[columns ().is_expansion_row]) {
-            max_frames_to_show += nb_frames_expansion_chunk;
-            set_frame_list (frames, params);
-            return;
-        }
-
-        LOG_DD ("frame selected: '"<<  (int) cur_frame_index << "'") ;
-        LOG_DD ("frame level: '" << (int) cur_frame.level () << "'") ;
-        debugger->select_frame (cur_frame_index) ;
+        Gtk::TreeView *tree_view = dynamic_cast<Gtk::TreeView*> (widget.get ());
+        THROW_IF_FAIL (tree_view) ;
+        Glib::RefPtr<Gtk::TreeSelection> selection = tree_view->get_selection () ;
+        THROW_IF_FAIL (selection) ;
+        Gtk::TreeModel::iterator row_it = selection->get_selected ();
+        update_selected_frame (row_it);
 
         NEMIVER_CATCH
     }
@@ -455,6 +476,10 @@ struct CallStack::Priv {
             tree_view->get_selection ()->signal_changed ().connect
             (sigc::mem_fun (*this,
                             &CallStack::Priv::on_selection_changed_signal)) ;
+        tree_view->signal_row_activated ().connect
+            (sigc::hide (sigc::hide
+             (sigc::mem_fun (*this,
+                             &CallStack::Priv::on_row_activated_signal))));
 
         Gtk::TreeViewColumn* column =
                             tree_view->get_column (CallStackCols::FUNCTION_NAME) ;

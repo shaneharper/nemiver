@@ -1,4 +1,11 @@
-===================0.5.3 release===========================
+2008-05-28  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* src/persp/dbgperspective/nmv-call-stack.cc: send another
+	  select-frame command if the currently-selected frame is activated in
+	  addition to sending the command when the selection is changed.
+	  This should close bug #535359.
+
+================== 0.5.3 release point (done in 0.5 branch) =============
 
 2008-05-25 Dodji Seketeli <dodji@gnome.org>
 
