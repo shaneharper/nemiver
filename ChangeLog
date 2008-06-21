@@ -10,6 +10,10 @@
 	  hash_map that is deprecated in favour of c++0x based
 	  unordered_map. This is turned on only when NEMIVER_DEVEL=on is
 	  set.
+	* configure.ac: support the NEMIVER_ALLOW_WARNINGS env var to allow
+	  warnings in the build. This is a workaround the numerous warning we
+	  have with gcc 4.3. Some of these warnings are in gtkmm so we cannot
+	  fix them right away.
 
 2008-05-28  Jonathon Jongsma  <jjongsma@gnome.org>
 

@@ -361,7 +361,10 @@ dnl Set Dodji devel environment.
 dnl ***************************
 if test  "x$NEMIVER_DEVEL" = "xon" ; then
     CFLAGS=$DODJI_FLAGS
-    CXXFLAGS="-Wall -g -Werror -Wextra -Wno-deprecated -fuse-cxa-atexit $REQUIRED_FLAGS"
+    CXXFLAGS="-Wall -g -Wextra -Wno-deprecated -fuse-cxa-atexit $REQUIRED_FLAGS"
+    if test x$NEMIVER_ALLOW_WARNINGS != xon ; then
+        CXXFLAGS="$CXXFLAGS -Werror"
+    fi
     ENABLE_DEBUG=yes
 else
     CXXFLAGS="$CXXFLAGS -fuse-cxa-atexit $REQUIRED_FLAGS"
@@ -450,6 +453,7 @@ cat <<EOT
     C++ Compiler                    : ${CXX}
 
     NEMIVER_DEVEL env var           : ${NEMIVER_DEVEL}
+    NEMIVER_ALLOW_WARNINGS env var  : ${NEMIVER_ALLOW_WARNINGS}
     CFLAGS                          : ${CFLAGS}
     CXXFLAGS                        : ${CXXFLAGS}
     NEMIVER_LIBS                    : ${NEMIVER_LIBS}
