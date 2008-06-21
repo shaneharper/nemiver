@@ -1,5 +1,9 @@
 2008-06-21 Dodji Seketeli <dodji@gnome.org>
 
+	* configure.ac: bump version info to 0.5.4
+
+2008-06-21 Dodji Seketeli <dodji@gnome.org>
+
 	* src/common/Makefile.am: Don't install libnemivercommon.pc.
 	  This should fix #534990.
 
