@@ -45,7 +45,7 @@ on_variable_value_signal (const UString &a_variable_name,
     MESSAGE ("name of variable is: " << a_variable_name);
     BOOST_REQUIRE (a_variable_name == "i");
     MESSAGE ("variable value: " << a_var->value ());
-    BOOST_REQUIRE (a_var && a_var->value () == "0");
+    BOOST_REQUIRE (a_var && a_var->value () == "17");
 }
 
 void

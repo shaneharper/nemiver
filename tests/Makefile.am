@@ -15,7 +15,8 @@ runtestwatchpoint runtestderef \
 runtestlocalvarslist runtestcpplexer \
 runtestcppparser runtestvarpathexpr \
 runtestlibtoolwrapperdetection \
-runtestenv runtesttypes runtestdisassemble
+runtestenv runtesttypes runtestdisassemble \
+runtestvariableformat
 
 else
 
@@ -34,7 +35,8 @@ runtestgdbmi_SOURCES=$(h)/test-gdbmi.cc
 runtestgdbmi_LDADD= @NEMIVERCOMMON_LIBS@ \
 @BOOST_UNIT_TEST_FRAMEWORK_STATIC_LIB@ \
 $(top_builddir)/src/common/libnemivercommon.la \
-$(top_builddir)/src/dbgengine/libgdbmiparser.la
+$(top_builddir)/src/dbgengine/libgdbmiparser.la \
+$(top_builddir)/src/dbgengine/libdebuggerutils.la
 
 gtkmmtest_SOURCES=$(h)/gtkmm-test.cc
 gtkmmtest_CXXFLAGS= @NEMIVERUICOMMON_CFLAGS@

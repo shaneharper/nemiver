@@ -434,6 +434,10 @@ public:
         UString m_path_expression;
         bool m_has_path_expression;
 
+        // The variable format of a variable object
+        IDebugger::Variable::Format m_variable_format;
+        bool m_has_variable_format;
+
     public:
         ResultRecord () {clear ();}
 
@@ -476,6 +480,8 @@ public:
             m_has_changed_var_list = false;
             m_path_expression.clear ();
             m_has_path_expression = false;
+            m_variable_format = IDebugger::Variable::UNDEFINED_FORMAT;
+            m_has_variable_format = false;
         }
 
         /// \name accessors
@@ -749,6 +755,25 @@ public:
         void has_path_expression (bool a)
         {
             m_has_path_expression = a;
+        }
+
+        IDebugger::Variable::Format variable_format () const
+        {
+            return m_variable_format;
+        }
+        void variable_format (IDebugger::Variable::Format a_format)
+        {
+            m_variable_format = a_format;
+            has_variable_format (true);
+        }
+
+        bool has_variable_format () const
+        {
+            return m_has_variable_format;
+        }
+        void has_variable_format (bool a_flag)
+        {
+            m_has_variable_format = a_flag;
         }
 
         /// @}

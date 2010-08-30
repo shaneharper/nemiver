@@ -2,10 +2,17 @@
 #include <iostream>
 
 void
+func1_1 (int i_i)
+{
+  ++i_i;
+}
+
+void
 func1 ()
 {
-    int i = 0;
+    int i = 17;
     ++i;
+    func1_1 (i);
 }
 
 void

@@ -165,5 +165,62 @@ load_debugger_iface_with_confmgr ()
     return debugger;
 }
 
+/// Read a string and convert it into the IDebugger::Variable::Format
+/// enum.
+/// \param a_str the string to consider
+/// \return resulting format enum
+IDebugger::Variable::Format
+string_to_variable_format (const std::string &a_str)
+{
+    IDebugger::Variable::Format result =
+        IDebugger::Variable::UNKNOWN_FORMAT;
+
+    if (a_str == "binary") {
+        result = IDebugger::Variable::BINARY_FORMAT;
+    } else if (a_str == "decimal") {
+        result = IDebugger::Variable::DECIMAL_FORMAT;
+    } else if (a_str == "hexadecimal") {
+        result = IDebugger::Variable::HEXADECIMAL_FORMAT;
+    } else if (a_str == "octal") {
+        result = IDebugger::Variable::OCTAL_FORMAT;
+    } else if (a_str == "natural") {
+        result = IDebugger::Variable::NATURAL_FORMAT;
+    }
+    return result;
+}
+
+/// Serialize an IDebugger::Variable::Format enum into a string.
+/// \param a_format the instance of format to serialize.
+/// \return the resulting serialization.
+std::string
+variable_format_to_string (IDebugger::Variable::Format a_format)
+{
+    std::string result;
+    switch (a_format) {
+    case IDebugger::Variable::UNDEFINED_FORMAT:
+        result = "undefined";
+        break;
+    case IDebugger::Variable::BINARY_FORMAT:
+        result = "binary";
+        break;
+    case IDebugger::Variable::DECIMAL_FORMAT:
+        result = "decimal";
+        break;
+    case IDebugger::Variable::HEXADECIMAL_FORMAT:
+        result = "hexadecimal";
+        break;
+    case IDebugger::Variable::OCTAL_FORMAT:
+        result = "octal";
+        break;
+    case IDebugger::Variable::NATURAL_FORMAT:
+        result = "natural";
+        break;
+    case IDebugger::Variable::UNKNOWN_FORMAT:
+        result = "unknown";
+        break;
+    }
+    return result;
+}
+
 NEMIVER_END_NAMESPACE (debugger_utils)
 NEMIVER_END_NAMESPACE (nemiver)

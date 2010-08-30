@@ -578,6 +578,14 @@ public:
     void query_variable_path_expr (const VariableSafePtr,
                                    const ConstVariableSlot &a_slot,
                                    const UString &a_cookie);
+
+    void query_variable_format (const VariableSafePtr a_var,
+                                const ConstVariableSlot &a_slot,
+                                const UString &a_cookie);
+
+    void set_variable_format (const VariableSafePtr a_var,
+			      const Variable::Format a_format,
+			      const UString &a_cookie);
 };//end class GDBEngine
 
 NEMIVER_END_NAMESPACE (nemiver)
