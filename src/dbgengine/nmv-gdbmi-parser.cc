@@ -26,7 +26,9 @@
 #include <cstring>
 #include <sstream>
 #include "common/nmv-str-utils.h"
+#include "common/nmv-asm-utils.h"
 #include "nmv-gdbmi-parser.h"
+#include "nmv-debugger-utils.h"
 
 using nemiver::common::UString;
 
@@ -194,6 +196,7 @@ const char* CHANGELIST = "changelist";
 const char* PREFIX_PATH_EXPR = "path_expr=";
 const char* PATH_EXPR = "path_expr";
 static const char* PREFIX_ASM_INSTRUCTIONS= "asm_insns=";
+const char* PREFIX_VARIABLE_FORMAT = "format=";
 
 static bool
 is_string_start (gunichar a_c)
@@ -2013,6 +2016,22 @@ fetch_gdbmi_result:
                 } else {
                     LOG_PARSING_ERROR2 (cur);
                 }
+            } else if (!RAW_INPUT.compare (cur,
+                                           strlen (PREFIX_VARIABLE_FORMAT),
+                                           PREFIX_VARIABLE_FORMAT)) {
+                IDebugger::Variable::Format format =
+                            IDebugger::Variable::UNDEFINED_FORMAT;
+                UString value;
+                if (parse_variable_format (cur, cur, format, value)) {
+                    result_record.variable_format (format);
+                    if (!value.empty ()) {
+                        IDebugger::VariableSafePtr var (new IDebugger::Variable);
+                        var->value (value);
+                        result_record.variable_value (var);
+                    }
+                } else {
+                    LOG_PARSING_ERROR2 (cur);
+                }
             } else {
                 GDBMIResultSafePtr result;
                 if (!parse_gdbmi_result (cur, cur, result)
@@ -3633,6 +3652,63 @@ GDBMIParser::parse_var_path_expression (UString::size_type a_from,
     }
 
     a_expression = result->value ()->get_string_content ();
+    a_to = cur;
+    return true;
+}
+
+bool
+GDBMIParser::parse_variable_format (UString::size_type a_from,
+                                    UString::size_type &a_to,
+                                    IDebugger::Variable::Format &a_format,
+                                    UString &a_value)
+{
+    LOG_FUNCTION_SCOPE_NORMAL_D (GDBMI_PARSING_DOMAIN);
+    UString::size_type cur = a_from;
+    CHECK_END2 (cur);
+
+    if (RAW_INPUT.compare (cur, strlen (PREFIX_VARIABLE_FORMAT),
+                           PREFIX_VARIABLE_FORMAT)) {
+        LOG_PARSING_ERROR2 (cur);
+        return false;
+    }
+
+    UString name, value;
+    if (!parse_gdbmi_string_result (cur, cur, name, value)) {
+        LOG_PARSING_ERROR2 (cur);
+        return false;
+    }
+    const char *FORMAT = "format";
+    if (name != FORMAT) {
+        LOG_ERROR ("expected gdbmi variable " << FORMAT << ", got: "
+                   << name << "\'");
+        return false;
+    }
+
+    a_format = debugger_utils::string_to_variable_format (value);
+    if (a_format == IDebugger::Variable::UNKNOWN_FORMAT) {
+        LOG_ERROR ("got unknown variable format: '" << a_format << "'");
+        return false;
+    }
+
+    SKIP_WS2 (cur);
+    if (RAW_CHAR_AT (cur) == ',') {
+        ++cur;
+        SKIP_WS2 (cur);
+        name.clear (), value.clear ();
+        if (!parse_gdbmi_string_result (cur, cur, name, value)) {
+            LOG_PARSING_ERROR2 (cur);
+            return false;
+        }
+        const char *VALUE = "value";
+        if (name == VALUE) {
+            if (value.empty ()) {
+                LOG_ERROR ("the 'value' property should have a non-empty value");
+                return true;
+            }
+            a_value = value;
+        }
+    }
+
     a_to = cur;
     return true;
 }

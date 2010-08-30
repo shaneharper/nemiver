@@ -2857,6 +2857,45 @@ struct OnListChangedVariableHandler : public OutputHandler
     }
 };//end OnListChangedVariableHandler
 
+struct OnVariableFormatHandler : public OutputHandler
+{
+    GDBEngine *m_engine;
+
+    OnVariableFormatHandler (GDBEngine *a_engine) :
+        m_engine (a_engine)
+    {
+    }
+
+    bool can_handle (CommandAndOutput &a_in)
+    {
+        if (a_in.command ().name () == "query-variable-format"
+            && a_in.output ().result_record ().kind ()
+               == Output::ResultRecord::DONE) {
+            return true;
+        }
+        return false;
+    }
+
+    void do_handle (CommandAndOutput &a_in)
+    {
+        if (a_in.command ().name () == "query-variable-format"
+            && a_in.output ().result_record ().has_variable_format ()) {
+            // Set the result we got from gdb into the variable handed to us
+            // by the the client code.
+            a_in.command ().variable ()->format
+                (a_in.output ().result_record ().variable_format ());
+
+            // Call the slot associated to
+            // IDebugger::query_variable_format.
+            if (a_in.command ().has_slot ()) {
+                typedef IDebugger::ConstVariableSlot SlotType;
+                SlotType slot = a_in.command ().get_slot<SlotType> ();
+                slot (a_in.command ().variable ());
+            }
+        }
+    }
+};//end OnVariableFormatHandler
+
 //****************************
 //</GDBengine output handlers
 //***************************
@@ -3234,6 +3273,8 @@ GDBEngine::init_output_handlers ()
             (OutputHandlerSafePtr (new OnUnfoldVariableHandler (this)));
     m_priv->output_handler_list.add
             (OutputHandlerSafePtr (new OnListChangedVariableHandler (this)));
+    m_priv->output_handler_list.add
+            (OutputHandlerSafePtr (new OnVariableFormatHandler (this)));
 }
 
 sigc::signal<void, Output&>&
@@ -5448,6 +5489,57 @@ GDBEngine::query_variable_path_expr (const VariableSafePtr a_var,
                      cmd_str, a_cookie);
     command.variable (a_var);
     command.set_slot (a_slot);
+    queue_command (command);
+}
+
+/// Ask GDB what the value display format of a variable is.
+/// \param a_var the variable to consider
+/// \param a_slot the slot to invoke upon receiving the reply from
+/// GDB.
+/// \param a_cookie the cookie of this request
+void
+GDBEngine::query_variable_format (const VariableSafePtr a_var,
+                                  const ConstVariableSlot &a_slot,
+                                  const UString &a_cookie)
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+    THROW_IF_FAIL (a_var);
+    THROW_IF_FAIL (!a_var->internal_name ().empty ());
+
+    UString cmd_str = "-var-show-format ";
+    cmd_str += a_var->internal_name ();
+
+    Command command ("query-variable-format",
+                     cmd_str, a_cookie);
+    command.variable (a_var);
+    command.set_slot (a_slot);
+    queue_command (command);
+}
+
+/// Set the value display format of variable a_var
+/// \param a_var the variable to consider
+/// \param a_format the format to set the display format of the
+/// variable to.
+/// \param a_cookie the cookie of this request.
+void
+GDBEngine::set_variable_format (const VariableSafePtr a_var,
+				const Variable::Format a_format,
+				const UString &a_cookie)
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+    THROW_IF_FAIL (a_var);
+    THROW_IF_FAIL (!a_var->internal_name ().empty ());
+    THROW_IF_FAIL (a_format > IDebugger::Variable::UNDEFINED_FORMAT
+                   && a_format < IDebugger::Variable::UNKNOWN_FORMAT);
+
+    UString cmd_str = "-var-set-format ";
+    cmd_str +=
+        a_var->internal_name () + " " +
+        debugger_utils::variable_format_to_string (a_format);
+    Command command ("set-variable-format",
+                     cmd_str, a_cookie);
     queue_command (command);
 }
 

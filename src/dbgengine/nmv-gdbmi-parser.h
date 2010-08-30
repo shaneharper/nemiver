@@ -639,6 +639,11 @@ public:
                                     UString::size_type &a_to,
                                     UString &a_expression);
 
+    bool parse_variable_format (UString::size_type a_from,
+                                UString::size_type &a_to,
+                                IDebugger::Variable::Format &a_format,
+                                UString &a_value);
+
     bool parse_result_record (UString::size_type a_from,
                               UString::size_type &a_to,
                               Output::ResultRecord &a_record);

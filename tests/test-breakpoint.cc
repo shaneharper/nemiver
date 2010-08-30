@@ -114,12 +114,12 @@ on_stopped_signal (IDebugger::StopReason a_reason,
                 MESSAGE ("set conditional breakpoint with cond: "
                          << good_break_condition
                          << "; we expect this breakpoint to be hit");
-                a_debugger->set_breakpoint ("fooprog.cc", 83,
+                a_debugger->set_breakpoint ("fooprog.cc", 89,
                                             good_break_condition);
                 MESSAGE ("set conditional breakpoint with cond: "
                          << bad_break_condition
                          << "; this one should never be hit");
-                a_debugger->set_breakpoint ("fooprog.cc", 83,
+                a_debugger->set_breakpoint ("fooprog.cc", 89,
                                             bad_break_condition);
                 cond_breakpoint_set = true;
             } else {
@@ -132,8 +132,7 @@ on_stopped_signal (IDebugger::StopReason a_reason,
 
             if ((it = a_debugger->get_cached_breakpoints ().find (a_bp_num))
                  != null_iter
-                 && it->second.has_condition ()) {
-                MESSAGE ("hit conditional breakpoint. condition was: "
+                 && it->second.has_condition ()) {MESSAGE ("hit conditional breakpoint. condition was: "
                          << it->second.condition ());
             }
             a_debugger->do_continue ();

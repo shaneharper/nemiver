@@ -346,6 +346,17 @@ public:
         FrameArgsSlot;
 
     class Variable : public Object {
+    public:
+        enum Format {
+            UNDEFINED_FORMAT = 0,
+            BINARY_FORMAT,
+            DECIMAL_FORMAT,
+            HEXADECIMAL_FORMAT,
+            OCTAL_FORMAT,
+            NATURAL_FORMAT,
+            UNKNOWN_FORMAT // must be last
+        };
+    private:
         // non copyable.
         Variable (const Variable &);
         Variable& operator= (const Variable &);
@@ -374,6 +385,7 @@ public:
         // IDebugger::query_variable_path_expr()
         UString m_path_expression;
         bool m_in_scope;
+        Format m_format;
 
     public:
         Variable (const UString &a_internal_name,
@@ -387,8 +399,8 @@ public:
             m_type (a_type),
             m_parent (0),
             m_num_expected_children (0),
-            m_in_scope (a_in_scope)
-
+            m_in_scope (a_in_scope),
+            m_format (UNDEFINED_FORMAT)
         {
         }
 
@@ -765,6 +777,9 @@ public:
 
         bool in_scope () const {return m_in_scope;}
         void in_scope (bool a) {m_in_scope = a;}
+
+        Format format () const {return m_format;}
+        void format (Format a_format) {m_format = a_format;}
 
     };//end class Variable
 
@@ -1371,10 +1386,18 @@ public:
 
     virtual void query_variable_path_expr (const VariableSafePtr a_var,
                                            const UString &a_cookie = "") = 0;
+
     virtual void query_variable_path_expr (const VariableSafePtr a_var,
                                            const ConstVariableSlot &a_slot,
                                            const UString &a_cookie = "") = 0;
 
+    virtual void query_variable_format (const VariableSafePtr a_var,
+                                        const ConstVariableSlot &a_slot,
+                                        const UString &a_cookie = "") = 0;
+
+    virtual void set_variable_format (const VariableSafePtr a_var,
+                                      const Variable::Format a_format,
+                                      const UString &a_cookie = "") = 0;
 };//end IDebugger
 
 NEMIVER_END_NAMESPACE (nemiver)

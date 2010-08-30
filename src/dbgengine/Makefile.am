@@ -95,8 +95,8 @@ publicheaders_DATA=$(dynmodheaders)
 publicheadersdir=$(NEMIVER_INCLUDE_DIR)/dynmods
 
 libgdbmod_la_LDFLAGS=-module -avoid-version -Wl,--as-needed
-libgdbmod_la_LIBADD=libdbgcommon.la libgdbmiparser.la libgdbengine.la \
-@NEMIVERCOMMON_LIBS@ \
+libgdbmod_la_LIBADD=libdbgcommon.la libgdbmiparser.la \
+libgdbengine.la libdebuggerutils.la @NEMIVERCOMMON_LIBS@ \
 $(abs_top_builddir)/src/langs/libnemivercparser.la \
 $(abs_top_builddir)/src/common/libnemivercommon.la
 
