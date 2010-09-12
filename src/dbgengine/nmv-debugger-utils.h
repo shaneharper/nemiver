@@ -69,6 +69,8 @@ IDebugger::Variable::Format string_to_variable_format (const std::string &);
 
 std::string variable_format_to_string (IDebugger::Variable::Format);
 
+IDebuggerSafePtr load_debugger_iface_with_gconf ();
+
 NEMIVER_END_NAMESPACE (debugger_utils)
 NEMIVER_END_NAMESPACE (nemiver)
 
