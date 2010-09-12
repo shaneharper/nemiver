@@ -114,6 +114,8 @@ on_stopped_signal (IDebugger::StopReason a_reason,
                 MESSAGE ("set conditional breakpoint with cond: "
                          << good_break_condition
                          << "; we expect this breakpoint to be hit");
+		// So let's set the breakpoin in func4 around the "i =
+		// j" line in the for loop.
                 a_debugger->set_breakpoint ("fooprog.cc", 89,
                                             good_break_condition);
                 MESSAGE ("set conditional breakpoint with cond: "
