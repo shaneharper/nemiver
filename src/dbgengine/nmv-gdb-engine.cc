@@ -219,6 +219,7 @@ public:
     UString follow_fork_mode;
     UString disassembly_flavor;
     GDBMIParser gdbmi_parser;
+    bool disable_pretty_printing;
     sigc::signal<void> gdb_died_signal;
     sigc::signal<void, const UString& > master_pty_signal;
     sigc::signal<void, const UString& > gdb_stdout_signal;
@@ -541,8 +542,12 @@ public:
         cur_thread_num (1),
         follow_fork_mode ("parent"),
         disassembly_flavor ("att"),
-        gdbmi_parser (GDBMIParser::BROKEN_MODE)
+        gdbmi_parser (GDBMIParser::BROKEN_MODE),
+        disable_pretty_printing (false)
     {
+        disable_pretty_printing =
+            g_getenv ("NMV_DISABLE_PRETTY_PRINTING") != 0;
+
         gdb_stdout_signal.connect (sigc::mem_fun
                 (*this, &Priv::on_gdb_stdout_signal));
         master_pty_signal.connect (sigc::mem_fun
@@ -2982,6 +2987,8 @@ GDBEngine::load_program (const UString &a_prog,
         } else {
             LOG_DD ("not setting LD_BIND_NOW environment variable ");
         }
+        if (!m_priv->disable_pretty_printing)
+            queue_command (Command ("-enable-pretty-printing"));
     } else {
         Command command ("load-program",
                          UString ("-file-exec-and-symbols ") + a_prog);
@@ -5540,6 +5547,40 @@ GDBEngine::set_variable_format (const VariableSafePtr a_var,
         debugger_utils::variable_format_to_string (a_format);
     Command command ("set-variable-format",
                      cmd_str, a_cookie);
+    queue_command (command);
+}
+
+void
+GDBEngine::disable_pretty_printing ()
+{
+    m_priv->disable_pretty_printing = true;
+}
+
+/// Set the variable vizualizer used by the GDB Pretty Printing system
+/// to print the value of a given variable.
+/// \param a_var the variable to set the vizualizer for.
+/// \param a_vizualizer a string representing the vizualizer to set
+/// for this variable. If you don't want any vizualizer to be set,
+/// then set this variableto "None". If you want the default
+/// vizualizer for this type to be set, then set this variable to
+/// "gdb.default_visualizer".
+void
+GDBEngine::set_variable_vizualizer (const VariableSafePtr a_var,
+				    const std::string &a_vizualizer,
+				    const UString &a_cookie)
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+    THROW_IF_FAIL (a_var);
+    THROW_IF_FAIL (!a_var->internal_name ().empty ());
+
+    UString cmd_str = "-var-set-vizualizer ";
+    cmd_str += a_var->internal_name () + " ";
+    cmd_str += a_vizualizer;
+
+    Command command ("set-variable-vizualizer",
+                     cmd_str, a_cookie);
+    command.variable (a_var);
     queue_command (command);
 }
 

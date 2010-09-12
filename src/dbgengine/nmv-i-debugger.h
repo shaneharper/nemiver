@@ -1398,6 +1398,12 @@ public:
     virtual void set_variable_format (const VariableSafePtr a_var,
                                       const Variable::Format a_format,
                                       const UString &a_cookie = "") = 0;
+
+    virtual void disable_pretty_printing () = 0;
+
+    virtual void set_variable_vizualizer (const VariableSafePtr a_var,
+                                          const std::string &a_vizualizer,
+                                          const UString &a_cookie = "") = 0;
 };//end IDebugger
 
 NEMIVER_END_NAMESPACE (nemiver)

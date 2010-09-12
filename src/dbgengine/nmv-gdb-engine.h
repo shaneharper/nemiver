@@ -586,6 +586,12 @@ public:
     void set_variable_format (const VariableSafePtr a_var,
 			      const Variable::Format a_format,
 			      const UString &a_cookie);
+
+    void disable_pretty_printing ();
+
+    void set_variable_vizualizer (const VariableSafePtr a_var,
+				  const std::string &a_vizualizer,
+				  const UString &a_cookie);
 };//end class GDBEngine
 
 NEMIVER_END_NAMESPACE (nemiver)

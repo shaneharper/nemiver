@@ -96,11 +96,13 @@ test_main (int, char **)
 
     debugger->variable_value_signal ().connect (&on_variable_value_signal);
 
+    debugger->disable_pretty_printing ();
     std::vector<UString> args, source_search_dir;
     source_search_dir.push_back (".");
 
     debugger->load_program ("fooprog", args, ".", source_search_dir, "", false);
     debugger->set_breakpoint ("func1");
+
     debugger->run ();
     loop->run ();
 
