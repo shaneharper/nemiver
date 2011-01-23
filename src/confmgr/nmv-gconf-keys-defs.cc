@@ -82,6 +82,9 @@ const char* CONF_KEY_FOLLOW_FORK_MODE =
                 "/apps/nemiver/dbgperspective/follow-fork-mode";
 const char* CONF_KEY_DISASSEMBLY_FLAVOR =
                 "/apps/nemiver/dbgperspective/disassembly-flavor";
+const char* CONF_KEY_PRETTY_PRINTING =
+    "/apps/nemiver/dbgperspective/pretty-printing";
+
 const char* CONF_KEY_CONTEXT_PANE_LOCATION =
                 "/apps/nemiver/dbgperspective/context-pane-location";
 const char* CONF_KEY_NEMIVER_CALLSTACK_EXPANSION_CHUNK =

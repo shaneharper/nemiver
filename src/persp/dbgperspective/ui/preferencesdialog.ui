@@ -510,7 +510,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkFrame" id="frame11">
+                  <object class="GtkFrame" id="frame8">
                     <property name="visible">True</property>
                     <property name="label_xalign">0</property>
                     <property name="shadow_type">none</property>
@@ -539,7 +539,65 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkFrame" id="frame8">
+                  <object class="GtkFrame" id="frame9">
+                    <property name="visible">True</property>
+                    <property name="label_xalign">0</property>
+                    <property name="shadow_type">none</property>
+                    <child>
+                      <object class="GtkAlignment" id="alignment10">
+                        <property name="visible">True</property>
+                        <property name="top_padding">6</property>
+                        <property name="left_padding">12</property>
+                        <child>
+                          <object class="GtkTable" id="table2">
+                            <property name="visible">True</property>
+                            <property name="n_columns">2</property>
+                            <property name="column_spacing">6</property>
+                            <property name="row_spacing">6</property>
+                            <child>
+                              <object class="GtkFileChooserButton" id="pathtogdbfilechooser">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="title" translatable="yes">Choose a file</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="right_attach">2</property>
+                                <property name="y_options">GTK_FILL</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label16">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">Path to the GDB binary used</property>
+                              </object>
+                              <packing>
+                                <property name="x_options">GTK_FILL</property>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child type="label">
+                      <object class="GtkLabel" id="label15">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">&lt;b&gt;GDB binary&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkFrame" id="frame12">
                     <property name="visible">True</property>
                     <property name="label_xalign">0</property>
                     <property name="shadow_type">none</property>
@@ -557,6 +615,7 @@
                             <child>
                               <object class="GtkSpinButton" id="defaultnumasmspin">
                                 <property name="visible">True</property>
+                                <property name="title" translatable="yes">Choose a file</property>
                                 <property name="can_focus">True</property>
                                 <property name="climb_rate">1</property>
                                 <property name="numeric">True</property>
@@ -585,6 +644,7 @@
                     <child type="label">
                       <object class="GtkLabel" id="label13">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">&lt;b&gt;Instructions&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </object>
@@ -597,57 +657,43 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkFrame" id="frame9">
+                  <object class="GtkFrame" id="frame11">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="label_xalign">0</property>
                     <property name="shadow_type">none</property>
                     <child>
-                      <object class="GtkAlignment" id="alignment10">
+                      <object class="GtkAlignment" id="alignment12">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="top_padding">6</property>
                         <property name="left_padding">12</property>
                         <child>
-                          <object class="GtkTable" id="table2">
+                          <object class="GtkCheckButton" id="prettyprintingcheckbutton">
+                            <property name="label" translatable="yes">Enable pretty printing (requires debugger restart)</property>
                             <property name="visible">True</property>
-                            <property name="n_columns">2</property>
-                            <property name="column_spacing">6</property>
-                            <property name="row_spacing">6</property>
-                            <child>
-                              <object class="GtkFileChooserButton" id="pathtogdbfilechooser">
-                                <property name="visible">True</property>
-                                <property name="title" translatable="yes">Choose a file</property>
-                              </object>
-                              <packing>
-                                <property name="left_attach">1</property>
-                                <property name="right_attach">2</property>
-                                <property name="y_options">GTK_FILL</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="label16">
-                                <property name="visible">True</property>
-                                <property name="xalign">0</property>
-                                <property name="label" translatable="yes">Path to the GDB binary used</property>
-                              </object>
-                              <packing>
-                                <property name="x_options">GTK_FILL</property>
-                                <property name="y_options"></property>
-                              </packing>
-                            </child>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="use_action_appearance">False</property>
+                            <property name="active">True</property>
+                            <property name="draw_indicator">True</property>
                           </object>
                         </child>
                       </object>
                     </child>
                     <child type="label">
-                      <object class="GtkLabel" id="label15">
+                      <object class="GtkLabel" id="label11">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;GDB binary&lt;/b&gt;</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">&lt;b&gt;GDB pretty printing&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </object>
                     </child>
                   </object>
                   <packing>
-                    <property name="position">3</property>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">4</property>
                   </packing>
                 </child>
                 <child>
@@ -707,6 +753,8 @@
                     </child>
                   </object>
                   <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
                     <property name="position">4</property>
                   </packing>
                 </child>
@@ -716,7 +764,7 @@
               </packing>
             </child>
             <child type="tab">
-              <object class="GtkLabel" id="label11">
+              <object class="GtkLabel" id="label19">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Debugger</property>
               </object>
@@ -728,8 +776,8 @@
             <child>
               <object class="GtkVBox" id="layoutbox">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="border_width">6</property>
-                <property name="orientation">vertical</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -739,8 +787,9 @@
               </packing>
             </child>
             <child type="tab">
-              <object class="GtkLabel" id="label19">
+              <object class="GtkLabel" id="label20">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Layout</property>
               </object>
               <packing>

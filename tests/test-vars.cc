@@ -157,7 +157,7 @@ on_changed_variables_listed_signal
     int nb_elems = a_vars.size ();
     // We can't know for sure how many elemens got changed, as that
     // depend on the version of stl we are testing against.
-    BOOST_REQUIRE (nb_elems >= 3);
+    BOOST_REQUIRE (nb_elems >= 2);
     MESSAGE ("The changed members are: ");
     for (list<IDebugger::VariableSafePtr>::const_iterator it = a_vars.begin ();
          it != a_vars.end ();
@@ -279,7 +279,7 @@ test_main (int, char **)
     debugger->set_breakpoint ("func4");
     // Set a breakpoint right after the person variable members get
     // modified
-    debugger->set_breakpoint ("fooprog.cc", 98);
+    debugger->set_breakpoint ("fooprog.cc", 105);
     debugger->run ();
 
     //****************************************

@@ -59,6 +59,7 @@ extern const char* CONF_KEY_GDB_BINARY;
 extern const char* CONF_KEY_DEFAULT_NUM_ASM_INSTRS;
 extern const char* CONF_KEY_FOLLOW_FORK_MODE;
 extern const char* CONF_KEY_DISASSEMBLY_FLAVOR;
+extern const char* CONF_KEY_PRETTY_PRINTING;
 extern const char* CONF_KEY_CONTEXT_PANE_LOCATION;
 extern const char* CONF_KEY_NEMIVER_CALLSTACK_EXPANSION_CHUNK;
 extern const char* CONF_KEY_DBG_PERSPECTIVE_LAYOUT;
