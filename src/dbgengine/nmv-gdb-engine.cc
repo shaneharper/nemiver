@@ -65,6 +65,7 @@ NEMIVER_BEGIN_NAMESPACE (nemiver)
 extern const char* CONF_KEY_GDB_BINARY;
 extern const char* CONF_KEY_FOLLOW_FORK_MODE;
 extern const char* CONF_KEY_DISASSEMBLY_FLAVOR;
+extern const char* CONF_KEY_PRETTY_PRINTING;
 
 // Helper function to handle escaping the arguments 
 static UString
@@ -219,7 +220,7 @@ public:
     UString follow_fork_mode;
     UString disassembly_flavor;
     GDBMIParser gdbmi_parser;
-    bool disable_pretty_printing;
+    bool enable_pretty_printing;
     sigc::signal<void> gdb_died_signal;
     sigc::signal<void, const UString& > master_pty_signal;
     sigc::signal<void, const UString& > gdb_stdout_signal;
@@ -543,10 +544,11 @@ public:
         follow_fork_mode ("parent"),
         disassembly_flavor ("att"),
         gdbmi_parser (GDBMIParser::BROKEN_MODE),
-        disable_pretty_printing (false)
+        enable_pretty_printing (true)
     {
-        disable_pretty_printing =
-            g_getenv ("NMV_DISABLE_PRETTY_PRINTING") != 0;
+
+        enable_pretty_printing =
+            g_getenv ("NMV_DISABLE_PRETTY_PRINTING") == 0;
 
         gdb_stdout_signal.connect (sigc::mem_fun
                 (*this, &Priv::on_gdb_stdout_signal));
@@ -899,6 +901,8 @@ public:
                                         follow_fork_mode);
         get_conf_mgr ()->get_key_value (CONF_KEY_DISASSEMBLY_FLAVOR,
                                         disassembly_flavor);
+        get_conf_mgr ()->get_key_value (CONF_KEY_PRETTY_PRINTING,
+                                        enable_pretty_printing);
     }
 
     /// Lists the frames which numbers are in a given range.
@@ -1162,11 +1166,19 @@ public:
         NEMIVER_TRY
 
         if (a_key == CONF_KEY_FOLLOW_FORK_MODE
-                && conf_mgr->get_key_value (a_key, follow_fork_mode, a_namespace)) {
+            && conf_mgr->get_key_value (a_key,
+                                        follow_fork_mode,
+                                        a_namespace)) {
             set_debugger_parameter ("follow-fork-mode", follow_fork_mode);
-        }
-        else if (a_key == CONF_KEY_DISASSEMBLY_FLAVOR && conf_mgr->get_key_value
-                    (a_key, disassembly_flavor, a_namespace)) {
+        } else if (a_key == CONF_KEY_PRETTY_PRINTING
+                   && conf_mgr->get_key_value (a_key,
+                                               enable_pretty_printing,
+                                               a_namespace)) {
+            ;
+        } else if (a_key == CONF_KEY_DISASSEMBLY_FLAVOR
+                   && conf_mgr->get_key_value (a_key,
+                                               disassembly_flavor,
+                                               a_namespace)) {
             set_debugger_parameter ("disassembly-flavor", disassembly_flavor);
         }
 
@@ -2987,7 +2999,7 @@ GDBEngine::load_program (const UString &a_prog,
         } else {
             LOG_DD ("not setting LD_BIND_NOW environment variable ");
         }
-        if (!m_priv->disable_pretty_printing)
+        if (m_priv->enable_pretty_printing)
             queue_command (Command ("-enable-pretty-printing"));
     } else {
         Command command ("load-program",
@@ -3708,8 +3720,6 @@ GDBEngine::do_init (IConfMgrSafePtr a_conf_mgr)
 IConfMgr&
 GDBEngine::get_conf_mgr ()
 {
-
-
     return *m_priv->get_conf_mgr ();
 }
 
@@ -5553,7 +5563,11 @@ GDBEngine::set_variable_format (const VariableSafePtr a_var,
 void
 GDBEngine::disable_pretty_printing ()
 {
-    m_priv->disable_pretty_printing = true;
+    // Doing it this way for now b/c you can't change this in GDB on
+    // the fly at the moment.
+    m_priv->enable_pretty_printing = false;
+    get_conf_mgr ().get_key_value (CONF_KEY_PRETTY_PRINTING,
+                                   m_priv->enable_pretty_printing);
 }
 
 /// Set the variable vizualizer used by the GDB Pretty Printing system

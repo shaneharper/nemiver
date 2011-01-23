@@ -98,6 +98,7 @@ public:
     Gtk::RadioButton *follow_child_radio_button;
     Gtk::SpinButton  *default_num_asm_instrs_spin_button;
     Gtk::FileChooserButton *gdb_binary_path_chooser_button;
+    Gtk::CheckButton *pretty_printing_check_button;
     Glib::RefPtr<Gtk::Builder> gtkbuilder;
     SafePtr<LayoutSelector> layout_selector;
 
@@ -124,6 +125,7 @@ public:
         follow_child_radio_button (0),
         default_num_asm_instrs_spin_button (0),
         gdb_binary_path_chooser_button (0),
+        pretty_printing_check_button (0),
         gtkbuilder (a_gtkbuilder)
     {
         init ();
@@ -238,6 +240,11 @@ public:
     void on_follow_fork_mode_toggle_signal ()
     {
         update_follow_fork_mode_key ();
+    }
+
+    void on_pretty_printing_toggled_signal ()
+    {
+        update_pretty_printing_key ();
     }
 
     void init ()
@@ -460,6 +467,17 @@ public:
                  (*this,
                   &PreferencesDialog::Priv::on_follow_fork_mode_toggle_signal));
 
+        pretty_printing_check_button =
+            ui_utils::get_widget_from_gtkbuilder<Gtk::CheckButton>
+            (gtkbuilder,
+             "prettyprintingcheckbutton");
+        THROW_IF_FAIL (pretty_printing_check_button);
+        pretty_printing_check_button->signal_toggled ().connect
+            (sigc::mem_fun
+             (*this,
+              &PreferencesDialog::Priv::on_pretty_printing_toggled_signal));
+
+
         // *************************************
         // Handle the "Layout" preferences tab
         // *************************************
@@ -470,7 +488,7 @@ public:
 
         layout_selector.reset (new LayoutSelector (layout_manager, perspective));
         layout_box->pack_start (layout_selector->widget ());
-        layout_box->show_all_children ();
+        layout_box->show_all_children ();                                    
     }
 
     void collect_source_dirs ()
@@ -664,6 +682,14 @@ public:
         conf_manager ().set_key_value (CONF_KEY_FOLLOW_FORK_MODE, mode);
     }
 
+    void update_pretty_printing_key ()
+    {
+        THROW_IF_FAIL (pretty_printing_check_button);
+        
+        bool is_on = pretty_printing_check_button->get_active ();
+        conf_manager ().set_key_value (CONF_KEY_PRETTY_PRINTING, is_on);
+    }
+
     void update_widget_from_editor_keys ()
     {
         THROW_IF_FAIL (show_lines_check_button);
@@ -803,6 +829,14 @@ public:
         } else if (follow_fork_mode == "child") {
             follow_child_radio_button->set_active (true);
         }
+
+        bool is_on = true;
+        if (!conf_manager ().get_key_value (CONF_KEY_PRETTY_PRINTING,
+                                            is_on)) {
+            LOG_ERROR ("failed to get gconf key "
+                       << CONF_KEY_PRETTY_PRINTING);
+        }
+        pretty_printing_check_button->set_active (is_on);
     }
 
     void update_widget_from_conf ()

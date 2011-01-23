@@ -144,6 +144,12 @@
       <description>Can be either att or intel (Apply only for the x86 family CPU)</description>
     </key>
 
+    <key name ="pretty-printing" type="b">
+      <default>true</default>
+      <summary>Activate GDB pretty printing</summary>
+      <description>Activate the GDB pretty printing feature. Under that mode the content of many types of containers is displayed in a human friendly manner</description>
+    </key>
+
     <key name="callstack-expansion-chunk" type="i">
       <default>25</default>
       <summary>The size of the call stack to display</summary>

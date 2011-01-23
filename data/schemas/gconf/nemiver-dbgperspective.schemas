@@ -268,6 +268,19 @@
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/nemiver/dbgperspective/pretty-printing</key>
+      <applyto>/apps/nemiver/dbgperspective/pretty-printing</applyto>
+      <owner>nemiver</owner>
+      <type>bool</type>
+      <default>true</default>
+      <locale name="C">
+	<short>Activate GDB pretty printing</short>
+	<long>Activate the GDB printing feature. Under that mode the
+content of many types of containers is displayed in a human friendly
+manner</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/nemiver/dbgperspective/callstack-expansion-chunk</key>
       <applyto>/apps/nemiver/dbgperspective/callstack-expansion-chunk</applyto>
       <owner>nemiver</owner>
