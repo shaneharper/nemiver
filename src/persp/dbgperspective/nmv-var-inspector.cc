@@ -52,6 +52,7 @@ class VarInspector::Priv : public sigc::trackable {
     bool requested_variable;
     bool requested_type;
     bool expand_variable;
+    bool re_visualize;
     bool enable_contextual_menu;
     IDebuggerSafePtr debugger;
     // Variable that is being inspected
@@ -83,6 +84,7 @@ class VarInspector::Priv : public sigc::trackable {
     connect_to_signals ()
     {
         LOG_FUNCTION_SCOPE_NORMAL_DD;
+
         Glib::RefPtr<Gtk::TreeSelection> selection =
                                         tree_view->get_selection ();
         THROW_IF_FAIL (selection);
@@ -176,17 +178,11 @@ class VarInspector::Priv : public sigc::trackable {
     }
 
     void
-    set_variable (const IDebugger::VariableSafePtr a_variable,
-                  bool a_expand)
+    graphically_set_variable (const IDebugger::VariableSafePtr a_variable,
+                              bool a_expand)
     {
-        LOG_FUNCTION_SCOPE_NORMAL_DD;
-
-        THROW_IF_FAIL (tree_view && tree_store);
-        re_init_tree_view ();
-        delete_variable_if_needed ();
-
         Gtk::TreeModel::iterator parent_iter =
-                                    tree_store->children ().begin ();
+            tree_store->children ().begin ();
         Gtk::TreeModel::iterator var_row;
         vutil::append_a_variable (a_variable,
                                   *tree_view,
@@ -203,6 +199,32 @@ class VarInspector::Priv : public sigc::trackable {
                 || a_variable->needs_unfolding ()))
             tree_view->expand_row (tree_store->get_path (var_row), false);
         variable = a_variable;
+    }
+
+    void
+    set_variable (const IDebugger::VariableSafePtr a_variable,
+                  bool a_expand,
+                  bool a_re_visualize)
+    {
+        LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+        THROW_IF_FAIL (tree_view && tree_store);
+
+        re_visualize = a_re_visualize;
+
+        re_init_tree_view ();
+        delete_variable_if_needed ();
+        variable = a_variable;
+        if (a_re_visualize) {
+            debugger->revisualize_variable (a_variable,
+                                            sigc::bind
+                                            (sigc::mem_fun
+                                             (*this,
+                                              &Priv::on_var_revisualized),
+                                             a_expand));
+        } else {
+            graphically_set_variable (a_variable, a_expand);
+        }
     }
 
     void
@@ -335,7 +357,6 @@ class VarInspector::Priv : public sigc::trackable {
     // <signal handlers>
     // ******************
 
-
     void
     on_visited_variable_signal (const IDebugger::VariableSafePtr a_var)
     {
@@ -350,6 +371,19 @@ class VarInspector::Priv : public sigc::trackable {
             Gtk::Clipboard::get ()->set_text (str);
 
         NEMIVER_CATCH
+    }
+
+    void
+    on_var_revisualized (const IDebugger::VariableSafePtr a_var,
+                         bool a_expand)
+    {
+        LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+        NEMIVER_TRY;
+
+        graphically_set_variable (a_var, a_expand);
+
+        NEMIVER_CATCH;
     }
 
     void
@@ -474,11 +508,11 @@ class VarInspector::Priv : public sigc::trackable {
     {
         LOG_FUNCTION_SCOPE_NORMAL_DD;
 
-        NEMIVER_TRY
+        NEMIVER_TRY;
 
-        set_variable (a_var, expand_variable);
+        set_variable (a_var, expand_variable, re_visualize);
 
-        NEMIVER_CATCH
+        NEMIVER_CATCH;
     }
 
     void
@@ -580,6 +614,7 @@ public:
           requested_variable (false),
           requested_type (false),
           expand_variable (false),
+          re_visualize (false),
           enable_contextual_menu (false),
           debugger (a_debugger),
           perspective (a_perspective),
@@ -599,7 +634,7 @@ public:
 };//end class VarInspector::Priv
 
 VarInspector::VarInspector (IDebuggerSafePtr a_debugger,
-                              IPerspective &a_perspective)
+                            IPerspective &a_perspective)
 {
     m_priv.reset (new Priv (a_debugger, a_perspective));
 }
@@ -619,11 +654,11 @@ VarInspector::widget () const
 
 void
 VarInspector::set_variable (IDebugger::VariableSafePtr a_variable,
-                             bool a_expand)
+                            bool a_expand, bool a_revisualize)
 {
     THROW_IF_FAIL (m_priv);
 
-    m_priv->set_variable (a_variable, a_expand);
+    m_priv->set_variable (a_variable, a_expand, a_revisualize);
 }
 
 void

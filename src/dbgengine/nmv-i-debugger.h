@@ -345,6 +345,10 @@ public:
     typedef sigc::slot<void, const map<int, IDebugger::VariableList>& >
         FrameArgsSlot;
 
+    typedef sigc::slot<void, const VariableSafePtr> ConstVariableSlot;
+    typedef sigc::slot<void, const VariableList> ConstVariableListSlot;
+    typedef sigc::slot<void, const UString&> ConstUStringSlot;
+
     class Variable : public Object {
     public:
         enum Format {
@@ -373,6 +377,16 @@ public:
         UString m_name_caption;
         UString m_value;
         UString m_type;
+        // When using GDB pretty-printers, this is a string naming the
+        // pretty printer used to visualize this variable. As
+        // disabling pretty printing is not possible globally in GDB
+        // we need to use this even when the user doesn't want to
+        // change it.  Setting it to "" should do the right thing: if
+        // pretty printing is enabled, the variable will be displayed
+        // using  the default pretty printer; if pretty printing is
+        // disabled the variable would be displayed using no pretty
+        // printer.
+        UString m_visualizer;
         Variable *m_parent;
         //if this variable is a pointer,
         //it can be dereferenced. The variable
@@ -386,6 +400,7 @@ public:
         UString m_path_expression;
         bool m_in_scope;
         Format m_format;
+        bool m_needs_revisualizing;
 
     public:
         Variable (const UString &a_internal_name,
@@ -400,7 +415,8 @@ public:
             m_parent (0),
             m_num_expected_children (0),
             m_in_scope (a_in_scope),
-            m_format (UNDEFINED_FORMAT)
+            m_format (UNDEFINED_FORMAT),
+            m_needs_revisualizing (false)
         {
         }
 
@@ -413,7 +429,9 @@ public:
             m_type (a_type),
             m_parent (0),
             m_num_expected_children (0),
-            m_in_scope (a_in_scope)
+            m_in_scope (a_in_scope),
+            m_format (UNDEFINED_FORMAT),
+            m_needs_revisualizing (false)
 
         {
         }
@@ -422,18 +440,24 @@ public:
             : m_name (a_name),
             m_parent (0),
             m_num_expected_children (0),
-            m_in_scope (true)
+            m_in_scope (true),
+            m_format (UNDEFINED_FORMAT),
+            m_needs_revisualizing (false)
                 
         {}
 
         Variable ()
             : m_parent (0),
             m_num_expected_children (0),
-            m_in_scope (true)
+            m_in_scope (true),
+            m_format (UNDEFINED_FORMAT),
+            m_needs_revisualizing (false)
                 
         {}
 
         const VariableList& members () const {return m_members;}
+
+        VariableList& members () {return m_members;}
 
         /// Returns the Nth member variable, if any.
         /// Please note that this function has O(n) complexity. So use it with
@@ -539,6 +563,9 @@ public:
         const UString& type () const {return m_type;}
         void type (const UString &a_type) {m_type = a_type;}
         void type (const string &a_type) {m_type = a_type;}
+
+        const UString& visualizer () const {return m_visualizer;}
+        void visualizer (const UString &a) {m_visualizer = a;}
 
         /// Return true if this instance of Variable has a parent variable,
         /// false otherwise.
@@ -781,6 +808,9 @@ public:
         Format format () const {return m_format;}
         void format (Format a_format) {m_format = a_format;}
 
+        bool needs_revisualizing () const {return m_needs_revisualizing;}
+        void needs_revisualizing (bool a) {m_needs_revisualizing = a;}
+
     };//end class Variable
 
     enum State {
@@ -982,6 +1012,9 @@ public:
                          const VariableSafePtr/*the variable we derefed*/,
                          const UString&/*cookie*/>&
                                       variable_dereferenced_signal () const=0;
+
+    sigc::signal<void, const VariableSafePtr, const UString&>&
+      variable_visualized_signal () const;
 
     virtual sigc::signal<void, const vector<UString>&, const UString&>&
                             files_listed_signal () const = 0;
@@ -1286,6 +1319,9 @@ public:
     virtual bool dereference_variable (const VariableSafePtr &a_var,
                                        const UString &a_cookie="") = 0;
 
+    virtual void revisualize_variable (const VariableSafePtr a_var,
+                                       const ConstVariableSlot &a_slot) = 0;
+
     virtual void list_files (const UString &a_cookie="") = 0;
 
     virtual void list_register_names (const UString &a_cookie="") = 0;
@@ -1334,10 +1370,6 @@ public:
                                     const DisassSlot &a_slot,
                                     bool a_pure_asm = true,
                                     const UString &a_cookie = "") = 0;
-
-    typedef sigc::slot<void, const VariableSafePtr> ConstVariableSlot;
-    typedef sigc::slot<void, const VariableList> ConstVariableListSlot;
-    typedef sigc::slot<void, const UString&> ConstUStringSlot;
 
     virtual void create_variable (const UString &a_name,
                                   const UString &a_cookie = "") = 0;
@@ -1399,11 +1431,8 @@ public:
                                       const Variable::Format a_format,
                                       const UString &a_cookie = "") = 0;
 
-    virtual void disable_pretty_printing () = 0;
+    virtual void enable_pretty_printing (bool a_flag = true) = 0;
 
-    virtual void set_variable_vizualizer (const VariableSafePtr a_var,
-                                          const std::string &a_vizualizer,
-                                          const UString &a_cookie = "") = 0;
 };//end IDebugger
 
 NEMIVER_END_NAMESPACE (nemiver)

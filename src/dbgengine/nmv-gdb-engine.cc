@@ -50,8 +50,10 @@ using namespace std;
 using namespace nemiver::common;
 using namespace nemiver::cpp;
 
-static const UString GDBMI_OUTPUT_DOMAIN = "gdbmi-output-domain";
-static const UString DEFAULT_GDB_BINARY = "default-gdb-binary";
+typedef nemiver::IDebugger::ConstVariableSlot ConstVariableSlot;
+typedef nemiver::IDebugger::ConstVariableListSlot ConstVariableListSlot;
+typedef nemiver::IDebugger::ConstUStringSlot ConstUStringSlot;
+typedef nemiver::IDebugger::VariableSafePtr VariableSafePtr;
 
 using nemiver::debugger_utils::null_const_variable_slot;
 using nemiver::debugger_utils::null_const_variable_list_slot;
@@ -59,6 +61,12 @@ using nemiver::debugger_utils::null_frame_vector_slot;
 using nemiver::debugger_utils::null_frame_args_slot;
 using nemiver::debugger_utils::null_disass_slot;
 using nemiver::debugger_utils::null_breakpoints_slot;
+
+static const char* GDBMI_OUTPUT_DOMAIN = "gdbmi-output-domain";
+static const char* DEFAULT_GDB_BINARY = "default-gdb-binary";
+static const char* GDB_DEFAULT_PRETTY_PRINTING_VISUALIZER =
+    "gdb.default_visualizer";
+static const char* GDB_NULL_PRETTY_PRINTING_VISUALIZER = "None";
 
 NEMIVER_BEGIN_NAMESPACE (nemiver)
 
@@ -323,6 +331,11 @@ public:
 
     mutable sigc::signal<void, const VariableSafePtr, const UString&>
                                       variable_dereferenced_signal;
+
+    mutable sigc::signal<void,
+                         const VariableSafePtr,
+                         const UString&> variable_visualized_signal;
+    
 
     mutable sigc::signal<void, int, const UString&> got_target_info_signal;
 
@@ -1174,7 +1187,7 @@ public:
                    && conf_mgr->get_key_value (a_key,
                                                enable_pretty_printing,
                                                a_namespace)) {
-            ;
+            queue_command (Command ("-enable-pretty-printing"));
         } else if (a_key == CONF_KEY_DISASSEMBLY_FLAVOR
                    && conf_mgr->get_key_value (a_key,
                                                disassembly_flavor,
@@ -1762,6 +1775,19 @@ struct OnCommandDoneHandler : OutputHandler {
             IDebugger::BreakpointsSlot slot =
                 a_in.command ().get_slot<IDebugger::BreakpointsSlot> ();
             slot (m_engine->get_cached_breakpoints ());
+        } else if (a_in.command ().name () == "set-variable-visualizer") {
+            VariableSafePtr var = a_in.command ().variable ();
+            THROW_IF_FAIL (var);
+            var->visualizer (a_in.command ().tag0 ());
+            if (a_in.command ().has_slot ()) {
+                LOG_DD ("set-variable-visualizer command has a slot");
+                ConstVariableSlot slot =
+                    a_in.command ().get_slot<ConstVariableSlot> ();
+                slot (var);
+            } else {
+                LOG_DD ("set-variable-visualizer command "
+                        "does not have a slot");
+            }
         }
 
         // So, if we are still attached to the target and we receive
@@ -2697,10 +2723,11 @@ struct OnCreateVariableHandler : public OutputHandler
 
     void do_handle (CommandAndOutput &a_in)
     {
+        VariableSafePtr var = a_in.output ().result_record ().variable ();
+
         // Set the name of the variable to the name that got stored
         // in the tag0 member of the command.
-        a_in.output ().result_record ().variable ()->name
-                                                (a_in.command ().tag0 ());
+        var->name (a_in.command ().tag0 ());
 
         // Call the slot associated to IDebugger::create_variable (), if
         // any.
@@ -2708,13 +2735,15 @@ struct OnCreateVariableHandler : public OutputHandler
             LOG_DD ("calling IDebugger::create_variable slot");
             typedef sigc::slot<void, IDebugger::VariableSafePtr> SlotType;
             SlotType slot = a_in.command ().get_slot<SlotType> ();
-            slot (a_in.output ().result_record ().variable ());
+            slot (var);
         }
         LOG_DD ("emit IDebugger::variable_create_signal");
-        // Emit the general IDebugger::variable_create_signal () signal
-        m_engine->variable_created_signal ().emit
-                            (a_in.output ().result_record ().variable (),
-                             a_in.command ().cookie ());
+        // Emit the general IDebugger::variable_create_signal ()
+        // signal
+        if (a_in.command ().should_emit_signal ())
+            m_engine->variable_created_signal ().emit
+                (var, a_in.command ().cookie ());
+
         if (m_engine->get_state () != IDebugger::PROGRAM_EXITED
             || m_engine->get_state () != IDebugger::NOT_STARTED) {
             m_engine->set_state (IDebugger::READY);
@@ -2808,8 +2837,9 @@ struct OnUnfoldVariableHandler : public OutputHandler {
         }
 
         // Now tell the world we have an unfolded variable.
-        m_engine->variable_unfolded_signal ().emit
-                                    (parent_var, a_in.command ().cookie ());
+        if (a_in.command ().should_emit_signal ())
+            m_engine->variable_unfolded_signal ().emit
+                (parent_var, a_in.command ().cookie ());
     }
 };// End struct OnUnfoldVariableHandler
 
@@ -3484,14 +3514,30 @@ GDBEngine::variable_dereferenced_signal () const
     return m_priv->variable_dereferenced_signal;
 }
 
-sigc::signal<void, const std::map<IDebugger::register_id_t, UString>&, const UString& >&
+/// A signal emitted upon completion of
+/// GDBEngine::revisualize_variable.
+///
+/// The first parameter of the slot is the variable that has been
+/// re-visualized and the second is the cookie passed to
+/// GDBEngine::revisualize_variable.
+sigc::signal<void, const VariableSafePtr, const UString&>&
+GDBEngine::variable_visualized_signal () const
+{
+    return m_priv->variable_visualized_signal;
+}
+
+sigc::signal<void,
+             const std::map<IDebugger::register_id_t, UString>&,
+             const UString& >&
 GDBEngine::register_names_listed_signal () const
 {
 
     return m_priv->register_names_listed_signal;
 }
 
-sigc::signal<void, const std::map<IDebugger::register_id_t, UString>&, const UString& >&
+sigc::signal<void,
+             const std::map<IDebugger::register_id_t, UString>&,
+             const UString& >&
 GDBEngine::register_values_listed_signal () const
 {
 
@@ -3661,26 +3707,246 @@ GDBEngine::on_stopped_signal (IDebugger::StopReason a_reason,
     NEMIVER_CATCH_NOX
 }
 
+/// Slot called from revisualize_variable_real.
+///
+/// Evaluates the expression of the given variable and schedules the
+/// unfolding of the variable upon completion of the expression
+/// evaluation.  Upon unfolding of the variable, revisualization is
+/// scheduled for the member variables, if any.  That revisualization
+/// uses the visualization given in parameter.
+///
+/// \param a_var the variable which expression to evaluate.
+///
+/// \param a_visualizer the pretty printer visualizer to use for the
+/// revisualization of the children member variables that will appear
+/// as the result of the scheduled unfolding.
+///
+/// \param a_slot the slot to call upon completion of the evaluation
+/// of the expression of this a_var.
+void
+GDBEngine::on_rv_eval_var (const VariableSafePtr a_var,
+                           const UString &a_visualizer,
+                           const ConstVariableSlot &a_slot)
+{
+    NEMIVER_TRY;
+
+    evaluate_variable_expr
+        (a_var,
+         sigc::bind
+         (sigc::mem_fun
+          (*this, &GDBEngine::on_rv_unfold_var),
+          a_visualizer, a_slot),
+         "");
+
+    NEMIVER_CATCH_NOX;
+}
+
+/// Slot called from GDBEngine::on_rv_eval_var.
+///
+/// Unfolds the given variable and schedules lazy revisualization on
+/// its member variables if any.  The unfolding is done using a given
+/// variable revisualizer.
+///
+/// \param a_var the variable to unfold.
+///
+/// \param a_visualizer to use for revisualization of the member
+/// variables, if any.
+///
+/// \param a_slot the slot to call upon completion of the unfolding.
+/// The slot takes a_var in argument.
+void
+GDBEngine::on_rv_unfold_var (const VariableSafePtr a_var,
+                             const UString &a_visualizer,
+                             const ConstVariableSlot &a_slot)
+{
+    NEMIVER_TRY;
+    
+    unfold_variable_with_visualizer (a_var, a_visualizer, a_slot);
+
+    NEMIVER_CATCH_NOX;
+}
+
+/// Callback slot invoked from unfold_variable, set by
+/// GDBEngine::unfold_variable_with_visualizer.
+///
+/// It triggers the setting of the pretty-printing visualizer of each
+/// member variable of a given variable.  Once each member variable
+/// has seen its visualizer set, the initial variable is unfolded.
+/// The resulting children variables will be unfolded and rendered
+/// using the visualize that got set on their children.
+///
+/// \param a_var the variable to act upon.  The member variables of
+/// this one are the ones that are going to see their visualizer set.
+/// This variable will then be unfolded.
+///
+/// \param a_visualizer the vizualizer to set on the member variables
+/// of a_var.
+///
+/// \param a_slot the slot to call upon completion of the unfolding of
+/// a_var that happens after the visualizer setting on each member of
+/// a_var.
+void
+GDBEngine::on_rv_set_visualizer_on_members (const VariableSafePtr a_var,
+                                            const UString &a_visualizer,
+                                            const ConstVariableSlot &a_slot)
+{
+    NEMIVER_TRY;
+
+    IDebugger::VariableList::iterator it = a_var->members ().begin (),
+        end = a_var->members ().end ();
+
+    if (it != end)
+        set_variable_visualizer
+            (*it,
+             a_visualizer,
+             sigc::bind
+             (sigc::mem_fun
+              (*this,
+               &GDBEngine::on_rv_set_visualizer_on_next_sibling),
+              a_visualizer, it, end, a_slot));
+
+    NEMIVER_CATCH_NOX;
+}
+
+/// This is a callback slot called from
+/// GDBEngine::set_variable_visualizer, connected by
+/// GDBEngine::on_rv_set_visualizer_on_members.
+///
+/// It sets the pretty-printing visualizer for the next sibling
+/// variable.  Once it reached the last sibling, it unfolds the parent
+/// variable, forcing the the re-printing of the siblings of the this
+/// function walked through, with a the new visualizer it did set.
+///
+/// \param a_var the variable which visualizer got set at the previous
+/// invocation of this function.
+///
+/// \param a_member_it an iterator pointing to the previous sibling
+/// variable which visualuzer got set.  So this function is going to
+/// set the visualizer of ++a_member_it.
+///
+/// \param a_members_end  an iterator pointing to right after the last
+/// slibling variable we need to walk.
+///
+/// \param a_slot the callback slot to invoke once the parent variable
+/// of a_var has been unfolded.
+void
+GDBEngine::on_rv_set_visualizer_on_next_sibling
+(const VariableSafePtr a_var,
+ const UString &a_visualizer,
+ IDebugger::VariableList::iterator a_member_it,
+ IDebugger::VariableList::iterator a_members_end,
+ const ConstVariableSlot &a_slot)
+{
+    NEMIVER_TRY;
+
+    THROW_IF_FAIL (a_member_it != a_members_end);
+
+    ++a_member_it;
+    if (a_member_it != a_members_end) {
+        set_variable_visualizer
+            (*a_member_it,
+             a_visualizer,
+             sigc::bind
+             (sigc::mem_fun
+              (*this,
+               &GDBEngine::on_rv_set_visualizer_on_next_sibling),
+              a_visualizer, a_member_it, a_members_end, a_slot));
+    } else {
+        IDebugger::VariableList::iterator it;
+        IDebugger::VariableSafePtr parent = a_var->parent ();
+        // This invalidates a_member_it and a_members_end iterators.
+        parent->members ().clear ();
+        unfold_variable (parent,
+                         sigc::bind
+                         (sigc::mem_fun (*this, &GDBEngine::on_rv_flag),
+                          a_visualizer, a_slot),
+                         "");
+    }
+
+    NEMIVER_CATCH_NOX;
+}
+
+/// Slot called by GDBEngine::on_rv_unfold_var.
+///
+/// Locally set the visualizer of each member variable of the given
+/// variable and flag them as needing revisualization.  Later, when
+/// any of these member variables will be about to be unfolded
+/// GDBEngine::unfold_variable is going to actually unfold them using
+/// that visualizer.  I.e, the member variables of that member
+/// variable are going to be rendered using that visualizer.
+///
+/// \param a_var the variable to act upon.
+///
+/// \param a_visualizer the visualizer to set on the member variables
+/// of a_var if any.
+///
+/// \param a_slot the slot to call upon completion of this function.
+void
+GDBEngine::on_rv_flag (const VariableSafePtr a_var,
+                       const UString &a_visualizer,
+                       const ConstVariableSlot &a_slot)
+{
+    NEMIVER_TRY;
+
+    THROW_IF_FAIL (a_var);
+    
+    IDebugger::VariableList::iterator it;
+    for (it = a_var->members ().begin ();
+         it != a_var->members ().end ();
+         ++it) {
+        (*it)->visualizer (a_visualizer);
+        (*it)->needs_revisualizing (true);
+    }
+
+    if (a_slot)
+        a_slot (a_var);
+
+    NEMIVER_CATCH_NOX;
+}
+
+/// Unfold a variable, using a given visualizer to render the children
+/// variable objects resulting from the unfolding.
+///
+/// This has a lot of kludge as GDB doesn't
+void
+GDBEngine::unfold_variable_with_visualizer (const VariableSafePtr a_var,
+                                            const UString &a_visualizer,
+                                            const ConstVariableSlot &a_slot)
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+    unfold_variable
+        (a_var,
+         sigc::bind
+         (sigc::mem_fun
+          (*this, &GDBEngine::on_rv_set_visualizer_on_members),
+          a_visualizer, a_slot),
+         "",
+         /*a_should_emit_signal*/false);
+}
+
+/// Signal handler called when GDBEngine::detached_from_target_signal
+/// is emitted.
 void
 GDBEngine::on_detached_from_target_signal ()
 {
-    NEMIVER_TRY
-
+    NEMIVER_TRY;
 
     m_priv->is_attached = false;
 
-    NEMIVER_CATCH_NOX
+    NEMIVER_CATCH_NOX;
 }
 
+/// Signal handler called when GDBEngine::program_finished_signal is
+/// emitted.
 void
 GDBEngine::on_program_finished_signal ()
 {
-    NEMIVER_TRY
-
+    NEMIVER_TRY;
 
     m_priv->is_attached = false;
 
-    NEMIVER_CATCH_NOX
+    NEMIVER_CATCH_NOX;
 }
 
 //******************
@@ -4821,7 +5087,109 @@ GDBEngine::dereference_variable (const VariableSafePtr &a_var,
     return true;
 }
 
-/// Lists the source files htat make up the executable
+/// Re-build a given variable using the relevant visualizer if
+/// pretty-printing is in effect, or no visualizer if pretty printing
+/// is turned off.  Bear in mind that for now, once pretty printing
+/// has been turned on, GDB doesn't support turning it back off.  To
+/// turn it off in practise, one needs to set the 'None' visualizer for
+/// each variable we want to visualize.
+///
+/// This function clears the current member variables of the given
+/// variable, sets its relevant visualizer, re-evaluates its
+/// expression, unfolds it and schedules a similar set of actions for
+/// each of the member variables.
+///
+/// \param a_var the variable to act upon.
+///
+/// \param a_slot the slot function to call once a_var has been
+/// unfolded as part part of the revisualization process.
+void
+GDBEngine::revisualize_variable (const VariableSafePtr a_var,
+                                 const ConstVariableSlot &a_slot)
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+    THROW_IF_FAIL (m_priv);
+
+
+    NEMIVER_TRY;
+
+    get_conf_mgr ().get_key_value (CONF_KEY_PRETTY_PRINTING,
+                                   m_priv->enable_pretty_printing);
+
+    NEMIVER_CATCH_NOX;
+
+    revisualize_variable (a_var, m_priv->enable_pretty_printing, a_slot);
+}
+
+/// A subroutine of GDBEngine::revisualize_variable above.
+///
+/// This function clears the current member variables of the given
+/// variable, sets its relevant visualizer, re-evaluates its
+/// expression, unfolds it and schedules a similar set of actions for
+/// each of the member variables.
+///
+/// \param a_var the variable to act upon.
+///
+/// \param a_pretty_printing a flag saying whether to turn pretty
+/// printing on or off.
+///
+/// \param a_slot a slot to be called when the revisualization is
+/// done.  It is called when a_var is effectively unfolded.
+void
+GDBEngine::revisualize_variable (IDebugger::VariableSafePtr a_var,
+                                 bool a_pretty_printing,
+                                 const ConstVariableSlot &a_slot)
+{
+    a_var->members ().clear ();
+    UString v;
+    if (a_pretty_printing)
+        v = GDB_DEFAULT_PRETTY_PRINTING_VISUALIZER;
+    else
+        v = GDB_NULL_PRETTY_PRINTING_VISUALIZER;
+    revisualize_variable_real (a_var, v, a_slot);
+}
+
+/// A subroutine of revisualize_variable.
+///
+/// Here is the actual sequence of action taken:
+///
+/// 1/ Set its visualizer.  That is instruct the backend to use that
+///    visualizer to visualize this variable.
+/// 2/ Evaluate the expression of the variable
+/// 3/ Unfold variable with visualizer <-- TODO: need to write this.
+///    3.1/ Unfold it w/o signaling
+///    3.2/ Set visualizers of each children
+///    3.3/ Unfold again, with normal signaling
+///    3.4/ Mark each children variable as needing to go to 3 whenever
+///         they are going to be revisualized.
+///
+/// \param a_var the variable to act upon.
+///
+/// \param a_visualizer the visualizer to use for revisualizing the
+/// variable.
+///
+/// \param a_slot the slot function to call upon completion of step 4.
+void
+GDBEngine::revisualize_variable_real (IDebugger::VariableSafePtr a_var,
+                                      const UString& a_visualizer,
+                                      const ConstVariableSlot &a_slot)
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+    THROW_IF_FAIL (a_var);
+
+    a_var->needs_revisualizing (false);
+
+    set_variable_visualizer
+        (a_var, a_visualizer,
+         sigc::bind
+         (sigc::mem_fun
+          (*this, &GDBEngine::on_rv_eval_var),
+          a_visualizer, a_slot));
+}
+
+/// Lists the source files that make up the executable
 void
 GDBEngine::list_files (const UString &a_cookie)
 {
@@ -5295,10 +5663,55 @@ GDBEngine::create_variable (const UString &a_name,
                      a_cookie);
 }
 
+/// Create a GDB-side variable object for a given variable.  The name
+/// of the variable must be  accessible from the current frame.
+///
+/// Emits IDebugger::variable_created_signal upon creation of the
+/// GDB-side variable object.
+/// 
+/// \param a_name the name of the variable to create.
+///
+/// \param a_s the slot callback function to invoke upon creation of
+/// the GDB-side variable object.
+///
+/// \param a_cookie a string value passed to the the
+/// IDebugger::variable_created_signal emitted upon creation of the
+/// server side variable object.
+///
+/// \param a_should_emit_signal if set to TRUE, emit the
+/// IDebugger::variable_created_signal signal.  Otherwise that signal
+/// is not emitted.
 void
 GDBEngine::create_variable (const UString &a_name ,
                             const ConstVariableSlot &a_slot,
                             const UString &a_cookie)
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+    create_variable (a_name, a_slot, a_cookie,
+                     /*a_should_emit_signal=*/true);
+}
+
+/// Create a GDB-side variable object for a given variable.  The name
+/// of the variable must be  accessible from the current frame.
+///
+/// \param a_name the name of the variable to create.
+///
+/// \param a_slot the slot callback function to invoke upon creation
+/// of the GDB-side variable object.
+///
+/// \param a_cookie a string value passed to the the
+/// IDebugger::variable_created_signal emitted upon creation of the
+/// server side variable object.
+///
+/// \param a_should_emit_signal if set to TRUE, emit the
+/// IDebugger::variable_created_signal signal.  Otherwise that signal
+/// is not emitted.
+void
+GDBEngine::create_variable (const UString &a_name,
+                            const ConstVariableSlot &a_slot,
+                            const UString &a_cookie,
+                            bool a_should_emit_signal)
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD;
 
@@ -5318,6 +5731,7 @@ GDBEngine::create_variable (const UString &a_name ,
                      a_cookie);
     command.tag0 (a_name);
     command.set_slot (a_slot);
+    command.should_emit_signal (a_should_emit_signal);
     queue_command (command);
 }
 
@@ -5349,6 +5763,20 @@ GDBEngine::delete_variable (const VariableSafePtr a_var,
     queue_command (command);
 }
 
+/// Unfold a given variable.
+///
+/// Query the backend for the member variables of the given variable.
+/// This is not recursive.  Each member will in turn need to be
+/// unfolded to get its member variables.
+///
+/// Upon completion of the backend side of this command, signal
+/// IDebugger::variable_unfolded_signal is emitted, with a_var as an
+/// argument.
+///
+/// \param a_var the variable to act upon.
+///
+/// \param a_cookie the cookie to pass to the
+/// IDebugger::variable_unfolded_signal signal.
 void
 GDBEngine::unfold_variable (const VariableSafePtr a_var,
                             const UString &a_cookie)
@@ -5359,6 +5787,23 @@ GDBEngine::unfold_variable (const VariableSafePtr a_var,
                      a_cookie);
 }
 
+/// A subroutine of GDBEngine::unfold_variable above.
+///
+/// Query the backend for the member variables of the given variable.
+/// This is not recursive.  Each member will in turn need to be
+/// unfolded to get its member variables.
+///
+/// Upon completion of the backend side of this command, signal
+/// IDebugger::variable_unfolded_signal is emitted, with a_var as an
+/// argument.
+///
+/// \param a_var the variable to act upon.
+///
+/// \param a_slot a slot function to be invoked upon completion of the
+/// backend side of this command.
+///
+/// \param a_cookie a string that is going to be passed to signal
+/// IDebugger::variable_unfolded_signal.
 void
 GDBEngine::unfold_variable (const VariableSafePtr a_var,
                             const ConstVariableSlot &a_slot,
@@ -5366,7 +5811,45 @@ GDBEngine::unfold_variable (const VariableSafePtr a_var,
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD;
 
+    unfold_variable (a_var, a_slot, a_cookie,
+                     /*a_should_emit_signal=*/true);
+}
+
+/// A subroutine of GDBEngine::unfold_variable above.
+///
+/// Query the backend for the member variables of the given variable.
+/// This is not recursive.  Each member will in turn need to be
+/// unfolded to get its member variables.
+///
+/// \param a_var the variable to act upon.
+///
+/// \param a_slot a slot function to be invoked upon completion of the
+/// backend side of this command.
+///
+/// \param a_cookie a string that is going to be passed to signal
+/// IDebugger::variable_unfolded_signal.
+///
+/// \param a_should_emit_signal if TRUE, emits
+/// IDebugger::variable_unfolded_signal upon completion of the GDB
+/// side of this command.  Otherwise, no signal is emitted.
+void
+GDBEngine::unfold_variable (VariableSafePtr a_var,
+                            const ConstVariableSlot &a_slot,
+                            const UString &a_cookie,
+                            bool a_should_emit_signal)
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+
     THROW_IF_FAIL (a_var);
+
+    // If this variable was asked to be revisualized, let the backend
+    // use the visualizer for it during its unfolding process.
+    if (a_var->needs_revisualizing ()) {
+        a_var->needs_revisualizing (false);
+        return unfold_variable_with_visualizer (a_var,
+                                                a_var->visualizer (),
+                                                a_slot);
+    }
     if (a_var->internal_name ().empty ()) {
         UString qname;
         a_var->build_qualified_internal_name (qname);
@@ -5381,6 +5864,7 @@ GDBEngine::unfold_variable (const VariableSafePtr a_var,
                      a_cookie);
     command.variable (a_var);
     command.set_slot (a_slot);
+    command.should_emit_signal (a_should_emit_signal);
     queue_command (command);
 }
 
@@ -5560,41 +6044,65 @@ GDBEngine::set_variable_format (const VariableSafePtr a_var,
     queue_command (command);
 }
 
+/// Set the relevant confmgr key enabling or disabling
+/// pretty-printing.
+///
+/// \param a_flag TRUE to enable pretty-printing, false otherwise.
 void
-GDBEngine::disable_pretty_printing ()
+GDBEngine::enable_pretty_printing (bool a_flag)
 {
-    // Doing it this way for now b/c you can't change this in GDB on
-    // the fly at the moment.
-    m_priv->enable_pretty_printing = false;
-    get_conf_mgr ().get_key_value (CONF_KEY_PRETTY_PRINTING,
-                                   m_priv->enable_pretty_printing);
+    // Note that disabling (passing false) this feature doesn't work
+    // in GDB </grin>.
+    //
+    // The workaround to disabling the feature is to set the
+    // visualizer to None on all subsequent varobjs that are created.
+    // For those that are already created, we basically set the
+    // visualizer to None, re-evaluate the expression of the variable
+    // and do that recursively for the member varobjs.
+
+    // Don't bother changing anything if we are asked to do what we
+    // already have.
+    if (a_flag == m_priv->enable_pretty_printing)
+        return;
+
+    // Note that on_conf_key_changed_signal instructs GDB to enable
+    // pretty printing when once the key is set to TRUE.
+    get_conf_mgr ().set_key_value (CONF_KEY_PRETTY_PRINTING,
+                                   a_flag);
 }
 
-/// Set the variable vizualizer used by the GDB Pretty Printing system
-/// to print the value of a given variable.
+/// Instruct GDB to set the variable vizualizer used by the GDB Pretty
+/// Printing system to print the value of a given variable.
+/// 
 /// \param a_var the variable to set the vizualizer for.
+/// 
 /// \param a_vizualizer a string representing the vizualizer to set
 /// for this variable. If you don't want any vizualizer to be set,
 /// then set this variableto "None". If you want the default
 /// vizualizer for this type to be set, then set this variable to
 /// "gdb.default_visualizer".
+///
+/// \param a_slot the slot function called when GDB finishes to set
+/// the visualizer for this variable.
 void
-GDBEngine::set_variable_vizualizer (const VariableSafePtr a_var,
-				    const std::string &a_vizualizer,
-				    const UString &a_cookie)
+GDBEngine::set_variable_visualizer (const VariableSafePtr a_var,
+				    const std::string &a_visualizer,
+				    const ConstVariableSlot &a_slot)
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD;
 
     THROW_IF_FAIL (a_var);
     THROW_IF_FAIL (!a_var->internal_name ().empty ());
 
-    UString cmd_str = "-var-set-vizualizer ";
+    UString cmd_str = "-var-set-visualizer ";
     cmd_str += a_var->internal_name () + " ";
-    cmd_str += a_vizualizer;
+    cmd_str += a_visualizer;
 
-    Command command ("set-variable-vizualizer",
-                     cmd_str, a_cookie);
+    Command command ("set-variable-visualizer",
+                     cmd_str);
     command.variable (a_var);
+    command.set_slot (a_slot);
+    command.tag0 (a_visualizer);
     queue_command (command);
 }
 

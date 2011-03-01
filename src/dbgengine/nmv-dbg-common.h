@@ -40,40 +40,45 @@ class Command {
     UString m_tag4;
     IDebugger::VariableSafePtr m_var;
     sigc::slot_base m_slot;
+    bool m_should_emit_signal;
 
 public:
 
-    Command ()  :
-        m_tag2 (0),
-        m_slot (0)
+    Command () :
+    m_tag2 (0),
+      m_slot (0),
+      m_should_emit_signal (true)
     {
         clear ();
     }
 
     /// \param a_value a textual command to send to the debugger.
     Command (const UString &a_value) :
-        m_value (a_value),
-        m_tag2 (0),
-        m_slot (0)
+    m_value (a_value),
+      m_tag2 (0),
+      m_slot (0),
+      m_should_emit_signal (true)
     {
     }
 
     Command (const UString &a_name, const UString &a_value) :
-        m_name (a_name),
-        m_value (a_value),
-        m_tag2 (0),
-        m_slot (0)
+    m_name (a_name),
+      m_value (a_value),
+      m_tag2 (0),
+      m_slot (0),
+      m_should_emit_signal (true)
     {
     }
 
     Command (const UString &a_name,
              const UString &a_value,
              const UString &a_cookie) :
-        m_cookie (a_cookie),
-        m_name (a_name),
-        m_value (a_value),
-        m_tag2 (0),
-        m_slot (0)
+    m_cookie (a_cookie),
+      m_name (a_name),
+      m_value (a_value),
+      m_tag2 (0),
+      m_slot (0),
+      m_should_emit_signal (true)
     {
     }
 
@@ -125,6 +130,9 @@ public:
         return reinterpret_cast<const T&> (m_slot);
     }
 
+    bool should_emit_signal () const {return m_should_emit_signal;}
+    void should_emit_signal (bool a) {m_should_emit_signal = a;}
+
     /// @}
 
     void clear ()
@@ -136,6 +144,7 @@ public:
         m_tag2 = 0;
         m_tag3.clear ();
         m_tag4.clear ();
+	m_should_emit_signal = true;
     }
 
 };//end class Command
@@ -922,7 +931,6 @@ public:
     void add (const OutputHandlerSafePtr &a_handler);
     void submit_command_and_output (CommandAndOutput &a_cao);
 };//end class OutputHandlerList
-
 
 NEMIVER_END_NAMESPACE (nemiver)
 

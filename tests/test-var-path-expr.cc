@@ -139,7 +139,7 @@ test_main (int argc, char *argv[])
                                                      debugger));
 
     std::vector<UString> args, source_search_dir;
-    debugger->disable_pretty_printing ();
+    debugger->enable_pretty_printing (false);
     source_search_dir.push_back (".");
     debugger->load_program ("fooprog", args, ".",
                             source_search_dir, "", false);

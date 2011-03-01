@@ -273,7 +273,7 @@ test_main (int, char **)
     //</connect to IDebugger events>
     //******************************
     vector<UString> args;
-    debugger->disable_pretty_printing ();
+    debugger->enable_pretty_printing (false);
     debugger->load_program ("fooprog", args, ".");
     debugger->set_breakpoint ("main");
     debugger->set_breakpoint ("func4");
