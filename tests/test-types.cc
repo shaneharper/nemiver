@@ -96,7 +96,7 @@ test_main (int, char **)
 
     debugger->variable_value_signal ().connect (&on_variable_value_signal);
 
-    debugger->disable_pretty_printing ();
+    debugger->enable_pretty_printing (false);
     std::vector<UString> args, source_search_dir;
     source_search_dir.push_back (".");
 

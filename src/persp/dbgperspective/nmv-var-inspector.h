@@ -53,7 +53,8 @@ public:
     virtual ~VarInspector ();
     Gtk::Widget& widget () const;
     void set_variable (IDebugger::VariableSafePtr a_variable,
-                       bool a_expand = false);
+                       bool a_expand = false,
+		       bool a_re_visualize = false);
     void inspect_variable (const UString &a_variable_name,
                            bool a_expand = false);
     IDebugger::VariableSafePtr get_variable () const;

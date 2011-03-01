@@ -921,6 +921,8 @@ struct DBGPerspective::Priv {
     bool use_launch_terminal;
     int num_instr_to_disassemble;
     bool asm_style_pure;
+    bool enable_pretty_printing;
+    bool pretty_printing_toggled;
 #ifdef WITH_SOURCEVIEWMM2
     Glib::RefPtr<gtksourceview::SourceStyleScheme> editor_style;
 #endif // WITH_SOURCEVIEWMM2
@@ -973,6 +975,8 @@ struct DBGPerspective::Priv {
         use_launch_terminal (false),
         num_instr_to_disassemble (NUM_INSTR_TO_DISASSEMBLE),
         asm_style_pure (true),
+        enable_pretty_printing (true),
+        pretty_printing_toggled (false),
         mouse_in_source_editor_x (0),
         mouse_in_source_editor_y (0),
         in_show_var_value_at_pos_transaction (false),
@@ -2186,6 +2190,12 @@ DBGPerspective::on_shutdown_signal ()
     NEMIVER_CATCH
 }
 
+/// Function called whenever a the value of a configuration key
+/// changes on the sytem.
+///
+/// \param a_key the key which value changed
+///
+/// \param a_namespace the namespace of the key
 void
 DBGPerspective::on_conf_key_changed_signal (const UString &a_key,
                                             const UString &a_namespace)
@@ -2291,9 +2301,18 @@ DBGPerspective::on_conf_key_changed_signal (const UString &a_key,
         conf_mgr.get_key_value (a_key,
                                 m_priv->asm_style_pure,
                                 a_namespace);
+    } else if (a_key == CONF_KEY_PRETTY_PRINTING) {
+        bool e = false;
+        conf_mgr.get_key_value (a_key, e, a_namespace);
+        if (m_priv->enable_pretty_printing != e) {
+            m_priv->enable_pretty_printing = e;
+            m_priv->pretty_printing_toggled = true;
+            get_local_vars_inspector ()
+                .visualize_local_variables_of_current_function ();
+        }
     }
 
-    NEMIVER_CATCH;
+    NEMIVER_CATCH
 }
 
 void
@@ -4893,7 +4912,8 @@ DBGPerspective::show_underline_tip_at_position
     LOG_FUNCTION_SCOPE_NORMAL_DD
     get_popup_tip ().show_at_position (a_x, a_y);
     get_popup_var_inspector ().set_variable (a_var,
-                                             true /* expand variable */);
+                                             true/*expand variable*/,
+                                             m_priv->pretty_printing_toggled);
 }
 
 VarInspector&
