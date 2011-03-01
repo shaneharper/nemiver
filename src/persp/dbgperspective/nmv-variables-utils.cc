@@ -393,6 +393,9 @@ variables_match (const IDebugger::VariableSafePtr &a_var,
         return true;
     if (!var || !a_var)
         return false;
+    if (a_var->internal_name () == var->internal_name ())
+        return true;
+
     return var->equals_by_value (*a_var);
 }
 
@@ -552,30 +555,127 @@ append_a_variable (const IDebugger::VariableSafePtr a_var,
     if (!a_var) {
         return false;
     }
-    update_a_variable_node (a_var, a_tree_view, row_it,
+    if (!set_a_variable (a_var, a_tree_view, a_tree_store,
+                         row_it, a_truncate_type))
+        return false;
+    a_result = row_it;
+    return true;
+}
+
+/// (Re-)render a variable into the node holding its graphical
+/// representation.
+///
+/// \param a_var the variable to render
+///
+/// \param a_tree_view the treeview containing the graphical
+/// representation to set.
+///
+/// \param a_tree_store the treestore of the treeview.
+///
+/// \param a_row_it an iterator to the row of the graphical
+/// representation of the variable.
+///
+/// \param a_truncate_type if set to TRUE, the string representing the
+/// type is going to be truncated if it is too long.
+///
+/// \return TRUE upon successful completion
+bool
+set_a_variable (const IDebugger::VariableSafePtr a_var,
+                const Gtk::TreeView &a_tree_view,
+                const Glib::RefPtr<Gtk::TreeStore> &a_tree_store,
+                Gtk::TreeModel::iterator a_row_it,
+                bool a_truncate_type)
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+    THROW_IF_FAIL (a_tree_store);
+
+    if (!a_var) {
+        return false;
+    }
+
+    update_a_variable_node (a_var, a_tree_view, a_row_it,
                             a_truncate_type, true, true);
+
     list<IDebugger::VariableSafePtr>::const_iterator it;
     if (a_var->needs_unfolding ()) {
         // Mark *row_it as needing unfolding, and add an empty
         // child node to it
-        (*row_it)[get_variable_columns ().needs_unfolding] = true;
+        (*a_row_it)[get_variable_columns ().needs_unfolding] = true;
         IDebugger::VariableSafePtr empty_var;
         append_a_variable (empty_var, a_tree_view,
-                           a_tree_store, row_it,
+                           a_tree_store, a_row_it,
                            a_truncate_type);
     } else {
         for (it = a_var->members ().begin ();
              it != a_var->members ().end ();
              ++it) {
             append_a_variable (*it, a_tree_view,
-                               a_tree_store, row_it,
+                               a_tree_store, a_row_it,
                                a_truncate_type);
         }
     }
-    a_result = row_it;
     return true;
 }
 
+/// Unlink the graphical nodes representing the member variables of
+/// the variable pointed to by the given row iterator.
+///
+/// \param a_row_it the iterator pointing at the graphical node which
+/// containing the variable which member variables we want to unlink.
+///
+/// \param a_store the treestore containing a_row_it.
+bool
+unlink_member_variable_rows (const Gtk::TreeModel::iterator &a_row_it,
+                             const Glib::RefPtr<Gtk::TreeStore> &a_store)
+{
+    IDebugger::VariableSafePtr var;
+
+    var = a_row_it->get_value (get_variable_columns ().variable);
+    if (!var)
+        return false;
+
+    vector<Gtk::TreePath> paths;
+    for (Gtk::TreeModel::iterator it = a_row_it->children ().begin ();
+	 it != a_row_it->children ().end ();
+	 ++it) {
+	var = it->get_value (get_variable_columns ().variable);
+	if (var)
+	    paths.push_back (a_store->get_path (it));
+    }
+    for (int i = paths.size (); i > 0; --i) {
+	Gtk::TreeIter it = a_store->get_iter (paths[i - 1]);
+        IDebugger::VariableSafePtr empty_var;
+        (*it)->get_value(get_variable_columns ().variable).reset ();
+	a_store->erase (it);
+    }
+    return true;
+}
+
+/// Re-visualize a given variable.  That is, unlink the graphical
+/// nodes of the member variables of the given variable, and
+/// re-visualize that same variable into its graphical node.
+///
+/// \param a_var the variable to re-visualize
+/// 
+/// \param a_row_it an iterator to the graphical node of the variable
+/// to re-visualize
+///
+/// \param a_tree_view the treeview containing the graphical node
+///
+/// \param a_store the tree store containing the graphical node
+bool
+visualize_a_variable (const IDebugger::VariableSafePtr a_var,
+		      const Gtk::TreeModel::iterator &a_row_it,
+                      const Gtk::TreeView &a_tree_view,
+		      const Glib::RefPtr<Gtk::TreeStore> &a_store)
+{
+    if (!unlink_member_variable_rows (a_row_it, a_store))
+        return false;
+
+    return set_a_variable (a_var, a_tree_view,
+                           a_store, a_row_it,
+                           /*a_truncate_type=*/true);
+}
 
 NEMIVER_END_NAMESPACE (variables_utils2)
 NEMIVER_END_NAMESPACE (nemiver)

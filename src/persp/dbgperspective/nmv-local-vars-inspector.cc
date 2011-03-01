@@ -380,6 +380,7 @@ public:
 
         Gtk::TreeModel::iterator parent_row_it;
         if (get_function_arguments_row_iterator (parent_row_it)) {
+            LOG_DD ("appending argument: " << a_var->name ());
             vutil::append_a_variable (a_var,
                                       *tree_view,
                                       tree_store,
@@ -406,6 +407,53 @@ public:
                                       true /* handle highlight */,
                                       false /* is not a new frame */,
                                       a_update_members);
+        }
+    }
+
+    /// Graphically update a local variable that has been
+    /// re-visualized.
+    ///
+    /// Re-visualization means that the variable's members have been
+    /// erased and the variable has been re-built, probably using a
+    /// different visualizer, at the backend level.
+    ///
+    /// \param a_var the local variable to grpahically update.
+    void
+    update_a_visualized_local_variable (const IDebugger::VariableSafePtr a_var)
+    {
+        LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+        THROW_IF_FAIL (tree_view);
+
+        Gtk::TreeModel::iterator parent_row_it, row_it;
+        if (get_local_variables_row_iterator (parent_row_it)) {
+            THROW_IF_FAIL (vutil::find_a_variable (a_var,
+                                                   parent_row_it,
+                                                   row_it));
+            vutil::visualize_a_variable (a_var, row_it,
+                                         *tree_view, tree_store);
+        }
+    }
+
+    /// Like update_a_visualized_local_variable, but for a function
+    /// argument.
+    ///
+    /// \param a_var the function argument variable to graphically
+    /// update.
+    void
+    update_a_visualized_function_arg (const IDebugger::VariableSafePtr a_var)
+    {
+        LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+        THROW_IF_FAIL (tree_view);
+
+        Gtk::TreeModel::iterator parent_row_it, row_it;
+        if (get_function_arguments_row_iterator (parent_row_it)) {
+            THROW_IF_FAIL (vutil::find_a_variable (a_var, parent_row_it,
+                                                   row_it));
+            vutil::visualize_a_variable (a_var, row_it,
+                                         *tree_view,
+                                         tree_store);
         }
     }
 
@@ -842,6 +890,47 @@ public:
         NEMIVER_CATCH
     }
 
+    /// Signal handler called when a local variable has been
+    /// re-visualized, probably using a new pretty-printing
+    /// visualizer.
+    ///
+    /// This function graphically updates the re-visualized local
+    /// variable.
+    ///
+    /// \param a_var the re-visualized variable to act upon.
+    void
+    on_local_var_visualized_signal (const IDebugger::VariableSafePtr a_var)
+
+    {
+        LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+        NEMIVER_TRY;
+
+        update_a_visualized_local_variable (a_var);
+
+        NEMIVER_CATCH;
+    }
+
+    /// Signal handler called when a function argument variable has
+    /// been re-visualized by the backend, probably with a new
+    /// pretty-printing visualizer.
+    ///
+    /// This function gaphically updates the re-visualized function
+    /// argument variable.
+    ///
+    /// \param a_arg the re-visualized argument variable to act upon.
+    void
+    on_function_arg_visualized_signal (const IDebugger::VariableSafePtr a_arg)
+    {
+        LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+        NEMIVER_TRY;
+
+        update_a_visualized_function_arg (a_arg);
+
+        NEMIVER_CATCH;
+    }
+
     void
     on_variable_unfolded_signal (const IDebugger::VariableSafePtr a_var,
                                  const Gtk::TreeModel::Path a_var_node)
@@ -1152,6 +1241,26 @@ LocalVarsInspector::show_local_variables_of_current_function
                                              sigc::mem_fun
                                              (*m_priv, &Priv::on_function_args_listed),
                                              "");
+}
+
+/// Re-visualize the local variables of the current function, possibly
+/// using the a backend pretty-printing visualizer.
+void
+LocalVarsInspector::visualize_local_variables_of_current_function ()
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+    THROW_IF_FAIL (m_priv);
+    THROW_IF_FAIL (m_priv->debugger);
+
+    IDebugger::VariableList::const_iterator it;
+    for (it = m_priv->local_vars.begin ();
+         it != m_priv->local_vars.end ();
+         ++it)
+        m_priv->debugger->revisualize_variable
+            (*it,
+             sigc::mem_fun
+             (*m_priv,
+              &Priv::on_local_var_visualized_signal));
 }
 
 void

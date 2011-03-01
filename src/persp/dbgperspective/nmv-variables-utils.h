@@ -126,6 +126,20 @@ bool append_a_variable (const IDebugger::VariableSafePtr a_var,
                         Gtk::TreeModel::iterator &a_result,
                         bool a_truncate_type);
 
+bool set_a_variable (const IDebugger::VariableSafePtr a_var,
+		     const Gtk::TreeView &a_tree_view,
+		     const Glib::RefPtr<Gtk::TreeStore> &a_tree_store,
+		     Gtk::TreeModel::iterator a_row_it,
+		     bool a_truncate_type);
+
+bool unlink_member_variable_rows (const Gtk::TreeModel::iterator &a_row_it,
+				  const Glib::RefPtr<Gtk::TreeStore> &a_store);
+
+bool visualize_a_variable (const IDebugger::VariableSafePtr a_var,
+			   const Gtk::TreeModel::iterator &a_var_row_it,
+			   const Gtk::TreeView &a_tree_view,
+			   const Glib::RefPtr<Gtk::TreeStore> &a_store);
+
 NEMIVER_END_NAMESPACE (variables_utils2)
 NEMIVER_END_NAMESPACE (nemiver)
 

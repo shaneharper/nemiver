@@ -151,6 +151,9 @@ public:
     sigc::signal<void, const VariableSafePtr, const UString&>&
                                       variable_dereferenced_signal () const;
 
+    sigc::signal<void, const VariableSafePtr, const UString&>&
+      variable_visualized_signal () const;
+
     sigc::signal<void, int, const UString&>& got_target_info_signal () const ;
 
     sigc::signal<void>& running_signal () const;
@@ -222,6 +225,30 @@ public:
     void on_detached_from_target_signal ();
 
     void on_program_finished_signal ();
+    void on_rv_eval_var (const VariableSafePtr,
+			 const UString&,
+			 const ConstVariableSlot&);
+    void on_rv_unfold_var (const VariableSafePtr,
+			   const UString&,
+			   const ConstVariableSlot&);
+    void on_rv_set_visualizer_on_members (const VariableSafePtr,
+					  const UString&,
+					  const ConstVariableSlot&);
+    void on_rv_set_visualizer_on_next_sibling
+      (const VariableSafePtr,
+       const UString&,
+       IDebugger::VariableList::iterator,
+       IDebugger::VariableList::iterator,
+       const ConstVariableSlot&);
+
+    void on_rv_flag (const VariableSafePtr,
+		     const UString&,
+		     const ConstVariableSlot&);
+
+    void unfold_variable_with_visualizer (const VariableSafePtr,
+					  const UString &a_visualizer,
+					  const ConstVariableSlot&);
+
     //***************
     //</signal handlers>
     //***************
@@ -468,6 +495,17 @@ public:
     bool dereference_variable (const VariableSafePtr &a_var,
                                const UString &a_cookie);
 
+    void revisualize_variable (const VariableSafePtr a_var,
+			       const ConstVariableSlot &a_slot);
+
+    void revisualize_variable (const VariableSafePtr a_var,
+			       bool a_toggle_pretty_printing,
+			       const ConstVariableSlot &a_slot);
+
+    void revisualize_variable_real (IDebugger::VariableSafePtr,
+				    const UString&,
+				    const ConstVariableSlot &a_slot);
+
     void list_files (const UString &a_cookie);
 
     bool extract_proc_info (Output &a_output,
@@ -534,6 +572,11 @@ public:
                           const ConstVariableSlot &a_s,
                           const UString &a_cookie="");
 
+    void create_variable (const UString &a_name,
+                          const ConstVariableSlot &a_s,
+                          const UString &a_cookie,
+			  bool a_should_emit_signal);
+
     void delete_variable (const VariableSafePtr a_var,
                           const UString &a_cookie);
 
@@ -543,9 +586,15 @@ public:
 
     void unfold_variable (VariableSafePtr a_var,
                           const UString &a_cookie);
+
     void unfold_variable (VariableSafePtr a_var,
                           const ConstVariableSlot &a_s,
                           const UString &a_cookie);
+
+    void unfold_variable (VariableSafePtr a_var,
+                          const ConstVariableSlot &a_s,
+                          const UString &a_cookie,
+			  bool a_should_emit_signal);
 
     void assign_variable (const VariableSafePtr a_var,
                           const UString &a_expression,
@@ -587,11 +636,11 @@ public:
 			      const Variable::Format a_format,
 			      const UString &a_cookie);
 
-    void disable_pretty_printing ();
+    void enable_pretty_printing (bool a_flag);
 
-    void set_variable_vizualizer (const VariableSafePtr a_var,
+    void set_variable_visualizer (const VariableSafePtr a_var,
 				  const std::string &a_vizualizer,
-				  const UString &a_cookie);
+				  const ConstVariableSlot &a_slot);
 };//end class GDBEngine
 
 NEMIVER_END_NAMESPACE (nemiver)
