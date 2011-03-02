@@ -4590,9 +4590,11 @@ DBGPerspective::read_default_config ()
     if (m_priv->global_search_paths.empty ()) {
         UString dirs;
 
-        NEMIVER_TRY
+        NEMIVER_TRY;
+
         conf_mgr.get_key_value (CONF_KEY_NEMIVER_SOURCE_DIRS, dirs);
-        NEMIVER_CATCH_NOX
+
+        NEMIVER_CATCH_NOX;
 
         LOG_DD ("got source dirs '" << dirs << "' from conf mgr");
         if (!dirs.empty ()) {
@@ -4601,16 +4603,19 @@ DBGPerspective::read_default_config ()
                     << "' dir paths");
         }
 
-        NEMIVER_TRY
+        NEMIVER_TRY;
+
         conf_mgr.get_key_value (CONF_KEY_SHOW_DBG_ERROR_DIALOGS,
                                 m_priv->show_dbg_errors);
-        NEMIVER_CATCH_NOX
+        NEMIVER_CATCH_NOX;
 
         conf_mgr.value_changed_signal ().connect
             (sigc::mem_fun (*this,
                             &DBGPerspective::on_conf_key_changed_signal));
     }
-    NEMIVER_TRY
+
+    NEMIVER_TRY;
+
     conf_mgr.get_key_value (CONF_KEY_HIGHLIGHT_SOURCE_CODE,
                             m_priv->enable_syntax_highlight);
     conf_mgr.get_key_value (CONF_KEY_SHOW_SOURCE_LINE_NUMBERS,
@@ -4630,7 +4635,9 @@ DBGPerspective::read_default_config ()
                             m_priv->num_instr_to_disassemble);
     conf_mgr.get_key_value (CONF_KEY_ASM_STYLE_PURE,
                             m_priv->asm_style_pure);
-    NEMIVER_CATCH_NOX
+    conf_mgr.get_key_value (CONF_KEY_PRETTY_PRINTING,
+                            m_priv->enable_pretty_printing);
+    NEMIVER_CATCH_NOX;
 
     UString style_id ("classic");
 
