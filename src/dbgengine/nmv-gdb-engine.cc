@@ -229,6 +229,11 @@ public:
     UString disassembly_flavor;
     GDBMIParser gdbmi_parser;
     bool enable_pretty_printing;
+    // Once pretty printing has been globally enabled once, there is
+    // no command to globally disable it.  So once it has been enabled
+    // globally, we shouldn't try to globally enable it again.  So
+    // let's keep track of if we enabled it once.
+    bool pretty_printing_enabled_once;
     sigc::signal<void> gdb_died_signal;
     sigc::signal<void, const UString& > master_pty_signal;
     sigc::signal<void, const UString& > gdb_stdout_signal;
@@ -557,7 +562,8 @@ public:
         follow_fork_mode ("parent"),
         disassembly_flavor ("att"),
         gdbmi_parser (GDBMIParser::BROKEN_MODE),
-        enable_pretty_printing (true)
+        enable_pretty_printing (true),
+        pretty_printing_enabled_once (false)
     {
 
         enable_pretty_printing =
@@ -1184,11 +1190,17 @@ public:
                                         follow_fork_mode,
                                         a_namespace)) {
             set_debugger_parameter ("follow-fork-mode", follow_fork_mode);
-        } else if (a_key == CONF_KEY_PRETTY_PRINTING
-                   && conf_mgr->get_key_value (a_key,
-                                               enable_pretty_printing,
-                                               a_namespace)) {
-            queue_command (Command ("-enable-pretty-printing"));
+        } else if (a_key == CONF_KEY_PRETTY_PRINTING) {
+            // Don't react if the new value == the old value.
+            bool e = false;
+            conf_mgr->get_key_value (a_key, e, a_namespace);
+            if (e != enable_pretty_printing) {
+                enable_pretty_printing = e;
+                if (!pretty_printing_enabled_once && enable_pretty_printing) {
+                    queue_command (Command ("-enable-pretty-printing"));
+                    pretty_printing_enabled_once = true;
+                }
+            }
         } else if (a_key == CONF_KEY_DISASSEMBLY_FLAVOR
                    && conf_mgr->get_key_value (a_key,
                                                disassembly_flavor,
@@ -3029,7 +3041,8 @@ GDBEngine::load_program (const UString &a_prog,
         } else {
             LOG_DD ("not setting LD_BIND_NOW environment variable ");
         }
-        if (m_priv->enable_pretty_printing)
+        if (m_priv->enable_pretty_printing
+            && !m_priv->pretty_printing_enabled_once)
             queue_command (Command ("-enable-pretty-printing"));
     } else {
         Command command ("load-program",
