@@ -22,8 +22,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NMV_SPINNER_H__
-#define __NMV_SPINNER_H__
+#ifndef __NMV_HEX_DOCUMENT_H__
+#define __NMV_HEX_DOCUMENT_H__
 
 #include "common/nmv-object.h"
 #include "common/nmv-safe-ptr-utils.h"
@@ -72,5 +72,5 @@ public:
 
 NEMIVER_END_NAMESPACE (Hex)
 NEMIVER_END_NAMESPACE (nemiver)
-#endif //__NMV_SPINNER_H__
+#endif //__NMV_HEX_DOCUMENT_H__
 
