@@ -30,6 +30,12 @@
 
 NEMIVER_BEGIN_NAMESPACE (nemiver)
 
+extern const char* CONF_NAMESPACE_NEMIVER;
+
+extern const char* CONF_NAMESPACE_DESKTOP_INTERFACE;
+
+extern const char* CONF_KEY_SYSTEM_FONT_NAME;
+
 extern const char* CONF_KEY_NEMIVER_SOURCE_DIRS;
 extern const char* CONF_KEY_SHOW_DBG_ERROR_DIALOGS;
 extern const char* CONF_KEY_SHOW_SOURCE_LINE_NUMBERS;
@@ -39,7 +45,6 @@ extern const char* CONF_KEY_HIGHLIGHT_SOURCE_CODE;
 extern const char* CONF_KEY_SOURCE_FILE_ENCODING_LIST;
 extern const char* CONF_KEY_USE_SYSTEM_FONT;
 extern const char* CONF_KEY_CUSTOM_FONT_NAME;
-extern const char* CONF_KEY_SYSTEM_FONT_NAME;
 extern const char* CONF_KEY_USE_LAUNCH_TERMINAL;
 extern const char* CONF_KEY_STATUS_WIDGET_MINIMUM_WIDTH;
 extern const char* CONF_KEY_STATUS_WIDGET_MINIMUM_HEIGHT;
@@ -51,6 +56,15 @@ extern const char* CONF_KEY_GDB_BINARY;
 extern const char* CONF_KEY_DEFAULT_NUM_ASM_INSTRS;
 extern const char* CONF_KEY_FOLLOW_FORK_MODE;
 extern const char* CONF_KEY_CONTEXT_PANE_LOCATION;
+extern const char* CONF_KEY_NEMIVER_CALLSTACK_EXPANSION_CHUNK;
+
+extern const char* CONF_KEY_NEMIVER_WINDOW_WIDTH;
+extern const char* CONF_KEY_NEMIVER_WINDOW_HEIGHT;
+extern const char* CONF_KEY_NEMIVER_WINDOW_POSITION_X;
+extern const char* CONF_KEY_NEMIVER_WINDOW_POSITION_Y;
+extern const char* CONF_KEY_NEMIVER_WINDOW_MAXIMIZED;
+extern const char* CONF_KEY_NEMIVER_WINDOW_MINIMUM_WIDTH;
+extern const char* CONF_KEY_NEMIVER_WINDOW_MINIMUM_HEIGHT;
 
 NEMIVER_END_NAMESPACE (nemiver)
 

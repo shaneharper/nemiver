@@ -1,14 +1,4 @@
-SUBDIRS=ui menus icons sqlscripts schemas
-
-install-data-local: install-schemas
-
-uninstall-local: uninstall-schemas
-
-install-schemas:
-	$(MAKE) -C schemas $(AM_MAKEFLAGS) install-schemas
-
-uninstall-schemas:
-	$(MAKE) -C schemas $(AM_MAKEFLAGS)  uninstall-schemas
+SUBDIRS=ui menus icons sqlscripts
 
 h=$(abs_srcdir)
 

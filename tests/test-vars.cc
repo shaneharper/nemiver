@@ -242,15 +242,14 @@ on_stopped_signal (IDebugger::StopReason /*a_reason*/,
 }
 
 NEMIVER_API int
-test_main (int argc __attribute__((unused)),
-           char **argv __attribute__ ((unused)))
+test_main (int, char **)
 {
     NEMIVER_TRY;
 
     Initializer::do_init ();
 
     IDebuggerSafePtr debugger =
-        debugger_utils::load_debugger_iface_with_gconf ();
+        debugger_utils::load_debugger_iface_with_confmgr ();
 
     // setup the debugger with the glib mainloop
     debugger->set_event_loop_context (Glib::MainContext::get_default ());

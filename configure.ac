@@ -66,6 +66,10 @@ CPPUNIT_VERSION=1.10.0
 AC_SUBST([CPPUNIT_VERSION])
 GTKHEX_VERSION=2.21.4
 AC_SUBST([GTKHEX_VERSION])
+LIBGIOMM_WITH_GSETTINGS_VERSION=2.25.1
+AC_SUBST([GIOMM_WITH_GSETTINGS_VERSION])
+GSETTINGS_DESKTOP_SCHEMAS=0.0.1
+AC_SUBST([GSETTINGS_DESKTOP_SCHEMAS])
 
 dnl *********************
 dnl Checks for programs.
@@ -232,6 +236,29 @@ AC_ARG_ENABLE(symsvis,
               ENABLE_GCC_SYMBOLS_VISIBILITY=$enableval,
               ENABLE_GCC_SYMBOLS_VISIBILITY=no)
 
+
+ENABLE_GSETTINGS=auto
+AC_ARG_ENABLE(gsettings,
+              AS_HELP_STRING([--enable-gsettings=yes|no],
+                             [use gsettings instead of gconf (default is auto)]),
+              ENABLE_GSETTINGS=$enableval,
+              AC_CHECK_PROG([HAS_DCONF], [dconf], [yes], [no])
+              [PKG_CHECK_EXISTS([giomm-2.4 >= $LIBGIOMM_WITH_GSETTINGS_VERSION gsettings-desktop-schemas >= $GSETTINGS_DESKTOP_SCHEMAS], [HAS_GSETTINGS=yes], [HAS_GSETTINGS=no])])
+if test x$ENABLE_GSETTINGS = xyes || (test x$ENABLE_GSETTINGS = xauto \
+      && test x$HAS_GSETTINGS = xyes \
+      && test x$HAS_DCONF = xyes \
+      && test x$ENABLE_GIO != xno); then
+    AC_DEFINE([WITH_GSETTINGS], 1, [build with gsettings instead of gconf])
+    AC_DEFINE([CONFIG_MGR_MODULE_NAME], ["gsettingsmgr"], [configuration manager to use])
+    CONF_MGR=gsettings
+    ENABLE_GSETTINGS=yes
+else
+    AC_DEFINE([CONFIG_MGR_MODULE_NAME], ["gconfmgr"], [configuration manager to use])
+    CONF_MGR=gconf
+    ENABLE_GSETTINGS=no
+fi
+AM_CONDITIONAL(BUILD_GSETTINGS, test x$ENABLE_GSETTINGS = xyes)
+
 dnl *******************************
 dnl checking for libraries we use
 dnl *******************************
@@ -243,7 +270,6 @@ AC_CHECK_HEADERS([boost/variant.hpp],
 
 #dnl checking for non-aggregated lib
 PKG_CHECK_MODULES(SQLITE3, [sqlite3 >= $SQLITE3_VERSION])
-PKG_CHECK_MODULES(GCONF,[gconf-2.0 >= $GCONF_VERSION]) 
 
 #######################################################
 #boost build system sucks no end.
@@ -279,11 +305,32 @@ if test x$ENABLE_MEMORYVIEW = xyes ; then
 fi
 
 dnl *******************
-dnl gconf
+dnl Configuration Manager
 dnl *******************
-AC_PATH_PROG(GCONFTOOL, gconftool-2)
-AM_GCONF_SOURCE_2
-AC_SUBST(GCONFTOOL)
+if test x$CONF_MGR = xgsettings ; then
+    AM_CONDITIONAL([GCONF_SCHEMAS_INSTALL],[0])
+
+    dnl library dependencies for the nemiver gsettings plugin
+    DEP_GSETTINGS="giomm-2.4 >= $LIBGIOMM_WITH_GSETTINGS_VERSION \
+                   gsettings-desktop-schemas >= $GSETTINGS_DESKTOP_SCHEMAS"
+
+    PKG_CHECK_MODULES(NEMIVERGSETTINGS, $DEP_GSETTINGS)
+
+    AC_SUBST(NEMIVERGSETTINGS_LIBS)
+    AC_SUBST(NEMIVERGSETTINGS_CFLAGS)
+
+    GLIB_GSETTINGS
+elif test x$CONF_MGR = xgconf ; then
+    PKG_CHECK_MODULES(GCONF,[gconf-2.0 >= $GCONF_VERSION])
+
+    AC_PATH_PROG(GCONFTOOL, gconftool-2)
+    AC_SUBST(GCONFTOOL)
+
+    AM_GCONF_SOURCE_2
+    AC_SUBST(gsettingsschemadir, [dummy])
+else
+    AC_MSG_ERROR([Configuration Manager undetermined. Abort...])
+fi
 
 dnl library dependencies for libnemivercommon and the IDebugger libraries
 DEP_COMMON="gmodule-2.0 >= $LIBGMODULE_VERSION \
@@ -431,10 +478,10 @@ src/Makefile
   src/dbgengine/varlistwalker.conf
   src/confmgr/Makefile
   src/confmgr/gconfmgr.conf
+  src/confmgr/gsettingsmgr.conf
   src/uicommon/Makefile
   src/workbench/Makefile
   src/workbench/workbench.conf
-  src/workbench/schemas/Makefile
   src/persp/Makefile
   src/persp/dbgperspective/Makefile
   src/persp/dbgperspective/dbgperspective.conf
@@ -443,7 +490,6 @@ src/Makefile
     src/persp/dbgperspective/icons/Makefile
     src/persp/dbgperspective/sqlscripts/Makefile
     src/persp/dbgperspective/sqlscripts/sqlite/Makefile
-    src/persp/dbgperspective/schemas/Makefile
 data/Makefile
     data/icons/Makefile
         data/icons/16x16/Makefile
@@ -452,6 +498,9 @@ data/Makefile
         data/icons/32x32/Makefile
         data/icons/48x48/Makefile
         data/icons/scalable/Makefile
+    data/schemas/Makefile
+        data/schemas/gconf/Makefile
+        data/schemas/gsettings/Makefile
 ui/Makefile
 menus/Makefile
 tests/Makefile
@@ -483,8 +532,9 @@ AC_MSG_NOTICE([
     Enable verbose debug messages   : ${ENABLE_DEBUG}
     Enable workbench                : ${ENABLE_WORKBENCH}
     Enable memory view              : ${ENABLE_MEMORYVIEW} (requires gtkhex > $GTKHEX_VERSION)
-    gtksourceviewmm version         : ${LIBGTKSOURCEVIEWMM_PKG}
+    gtksourceviewmm version         : ${LIBGTKSOURCEVIEWMM_PKG}    
     VFS library                     : ${VFS_PKG}
+    Configuration Manager           : ${CONF_MGR}
     Enable symbols visibility ctrl  : ${ENABLE_GCC_SYMBOLS_VISIBILITY}
     Maintainer mode                 : ${USER_MAINTAINER_MODE}
 

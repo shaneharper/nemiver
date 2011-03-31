@@ -1,0 +1,10 @@
+<moduleconfig>
+    <module>
+        <name>gsettingsmgr</name>
+        <!-- Remember, Interface name is IConfMgr-->
+        <libraryname>gsettingsmgrmod</libraryname>
+    </module>
+    <customsearchpaths>
+        <path>@NEMIVER_LIBDIR@/nemiver/modules</path>
+    </customsearchpaths>
+</moduleconfig>

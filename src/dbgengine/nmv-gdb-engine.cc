@@ -1057,12 +1057,12 @@ public:
     }
 
     void on_conf_key_changed_signal (const UString &a_key,
-                                     IConfMgr::Value &a_value)
+                                     const UString &a_namespace)
     {
         NEMIVER_TRY
 
-        if (a_key == CONF_KEY_FOLLOW_FORK_MODE) {
-            follow_fork_mode = boost::get<UString> (a_value).raw ();
+        if (a_key == CONF_KEY_FOLLOW_FORK_MODE
+                && conf_mgr->get_key_value (a_key, follow_fork_mode, a_namespace)) {
             set_debugger_parameter ("follow-fork-mode", follow_fork_mode);
         }
 

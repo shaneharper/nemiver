@@ -199,7 +199,7 @@ test_main (int argc, char **argv)
 
     //load the IDebugger interface
     IDebuggerSafePtr debugger =
-        debugger_utils::load_debugger_iface_with_gconf ();
+        debugger_utils::load_debugger_iface_with_confmgr ();
 
     //setup the debugger with the glib mainloop
     debugger->set_event_loop_context (Glib::MainContext::get_default ());

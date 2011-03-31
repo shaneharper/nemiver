@@ -79,7 +79,7 @@ test_main (int, char **)
     THROW_IF_FAIL (loop);
 
     IDebuggerSafePtr debugger =
-      debugger_utils::load_debugger_iface_with_gconf ();
+      debugger_utils::load_debugger_iface_with_confmgr ();
 
     debugger->set_event_loop_context (loop->get_context ());
 
