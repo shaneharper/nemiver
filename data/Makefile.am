@@ -1,4 +1,4 @@
-SUBDIRS=icons
+SUBDIRS=icons schemas
 
 desktopdir = $(datadir)/applications
 desktop_in_files = nemiver.desktop.in

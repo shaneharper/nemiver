@@ -25,6 +25,7 @@
 #ifndef __NMV_CONF_MGR_H__
 #define __NMV_CONF_MGR_H__
 
+#include "config.h"
 #include <boost/variant.hpp>
 #include <list>
 #include "common/nmv-dynamic-module.h"
@@ -56,34 +57,84 @@ protected:
 
 public:
 
-    typedef boost::variant<UString, bool, int, double> Value;
-
     virtual ~IConfMgr () {}
 
-    virtual void set_key_dir_to_notify (const UString &a_key_dir) = 0;
-    virtual void add_key_to_notify (const UString &a_key) = 0;
+    virtual const UString& get_default_namespace () const = 0;
 
-    virtual bool get_key_value (const UString &a_key, UString &a_value) = 0;
-    virtual void set_key_value (const UString &a_key, const UString &a_value) = 0;
-
-    virtual bool get_key_value (const UString &a_key, bool &a_value) = 0;
-    virtual void set_key_value (const UString &a_key, bool a_value) = 0;
-
-    virtual bool get_key_value (const UString &a_key, int &a_value) = 0;
-    virtual void set_key_value (const UString &a_key, int a_value) = 0;
-
-    virtual bool get_key_value (const UString &a_key, double &a_value) = 0;
-    virtual void set_key_value (const UString &a_key, double a_value) = 0;
+    virtual void register_namespace
+        (const UString &a_namespace = /*default namespace*/"") = 0;
 
     virtual bool get_key_value (const UString &a_key,
-                                std::list<UString> &a_value) = 0;
+                                UString &a_value,
+                                const UString &a_namespace = "") = 0;
     virtual void set_key_value (const UString &a_key,
-                                const std::list<UString> &a_value) = 0;
+                                const UString &a_value,
+                                const UString &a_namespace = "") = 0;
 
-    virtual sigc::signal<void, const UString&, IConfMgr::Value&>&
-                                                    value_changed_signal () = 0;
+    virtual bool get_key_value (const UString &a_key,
+                                bool &a_value,
+                                const UString &a_namespace = "") = 0;
+    virtual void set_key_value (const UString &a_key,
+                                bool a_value,
+                                const UString &a_namespace = "") = 0;
+
+    virtual bool get_key_value (const UString &a_key,
+                                int &a_value,
+                                const UString &a_namespace = "") = 0;
+    virtual void set_key_value (const UString &a_key,
+                                int a_value,
+                                const UString &a_namespace = "") = 0;
+
+    virtual bool get_key_value (const UString &a_key,
+                                double &a_value,
+                                const UString &a_namespace = "") = 0;
+    virtual void set_key_value (const UString &a_key,
+                                double a_value,
+                                const UString &a_namespace = "") = 0;
+
+    virtual bool get_key_value (const UString &a_key,
+                                std::list<UString> &a_value,
+                                const UString &a_namespace = "") = 0;
+    virtual void set_key_value (const UString &a_key,
+                                const std::list<UString> &a_value,
+                                const UString &a_namespace = "") = 0;
+
+    virtual sigc::signal<void,
+                         const UString&,
+                         const UString&>& value_changed_signal () = 0;
 
 };//end class IConfMgr
+
+template<class T>
+SafePtr<T, ObjectRef, ObjectUnref>
+load_iface_and_confmgr (const UString &a_dynmod_name,
+                        const UString &a_iface_name,
+                        IConfMgrSafePtr &a_confmgr)
+{
+    typedef SafePtr<T, ObjectRef, ObjectUnref> TSafePtr;
+
+    // Load the confmgr interface
+    a_confmgr =
+        common::DynamicModuleManager::load_iface_with_default_manager<IConfMgr>
+        (CONFIG_MGR_MODULE_NAME, "IConfMgr");
+
+    //Load the IDebugger iterface
+    TSafePtr iface =
+        common::DynamicModuleManager::load_iface_with_default_manager<T>
+        (a_dynmod_name, a_iface_name);
+    THROW_IF_FAIL (iface);
+    return iface;
+}
+
+template<class T>
+SafePtr<T, ObjectRef, ObjectUnref>
+load_iface_and_confmgr (const UString &a_dynmod_name,
+                        const UString &a_iface_name)
+{
+    IConfMgrSafePtr m;
+    return load_iface_and_confmgr<T> (a_dynmod_name, a_iface_name, m);
+}
+
 
 NEMIVER_END_NAMESPACE(nemiver)
 

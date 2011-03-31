@@ -317,7 +317,7 @@ private:
     void on_show_log_view_changed_signal (bool);
 
     void on_conf_key_changed_signal (const UString &a_key,
-                                     IConfMgr::Value &a_value);
+                                     const UString &a_namespace);
 
     void on_debugger_connected_to_remote_target_signal ();
 
@@ -2418,31 +2418,46 @@ DBGPerspective::on_show_log_view_changed_signal (bool a_show)
 
 void
 DBGPerspective::on_conf_key_changed_signal (const UString &a_key,
-                                            IConfMgr::Value &a_value)
+                                            const UString &a_namespace)
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD;
-    NEMIVER_TRY
+
+    NEMIVER_TRY;
+    
+
+    IConfMgr &conf_mgr = get_conf_mgr ();
+    
     if (a_key == CONF_KEY_NEMIVER_SOURCE_DIRS) {
         LOG_DD ("updated key source-dirs");
-        m_priv->global_search_paths = boost::get<UString> (a_value).split_to_list (":");
+        UString global_search_paths;
+        conf_mgr.get_key_value (a_key, global_search_paths, a_namespace);
+        m_priv->global_search_paths = global_search_paths.split_to_list (":");
     } else if (a_key == CONF_KEY_SHOW_DBG_ERROR_DIALOGS) {
-        m_priv->show_dbg_errors = boost::get<bool> (a_value);
+        conf_mgr.get_key_value (a_key, m_priv->show_dbg_errors, a_namespace);
     } else if (a_key == CONF_KEY_SHOW_SOURCE_LINE_NUMBERS) {
         map<int, SourceEditor*>::iterator it;
+        bool show_line_numbers = false;
+        conf_mgr.get_key_value (a_key, show_line_numbers, a_namespace);
         for (it = m_priv->pagenum_2_source_editor_map.begin ();
              it != m_priv->pagenum_2_source_editor_map.end ();
              ++it) {
             if (it->second) {
                 it->second->source_view ().set_show_line_numbers
-                    (boost::get<bool> (a_value));
+                    (show_line_numbers);
             }
         }
     } else if (a_key == CONF_KEY_CONFIRM_BEFORE_RELOAD_SOURCE) {
-        m_priv->confirm_before_reload_source = boost::get<bool> (a_value);
+        conf_mgr.get_key_value (a_key,
+                                m_priv->confirm_before_reload_source,
+                                a_namespace);
     } else if (a_key == CONF_KEY_ALLOW_AUTO_RELOAD_SOURCE) {
-        m_priv->allow_auto_reload_source = boost::get<bool> (a_value);
+        conf_mgr.get_key_value (a_key,
+                                m_priv->allow_auto_reload_source,
+                                a_namespace);
     } else if (a_key == CONF_KEY_HIGHLIGHT_SOURCE_CODE) {
         map<int, SourceEditor*>::iterator it;
+        bool highlight = false;
+        conf_mgr.get_key_value (a_key, highlight, a_namespace);
         for (it = m_priv->pagenum_2_source_editor_map.begin ();
              it != m_priv->pagenum_2_source_editor_map.end ();
              ++it) {
@@ -2453,11 +2468,11 @@ DBGPerspective::on_conf_key_changed_signal (const UString &a_key,
 #else
                 it->second->source_view ().get_source_buffer ()->set_highlight
 #endif  // WITH_SOURCEVIEWMM2
-                                                (boost::get<bool> (a_value));
+                                                (highlight);
             }
         }
     } else if (a_key == CONF_KEY_USE_SYSTEM_FONT) {
-        m_priv->use_system_font = boost::get<bool> (a_value);
+        conf_mgr.get_key_value (a_key, m_priv->use_system_font, a_namespace);
         UString font_name;
         if (m_priv->use_system_font) {
             font_name = m_priv->system_font_name;
@@ -2467,24 +2482,27 @@ DBGPerspective::on_conf_key_changed_signal (const UString &a_key,
         if (!font_name.empty ())
             m_priv->modify_source_editor_fonts (font_name);
     } else if (a_key == CONF_KEY_CUSTOM_FONT_NAME) {
-        m_priv->custom_font_name = boost::get<UString> (a_value);
+        conf_mgr.get_key_value (a_key, m_priv->custom_font_name, a_namespace);
         if (!m_priv->use_system_font && !m_priv->custom_font_name.empty ()) {
             m_priv->modify_source_editor_fonts (m_priv->custom_font_name);
         }
     } else if (a_key == CONF_KEY_SYSTEM_FONT_NAME) {
         // keep a cached copy of the system fixed-width font
-        m_priv->system_font_name = boost::get<UString> (a_value);
+        conf_mgr.get_key_value (a_key, m_priv->system_font_name, a_namespace);
         if (m_priv->use_system_font && !m_priv->system_font_name.empty ()) {
             m_priv->modify_source_editor_fonts (m_priv->system_font_name);
         }
     } else if (a_key == CONF_KEY_USE_LAUNCH_TERMINAL) {
-        m_priv->use_launch_terminal = boost::get<bool> (a_value);
+        conf_mgr.get_key_value (a_key,
+                                m_priv->use_launch_terminal,
+                                a_namespace);
         if (m_priv->debugger_engine_alive) {
             debugger ()->set_tty_path (get_terminal_name ());
         }
 #ifdef WITH_SOURCEVIEWMM2
     } else if (a_key == CONF_KEY_EDITOR_STYLE_SCHEME) {
-        UString style_id = boost::get<UString> (a_value);
+        UString style_id;
+        conf_mgr.get_key_value (a_key, style_id, a_namespace);
         if (!style_id.empty ()) {
             m_priv->editor_style =
                 gtksourceview::SourceStyleSchemeManager::get_default
@@ -2495,13 +2513,17 @@ DBGPerspective::on_conf_key_changed_signal (const UString &a_key,
 #endif // WITH_SOURCEVIEWMM2
     else if (a_key == CONF_KEY_DEFAULT_NUM_ASM_INSTRS) {
         // m_priv->num_instr_to_disassemble must never be NULL!
-        int val = boost::get<int> (a_value);
+        int val = 0;
+        conf_mgr.get_key_value (a_key, val, a_namespace);
         if (val != 0)
             m_priv->num_instr_to_disassemble = val;
     } else if (a_key == CONF_KEY_ASM_STYLE_PURE) {
-        m_priv->asm_style_pure = boost::get<bool> (a_value);
+        conf_mgr.get_key_value (a_key,
+                                m_priv->asm_style_pure,
+                                a_namespace);
     }
-    NEMIVER_CATCH
+
+    NEMIVER_CATCH;
 }
 
 void
@@ -5123,7 +5145,8 @@ DBGPerspective::read_default_config ()
     conf_mgr.get_key_value (CONF_KEY_CUSTOM_FONT_NAME,
                             m_priv->custom_font_name);
     conf_mgr.get_key_value (CONF_KEY_SYSTEM_FONT_NAME,
-                            m_priv->system_font_name);
+                            m_priv->system_font_name,
+                            CONF_NAMESPACE_DESKTOP_INTERFACE);
     conf_mgr.get_key_value (CONF_KEY_USE_LAUNCH_TERMINAL,
                             m_priv->use_launch_terminal);
     conf_mgr.get_key_value (CONF_KEY_DEFAULT_NUM_ASM_INSTRS,

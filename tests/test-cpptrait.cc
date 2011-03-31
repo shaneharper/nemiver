@@ -46,7 +46,7 @@ void test_debugger ()
     using nemiver::IDebugger;
     using nemiver::IDebuggerSafePtr;
     IDebuggerSafePtr debugger =
-        nemiver::debugger_utils::load_debugger_iface_with_gconf ();
+        nemiver::debugger_utils::load_debugger_iface_with_confmgr ();
     BOOST_REQUIRE (debugger);
     ILangTrait &trait = debugger->get_language_trait ();
     BOOST_REQUIRE (trait.get_name () == "cpptrait");

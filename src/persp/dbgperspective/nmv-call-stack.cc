@@ -32,6 +32,7 @@
 #include "nmv-ui-utils.h"
 #include "nmv-i-workbench.h"
 #include "nmv-i-perspective.h"
+#include "nmv-conf-keys.h"
 
 namespace nemiver {
 
@@ -97,8 +98,6 @@ columns ()
     return s_cols;
 }
 
-static const char* CONF_KEY_NEMIVER_CALLSTACK_EXPANSION_CHUNK =
-    "/apps/nemiver/dbgperspective/callstack-expansion-chunk";
 static const char* COOKIE_CALL_STACK_IN_FRAME_PAGING_TRANS =
     "cookie-call-stack-in-frame-paging-trans";
 
@@ -107,6 +106,7 @@ typedef map<int, list<IDebugger::VariableSafePtr> > FrameArgsMap;
 typedef map<int, IDebugger::Frame> LevelFrameMap;
 struct CallStack::Priv {
     IDebuggerSafePtr debugger;
+    IConfMgrSafePtr conf_mgr;
     IWorkbench& workbench;
     IPerspective& perspective;
     FrameArray frames;
@@ -131,6 +131,7 @@ struct CallStack::Priv {
           IWorkbench& a_workbench,
           IPerspective& a_perspective) :
         debugger (a_dbg),
+        conf_mgr (0),
         workbench (a_workbench),
         perspective (a_perspective),
         callstack_menu (0),
@@ -149,7 +150,7 @@ struct CallStack::Priv {
 
     void init_conf ()
     {
-        IConfMgrSafePtr conf_mgr = workbench.get_configuration_manager ();
+        conf_mgr = workbench.get_configuration_manager ();
         if (!conf_mgr)
             return;
 
@@ -159,8 +160,6 @@ struct CallStack::Priv {
         if (chunk) {
             nb_frames_expansion_chunk = chunk;
         }
-        conf_mgr->add_key_to_notify
-                            (CONF_KEY_NEMIVER_CALLSTACK_EXPANSION_CHUNK);
         conf_mgr->value_changed_signal ().connect
             (sigc::mem_fun (*this, &Priv::on_config_value_changed_signal));
     }
@@ -439,13 +438,21 @@ struct CallStack::Priv {
     }
 
     void on_config_value_changed_signal (const UString &a_key,
-                                         IConfMgr::Value &a_val)
+                                         const UString &a_namespace)
     {
         LOG_FUNCTION_SCOPE_NORMAL_DD;
 
+        if (!conf_mgr) {
+            return;
+        }
+
         LOG_DD ("key " << a_key << " changed");
         if (a_key == CONF_KEY_NEMIVER_CALLSTACK_EXPANSION_CHUNK) {
-            nb_frames_expansion_chunk = boost::get<int> (a_val);
+            int chunk = 0;
+            conf_mgr->get_key_value (a_key, chunk, a_namespace);
+            if (chunk) {
+                nb_frames_expansion_chunk = chunk;
+            }
         }
     }
 

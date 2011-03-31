@@ -22,6 +22,7 @@
  *
  *See COPYRIGHT file copyright information.
  */
+#include "config.h"
 #include <signal.h>
 #include <unistd.h>
 #include <iostream>
@@ -35,9 +36,10 @@
 #include "nmv-proc-mgr.h"
 #include "nmv-env.h"
 #include "nmv-dbg-perspective.h"
-#include "config.h"
+#include "nmv-i-conf-mgr.h"
 
 using namespace std;
+using nemiver::IConfMgr;
 using nemiver::common::DynamicModuleManager;
 using nemiver::common::Initializer;
 using nemiver::IWorkbench;
@@ -606,9 +608,9 @@ main (int a_argc, char *a_argv[])
     //********************************************
     //load and init the workbench dynamic module
     //********************************************
-    DynamicModuleManager module_manager;
     IWorkbenchSafePtr workbench =
-        module_manager.load_iface<IWorkbench> ("workbench", "IWorkbench");
+        nemiver::load_iface_and_confmgr<IWorkbench> ("workbench",
+                                                     "IWorkbench");
     s_workbench = workbench.get ();
     THROW_IF_FAIL (s_workbench);
     LOG_D ("workbench refcount: " <<  (int) s_workbench->get_refcount (),

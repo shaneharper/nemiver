@@ -27,6 +27,7 @@
 #include "common/nmv-ustring.h"
 #include "common/nmv-exception.h"
 #include "common/nmv-safe-ptr-utils.h"
+#include "nmv-conf-keys.h"
 
 NEMIVER_BEGIN_NAMESPACE (nemiver)
 
@@ -37,34 +38,55 @@ class GConfMgr : public IConfMgr {
     GConfMgr& operator= (const GConfMgr &);
 
     GConfClient *m_gconf_client;
-    sigc::signal<void, const UString&, IConfMgr::Value&> m_value_changed_signal;
+    sigc::signal<void, const UString&, const UString&> m_value_changed_signal;
 
 public:
 
     GConfMgr (DynamicModule *a_dynmod);
     virtual ~GConfMgr ();
 
-    void set_key_dir_to_notify (const UString &a_key_dir);
-    void add_key_to_notify (const UString &a_key);
+    const UString& get_default_namespace () const;
 
-    bool get_key_value (const UString &a_key, UString &a_value);
-    void set_key_value (const UString &a_key, const UString &a_value);
-
-    bool get_key_value (const UString &a_key, bool &a_value);
-    void set_key_value (const UString &a_key, bool a_value);
-
-    bool get_key_value (const UString &a_key, int &a_value);
-    void set_key_value (const UString &a_key, int a_value);
-
-    bool get_key_value (const UString &a_key, double &a_value);
-    void set_key_value (const UString &a_key, double a_value);
+    void register_namespace (const UString &a_name);
 
     bool get_key_value (const UString &a_key,
-                                std::list<UString> &a_value);
+                        UString &a_value,
+                        const UString &a_namespace);
     void set_key_value (const UString &a_key,
-                                const std::list<UString> &a_value);
+                        const UString &a_value,
+                        const UString &a_namespace);
 
-    sigc::signal<void, const UString&, IConfMgr::Value&>& value_changed_signal ();
+    bool get_key_value (const UString &a_key,
+                        bool &a_value,
+                        const UString &a_namespace);
+    void set_key_value (const UString &a_key,
+                        bool a_value,
+                        const UString &a_namespace);
+
+    bool get_key_value (const UString &a_key,
+                        int &a_value,
+                        const UString &a_namespace);
+    void set_key_value (const UString &a_key,
+                        int a_value,
+                        const UString &a_namespace);
+
+    bool get_key_value (const UString &a_key,
+                        double &a_value,
+                        const UString &a_namespace);
+    void set_key_value (const UString &a_key,
+                        double a_value,
+                        const UString &a_namespace);
+
+    bool get_key_value (const UString &a_key,
+                        std::list<UString> &a_value,
+                        const UString &a_namespace);
+    void set_key_value (const UString &a_key,
+                        const std::list<UString> &a_value,
+                        const UString &a_namespace);
+
+    sigc::signal<void,
+                 const UString&,
+                 const UString&>& value_changed_signal ();
 
 };//end class GCongMgr
 
@@ -95,32 +117,7 @@ client_notify_func (GConfClient *a_client,
 
 
     LOG_DD ("key changed: '" << a_key << "'");
-
-    IConfMgr::Value value;
-    switch (a_value->type) {
-        case GCONF_VALUE_STRING:
-            value = UString (gconf_value_get_string (a_value));
-            LOG_DD ("key value is: '" << boost::get<UString> (value) << "'");
-            break;
-        case GCONF_VALUE_INT:
-            value = gconf_value_get_int (a_value);
-            LOG_DD ("key value is: '" << boost::get<int> (value) << "'");
-            break;
-        case GCONF_VALUE_FLOAT:
-            value = gconf_value_get_float (a_value);
-            LOG_DD ("key value is: '" << boost::get<double> (value) << "'");
-            break;
-        case GCONF_VALUE_BOOL:
-            value = (bool) gconf_value_get_bool (a_value);
-            LOG_DD ("key value is: '" << boost::get<bool> (value) << "'");
-            break;
-        default:
-            LOG_ERROR ("unsupported key type '"
-                       << (int)a_value->type
-                       << "'");
-            return;
-    }
-    a_conf_mgr->value_changed_signal ().emit (a_key, value);
+    a_conf_mgr->value_changed_signal ().emit (a_key, "");
 
     NEMIVER_CATCH_NOX
 }
@@ -142,34 +139,43 @@ client_notify_add_func (GConfClient *a_client,
                         a_conf_mgr);
 }
 
+const UString&
+GConfMgr::get_default_namespace () const
+{
+    static UString s_default_ns = CONF_NAMESPACE_NEMIVER;
+    return s_default_ns;
+}
+
 void
-GConfMgr::set_key_dir_to_notify (const UString &a_key_dir)
+GConfMgr::register_namespace (const UString &a_name)
 {
     THROW_IF_FAIL (m_gconf_client);
     GError *err=0;
+
+    UString name = a_name;
+    if (name.empty ())
+        name = get_default_namespace ();
+
+    if (name.empty ())
+        return;
+
     gconf_client_add_dir (m_gconf_client,
-                          a_key_dir.c_str (),
+                          name.c_str (),
                           GCONF_CLIENT_PRELOAD_NONE,
                           &err);
     GErrorSafePtr error (err);
     THROW_IF_FAIL2 (!error, error->message);
-    LOG_DD ("watching key for notification: '" << a_key_dir << "'");
-}
 
-void
-GConfMgr::add_key_to_notify (const UString &a_key)
-{
-    THROW_IF_FAIL (m_gconf_client);
-    GError *err=0;
     gconf_client_notify_add (m_gconf_client,
-                             a_key.c_str (),
+                             name.c_str (),
                              (GConfClientNotifyFunc) client_notify_add_func,
                              this,
                              NULL,
                              &err);
-    GErrorSafePtr error (err);
+    error.reset (err);
     THROW_IF_FAIL2 (!error, error->message);
-    LOG_DD ("watching key for notification: '" << a_key << "'");
+
+    LOG_DD ("watching key for notification: '" << name << "'");
 }
 
 GConfMgr::GConfMgr (DynamicModule *a_dynmod) :
@@ -190,7 +196,9 @@ GConfMgr::~GConfMgr ()
 }
 
 bool
-GConfMgr::get_key_value (const UString &a_key, UString &a_value)
+GConfMgr::get_key_value (const UString &a_key,
+                         UString &a_value,
+                         const UString &)
 {
     THROW_IF_FAIL (m_gconf_client);
 
@@ -208,7 +216,9 @@ GConfMgr::get_key_value (const UString &a_key, UString &a_value)
 }
 
 void
-GConfMgr::set_key_value (const UString &a_key, const UString &a_value)
+GConfMgr::set_key_value (const UString &a_key,
+                         const UString &a_value,
+                         const UString &)
 {
     THROW_IF_FAIL (m_gconf_client);
     GError *err=NULL;
@@ -224,7 +234,9 @@ GConfMgr::set_key_value (const UString &a_key, const UString &a_value)
 }
 
 bool
-GConfMgr::get_key_value (const UString &a_key, bool &a_value)
+GConfMgr::get_key_value (const UString &a_key,
+                         bool &a_value,
+                         const UString &)
 {
     THROW_IF_FAIL (m_gconf_client);
 
@@ -242,7 +254,9 @@ GConfMgr::get_key_value (const UString &a_key, bool &a_value)
 }
 
 void
-GConfMgr::set_key_value (const UString &a_key, bool a_value)
+GConfMgr::set_key_value (const UString &a_key,
+                         bool a_value,
+                         const UString &)
 {
     THROW_IF_FAIL (m_gconf_client);
     GError *err=NULL;
@@ -258,7 +272,9 @@ GConfMgr::set_key_value (const UString &a_key, bool a_value)
 }
 
 bool
-GConfMgr::get_key_value (const UString &a_key, int &a_value)
+GConfMgr::get_key_value (const UString &a_key,
+                         int &a_value,
+                         const UString &)
 {
     THROW_IF_FAIL (m_gconf_client);
 
@@ -276,7 +292,9 @@ GConfMgr::get_key_value (const UString &a_key, int &a_value)
 }
 
 void
-GConfMgr::set_key_value (const UString &a_key, int a_value)
+GConfMgr::set_key_value (const UString &a_key,
+                         int a_value,
+                         const UString &)
 {
     THROW_IF_FAIL (m_gconf_client);
     GError *err=NULL;
@@ -292,7 +310,9 @@ GConfMgr::set_key_value (const UString &a_key, int a_value)
 }
 
 bool
-GConfMgr::get_key_value (const UString &a_key, double &a_value)
+GConfMgr::get_key_value (const UString &a_key,
+                         double &a_value,
+                         const UString &)
 {
     THROW_IF_FAIL (m_gconf_client);
 
@@ -310,7 +330,9 @@ GConfMgr::get_key_value (const UString &a_key, double &a_value)
 }
 
 void
-GConfMgr::set_key_value (const UString &a_key, double a_value)
+GConfMgr::set_key_value (const UString &a_key,
+                         double a_value,
+                         const UString &)
 {
     THROW_IF_FAIL (m_gconf_client);
     GError *err=NULL;
@@ -327,7 +349,8 @@ GConfMgr::set_key_value (const UString &a_key, double a_value)
 
 bool
 GConfMgr::get_key_value (const UString &a_key,
-                         std::list<UString> &a_value)
+                         std::list<UString> &a_value,
+                         const UString &)
 {
     bool result=false;
     THROW_IF_FAIL (m_gconf_client);
@@ -361,7 +384,8 @@ out:
 
 void
 GConfMgr::set_key_value (const UString &a_key,
-                         const std::list<UString> &a_value)
+                         const std::list<UString> &a_value,
+                         const UString &)
 {
     if (a_value.empty ())
         return;
@@ -390,7 +414,7 @@ GConfMgr::set_key_value (const UString &a_key,
     }
 }
 
-sigc::signal<void, const UString&, IConfMgr::Value&>&
+sigc::signal<void, const UString&, const UString&>&
 GConfMgr::value_changed_signal ()
 {
     return m_value_changed_signal;

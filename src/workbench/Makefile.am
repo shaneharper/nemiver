@@ -1,15 +1,3 @@
-SUBDIRS=schemas
-
-install-data-local: install-schemas
-
-uninstall-local: uninstall-schemas
-
-install-schemas:
-	$(MAKE) -C schemas $(AM_MAKEFLAGS) install-schemas
-
-uninstall-schemas:
-	$(MAKE) -C schemas $(AM_MAKEFLAGS)  uninstall-schemas
-
 workbenchmod_LTLIBRARIES=libworkbenchmod.la
 workbenchmoddir=@NEMIVER_MODULES_DIR@
 

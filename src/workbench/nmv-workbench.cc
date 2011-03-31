@@ -41,6 +41,7 @@
 #include "nmv-i-workbench.h"
 #include "nmv-i-perspective.h"
 #include "nmv-i-conf-mgr.h"
+#include "nmv-conf-keys.h"
 
 using namespace std;
 using namespace nemiver;
@@ -52,22 +53,6 @@ using namespace nemiver::common;
 #endif
 
 NEMIVER_BEGIN_NAMESPACE (nemiver)
-
-static const UString CONF_KEY_NEMIVER_WINDOW_WIDTH =
-                "/apps/nemiver/workbench/window-width";
-static const UString CONF_KEY_NEMIVER_WINDOW_HEIGHT =
-                "/apps/nemiver/workbench/window-height";
-static const UString CONF_KEY_NEMIVER_WINDOW_POSITION_X =
-                "/apps/nemiver/workbench/window-position-x";
-static const UString CONF_KEY_NEMIVER_WINDOW_POSITION_Y =
-                "/apps/nemiver/workbench/window-position-y";
-static const UString CONF_KEY_NEMIVER_WINDOW_MAXIMIZED =
-                "/apps/nemiver/workbench/window-maximized";
-static const UString CONF_KEY_NEMIVER_WINDOW_MINIMUM_WIDTH=
-                "/apps/nemiver/workbench/window-minimum-width";
-static const UString CONF_KEY_NEMIVER_WINDOW_MINIMUM_HEIGHT=
-                "/apps/nemiver/workbench/window-minimum-height";
-
 
 class WorkbenchStaticInit {
     WorkbenchStaticInit ()
@@ -532,23 +517,17 @@ Workbench::get_configuration_manager ()
 {
     THROW_IF_FAIL (m_priv);
     if (!m_priv->conf_mgr) {
-        DynamicModule::Loader *loader =
-            get_dynamic_module ().get_module_loader ();
-        THROW_IF_FAIL (loader);
 
-        DynamicModuleManager *dynmod_manager =
-                loader->get_dynamic_module_manager ();
-        THROW_IF_FAIL (dynmod_manager);
+        m_priv->conf_mgr =
+            DynamicModuleManager::load_iface_with_default_manager<IConfMgr>
+            (CONFIG_MGR_MODULE_NAME, "IConfMgr");
 
-        m_priv->conf_mgr = dynmod_manager->load_iface <IConfMgr> ("gconfmgr",
-                                                                  "IConfMgr");
-        NEMIVER_TRY
+        NEMIVER_TRY;
 
-        m_priv->conf_mgr->set_key_dir_to_notify ("/apps/nemiver");
-        m_priv->conf_mgr->add_key_to_notify (
-                "/desktop/gnome/interface/monospace_font_name");
+        m_priv->conf_mgr->register_namespace (/*default nemiver namespace*/);
+        m_priv->conf_mgr->register_namespace (CONF_NAMESPACE_DESKTOP_INTERFACE);
 
-        NEMIVER_CATCH_NOX
+        NEMIVER_CATCH_NOX;
     }
     THROW_IF_FAIL (m_priv->conf_mgr);
     return m_priv->conf_mgr;
