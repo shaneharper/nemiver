@@ -2408,12 +2408,15 @@ GDBMIParser::parse_threads_list (UString::size_type a_from,
             num_threads =
                 atoi (gdbmi_result->value ()->get_string_content ().c_str ());
         } else if (gdbmi_result->variable () == "current-thread-id") {
-            // If we've got a RESULT which variable is "current-thread-id",
-            // expect the result to be a string which is the id of the current
-            // thread.
-            unsigned current_thread_id =
-                atoi (gdbmi_result->value ()->get_string_content ().c_str ());
-            thread_ids.push_back (current_thread_id);
+            // If we've got a RESULT which variable is
+            // "current-thread-id", expect the result to be a string
+            // which is the id of the current thread.  Also, we don't
+            // use the current ID for now, as, each time we stop, the
+            // current thread id is given in the information related
+            // to the stop state.
+
+            // unsigned current_thread_id =
+            //    atoi (gdbmi_result->value ()->get_string_content ().c_str ());
         } else {
             // Let's consume the unknown RESULT which we might have gotten for
             // now.
