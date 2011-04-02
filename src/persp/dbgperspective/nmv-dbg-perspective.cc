@@ -912,7 +912,7 @@ struct DBGPerspective::Priv {
     SafePtr<Gtk::Paned> body_main_paned;
     IWorkbench *workbench;
     SafePtr<Gtk::HBox> toolbar;
-    SafePtr<SpinnerToolItem> throbber;
+    SpinnerToolItemSafePtr throbber;
     sigc::signal<void, bool> activated_signal;
     sigc::signal<void, bool> attached_to_target_signal;
     sigc::signal<void, bool> debugger_ready_signal;
@@ -3873,7 +3873,7 @@ DBGPerspective::init_toolbar ()
 {
     add_perspective_toolbar_entries ();
 
-    m_priv->throbber.reset (new SpinnerToolItem);
+    m_priv->throbber = SpinnerToolItem::create ();
     m_priv->toolbar.reset ((new Gtk::HBox));
     THROW_IF_FAIL (m_priv->toolbar);
     Gtk::Toolbar *glade_toolbar = dynamic_cast<Gtk::Toolbar*>
@@ -3883,7 +3883,7 @@ DBGPerspective::init_toolbar ()
     gtk_separator_tool_item_set_draw (sep->gobj (), false);
     sep->set_expand (true);
     glade_toolbar->insert (*sep, -1);
-    glade_toolbar->insert (*m_priv->throbber, -1);
+    glade_toolbar->insert (m_priv->throbber->get_widget (), -1);
     m_priv->toolbar->pack_start (*glade_toolbar);
     m_priv->toolbar->show_all ();
 }

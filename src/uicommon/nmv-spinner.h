@@ -22,41 +22,43 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NMV_SPINNER_TOOL_ITEM_H__
-#define __NMV_SPINNER_TOOL_ITEM_H__
+#ifndef __NMV_SPINNER_H__
+#define __NMV_SPINNER_H__
 
 #include "common/nmv-object.h"
 #include "common/nmv-safe-ptr-utils.h"
-
+#include "common/nmv-ustring.h"
 namespace Gtk {
-    class ToolItem;
+    class Widget;
 }
-
-NEMIVER_BEGIN_NAMESPACE (nemiver)
-
+using nemiver::common::Object;
 using nemiver::common::SafePtr;
 using nemiver::common::ObjectRef;
 using nemiver::common::ObjectUnref;
-using nemiver::common::Object;
+using nemiver::common::UString;
 
-class SpinnerToolItem;
-typedef SafePtr<SpinnerToolItem, ObjectRef, ObjectUnref> SpinnerToolItemSafePtr;
+NEMIVER_BEGIN_NAMESPACE (nemiver)
+class Spinner;
+typedef SafePtr<Spinner, ObjectRef, ObjectUnref> SpinnerSafePtr;
 
-class SpinnerToolItem : public Object {
-    struct Priv;
+class Spinner : public Object {
+    class Priv;
     SafePtr<Priv> m_priv;
-    SpinnerToolItem ();
+
+protected:
+    Spinner ();
+    Spinner (const UString &a_root_path);
 
 public:
-    virtual ~SpinnerToolItem () ;
-    static SpinnerToolItemSafePtr create ();
-    void start ();
-    bool is_started () const;
-    void stop ();
-    void toggle_state ();
-    Gtk::ToolItem& get_widget () const;
-};//end class SpinnerToolItem
+    virtual ~Spinner () ;
+    static SpinnerSafePtr create ();
+    virtual void start ();
+    virtual bool is_started () const;
+    virtual void stop ();
+    virtual void toggle_state ();
+    virtual Gtk::Widget& get_widget () const;
+};//end class Spinner
 
 NEMIVER_END_NAMESPACE (nemiver)
+#endif //__NMV_SPINNER_H__
 
-#endif //__NMV_SPINNER_TOOL_ITEM_H__

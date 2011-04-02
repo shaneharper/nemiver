@@ -10,6 +10,12 @@ $(h)/nmv-dialog.cc \
 $(h)/nmv-dialog.h \
 $(h)/nmv-locate-file-dialog.cc \
 $(h)/nmv-locate-file-dialog.h \
+$(h)/ephy-spinner.c \
+$(h)/ephy-spinner.h \
+$(h)/ephy-spinner-tool-item.c \
+$(h)/ephy-spinner-tool-item.h \
+$(h)/nmv-spinner.cc \
+$(h)/nmv-spinner.h \
 $(h)/nmv-spinner-tool-item.h \
 $(h)/nmv-spinner-tool-item.cc \
 $(h)/nmv-popup-tip.cc \
