@@ -123,7 +123,7 @@ GSettingsMgr::register_namespace (const UString &a_name)
         Gio::Settings::create (name);
     THROW_IF_FAIL (settings);
 
-    settings->signal_changed ().connect (sigc::bind<const UString&> (
+    settings->signal_changed ().connect (sigc::bind<const UString> (
         sigc::mem_fun (m_value_changed_signal,
                        &sigc::signal<void,
                        const UString&,
@@ -220,7 +220,7 @@ GSettingsMgr::set_key_value (const UString &a_key,
     UString ns = a_namespace;
     ENSURE_NAMESPACE_NOT_EMPTY (ns);
 
-    Glib::RefPtr<Gio::Settings> settings = m_settings[a_namespace];
+    Glib::RefPtr<Gio::Settings> settings = m_settings[ns];
     THROW_IF_FAIL (settings);
 
     settings->set_int (a_key, a_value);
