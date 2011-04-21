@@ -867,6 +867,37 @@ SourceEditor::current_column (int &a_col)
     m_priv->non_asm_ctxt.current_column = a_col;
 }
 
+/// Return a pointer to the current location selected by the user.
+///
+///  \return a pointer to an instance of Loc representing the location
+///  selected by the user.  If the user hasn't selected any location,
+///  then return 0.
+const Loc*
+SourceEditor::current_location () const
+{
+    BufferType type = get_buffer_type ();
+    switch (type) {
+    case BUFFER_TYPE_UNDEFINED:
+      break;
+    case BUFFER_TYPE_SOURCE: {
+        UString path;
+        get_path (path);
+        THROW_IF_FAIL (!path.empty ());
+	if (current_line () >= 0)
+	  return new SourceLoc (path, current_line ());
+    }
+      break;
+    case BUFFER_TYPE_ASSEMBLY: {
+        Address a;
+        if (current_address (a))
+	  return new AddressLoc (a);
+    }
+      break;
+    }
+
+    return 0;
+}
+
 bool
 SourceEditor::move_where_marker_to_line (int a_line, bool a_do_scroll)
 {

@@ -333,6 +333,9 @@ public:
                                gint a_line_num,
                                const UString &a_cookie) ;
 
+    void jump_to_position (const Loc &a_loc,
+			   const DefaultSlot &a_slot);
+
     void set_breakpoint (const Loc &a_loc,
 			 const UString &a_condition,
 			 gint a_ignore_count,
@@ -354,6 +357,10 @@ public:
                          const UString &a_condition,
                          gint a_ignore_count,
                          const UString &a_cookie);
+
+    void enable_breakpoint (gint a_break_num,
+			    const BreakpointsSlot &a_slot,
+			    const UString &a_cookie = "");
 
     void enable_breakpoint (gint a_break_num,
                             const UString &a_cookie="");

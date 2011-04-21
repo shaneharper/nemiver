@@ -822,9 +822,15 @@ public:
     }
 
     typedef sigc::slot<void> DefaultSlot;
+
     typedef sigc::slot<void,
                        const std::pair<int, const IDebugger::Breakpoint&>&>
         BreakpointSlot;
+
+    typedef sigc::slot<void,
+                       const std::map<int, IDebugger::Breakpoint>&>
+        BreakpointsSlot;
+
     typedef sigc::slot<void, Loc&> LocSlot;
     
     virtual ~IDebugger () {}
@@ -1128,6 +1134,9 @@ public:
                                        gint a_line_num,
                                        const UString &a_cookie="") = 0;
 
+    virtual void jump_to_position (const Loc &a_loc,
+                                   const DefaultSlot &a_slot) = 0;
+
     virtual void set_breakpoint (const common::Loc &a_loc,
                                  const UString &a_condition,
                                  gint a_ignore_count,
@@ -1149,6 +1158,10 @@ public:
                                  const UString &a_condition = "",
                                  gint a_ignore_count = 0,
                                  const UString &a_cookie = "") = 0;
+
+    virtual void enable_breakpoint (gint a_break_num,
+                                    const BreakpointsSlot &a_slot,
+                                    const UString &a_cookie="") = 0;
 
     virtual void enable_breakpoint (gint a_break_num,
                                     const UString &a_cookie="") = 0;
