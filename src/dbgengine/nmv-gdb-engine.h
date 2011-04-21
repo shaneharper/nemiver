@@ -70,7 +70,12 @@ public:
     sigc::signal<void>& detached_from_target_signal () const;
 
     sigc::signal<void, const map<int, IDebugger::Breakpoint>&, const UString&>&
-                                            breakpoints_set_signal () const;
+                                            breakpoints_list_signal () const;
+
+    sigc::signal<void,
+                const std::pair<int, const IDebugger::Breakpoint&>&,
+                const UString& /*cookie*/>&
+        breakpoint_set_signal () const;
 
     sigc::signal<void, const vector<OverloadsChoiceEntry>&, const UString&>&
                                     got_overloads_choice_signal () const;
@@ -331,7 +336,7 @@ public:
     void set_breakpoint (const Loc &a_loc,
 			 const UString &a_condition,
 			 gint a_ignore_count,
-			 const BreakpointsSlot &a_slot,
+			 const BreakpointSlot &a_slot,
 			 const UString &a_cookie);
 
     void set_breakpoint (const UString &a_path,

@@ -326,7 +326,10 @@ private:
     void on_debugger_command_done_signal (const UString &a_command_name,
                                           const UString &a_cookie);
 
-    void on_debugger_breakpoints_set_signal
+    void on_debugger_breakpoint_set_signal
+    (const std::pair<int, const IDebugger::Breakpoint&>&, const UString&);
+
+    void on_debugger_breakpoints_list_signal
                                 (const map<int, IDebugger::Breakpoint> &,
                                  const UString &a_cookie);
 
@@ -609,8 +612,7 @@ public:
     void set_breakpoint (const Address &a_address,
                          bool a_is_count_point);
     void set_breakpoint (const IDebugger::Breakpoint &a_breakpoint);
-    void append_breakpoint (int a_bp_num,
-                            const IDebugger::Breakpoint &a_breakpoint);
+    void append_breakpoint (const IDebugger::Breakpoint &a_breakpoint);
     void append_breakpoints
                     (const map<int, IDebugger::Breakpoint> &a_breaks);
 
@@ -2519,7 +2521,15 @@ DBGPerspective::on_debugger_command_done_signal (const UString &a_command,
 }
 
 void
-DBGPerspective::on_debugger_breakpoints_set_signal
+DBGPerspective::on_debugger_breakpoint_set_signal
+(const std::pair<int, const IDebugger::Breakpoint&> &a,
+ const UString&)
+{
+    append_breakpoint (a.second);
+}
+
+void
+DBGPerspective::on_debugger_breakpoints_list_signal
                             (const map<int, IDebugger::Breakpoint> &a_breaks,
                              const UString &a_cookie)
 {
@@ -4083,8 +4093,11 @@ DBGPerspective::init_debugger_signals ()
     debugger ()->command_done_signal ().connect (sigc::mem_fun
             (*this, &DBGPerspective::on_debugger_command_done_signal));
 
-    debugger ()->breakpoints_set_signal ().connect (sigc::mem_fun
-            (*this, &DBGPerspective::on_debugger_breakpoints_set_signal));
+    debugger ()->breakpoint_set_signal ().connect (sigc::mem_fun
+            (*this, &DBGPerspective::on_debugger_breakpoint_set_signal));
+
+    debugger ()->breakpoints_list_signal ().connect (sigc::mem_fun
+            (*this, &DBGPerspective::on_debugger_breakpoints_list_signal));
 
     debugger ()->breakpoint_deleted_signal ().connect (sigc::mem_fun
             (*this, &DBGPerspective::on_debugger_breakpoint_deleted_signal));
@@ -6798,8 +6811,7 @@ DBGPerspective::set_breakpoint (const IDebugger::Breakpoint &a_breakpoint)
 }
 
 void
-DBGPerspective::append_breakpoint (int a_bp_num,
-                                   const IDebugger::Breakpoint &a_breakpoint)
+DBGPerspective::append_breakpoint (const IDebugger::Breakpoint &a_breakpoint)
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD;
 
@@ -6814,8 +6826,8 @@ DBGPerspective::append_breakpoint (int a_bp_num,
         file_path = a_breakpoint.file_name ();
     }
 
-    m_priv->breakpoints[a_bp_num] = a_breakpoint;
-    m_priv->breakpoints[a_bp_num].file_full_name (file_path);
+    m_priv->breakpoints[a_breakpoint.number ()] = a_breakpoint;
+    m_priv->breakpoints[a_breakpoint.number ()].file_full_name (file_path);
 
     // We don't know how to graphically represent non-standard
     // breakpoints (e.g watchpoints) at this moment.
@@ -6878,7 +6890,7 @@ DBGPerspective::append_breakpoints
 
     map<int, IDebugger::Breakpoint>::const_iterator iter;
     for (iter = a_breaks.begin (); iter != a_breaks.end (); ++iter)
-        append_breakpoint (iter->first, iter->second);
+        append_breakpoint (iter->second);
 }
 
 const IDebugger::Breakpoint*

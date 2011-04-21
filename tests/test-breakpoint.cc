@@ -216,7 +216,7 @@ test_main (int argc, char *argv[])
 
     debugger->command_done_signal ().connect (&on_command_done_signal);
 
-    debugger->breakpoints_set_signal ().connect
+    debugger->breakpoints_list_signal ().connect
                                             (&on_breakpoints_set_signal);
 
     debugger->running_signal ().connect (&on_running_signal);
