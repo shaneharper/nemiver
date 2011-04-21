@@ -328,11 +328,17 @@ public:
                                gint a_line_num,
                                const UString &a_cookie) ;
 
+    void set_breakpoint (const Loc &a_loc,
+			 const UString &a_condition,
+			 gint a_ignore_count,
+			 const BreakpointsSlot &a_slot,
+			 const UString &a_cookie);
+
     void set_breakpoint (const UString &a_path,
                          gint a_line_num,
                          const UString &a_condition,
                          gint a_ignore_count,
-                         const UString &a_cookie) ;
+                         const UString &a_cookie);
 
     void set_breakpoint (const UString &a_func_name,
                          const UString &a_condition,

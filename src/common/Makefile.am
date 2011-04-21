@@ -41,7 +41,8 @@ $(h)/nmv-sql-statement.h \
 $(h)/nmv-insert-statement.h \
 $(h)/nmv-delete-statement.h \
 $(h)/nmv-proc-utils.h \
-$(h)/nmv-proc-mgr.h
+$(h)/nmv-proc-mgr.h \
+$(h)/nmv-loc.h
 
 libnemivercommon_la_SOURCES= $(headers) \
 $(h)/nmv-ustring.cc \

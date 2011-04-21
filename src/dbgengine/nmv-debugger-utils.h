@@ -32,6 +32,9 @@
 NEMIVER_BEGIN_NAMESPACE (nemiver)
 NEMIVER_BEGIN_NAMESPACE (debugger_utils)
 
+/// \name Declarations of no-op callback slots
+///
+/// @{
 void null_const_variable_slot (const IDebugger::VariableSafePtr &);
 
 void null_const_variable_list_slot (const IDebugger::VariableList &);
@@ -41,6 +44,15 @@ void null_const_ustring_slot (const UString &);
 void null_frame_vector_slot (const vector<IDebugger::Frame> &);
 
 void null_frame_args_slot (const map<int, IDebugger::VariableList> &);
+
+void null_default_slot ();
+
+void null_disass_slot (const common::DisassembleInfo &,
+		       const std::list<common::Asm> &);
+
+void null_breakpoints_slot (const map<int, IDebugger::Breakpoint>&);
+
+/// @}
 
 void dump_variable_value (IDebugger::VariableSafePtr a_var,
                           int a_indent_num,

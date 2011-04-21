@@ -29,6 +29,10 @@
 NEMIVER_BEGIN_NAMESPACE (nemiver)
 NEMIVER_BEGIN_NAMESPACE (debugger_utils)
 
+/// \name Definitions of no-op callback slots that can used by client
+/// code.
+/// 
+/// @{
 void
 null_const_variable_slot (const IDebugger::VariableSafePtr &)
 {
@@ -53,6 +57,23 @@ void
 null_frame_args_slot (const map<int, IDebugger::VariableList> &)
 {
 }
+
+void
+null_default_slot ()
+{
+}
+
+void
+null_disass_slot (const common::DisassembleInfo &,
+                  const std::list<common::Asm> &)
+{
+}
+
+void
+null_breakpoints_slot (const map<int, IDebugger::Breakpoint>&)
+{
+}
+///@}
 
 /// Generate a string of of white spaces.
 /// \param a_nb_ws the number of white spaces to generate
