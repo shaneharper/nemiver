@@ -822,7 +822,9 @@ public:
     }
 
     typedef sigc::slot<void> DefaultSlot;
-    typedef sigc::slot<void, const map<int, IDebugger::Breakpoint>&> BreakpointsSlot;
+    typedef sigc::slot<void,
+                       const std::pair<int, const IDebugger::Breakpoint&>&>
+        BreakpointSlot;
     typedef sigc::slot<void, Loc&> LocSlot;
     
     virtual ~IDebugger () {}
@@ -866,7 +868,12 @@ public:
     virtual sigc::signal<void,
                          const map<int, IDebugger::Breakpoint>&,
                          const UString& /*cookie*/>&
-                                         breakpoints_set_signal () const=0;
+                                         breakpoints_list_signal () const=0;
+
+    virtual sigc::signal<void,
+                        const std::pair<int, const IDebugger::Breakpoint&>&,
+                        const UString& /*cookie*/>&
+                        breakpoint_set_signal () const = 0;
 
     virtual sigc::signal<void,
                          const vector<OverloadsChoiceEntry>&,
@@ -1124,7 +1131,7 @@ public:
     virtual void set_breakpoint (const common::Loc &a_loc,
                                  const UString &a_condition,
                                  gint a_ignore_count,
-                                 const BreakpointsSlot &a_slot,
+                                 const BreakpointSlot &a_slot,
                                  const UString &a_cookie = "") = 0;
 
     virtual void set_breakpoint (const UString &a_path,

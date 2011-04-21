@@ -117,15 +117,15 @@ public:
     {
         init_actions ();
         build_tree_view ();
-        void set_breakpoints
-                (const std::map<int, IDebugger::Breakpoint> &a_breakpoints);
 
         // update breakpoint list when debugger indicates that the list of
         // breakpoints has changed.
         debugger->breakpoint_deleted_signal ().connect (sigc::mem_fun
                 (*this, &Priv::on_debugger_breakpoint_deleted_signal));
-        debugger->breakpoints_set_signal ().connect (sigc::mem_fun
-                (*this, &Priv::on_debugger_breakpoints_set_signal));
+        debugger->breakpoint_set_signal ().connect
+            (sigc::mem_fun (*this, &Priv::on_debugger_breakpoint_set_signal));
+        debugger->breakpoints_list_signal ().connect (sigc::mem_fun
+                (*this, &Priv::on_debugger_breakpoints_list_signal));
         debugger->stopped_signal ().connect (sigc::mem_fun
                 (*this, &Priv::on_debugger_stopped_signal));
         breakpoints_menu = load_menu ("breakpointspopup.xml",
@@ -451,7 +451,8 @@ public:
         }
     }
 
-    void on_debugger_breakpoints_set_signal
+    void 
+    on_debugger_breakpoints_list_signal
                             (const map<int, IDebugger::Breakpoint> &a_breaks,
                              const UString &a_cookie)
     {
@@ -515,7 +516,23 @@ public:
         NEMIVER_CATCH
     }
 
-    bool on_breakpoints_view_button_press_signal (GdkEventButton *a_event)
+    void
+    on_debugger_breakpoint_set_signal
+    (const std::pair<int, const IDebugger::Breakpoint&> &a,
+     const UString &)
+    {
+        NEMIVER_TRY;
+
+        LOG_DD ("Adding breakpoint "
+                << a.second.number ());
+
+        append_breakpoint (a.second);
+
+        NEMIVER_CATCH;
+    }
+
+    bool
+    on_breakpoints_view_button_press_signal (GdkEventButton *a_event)
     {
         LOG_FUNCTION_SCOPE_NORMAL_DD;
         bool handled = false;

@@ -242,7 +242,11 @@ public:
 
     mutable sigc::signal<void,
                          const map<int, IDebugger::Breakpoint>&,
-                         const UString&> breakpoints_set_signal;
+                         const UString&> breakpoints_list_signal;
+
+    mutable sigc::signal<void,
+                         const std::pair<int, const IDebugger::Breakpoint&>&,
+                         const UString& /*cookie*/> breakpoint_set_signal;
 
     mutable sigc::signal<void,
                          const vector<OverloadsChoiceEntry>&,
@@ -1383,7 +1387,31 @@ struct OnBreakpointHandler: OutputHandler {
             has_breaks = true;
         }
 
-        if (a_in.output ().has_result_record ()
+        if (has_breaks
+            && (a_in.command ().name () == "set-breakpoint"
+                || a_in.command ().name () == "set-countpoint")) {
+            // If we are getting this reply b/c we did set a
+            // breakpoint, then only one breakpoint should be reported
+            // back to us from GDB.
+            const map<int, IDebugger::Breakpoint> &bps =
+                a_in.output ().result_record ().breakpoints ();
+            THROW_IF_FAIL (bps.size () == 1);
+
+            std::pair<int,
+                      const IDebugger::Breakpoint&> p (bps.begin ()->first,
+                                                       bps.begin ()->second);
+
+            Command &c = a_in.command ();
+            if (c.name () == "set-breakpoint"
+                && c.has_slot ()) {
+                IDebugger::BreakpointSlot slot =
+                    c.get_slot<IDebugger::BreakpointSlot> ();
+                slot (p);
+            }
+            m_engine->breakpoint_set_signal ().emit
+                (p, a_in.command ().cookie ());
+            m_engine->set_state (IDebugger::READY);
+        } else if (a_in.output ().has_result_record ()
             && a_in.output ().result_record ().kind ()
             == Output::ResultRecord::DONE
             && a_in.command ().value ().find ("-break-delete")
@@ -1414,13 +1442,7 @@ struct OnBreakpointHandler: OutputHandler {
             }
         } else if (has_breaks) {
             LOG_DD ("firing IDebugger::breakpoint_set_signal()");
-            Command &c = a_in.command ();
-            if (c.name () == "set-breakpoint"
-                && c.has_slot ()) {
-                IDebugger::BreakpointsSlot slot = c.get_slot<IDebugger::BreakpointsSlot> ();
-                slot (m_engine->get_cached_breakpoints ());
-            }
-            m_engine->breakpoints_set_signal ().emit
+            m_engine->breakpoints_list_signal ().emit
                 (m_engine->get_cached_breakpoints (),
                  a_in.command ().cookie ());
             m_engine->set_state (IDebugger::READY);
@@ -1681,7 +1703,7 @@ struct OnCommandDoneHandler : OutputHandler {
                 flag_breakpoint_as_countpoint (a_in.command ().tag2 (), false);
             }
 
-            m_engine->breakpoints_set_signal ().emit
+            m_engine->breakpoints_list_signal ().emit
                 (m_engine->get_cached_breakpoints (),
                  a_in.command ().cookie ());
         }
@@ -3252,9 +3274,17 @@ GDBEngine::breakpoint_deleted_signal () const
 }
 
 sigc::signal<void, const map<int, IDebugger::Breakpoint>&, const UString&>&
-GDBEngine::breakpoints_set_signal () const
+GDBEngine::breakpoints_list_signal () const
 {
-    return m_priv->breakpoints_set_signal;
+    return m_priv->breakpoints_list_signal;
+}
+
+sigc::signal<void,
+             const std::pair<int, const IDebugger::Breakpoint&>&,
+             const UString& /*cookie*/>&
+GDBEngine::breakpoint_set_signal () const
+{
+    return m_priv->breakpoint_set_signal;
 }
 
 sigc::signal<void, const vector<IDebugger::OverloadsChoiceEntry>&, const UString&>&
@@ -3892,7 +3922,7 @@ void
 GDBEngine::set_breakpoint (const Loc &a_loc,
                            const UString &a_condition,
                            gint a_ignore_count,
-                           const BreakpointsSlot &a_slot,
+                           const BreakpointSlot &a_slot,
                            const UString &a_cookie)
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD;

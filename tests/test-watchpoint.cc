@@ -94,8 +94,8 @@ test_main (int, char **)
     debugger->program_finished_signal ().connect
                                             (&on_program_finished_signal);
 
-    debugger->breakpoints_set_signal ().connect
-                                            (&on_breakpoints_set_signal);
+    debugger->breakpoints_list_signal ().connect
+        (&on_breakpoints_set_signal);
 
     debugger->stopped_signal ().connect
                             (sigc::bind (&on_stopped_signal, debugger));
