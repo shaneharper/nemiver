@@ -75,7 +75,9 @@ $(h)/nmv-dbg-perspective.h \
 $(h)/nmv-vars-treeview.h \
 $(h)/nmv-vars-treeview.cc \
 $(h)/nmv-call-function-dialog.h \
-$(h)/nmv-call-function-dialog.cc
+$(h)/nmv-call-function-dialog.cc \
+$(h)/nmv-set-jump-to-dialog.h \
+$(h)/nmv-set-jump-to-dialog.cc
 
 if BUILD_MEMORYVIEW
 memoryview_sources = \

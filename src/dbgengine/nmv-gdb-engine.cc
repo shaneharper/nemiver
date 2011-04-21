@@ -141,20 +141,20 @@ location_to_string (const Loc &a_loc,
         THROW ("Should not be reached");
 
     case Loc::SOURCE_LOC_KIND: {
-        const SourceLoc *loc = static_cast<const SourceLoc*> (&a_loc);
-        location_to_string (*loc, a_str);
+        const SourceLoc &loc = static_cast<const SourceLoc&> (a_loc);
+        location_to_string (loc, a_str);
     }
         break;
 
     case Loc::FUNCTION_LOC_KIND: {
-        const FunctionLoc *loc = static_cast<const FunctionLoc*> (&a_loc);
-        location_to_string (*loc, a_str);
+        const FunctionLoc &loc = static_cast<const FunctionLoc&> (a_loc);
+        location_to_string (loc, a_str);
     }
         break;
 
     case Loc::ADDRESS_LOC_KIND: {
-        const AddressLoc *loc = static_cast<const AddressLoc*> (&a_loc);
-        location_to_string (*loc, a_str);
+        const AddressLoc &loc = static_cast<const AddressLoc&> (a_loc);
+        location_to_string (loc, a_str);
     }
         break;
     }
@@ -1726,6 +1726,13 @@ struct OnCommandDoneHandler : OutputHandler {
             }
         }
 
+        if (a_in.command ().name () == "-break-enable"
+            && a_in.command ().has_slot ()) {
+            IDebugger::BreakpointsSlot slot =
+                a_in.command ().get_slot<IDebugger::BreakpointsSlot> ();
+            slot (m_engine->get_cached_breakpoints ());
+        }
+
         // So, if we are still attached to the target and we receive
         // a "DONE" response from GDB, it means we are READY.
         // But if we are not attached -- which can mean that the
@@ -1764,7 +1771,13 @@ struct OnRunningHandler : OutputHandler {
     void do_handle (CommandAndOutput &a_in)
     {
         LOG_FUNCTION_SCOPE_NORMAL_DD;
-        if (a_in.has_command ()) {}
+
+        Command &c = a_in.command ();
+        if (c.name () == "jump-to-position"
+            && c.has_slot ()) {
+            IDebugger::DefaultSlot s = c.get_slot<IDebugger::DefaultSlot> ();
+            s ();
+        }
         m_engine->running_signal ().emit ();
     }
 };//struct OnRunningHandler
@@ -3898,6 +3911,30 @@ GDBEngine::continue_to_position (const UString &a_path,
                             a_cookie));
 }
 
+/// Jump to a location in the inferior.
+///
+/// Execution is then resumed from the new location.
+///
+/// \param a_loc the location to jump to
+///
+/// \param a_slot a callback function that is invoked once the jump is
+/// done.
+void
+GDBEngine::jump_to_position (const Loc &a_loc,
+                             const DefaultSlot &a_slot)
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+    UString location;
+
+    location_to_string (a_loc, location);
+
+    Command command ("jump-to-position",
+                     "-exec-jump " + location);
+    command.set_slot (a_slot);
+    queue_command (command);
+}
+
 /// Set a breakpoint at a location in the inferior.
 ///
 /// \param a_loc the location of the breakpoint.
@@ -4012,16 +4049,49 @@ GDBEngine::set_breakpoint (const Address &a_address,
     queue_command (Command (cmd_name, break_cmd, a_cookie));
 }
 
+/// Enable a given breakpoint
+///
+/// \param a_break_num the ID of the breakpoint to enable.
+///
+/// \param a_slot a callback slot invoked upon completion of the
+/// command by GDB.
+///
+/// \param a_cookie a string passed as an argument to
+/// IDebugger::breakpoints_set_signal upon completion of the command
+/// by GDB.  Note that both a_slot and
+/// IDebugger::breakpoints_set_signal are invoked upon completion of
+/// the command by GDB for now.  Eventually only a_slot will be kept;
+/// IDebugger::breakpoints_set_signal will be dropped.  We in a
+/// transitional period at the moment.
+void
+GDBEngine::enable_breakpoint (gint a_break_num,
+                              const BreakpointsSlot &a_slot,
+                              const UString &a_cookie)
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+    
+    Command command ("enable-breakpoint",
+                     "-break-enable "
+                     + UString::from_int (a_break_num));
+    command.set_slot (a_slot);
+    queue_command (command);
+    list_breakpoints (a_cookie);
+}
+
+/// Enable a given breakpoint
+///
+/// \param a_break_num the ID of the breakpoint to enable.
+///
+/// \param a_cookie a string passed as an argument to
+/// IDebugger::breakpoints_set_signal upon completion of the command
+/// by GDB.  Eventually this function should be dropped and we should
+/// keep the one above.
 void
 GDBEngine::enable_breakpoint (gint a_break_num,
                               const UString &a_cookie)
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD;
-    queue_command (Command ("enable-breakpoint",
-                            "-break-enable "
-                             + UString::from_int (a_break_num),
-                            a_cookie));
-    list_breakpoints (a_cookie);
+    enable_breakpoint (a_break_num, &null_breakpoints_slot, a_cookie);
 }
 
 void

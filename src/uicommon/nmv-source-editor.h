@@ -35,6 +35,7 @@
 #include "common/nmv-address.h"
 #include "common/nmv-range.h"
 #include "common/nmv-asm-instr.h"
+#include "common/nmv-loc.h"
 
 using gtksourceview::SourceView;
 using gtksourceview::SourceBuffer;
@@ -42,6 +43,7 @@ using Gtk::VBox;
 using nemiver::common::SafePtr;
 using nemiver::common::UString;
 using nemiver::common::Address;
+using nemiver::common::Loc;
 using std::list;
 using std::map;
 
@@ -82,6 +84,7 @@ public:
     int current_line () const;
     void current_line (int a_line);
     int current_column () const;
+    const Loc* current_location () const;
     void current_column (int &a_col);
     bool move_where_marker_to_line (int a_line, bool a_do_scroll = true);
     void unset_where_marker ();

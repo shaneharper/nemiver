@@ -64,6 +64,7 @@
 #include "common/nmv-date-utils.h"
 #include "common/nmv-str-utils.h"
 #include "common/nmv-address.h"
+#include "common/nmv-loc.h"
 #include "nmv-sess-mgr.h"
 #include "nmv-dbg-perspective.h"
 #include "nmv-source-editor.h"
@@ -99,9 +100,11 @@
 #endif // WITH_MEMORYVIEW
 #include "nmv-watchpoint-dialog.h"
 #include "nmv-debugger-utils.h"
+#include "nmv-set-jump-to-dialog.h"
 
 using namespace std;
 using namespace nemiver::common;
+using namespace nemiver::debugger_utils;
 using namespace nemiver::ui_utils;
 using namespace gtksourceview;
 
@@ -236,6 +239,12 @@ private:
     void on_step_over_asm_action ();
     void on_continue_action ();
     void on_continue_until_action ();
+    void on_jump_to_location_action ();
+    void on_jump_to_current_location_action ();
+    void on_jump_and_break_to_current_location_action ();
+    void on_break_before_jump (const std::pair<int,
+                                               const IDebugger::Breakpoint&>&,
+                               const Loc &a_loc);
     void on_set_breakpoint_action ();
     void on_set_breakpoint_using_dialog_action ();
     void on_set_watchpoint_using_dialog_action ();
@@ -600,6 +609,12 @@ public:
     void step_over_asm ();
     void do_continue ();
     void do_continue_until ();
+    void do_jump_to_current_location ();
+    void do_jump_and_break_to_location (const Loc&);
+    void do_jump_and_break_to_current_location ();
+    void jump_to_location (const map<int, IDebugger::Breakpoint>&,
+                           const Loc &);
+    void jump_to_location_from_dialog (const SetJumpToDialog &);
     void set_breakpoint_at_current_line_using_dialog ();
     void set_breakpoint ();
     void set_breakpoint (const UString &a_file,
@@ -616,9 +631,9 @@ public:
     void append_breakpoints
                     (const map<int, IDebugger::Breakpoint> &a_breaks);
 
+    const IDebugger::Breakpoint* get_breakpoint (const Loc&) const;
     const IDebugger::Breakpoint* get_breakpoint (const UString &a_file_name,
                                                  int a_linenum) const;
-
     const IDebugger::Breakpoint* get_breakpoint (const Address &) const;
 
     bool delete_breakpoint ();
@@ -626,10 +641,12 @@ public:
     bool delete_breakpoint (const UString &a_file_path,
                             int a_linenum);
     bool delete_breakpoint (const Address &a_address);
+    bool is_breakpoint_set_at_location (const Loc&, bool&);
     bool is_breakpoint_set_at_line (const UString &a_file_path,
                                     int a_linenum,
                                     bool &a_enabled);
-    bool is_breakpoint_set_at_address (const Address &);
+    bool is_breakpoint_set_at_address (const Address &,
+                                       bool&);
     void toggle_breakpoint (const UString &a_file_path,
                             int a_linenum);
     void toggle_breakpoint (const Address &a_address);
@@ -1009,7 +1026,6 @@ struct DBGPerspective::Priv {
 
     list<UString> call_expr_history;
     list<UString> var_inspector_dialog_history;
-
 
     Priv () :
         initialized (false),
@@ -1544,6 +1560,102 @@ DBGPerspective::on_continue_until_action ()
     NEMIVER_TRY
     do_continue_until ();
     NEMIVER_CATCH
+}
+
+/// This function is called when the user activates the action
+/// "JumpToLocationMenuItemAction".  You can Look at
+/// DBGPerspective::init_actions to see how it is defined.  It
+/// basically lets the user choose the location where she wants to
+/// jump to, and instruct IDebugger to jump there.
+void
+DBGPerspective::on_jump_to_location_action ()
+{
+    SetJumpToDialog dialog (plugin_path ());
+
+    SourceEditor *editor = get_current_source_editor ();
+
+    // If the user has selected a current location (possibly to jump
+    // to), then pre-fill the dialog with that location.
+    SafePtr<const Loc> cur_loc;
+    if (editor)
+        cur_loc.reset (editor->current_location ());
+    if (cur_loc)
+        dialog.set_location (*cur_loc);
+
+    // By default, set a breakpoint to the location we are jumping to,
+    // so that execution stops after the jump.
+    dialog.set_break_at_location (true);
+
+    // Set the default file name to the file being currently visited,
+    // so that when the user enters a blank file name, the dialog
+    // knows what file name she is talking about.
+    if (editor
+        && editor->get_buffer_type () == SourceEditor::BUFFER_TYPE_SOURCE) {
+        dialog.set_current_file_name (get_current_file_path ());
+    }
+
+    // Now run the dialog and if the user hit anything but the OK
+    // button a the end, consider that she wants to cancel this
+    // procedure.
+    int result = dialog.run ();
+    if (result != Gtk::RESPONSE_OK)
+        return;
+
+    // By now we should have a proper location to jump to, so really
+    // perfom the jumping.
+    jump_to_location_from_dialog (dialog);
+}
+
+/// Callback function invoked when the menu item action "jump to
+/// current location" is activated.
+///
+/// It jumps to the location selected by the user in the source
+/// editor.
+void
+DBGPerspective::on_jump_to_current_location_action ()
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+    NEMIVER_TRY
+    do_jump_to_current_location ();
+    NEMIVER_CATCH
+}
+
+/// Callback function invoked when the menu item action "setting a
+/// breakpoint to current lcoation and jump here" is activated.
+///
+/// It sets a breakpoint to the current location and jumps here.  So
+/// is transfered to the location selected by the user in the source
+/// editor and is stopped there.
+void
+DBGPerspective::on_jump_and_break_to_current_location_action ()
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+    NEMIVER_TRY
+    do_jump_and_break_to_current_location ();
+    NEMIVER_CATCH
+}
+
+/// This callback is invoked right after a breakpoint is set as part
+/// of a "set a breakpoint and jump there" process.
+///
+/// So this function jumps to the position given in parameter.
+///
+/// \param a_loc the location to jump to.  This is also the location
+/// of the breakpoint that was set previously and which triggered this
+/// callback.
+void
+DBGPerspective::on_break_before_jump
+(const std::pair<int,
+                 const IDebugger::Breakpoint&> &,
+ const Loc &a_loc)
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+    
+    NEMIVER_TRY;
+    debugger ()->jump_to_position (a_loc, &null_default_slot);
+    NEMIVER_CATCH;
 }
 
 void
@@ -2498,6 +2610,13 @@ DBGPerspective::on_debugger_command_done_signal (const UString &a_command,
     NEMIVER_CATCH
 }
 
+/// Callback function invoked once a breakpoint was set.
+///
+/// \param a_breaks the list of all breakpoints currently set in the inferior.
+///
+/// \param a_cookie a string passed to the IDebugger::set_breakpoint
+/// call that triggered this callback.
+///
 void
 DBGPerspective::on_debugger_breakpoint_set_signal
 (const std::pair<int, const IDebugger::Breakpoint&> &a,
@@ -2520,9 +2639,9 @@ DBGPerspective::on_debugger_breakpoints_list_signal
     // When the breakpoint is set, it
     // will send a 'cookie' along of the form
     // "initiallly-disabled#filename.cc#123"
-    if (a_cookie.find("initially-disabled") != UString::npos) {
-        UString::size_type start_of_file = a_cookie.find('#') + 1;
-        UString::size_type start_of_line = a_cookie.rfind('#') + 1;
+    if (a_cookie.find ("initially-disabled") != UString::npos) {
+        UString::size_type start_of_file = a_cookie.find ('#') + 1;
+        UString::size_type start_of_line = a_cookie.rfind ('#') + 1;
         UString file = a_cookie.substr (start_of_file,
                                         (start_of_line - 1) - start_of_file);
         int line = atoi
@@ -3376,6 +3495,39 @@ DBGPerspective::init_actions ()
             sigc::mem_fun (*this, &DBGPerspective::on_continue_until_action),
             ActionEntry::DEFAULT,
             "F11",
+            false
+        },
+        {
+            "JumpToCurrentLocationMenuItemAction",
+            nil_stock_id,
+            _("Jump to cursor"),
+            _("Jump to  the currently selected line"),
+            sigc::mem_fun (*this, &DBGPerspective::on_jump_to_current_location_action),
+            ActionEntry::DEFAULT,
+            "",
+            false
+        },
+        {
+            "JumpAndBreakToCurrentLocationMenuItemAction",
+            nil_stock_id,
+            _("Jump and stop to cursor"),
+            _("Sets a breakpoint to the current currently selected line and jump there"),
+            sigc::mem_fun (*this,
+                           &DBGPerspective::on_jump_and_break_to_current_location_action),
+            ActionEntry::DEFAULT,
+            "",
+            false
+        },
+        {
+            "JumpToLocationMenuItemAction",
+            nil_stock_id,
+            _("Jump to a given location"),
+            _("Select a given code location and jump there"),
+            sigc::mem_fun
+            (*this,
+             &DBGPerspective::on_jump_to_location_action),
+            ActionEntry::DEFAULT,
+            "<control>J",
             false
         },
         {
@@ -4748,6 +4900,22 @@ DBGPerspective::get_contextual_menu ()
              "/ContextualMenu",
              "ContinueUntilMenuItem",
              "ContinueUntilMenuItemAction",
+             Gtk::UI_MANAGER_AUTO,
+             false);
+
+        workbench ().get_ui_manager ()->add_ui
+            (m_priv->contextual_menu_merge_id,
+             "/ContextualMenu",
+             "JumpToCurrentLocationMenuItem",
+             "JumpToCurrentLocationMenuItemAction",
+             Gtk::UI_MANAGER_AUTO,
+             false);
+
+        workbench ().get_ui_manager ()->add_ui
+            (m_priv->contextual_menu_merge_id,
+             "/ContextualMenu",
+             "JumpAndBreakToCurrentLocationMenuItem",
+             "JumpAndBreakToCurrentLocationMenuItemAction",
              Gtk::UI_MANAGER_AUTO,
              false);
 
@@ -6688,6 +6856,157 @@ DBGPerspective::do_continue_until ()
     debugger ()->continue_to_position (file_path, current_line);
 }
 
+/// Jump (transfer execution of the inferior) to the location selected
+/// by the user in the source editor.
+void
+DBGPerspective::do_jump_to_current_location ()
+{
+    SourceEditor *editor = get_current_source_editor ();
+    THROW_IF_FAIL (editor);
+
+    int current_line = editor->current_line ();
+    UString file_path;
+    editor->get_file_name (file_path);
+    SourceLoc loc (file_path, current_line);
+    debugger ()->jump_to_position (loc, &null_default_slot);
+}
+
+///  Set a breakpoint to a given location and jump (transfer execution
+///  of the inferior) there.
+///
+///  \param a_location the location to set breakpoint and jump to
+void
+DBGPerspective::do_jump_and_break_to_location (const Loc &a_location)
+{
+#define JUMP_TO_LOC_AFTER_ENABLE_BP(LOC)                    \
+    debugger ()->enable_breakpoint                          \
+        (bp->number (),                                     \
+         sigc::bind                                         \
+         (sigc::mem_fun                                     \
+          (*this,                                           \
+           &DBGPerspective::jump_to_location),              \
+          (LOC)));
+
+#define JUMP_TO_LOC_AFTER_SET_BP(LOC)                   \
+    debugger ()->set_breakpoint                         \
+        (a_location,                                    \
+         /*a_condition=*/"",/*a_ignore_count=*/0,       \
+         sigc::bind                                     \
+         (sigc::mem_fun                                 \
+          (*this,                                       \
+           &DBGPerspective::on_break_before_jump),      \
+          (LOC)));
+
+    bool bp_enabled = false;
+    if (is_breakpoint_set_at_location (a_location,
+                                       bp_enabled)) {
+        if (bp_enabled) {
+            debugger ()->jump_to_position (a_location,
+                                           &null_default_slot);
+        } else {
+            const IDebugger::Breakpoint *bp =
+                get_breakpoint (a_location);
+            THROW_IF_FAIL (bp);
+            
+            switch (a_location.kind ()) {
+            case Loc::UNDEFINED_LOC_KIND:
+                THROW ("Should not be reached");
+
+            case Loc::SOURCE_LOC_KIND: {
+                SourceLoc loc
+                    (static_cast<const SourceLoc &> (a_location));
+                JUMP_TO_LOC_AFTER_ENABLE_BP (loc);
+            }
+                break;
+            case Loc::FUNCTION_LOC_KIND: {
+                FunctionLoc loc
+                    (static_cast<const FunctionLoc &> (a_location));
+                JUMP_TO_LOC_AFTER_ENABLE_BP (loc);
+            }
+                break;
+            case Loc::ADDRESS_LOC_KIND: {
+                AddressLoc loc
+                    (static_cast<const AddressLoc &> (a_location));
+                JUMP_TO_LOC_AFTER_ENABLE_BP (loc);
+            }
+                break;
+            }
+        }
+    } else {
+        switch (a_location.kind ()) {
+        case Loc::UNDEFINED_LOC_KIND:
+            THROW ("Should not be reached");
+
+        case Loc::SOURCE_LOC_KIND: {
+            SourceLoc loc
+                (static_cast<const SourceLoc &> (a_location));
+            JUMP_TO_LOC_AFTER_SET_BP (loc);
+        }
+            break;
+        case Loc::FUNCTION_LOC_KIND: {
+            FunctionLoc loc
+                (static_cast<const FunctionLoc &> (a_location));
+            JUMP_TO_LOC_AFTER_SET_BP (loc);
+        }
+            break;
+        case Loc::ADDRESS_LOC_KIND: {
+            AddressLoc loc
+                (static_cast<const AddressLoc &> (a_location));
+            JUMP_TO_LOC_AFTER_SET_BP (loc);
+        }
+            break;
+        }
+    }
+}
+
+/// Set a breakpoint to the location selected by the user in the
+/// source editor and jump (transfer execution of the inferior) there.
+void
+DBGPerspective::do_jump_and_break_to_current_location ()
+{
+    THROW_IF_FAIL (m_priv);
+    SourceEditor *editor = get_current_source_editor ();
+    THROW_IF_FAIL (editor);
+
+    SafePtr<const Loc> loc (editor->current_location ());
+    if (!loc) {
+        LOG_DD ("Got an empty location.  Getting out.");
+        return;
+    }
+    do_jump_and_break_to_location (*loc);
+}
+
+/// Jump (transfert execution of the inferior) to a given source
+/// location.  This is a callback for the
+/// IDebugger::breakpoint_set_signal signal.
+///
+/// \param a_loc the location to jump to.
+void
+DBGPerspective::jump_to_location (const map<int, IDebugger::Breakpoint>&,
+                                  const Loc &a_loc)
+{
+    debugger ()->jump_to_position (a_loc, &null_default_slot);
+}
+
+/// Jump (transfert execution of the inferior) to a given location
+/// that is specified by a dialog.  The dialog must have filled by the
+/// user prior to calling this function.
+///
+/// \param a_dialog the dialog that contains the location specified by
+/// the user.
+void
+DBGPerspective::jump_to_location_from_dialog (const SetJumpToDialog &a_dialog)
+{
+    SafePtr<const Loc> location (a_dialog.get_location ());
+    if (!location
+        || location->kind ()== Loc::UNDEFINED_LOC_KIND)
+        return;
+    if (a_dialog.get_break_at_location ())
+        do_jump_and_break_to_location (*location);
+    else
+        debugger ()->jump_to_position (*location, &null_default_slot);
+}
+
 void
 DBGPerspective::set_breakpoint ()
 {
@@ -6868,6 +7187,39 @@ DBGPerspective::append_breakpoints
     map<int, IDebugger::Breakpoint>::const_iterator iter;
     for (iter = a_breaks.begin (); iter != a_breaks.end (); ++iter)
         append_breakpoint (iter->second);
+}
+
+/// Return the breakpoint that was set at a given location.
+///
+/// \param a_location the location to consider
+///
+/// \return the breakpoint found at the given location, 0 if none was
+/// found.
+const IDebugger::Breakpoint*
+DBGPerspective::get_breakpoint (const Loc &a_location) const
+{
+    switch (a_location.kind ()) {
+    case Loc::UNDEFINED_LOC_KIND:
+        return false;
+    case Loc::SOURCE_LOC_KIND: {
+        const SourceLoc &loc =
+            static_cast<const SourceLoc&> (a_location);
+        return get_breakpoint (loc.file_path (), loc.line_number ());
+    }
+    case Loc::FUNCTION_LOC_KIND: {
+        // TODO: For now we cannot get a breakpoint set by function.
+        // For that we would need to be able to get the address at
+        // which a breakpoint set by function would be set to.
+        return false;
+    }
+    case Loc::ADDRESS_LOC_KIND: {
+        const AddressLoc &loc =
+            static_cast<const AddressLoc&> (a_location);
+        return get_breakpoint (loc.address ());
+    }
+    }
+    // Should not be reached.
+    return 0;
 }
 
 const IDebugger::Breakpoint*
@@ -7260,6 +7612,52 @@ DBGPerspective::delete_breakpoint (const Address &a_address)
     return delete_breakpoint (bp->number ());
 }
 
+/// Return true if a breakpoint was set at a given location.
+///
+/// \param a_location the location to consider
+///
+/// \return true if there was a breakpoint set at the given location
+bool
+DBGPerspective::is_breakpoint_set_at_location (const Loc &a_location,
+                                               bool &a_enabled)
+{
+    switch (a_location.kind ()) {
+    case Loc::UNDEFINED_LOC_KIND:
+        return false;
+    case Loc::SOURCE_LOC_KIND: {
+        const SourceLoc &loc =
+            static_cast<const SourceLoc&> (a_location);
+        return is_breakpoint_set_at_line (loc.file_path (),
+                                          loc.line_number (),
+                                          a_enabled);
+    }
+        break;
+    case Loc::FUNCTION_LOC_KIND:
+        // Grrr, for now we cannot know if a breakpoint was set at a
+        // function's entry point.
+        return false;
+        break;
+    case Loc::ADDRESS_LOC_KIND: {
+        const AddressLoc &loc =
+            static_cast<const AddressLoc&> (a_location);
+        return is_breakpoint_set_at_address (loc.address (),
+                                             a_enabled);
+    }
+        break;
+    }
+    // Should not be reached
+    return false;
+}
+
+/// Test whether if a breakpoint was set at a source location.
+///
+/// \param a_file_path the path of the file to consider
+///
+/// \param a_line_num the line number of the location to consider
+///
+/// \param a_enabled iff the function returns true, this boolean is
+/// set.  It's value is then either true if the breakpoint found at
+/// the given source location is enabled, false otherwise.
 bool
 DBGPerspective::is_breakpoint_set_at_line (const UString &a_file_path,
                                            int a_line_num,
@@ -7273,12 +7671,25 @@ DBGPerspective::is_breakpoint_set_at_line (const UString &a_file_path,
     return false;
 }
 
+/// Test whether if a breakpoint was set at a given address.
+///
+/// \param a_address the address to consider.
+///
+/// \param a_enabled iff the function returns true, this boolean is
+/// set.  It's value is then either true if the breakpoint found at
+/// the given address is enabled, false otherwise.
+///
+/// \return true if a breakpoint is set at the given address, false
+/// otherwise.
 bool
-DBGPerspective::is_breakpoint_set_at_address (const Address &a_address)
+DBGPerspective::is_breakpoint_set_at_address (const Address &a_address,
+                                              bool &a_enabled)
 {
     const IDebugger::Breakpoint *bp;
-    if ((bp = get_breakpoint (a_address)) != 0)
+    if ((bp = get_breakpoint (a_address)) != 0) {
+        a_enabled = bp->enabled ();
         return true;
+    }
     return false;
 }
 
@@ -7305,7 +7716,8 @@ void
 DBGPerspective::toggle_breakpoint (const Address &a_address)
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD;
-    if (is_breakpoint_set_at_address (a_address)) {
+    bool enabled = false;
+    if (is_breakpoint_set_at_address (a_address, enabled)) {
         delete_breakpoint (a_address);
     } else {
         set_breakpoint (a_address, /*is_count_point=*/false);

@@ -13,7 +13,8 @@ chooseoverloadsdialog.ui \
 remotetargetdialog.ui \
 globalvarsinspector.ui \
 callfunctiondialog.ui \
-watchpointdialog.ui
+watchpointdialog.ui  \
+setjumptodialog.ui
 
 uidir = @NEMIVER_PLUGINS_DIR@/$(PLUGIN_NAME)/ui
 ui_DATA = $(uifiles)
