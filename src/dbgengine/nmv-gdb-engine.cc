@@ -57,6 +57,8 @@ using nemiver::debugger_utils::null_const_variable_slot;
 using nemiver::debugger_utils::null_const_variable_list_slot;
 using nemiver::debugger_utils::null_frame_vector_slot;
 using nemiver::debugger_utils::null_frame_args_slot;
+using nemiver::debugger_utils::null_disass_slot;
+using nemiver::debugger_utils::null_breakpoints_slot;
 
 NEMIVER_BEGIN_NAMESPACE (nemiver)
 
@@ -79,6 +81,88 @@ quote_args (const vector<UString> &a_prog_args)
     return args;
 }
 
+//**************************************************************
+// <Helper functions to generate a serialized form of location>
+//**************************************************************
+
+/// Generate a location string from a an instance of source location
+/// type.
+///
+/// \param a_loc the source input location
+///
+/// \param a_str the resulting location string
+static void
+location_to_string (const SourceLoc &a_loc,
+                    UString &a_str)
+{
+    a_str =
+        a_loc.file_path ()
+        + ":" + UString::from_int (a_loc.line_number ());
+}
+
+/// Generate a location string from a an instance of address location
+/// type.
+///
+/// \param a_loc the input address location
+///
+/// \param a_str the resulting location string
+static void
+location_to_string (const AddressLoc &a_loc,
+                    UString &a_str)
+{
+    a_str = "*" + a_loc.address ().to_string ();
+}
+
+/// Generate a location string from a an instance of function location
+/// type.
+///
+/// \param a_loc the input function location
+///
+/// \param a_str the resulting location string
+static void
+location_to_string (const FunctionLoc &a_loc,
+                    UString &a_str)
+{
+    a_str = a_loc.function_name ();
+}
+
+/// Generate a location string from a generic instance of location
+/// type.
+///
+/// \param a_loc the input location
+///
+/// \param a_str the resulting location string
+static void
+location_to_string (const Loc &a_loc,
+                    UString &a_str)
+{
+    switch (a_loc.kind ()) {
+    case Loc::UNDEFINED_LOC_KIND:
+        THROW ("Should not be reached");
+
+    case Loc::SOURCE_LOC_KIND: {
+        const SourceLoc *loc = static_cast<const SourceLoc*> (&a_loc);
+        location_to_string (*loc, a_str);
+    }
+        break;
+
+    case Loc::FUNCTION_LOC_KIND: {
+        const FunctionLoc *loc = static_cast<const FunctionLoc*> (&a_loc);
+        location_to_string (*loc, a_str);
+    }
+        break;
+
+    case Loc::ADDRESS_LOC_KIND: {
+        const AddressLoc *loc = static_cast<const AddressLoc*> (&a_loc);
+        location_to_string (*loc, a_str);
+    }
+        break;
+    }
+}
+
+//**************************************************************
+// </Helper functions to generate a serialized form of location>
+//**************************************************************
 
 //*************************
 //<GDBEngine::Priv struct>
@@ -1330,6 +1414,12 @@ struct OnBreakpointHandler: OutputHandler {
             }
         } else if (has_breaks) {
             LOG_DD ("firing IDebugger::breakpoint_set_signal()");
+            Command &c = a_in.command ();
+            if (c.name () == "set-breakpoint"
+                && c.has_slot ()) {
+                IDebugger::BreakpointsSlot slot = c.get_slot<IDebugger::BreakpointsSlot> ();
+                slot (m_engine->get_cached_breakpoints ());
+            }
             m_engine->breakpoints_set_signal ().emit
                 (m_engine->get_cached_breakpoints (),
                  a_in.command ().cookie ());
@@ -3778,6 +3868,61 @@ GDBEngine::continue_to_position (const UString &a_path,
                             a_cookie));
 }
 
+/// Set a breakpoint at a location in the inferior.
+///
+/// \param a_loc the location of the breakpoint.
+///
+/// \param a_condition the condition of the breakpoin.  If there is no
+/// condition, the argument should be "".
+///
+/// \param a_ignore_count the number of time the breakpoint should be
+/// hit before execution of the inferior is stopped.
+///
+/// \param a_slot a callback slot to be invoked once the breakpoint is
+/// set.
+///
+/// \param a_cookie a string to be passed to
+/// IDebugger::breakpoints_set_signals once that signal emitted as a
+/// result of the breakpoint being set.  Note both a_slot and
+/// IDebugger::breakpoint_set_signals are 'called' upon breakpoint
+/// actual setting.  Eventually, IDebugger::breakpoints_set_signals
+/// should be dropped, so this whole cookie business would disapear.
+/// We are still in a transitional period.
+void
+GDBEngine::set_breakpoint (const Loc &a_loc,
+                           const UString &a_condition,
+                           gint a_ignore_count,
+                           const BreakpointsSlot &a_slot,
+                           const UString &a_cookie)
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+    THROW_IF_FAIL (a_loc.kind () != Loc::UNDEFINED_LOC_KIND);
+
+    UString loc_str;
+
+    location_to_string (a_loc, loc_str);
+
+    UString break_cmd = "-break-insert -f ";
+    if (!a_condition.empty ()) {
+        LOG_DD ("setting breakpoint with condition: " << a_condition);
+        break_cmd += " -c \"" + a_condition + "\"";
+    } else {
+        LOG_DD ("setting breakpoint without condition");
+    }
+
+    bool count_point = (a_ignore_count < 0);
+    if (!count_point)
+        break_cmd += " -i " + UString::from_int (a_ignore_count);
+
+    break_cmd += " " + loc_str;
+    string cmd_name = count_point ? "set-countpoint" : "set-breakpoint";
+    
+    Command command (cmd_name, break_cmd, a_cookie);
+    command.set_slot (a_slot);
+    queue_command (command);
+}
+
 void
 GDBEngine::set_breakpoint (const UString &a_path,
                            gint a_line_num,
@@ -4858,12 +5003,6 @@ GDBEngine::set_memory (size_t a_addr,
         command.tag1 (UString ().printf ("0x%X",a_addr));
         queue_command (command);
     }
-}
-
-void
-null_disass_slot (const common::DisassembleInfo &,
-                  const std::list<common::Asm> &)
-{
 }
 
 void

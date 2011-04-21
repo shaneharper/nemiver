@@ -37,6 +37,7 @@
 #include "common/nmv-safe-ptr-utils.h"
 #include "common/nmv-address.h"
 #include "common/nmv-asm-instr.h"
+#include "common/nmv-loc.h"
 #include "nmv-i-conf-mgr.h"
 
 using nemiver::common::SafePtr;
@@ -52,6 +53,7 @@ using nemiver::common::AsmInstr;
 using nemiver::common::MixedAsmInstr;
 using nemiver::common::Asm;
 using nemiver::common::DisassembleInfo;
+using nemiver::common::Loc;
 using std::vector;
 using std::string;
 using std::map;
@@ -819,6 +821,10 @@ public:
         return false;
     }
 
+    typedef sigc::slot<void> DefaultSlot;
+    typedef sigc::slot<void, const map<int, IDebugger::Breakpoint>&> BreakpointsSlot;
+    typedef sigc::slot<void, Loc&> LocSlot;
+    
     virtual ~IDebugger () {}
 
     /// \name events you can connect to.
@@ -1114,6 +1120,12 @@ public:
     virtual void continue_to_position (const UString &a_path,
                                        gint a_line_num,
                                        const UString &a_cookie="") = 0;
+
+    virtual void set_breakpoint (const common::Loc &a_loc,
+                                 const UString &a_condition,
+                                 gint a_ignore_count,
+                                 const BreakpointsSlot &a_slot,
+                                 const UString &a_cookie = "") = 0;
 
     virtual void set_breakpoint (const UString &a_path,
                                  gint a_line_num,
