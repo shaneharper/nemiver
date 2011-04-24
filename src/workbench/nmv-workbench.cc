@@ -128,6 +128,7 @@ public:
     Workbench (DynamicModule *a_dynmod);
     virtual ~Workbench ();
     void do_init (Gtk::Main &a_main);
+    void do_init (IConfMgrSafePtr &);
     void shut_down ();
     Glib::RefPtr<Gtk::ActionGroup> get_default_action_group ();
     Glib::RefPtr<Gtk::ActionGroup> get_debugger_ready_action_group ();
@@ -137,6 +138,7 @@ public:
     void set_title_extension (const UString &a_str);
     Glib::RefPtr<Gtk::UIManager>& get_ui_manager () ;
     IPerspective* get_perspective (const UString &a_name);
+    void set_configuration_manager (IConfMgrSafePtr &);
     IConfMgrSafePtr get_configuration_manager () ;
     Glib::RefPtr<Glib::MainContext> get_main_context () ;
     sigc::signal<void>& shutting_down_signal ();
@@ -341,6 +343,22 @@ Workbench::~Workbench ()
     LOG_D ("delete", "destructor-domain");
 }
 
+/// Initialize the workbench by setting the configuration manager it
+/// is going to use.  This function is usually called by the helper
+/// function template load_iface_and_confmgr.
+///
+/// \param a_conf_mgr the configuration manager to set.
+void
+Workbench::do_init (IConfMgrSafePtr &a_conf_mgr)
+{
+    set_configuration_manager (a_conf_mgr);
+}
+
+/// Initialize the workbench by doing all the graphical plumbling
+/// needed to setup the perspectives held by this workbench.  Calling
+/// this function is mandatory prior to using the workbench.
+///
+/// \param a_main the Gtk main object the workbench is going to use.
 void
 Workbench::do_init (Gtk::Main &a_main)
 {
@@ -512,22 +530,31 @@ Workbench::get_perspective (const UString &a_name)
     return NULL;
 }
 
+/// Set the configuration manager
+void
+Workbench::set_configuration_manager (IConfMgrSafePtr &a_conf_mgr)
+{
+    m_priv->conf_mgr = a_conf_mgr;
+
+    NEMIVER_TRY;
+
+    m_priv->conf_mgr->register_namespace
+        (/*default nemiver namespace*/);
+    m_priv->conf_mgr->register_namespace
+        (CONF_NAMESPACE_DESKTOP_INTERFACE);
+
+    NEMIVER_CATCH;
+}
+
 IConfMgrSafePtr
 Workbench::get_configuration_manager ()
 {
     THROW_IF_FAIL (m_priv);
     if (!m_priv->conf_mgr) {
-
-        m_priv->conf_mgr =
+        IConfMgrSafePtr new_conf_mgr = 
             DynamicModuleManager::load_iface_with_default_manager<IConfMgr>
             (CONFIG_MGR_MODULE_NAME, "IConfMgr");
-
-        NEMIVER_TRY;
-
-        m_priv->conf_mgr->register_namespace (/*default nemiver namespace*/);
-        m_priv->conf_mgr->register_namespace (CONF_NAMESPACE_DESKTOP_INTERFACE);
-
-        NEMIVER_CATCH_NOX;
+        set_configuration_manager (new_conf_mgr);
     }
     THROW_IF_FAIL (m_priv->conf_mgr);
     return m_priv->conf_mgr;

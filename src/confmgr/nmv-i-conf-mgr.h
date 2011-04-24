@@ -105,6 +105,17 @@ public:
 
 };//end class IConfMgr
 
+/// Load a dynamic module of a given name, query it for an interface
+/// and return it.  But before that, load the proper configuration
+/// manager dynamic module and query its interface.
+///
+/// \param a_dynmod_name the name of dynamic module to load
+///
+/// \param a_iface_name the name of the interface to query from the 
+/// loaded dynamic module
+///
+/// \param a_confmgr an output argument set to a pointer to the
+/// interface of configuration manager that was loaded.
 template<class T>
 SafePtr<T, ObjectRef, ObjectUnref>
 load_iface_and_confmgr (const UString &a_dynmod_name,
@@ -126,13 +137,31 @@ load_iface_and_confmgr (const UString &a_dynmod_name,
     return iface;
 }
 
+/// Load a dynamic module of a given name, query it for an interface
+/// and return it.  But before that, load the proper configuration
+/// manager dynamic module and query its interface.  Initialize the
+/// former interface with the interface of the dynamic module.  This
+/// function template requires that T has an
+/// T::do_init(IConfMgrSafePtr) method.
+///
+/// \param a_dynmod_name the name of dynamic module to load
+///
+/// \param a_iface_name the name of the interface to query from the 
+/// loaded dynamic module
+///
+/// \return a pointer (wrapped in a SafePtr) to the interface which
+/// name is a_iface_name, initialized with the proper interface of the
+/// configuration manager.
 template<class T>
 SafePtr<T, ObjectRef, ObjectUnref>
 load_iface_and_confmgr (const UString &a_dynmod_name,
                         const UString &a_iface_name)
 {
     IConfMgrSafePtr m;
-    return load_iface_and_confmgr<T> (a_dynmod_name, a_iface_name, m);
+    SafePtr<T, ObjectRef, ObjectUnref> result;
+    result = load_iface_and_confmgr<T> (a_dynmod_name, a_iface_name, m);
+    result->do_init (m);
+    return result;
 }
 
 
