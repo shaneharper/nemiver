@@ -139,7 +139,10 @@ public:
     /// \return the perspective that which name matches a_name
     virtual IPerspective* get_perspective (const UString &a_name) = 0;
 
-    /// \return the interface of the configuration manager.
+    /// set the configuration manager used by this interface
+    virtual void do_init (IConfMgrSafePtr &) = 0;
+
+    /// \return the interface of the configuration manager
     virtual IConfMgrSafePtr get_configuration_manager () = 0;
     ///@}
 
