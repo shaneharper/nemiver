@@ -998,21 +998,40 @@ SourceEditor::remove_visual_breakpoint_from_line (int a_line)
     return true;
 }
 
+/// Clear decorations from the source editor.  Decorations are
+/// basically the "where-marker" and the breakpoint markers.
 void
 SourceEditor::clear_decorations ()
 {
     std::map<int, Glib::RefPtr<gtksourceview::SourceMark> > *markers;
     if ((markers = m_priv->get_markers ()) == 0)
         return;
-    std::map<int, Glib::RefPtr<gtksourceview::SourceMark> >::iterator it;
+    typedef std::map<int, Glib::RefPtr<gtksourceview::SourceMark> >::iterator
+      SourceMarkMapIter;
 
-    // Clear breakpoint markers
-    for (it = markers->begin (); it != markers->end (); ++it) {
+    SourceMarkMapIter it;
+
+    std::list<SourceMarkMapIter> marks_to_erase;
+
+    // Clear breakpoint markers and erase them from the hash map that
+    // indexes them.
+    for (SourceMarkMapIter it = markers->begin ();
+	 it != markers->end ();
+	 ++it) {
         if (!it->second->get_deleted ()) {
             source_view ().get_source_buffer ()->delete_mark (it->second);
-            markers->erase (it);
+	    // We cannot erase it from its map while walking the map
+	    // at the same time.  So let's record that we want to
+	    // erase it for now.
+	    marks_to_erase.push_front (it);
         }
     }
+    // Now erase all the map members that got marked to be erased in
+    // the loop above.
+    for (std::list<SourceMarkMapIter>::iterator it = marks_to_erase.begin ();
+	 it != marks_to_erase.begin ();
+	 ++it)
+      markers->erase (*it);
 
     unset_where_marker ();
 }
