@@ -364,10 +364,12 @@ Workbench::do_init (Gtk::Main &a_main)
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD;
 
-    DynamicModule::Loader *loader = get_dynamic_module ().get_module_loader ();
+    DynamicModule::Loader *loader =
+        get_dynamic_module ().get_module_loader ();
     THROW_IF_FAIL (loader);
 
-    DynamicModuleManager *dynmod_manager = loader->get_dynamic_module_manager ();
+    DynamicModuleManager *dynmod_manager =
+        loader->get_dynamic_module_manager ();
     THROW_IF_FAIL (dynmod_manager);
 
     m_priv->main = &a_main;

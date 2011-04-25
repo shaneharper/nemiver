@@ -126,8 +126,8 @@ load_iface_and_confmgr (const UString &a_dynmod_name,
 
     // Load the confmgr interface
     a_confmgr =
-        common::DynamicModuleManager::load_iface_with_default_manager<IConfMgr>
-        (CONFIG_MGR_MODULE_NAME, "IConfMgr");
+      common::DynamicModuleManager::load_iface_with_default_manager<IConfMgr>
+      (CONFIG_MGR_MODULE_NAME, "IConfMgr");
 
     //Load the IDebugger iterface
     TSafePtr iface =

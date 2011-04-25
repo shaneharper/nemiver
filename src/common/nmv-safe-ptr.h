@@ -38,7 +38,7 @@ namespace common {
 struct DefaultRef
 {
     void
-    operator () (const void* a_ptr) {if (a_ptr) {}}
+    operator () (const void*) {}
 }
 ; //end struct DefaultReference
 
@@ -103,12 +103,12 @@ public:
 
     SafePtr<PointerType, ReferenceFunctor, UnreferenceFunctor>&
     operator= (const SafePtr<PointerType,
-               ReferenceFunctor,
-               UnreferenceFunctor> &a_safe_ptr)
+                             ReferenceFunctor,
+                             UnreferenceFunctor> &a_safe_ptr)
     {
         SafePtr<PointerType,
-        ReferenceFunctor,
-        UnreferenceFunctor> temp (a_safe_ptr);
+                ReferenceFunctor,
+                UnreferenceFunctor> temp (a_safe_ptr);
         swap (temp);
         return *this;
     }
@@ -227,13 +227,12 @@ public:
         return  pointer;
     }
 
-
     void
     swap (SafePtr<PointerType,
-          ReferenceFunctor,
-          UnreferenceFunctor> &a_safe_ptr)
+                  ReferenceFunctor,
+                  UnreferenceFunctor> &a_safe_ptr)
     {
-        PointerType *const tmp(m_pointer);
+        PointerType *const tmp (m_pointer);
         m_pointer = a_safe_ptr.m_pointer;
         a_safe_ptr.m_pointer = tmp;
     }

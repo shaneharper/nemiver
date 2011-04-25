@@ -59,14 +59,14 @@ class NEMIVER_API Loc
         : m_kind (UNDEFINED_LOC_KIND)
     {
     }
-    
-    
+
     Loc (const Loc &a)
       : m_kind (a.m_kind)
     {
     }
 
  public:
+
     Kind kind () const {return m_kind;}
     virtual ~Loc () {};
 }; // end class Loc
@@ -81,6 +81,7 @@ class NEMIVER_API SourceLoc : public Loc
     int m_line_number;
 
  public:
+
     SourceLoc (const UString &a_file_path,
                int a_line_number)
         : m_file_path (a_file_path),

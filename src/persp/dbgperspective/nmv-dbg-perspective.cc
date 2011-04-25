@@ -3524,7 +3524,8 @@ DBGPerspective::init_actions ()
             nil_stock_id,
             _("Jump to cursor"),
             _("Jump to  the currently selected line"),
-            sigc::mem_fun (*this, &DBGPerspective::on_jump_to_current_location_action),
+            sigc::mem_fun
+            (*this, &DBGPerspective::on_jump_to_current_location_action),
             ActionEntry::DEFAULT,
             "",
             false
@@ -3533,9 +3534,11 @@ DBGPerspective::init_actions ()
             "JumpAndBreakToCurrentLocationMenuItemAction",
             nil_stock_id,
             _("Jump and stop to cursor"),
-            _("Sets a breakpoint to the current currently selected line and jump there"),
-            sigc::mem_fun (*this,
-                           &DBGPerspective::on_jump_and_break_to_current_location_action),
+            _("Sets a breakpoint to the currently "
+              "selected line and jump there"),
+            sigc::mem_fun
+            (*this,
+             &DBGPerspective::on_jump_and_break_to_current_location_action),
             ActionEntry::DEFAULT,
             "",
             false
@@ -7939,9 +7942,10 @@ DBGPerspective::set_breakpoint_using_dialog ()
 
     UString function_name;
     SourceEditor *source_editor = get_current_source_editor ();
+
     if (source_editor) {
         Glib::RefPtr<gtksourceview::SourceBuffer> buffer =
-                            source_editor->source_view ().get_source_buffer ();
+            source_editor->source_view ().get_source_buffer ();
         THROW_IF_FAIL (buffer);
 
         Gtk::TextIter start, end;
