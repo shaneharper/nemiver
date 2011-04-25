@@ -7051,8 +7051,9 @@ DBGPerspective::delete_visual_breakpoint (map<int, IDebugger::Breakpoint>::itera
         break;
     }
 
+    LOG_DD ("going to erase breakpoint number " << (int) a_i->first);
     m_priv->breakpoints.erase (a_i);
-    LOG_DD ("erased breakpoint number " << (int) a_i->first);
+
 }
 
 void
