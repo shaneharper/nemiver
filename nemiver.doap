@@ -6,6 +6,7 @@
 
   <name xml:lang="en">Nemiver Debugger</name>
   <shortdesc xml:lang="en">Graphical C/C++ Debugger</shortdesc>
+  <description>Nemiver is a graphical debugger for C and C++ applications.  It integrates well in the GNOME desktop environment.</description>
   <homepage rdf:resource="http://projects.gnome.org/nemiver" />
   <mailing-list rdf:resource="http://mail.gnome.org/mailman/listinfo/nemiver-list" />
   <download-page rdf:resource="http://download.gnome.org/sources/nemiver/" />
