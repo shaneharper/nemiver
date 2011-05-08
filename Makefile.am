@@ -49,7 +49,7 @@ update-changelog:
 	else echo "ChangeLog.updated is smaller than ChangeLog. Problem!!"\
 	; exit -1; fi
 
-RELEASED_BRANCH=master
+RELEASED_BRANCH=gtk2-branch
 
 echo-released-branch:
 	echo "released-branch=$(RELEASED_BRANCH)"
@@ -69,14 +69,14 @@ cat-announcement:
 	@echo "Please send an announcement to $(RELEASE_ANNOUNCE_LIST)"
 	@echo "including the following:"
 	@echo ""
-	@echo "Subject: $(PACKAGE_NAME) release $(VERSION) now available"
+	@echo "Subject: Nemiver release $(VERSION) now available"
 	@echo ""
 	@echo "============================== CUT HERE =============================="
-	@echo "A new $(PACKAGE_NAME) release $(VERSION) is now available."
+	@echo "A new Nemiver release $(VERSION) is now available."
 	@echo ""
 	@echo "What is Nemiver?"
 	@echo "================"
-	@echo "$(PACKAGE_NAME) is a standalone graphical debugger that integrates well in the GNOME desktop environment."
+	@echo "Nemiver is a standalone graphical debugger that integrates well in the GNOME desktop environment."
 	@echo "It currently features a backend which uses the GNU debugger GDB for debugging C/C++ programs."
 	@echo ""
 	@echo "Where to get it?"
