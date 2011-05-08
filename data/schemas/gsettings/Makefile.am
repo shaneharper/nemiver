@@ -1,16 +1,7 @@
 files=org.nemiver.gschema.xml
 gsettingsschema_DATA = $(files)
+gsettings_SCHEMAS = $(files)
 
-export files
-
-install-data-local: install-schemas
-
-uninstall-local: uninstall-schemas
-
-install-schemas: install-gsettingsschemaDATA
-	$(GLIB_COMPILE_SCHEMAS) $(gsettingsschemadir)
-
-uninstall-schemas: uninstall-gsettingsschemaDATA
-	$(GLIB_COMPILE_SCHEMAS) $(gsettingsschemadir)
+@GSETTINGS_RULES@
 
 EXTRA_DIST=$(files)
