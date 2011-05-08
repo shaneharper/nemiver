@@ -308,7 +308,7 @@ dnl *******************
 dnl Configuration Manager
 dnl *******************
 if test x$CONF_MGR = xgsettings ; then
-    AM_CONDITIONAL([GCONF_SCHEMAS_INSTALL],[0])
+    AM_CONDITIONAL([GCONF_SCHEMAS_INSTALL], /bin/false)
 
     dnl library dependencies for the nemiver gsettings plugin
     DEP_GSETTINGS="giomm-2.4 >= $LIBGIOMM_WITH_GSETTINGS_VERSION \
