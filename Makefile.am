@@ -43,9 +43,9 @@ $(sig_file): $(tar_gz_file)
 
 # update ChangeLog from git log
 update-changelog:
-	@./gitlog2gnucl > ChangeLog.updated
-	@size1=`stat -c%s ChangeLog`; size2=`stat -c%s ChangeLog.updated`; \
-	if test $(size2) -ge $(size1); then mv ChangeLog.updated ChangeLog; \
+	@$(abs_srcdir)/gitlog2gnucl > ChangeLog.updated
+	@size1=`stat -c%s $(abs_srcdir)/ChangeLog`; size2=`stat -c%s ChangeLog.updated`; \
+	if test $(size2) -ge $(size1); then mv ChangeLog.updated $(abs_srcdir)/ChangeLog; \
 	else echo "ChangeLog.updated is smaller than ChangeLog. Problem!!"\
 	; exit -1; fi
 
