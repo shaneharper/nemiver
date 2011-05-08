@@ -42,8 +42,7 @@
       <default>true</default>
       <locale name="C">
 	<short>Ask the user before reloading a source file</short>
-	<long>When a source file needs to be reloaded, if this key is set
-        to yes, ask the user before reloading</long>
+	<long>When a source file needs to be reloaded, if this key is set to yes, ask the user before reloading</long>
       </locale>
     </schema>
     <schema>
@@ -100,8 +99,7 @@
       <default>false</default>
       <locale name="C">
         <short>Whether to use the terminal we were launched from</short>
-        <long>Whether to use the terminal we were launched from as
-        the debuggee's terminal, or to use our own embedded terminal.</long>
+        <long>Whether to use the terminal we were launched from as the debuggee's terminal, or to use our own embedded terminal.</long>
       </locale>
     </schema>
     <schema>
@@ -166,8 +164,8 @@
       <type>string</type>
       <default>default-gdb-binary</default>
       <locale name="C">
-	<short>The underlying debugger engine</short>
-	<long>The name of the debugger engine management module used</long>
+	<short>The path to the GDB binary</short>
+	<long>The absolute path to the GDB binary, otherwise, the default makes Nemiver pick the default system GDB</long>
       </locale>
     </schema>
     <schema>
@@ -178,8 +176,7 @@
       <default>false</default>
       <locale name="C">
 	<short>Show the assembly in pure form</short>
-	<long>If set to yes, pure assembly code is shown when switching
-to assembly view. Otherwise, source code mixed with assembly code is shown.</long>
+	<long>If set to yes, pure assembly code is shown when switching to assembly view. Otherwise, source code mixed with assembly code is shown.</long>
       </locale>
     </schema>
     <schema>
@@ -212,9 +209,7 @@ to assembly view. Otherwise, source code mixed with assembly code is shown.</lon
       <default>parent</default>
       <locale name="C">
 	<short>Which process to follow upon a fork</short>
-	<long>If a fork happen, follow the parent parent process if the
-key is set to 'parent', or follow the child process if the key is set to
- 'child'</long>
+	<long>If a fork happen, follow the parent parent process if the key is set to 'parent', or follow the child process if the key is set to 'child'</long>
       </locale>
     </schema>
     <schema>

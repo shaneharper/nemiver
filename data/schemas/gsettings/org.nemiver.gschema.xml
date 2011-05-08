@@ -3,38 +3,31 @@
     <key name="source-search-dirs" type="s">
       <default>'.'</default>
       <summary>source directory dirs</summary>
-      <description>The list of directories where to search for source files.
-        This is used only when there is not enough information in the binary to
-        locate the file.</description>
+      <description>The list of directories where to search for source files. This is used only when there is not enough information in the binary to locate the file.</description>
     </key>
 
     <key name="show-dbg-error-dialogs" type="b">
       <default>false</default>
       <summary>Show or don't show errors coming from the debugger engine</summary>
-      <description>If set to yes, popups error message dialogs showing errors
-        coming from the underlying debugger engine.</description>
+      <description>If set to yes, popups error message dialogs showing errors coming from the underlying debugger engine.</description>
     </key>
 
     <key name="show-source-line-numbers" type="b">
       <default>true</default>
       <summary>Show or don't show source lines numbers</summary>
-      <description>If set to yes, show the source code line number on the left
-        hand side of each line.</description>
+      <description>If set to yes, show the source code line number on the left hand side of each line.</description>
     </key>
 
     <key name="confirm-before-reload-source" type="b">
       <default>true</default>
       <summary>Ask the user before reloading a source file</summary>
-      <description>When a source file needs to be reloaded, if this key is set
-        to yes, ask the user before reloading.</description>
+      <description>When a source file needs to be reloaded, if this key is set to yes, ask the user before reloading.</description>
     </key>
 
     <key name="allow-auto-reload-source" type="b">
       <default>true</default>
       <summary>Do not automatically reload the source file</summary>
-      <description>If the user chooses not to be asked about re-loading changed
-        source files and if this key is set to true, re-load the source file
-        automatically.</description>
+      <description>If the user chooses not to be asked about re-loading changed source files and if this key is set to true, re-load the source file automatically.</description>
     </key>
 
     <key name="highlight-source-code" type="b">
@@ -52,15 +45,13 @@
     <key name="custom-font-name" type="s">
       <default>'monospace 12'</default>
       <summary>The custom font to use if we're not using the system font</summary>
-      <description>The custom font to use for the source editor if we're not
-        using the system font.</description>
+      <description>The custom font to use for the source editor if we're not using the system font.</description>
     </key>
 
     <key name="use-launch-terminal" type="b">
       <default>false</default>
       <summary>Whether to use the terminal we were launched from</summary>
-      <description>Whether to use the terminal we were launched from as
-        the debuggee's terminal, or to use our own embedded terminal.</description>
+      <description>Whether to use the terminal we were launched from as the debuggee's terminal, or to use our own embedded terminal.</description>
     </key>
 
     <key name="editor-style-scheme" type="s">
@@ -95,16 +86,14 @@
 
     <key name="gdb-binary" type="s">
       <default>'default-gdb-binary'</default>
-      <summary>The underlying debugger engine</summary>
-      <description>The name of the debugger engine management module used.</description>
+      <summary>The path to the GDB binary</summary>
+      <description>The absolute path to the GDB binary, otherwise, the default makes Nemiver pick the default system GDB</description>
     </key>
 
     <key name="asm-style-pure" type="b">
       <default>false</default>
       <summary>Show the assembly in pure form</summary>
-      <description>If set to yes, pure assembly code is shown when switching
-        to assembly view. Otherwise, source code mixed with assembly code is
-        shown.</description>
+      <description>If set to yes, pure assembly code is shown when switching to assembly view. Otherwise, source code mixed with assembly code is shown.</description>
     </key>
 
     <key name="default-num-asm-instrs" type="i">
@@ -116,34 +105,25 @@
     <key name="context-pane-location" type="i">
       <default>-1</default>
       <summary>The position of the splitter in the debug context tab</summary>
-      <description>The position of the splitter in the debug context tab.
-        This is saved by the UI automatically.</description>
+      <description>The position of the splitter in the debug context tab.  This is saved by the UI automatically.</description>
     </key>
 
     <key name="follow-fork-mode" type="s">
       <default>'parent'</default>
       <summary>Which process to follow upon a fork</summary>
-      <description>If a fork happen, follow the parent parent process if the
-        key is set to 'parent', or follow the child process if the key is set to
-        'child'.</description>
+      <description>If a fork happens, follow the parent parent process if the key is set to 'parent', or follow the child process if the key is set to 'child'.</description>
     </key>
 
     <key name="callstack-expansion-chunk" type="i">
       <default>25</default>
       <summary>The size of the call stack to display</summary>
-      <description>Do not automatically display call stack wider than this
-        value.</description>
+      <description>Do not automatically display call stack wider than this value.</description>
     </key>
 
     <key name="source-file-encoding-list" type="as">
       <default>['UTF-8','ISO-8859','ISO-8859-1','ISO-8859-15']</default>
       <summary>The list of of file encodings supported by nemiver</summary>
-      <description>When nemiver opens a file, it will assume the encoding of the
-        file is one of the encodings listed here. Please bear in mind that
-        Nemiver works internally with files in the UTF-8 encoding. So when it
-        loads a file, it must convert the file encoding into UTF-8. Therefore,
-        Nemiver needs to know the possible set of encodings of the source files
-        it has to open.</description>
+      <description>When nemiver opens a file, it assumes the encoding of the file is one of the encodings listed here. Please bear in mind that Nemiver works internally with files in the UTF-8 encoding.  So when it loads a file, it must convert the file encoding into UTF-8. Therefore, Nemiver needs to know the possible set of encodings of the source files it opens.</description>
     </key>
 
     <key name="window-width" type="i">
