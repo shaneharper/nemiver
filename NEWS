@@ -1,3 +1,77 @@
+0.8.2 Release
+=============
+
+Andrej Žnidaršič:
+      Updated Slovenian translation
+
+Daniel Mustieles:
+      Updated Spanish translation
+
+Dodji Seketeli:
+      Update boost m4 macro definitions
+      Detect boost when in /usr/lib64
+      Style/comments cleanups
+      Remove useless includes
+      Catch more exceptions at low level
+      Centralize conf keys decls/defs to src/confmgr
+      Initialize IDebugger dynmods with gconf in tests
+      640919 Fix build for autoconf < 2.64
+      640921 Pass absolute file paths to the compiler
+      NMV_DEFAULT_LOG_DOMAIN is always file base name
+      Pass full tests file paths to the compiler
+      Move null slots to nmv-debugger-utils.[h|cc]
+      Return a signal of IDebugger by reference
+      Avoid needless work when selecting a frame
+      643700 Function arguments are duplicated
+      Reset command queue on restart GDB after a crash
+      644114 Update the call stack again
+      644569 Ensure last expr becomes last history item
+      Update the commit log guidelines
+      Don't list frame args twice
+      Fix 'set-but-unused' warning from GCC 4.6
+      Fix tests linking with boost 1.46
+      Don't loose commands sent down the wire
+      Ignore 'current-thread-id' in thread list
+      Introduce Loc (code location) type
+      Emit one IDebugger::breakpoint_set_signal per BP
+      Fix memory corruption in SourceEditor
+      Fix a crash in confmgr
+      Avoid reading freed memory
+      Fixlets in setbreakpointdialog.ui
+      560235 Initial support of "jump to"
+      Fix gsettings configure test error
+      Use Automake GSettings magic to support DESTDIR
+      Fix configuration keys' description wording
+      Add a description to Nemiver's doap file
+      Update Makefile.am's release text
+
+Fabien Parent:
+      Add a GSettings implementation for IConfMgr
+
+Joe Hansen:
+      Updated Danish translation
+
+Kalev Lember:
+      598444 Use Gtk::Spinner instead of custom spinner widget
+
+Luca Bruno:
+      Import Debian packaging meta-data into Nemiver's Git
+
+Lucian Adrian Grijincu:
+      Updated Romanian translation
+
+Marek Černocký:
+      Updated Czech translation
+
+Mario Blättermann:
+      [l10n] Updated German translation
+
+Takeshi AIHANA:
+      Updated Japanese translation
+
+lainme:
+      Update Simplified Chinese translation
+
 0.8.1 Release
 =============
 
