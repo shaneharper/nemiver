@@ -93,7 +93,10 @@ public:
         module_manager (0)
     {
         LOG_FUNCTION_SCOPE_NORMAL_DD;
-
+        // We are going to unref the tree_view when an instance of
+        // this type is going to be distroyed.  So we need to hold a
+        // reference on tree_view.
+        tree_view.reference ();
         THROW_IF_FAIL (a_debugger);
         debugger = a_debugger;
         THROW_IF_FAIL (tree_view);
