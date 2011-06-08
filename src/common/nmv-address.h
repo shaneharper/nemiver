@@ -22,8 +22,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_ADDRESS_H__
-#define __NEMIVER_ADDRESS_H__
+#ifndef __NMV_ADDRESS_H__
+#define __NMV_ADDRESS_H__
 #include <string>
 #include "nmv-namespace.h"
 #include "nmv-api-macros.h"
@@ -67,4 +67,4 @@ operator<< (Stream &a_os, const Address &a)
 NEMIVER_END_NAMESPACE (common)
 NEMIVER_END_NAMESPACE (nemiver)
 
-#endif // __NEMIVER_ADDRESS_H__
+#endif // __NMV_ADDRESS_H__

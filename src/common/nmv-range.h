@@ -22,8 +22,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_RANGE_H__
-#define __NEMIVER_RANGE_H__
+#ifndef __NMV_RANGE_H__
+#define __NMV_RANGE_H__
 
 #include "nmv-namespace.h"
 #include "nmv-api-macros.h"

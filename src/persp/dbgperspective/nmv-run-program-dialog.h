@@ -22,8 +22,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_RUN_PROGRAM_DIALOG_H__
-#define __NEMIVER_RUN_PROGRAM_DIALOG_H__
+#ifndef __NMV_RUN_PROGRAM_DIALOG_H__
+#define __NMV_RUN_PROGRAM_DIALOG_H__
 
 #include <map>
 #include "common/nmv-safe-ptr-utils.h"
@@ -65,5 +65,5 @@ public:
 
 NEMIVER_END_NAMESPACE (nemiver)
 
-#endif //__NEMIVER_RUN_PROGRAM_DIALOG_H__
+#endif //__NMV_RUN_PROGRAM_DIALOG_H__
 

@@ -23,8 +23,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_INSERT_STATEMENT_H__
-#define __NEMIVER_INSERT_STATEMENT_H__
+#ifndef __NMV_INSERT_STATEMENT_H__
+#define __NMV_INSERT_STATEMENT_H__
 
 #include "nmv-sql-statement.h"
 
@@ -58,5 +58,5 @@ public:
 
 }// end namespace common
 }//end namespace nemiver
-#endif //__NEMIVER_INSERT_STATEMENT_H__
+#endif //__NMV_INSERT_STATEMENT_H__
 

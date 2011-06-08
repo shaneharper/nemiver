@@ -23,8 +23,8 @@
  *See COPYRIGHT file copyright information.
  */
 
-#ifndef __NEMIVER_LOC_H__
-#define __NEMIVER_LOC_H__
+#ifndef __NMV_LOC_H__
+#define __NMV_LOC_H__
 
 #include "nmv-ustring.h"
 #include "nmv-address.h"
@@ -155,4 +155,4 @@ class NEMIVER_API AddressLoc : public Loc
 NEMIVER_END_NAMESPACE (common)
 NEMIVER_END_NAMESPACE (nemiver)
 
-#endif //__NEMIVER_LOC_H__
+#endif //__NMV_LOC_H__

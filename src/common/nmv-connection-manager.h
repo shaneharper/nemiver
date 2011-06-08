@@ -23,8 +23,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_CONNECTION_MANAGER_H__
-#define __NEMIVER_CONNECTION_MANAGER_H__
+#ifndef __NMV_CONNECTION_MANAGER_H__
+#define __NMV_CONNECTION_MANAGER_H__
 
 #include "nmv-connection.h"
 
@@ -84,5 +84,5 @@ protected:
 }//end namespace common
 }//end namespace nemiver
 
-#endif //__NEMIVER_CONNECTION_MANAGER_H__
+#endif //__NMV_CONNECTION_MANAGER_H__
 

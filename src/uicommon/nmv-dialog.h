@@ -22,8 +22,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_DIALOG_H__
-#define __NEMIVER_DIALOG_H__
+#ifndef __NMV_DIALOG_H__
+#define __NMV_DIALOG_H__
 
 #include <gtkmm/builder.h>
 #include "common/nmv-object.h"
@@ -84,6 +84,6 @@ public:
 
 NEMIVER_END_NAMESPACE (nemiver)
 
-#endif //__NEMIVER_DIALOG_H__
+#endif //__NMV_DIALOG_H__
 
 

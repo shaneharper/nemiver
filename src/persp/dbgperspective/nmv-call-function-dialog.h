@@ -22,8 +22,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_CALL_FUNCTION_DIALOG_H__
-#define __NEMIVER_CALL_FUNCTION_DIALOG_H__
+#ifndef __NMV_CALL_FUNCTION_DIALOG_H__
+#define __NMV_CALL_FUNCTION_DIALOG_H__
 
 #include <list>
 #include "common/nmv-safe-ptr-utils.h"
@@ -54,5 +54,5 @@ public:
 
 NEMIVER_END_NAMESPACE (nemiver)
 
-#endif /*__NEMIVER_CALL_FUNCTION_DIALOG_H__*/
+#endif /*__NMV_CALL_FUNCTION_DIALOG_H__*/
 

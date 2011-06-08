@@ -244,5 +244,5 @@ public:
 }//end namespace common
 };//end namespace nemiver
 
-#endif //__NEMIVER_PLUGIN_H__
+#endif //__NMV_PLUGIN_H__
 

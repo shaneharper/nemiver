@@ -23,8 +23,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_TRANSACTION_H__
-#define __NEMIVER_TRANSACTION_H__
+#ifndef __NMV_TRANSACTION_H__
+#define __NMV_TRANSACTION_H__
 
 /// \file
 /// the declaration of the application level transaction class
@@ -130,5 +130,5 @@ struct TransactionAutoHelper
 }//end namespace common
 }//end namespace nemiver
 
-#endif //__NEMIVER_TRANSACTION_H__
+#endif //__NMV_TRANSACTION_H__
 

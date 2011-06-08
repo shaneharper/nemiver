@@ -22,8 +22,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_SAVED_SESSIONS_DIALOG_H__
-#define __NEMIVER_SAVED_SESSIONS_DIALOG_H__
+#ifndef __NMV_SAVED_SESSIONS_DIALOG_H__
+#define __NMV_SAVED_SESSIONS_DIALOG_H__
 
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
@@ -57,5 +57,5 @@ public:
 
 NEMIVER_END_NAMESPACE (nemiver)
 
-#endif //__NEMIVER_SAVED_SESSIONS_DIALOG_H__
+#endif //__NMV_SAVED_SESSIONS_DIALOG_H__
 

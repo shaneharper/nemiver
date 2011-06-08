@@ -23,8 +23,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_PARSING_UTILS_H__
-#define __NEMIVER_PARSING_UTILS_H__
+#ifndef __NMV_PARSING_UTILS_H__
+#define __NMV_PARSING_UTILS_H__
 
 #include <glibmm.h>
 #include "nmv-ustring.h"
@@ -61,5 +61,5 @@ NEMIVER_API bool string_to_date (const UString &a_str, Glib::Date &a_date);
 }//end namespace common
 }//end namespace nemiver
 
-#endif //__NEMIVER_PARSING_UTILS_H__
+#endif //__NMV_PARSING_UTILS_H__
 

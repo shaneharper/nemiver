@@ -24,8 +24,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_SET_BREAKPOINT_DIALOG_H__
-#define __NEMIVER_SET_BREAKPOINT_DIALOG_H__
+#ifndef __NMV_SET_BREAKPOINT_DIALOG_H__
+#define __NMV_SET_BREAKPOINT_DIALOG_H__
 
 #include "common/nmv-safe-ptr-utils.h"
 #include "common/nmv-address.h"
@@ -86,5 +86,5 @@ public:
 
 NEMIVER_END_NAMESPACE (nemiver)
 
-#endif //__NEMIVER_SET_BREAKPOINT_DIALOG_H__
+#endif //__NMV_SET_BREAKPOINT_DIALOG_H__
 

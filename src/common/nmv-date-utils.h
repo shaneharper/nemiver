@@ -27,8 +27,8 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  */
-#ifndef __NEMIVER_DATE_UTILS_H__
-#define __NEMIVER_DATE_UTILS_H__
+#ifndef __NMV_DATE_UTILS_H__
+#define __NMV_DATE_UTILS_H__
 
 #include <sys/time.h>
 #include "nmv-api-macros.h"
@@ -49,5 +49,5 @@ void NEMIVER_API get_current_datetime (UString &a_datetime);
 }//end namespace common
 }//end namespace nemiver
 
-#endif //__NEMIVER_DATE_UTILS_H__
+#endif //__NMV_DATE_UTILS_H__
 

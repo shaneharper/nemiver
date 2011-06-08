@@ -27,8 +27,8 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  */
-#ifndef __NEMIVER_SCOPE_LOGGER_H__
-#define __NEMIVER_SCOPE_LOGGER_H__
+#ifndef __NMV_SCOPE_LOGGER_H__
+#define __NMV_SCOPE_LOGGER_H__
 
 #include "nmv-api-macros.h"
 #include "nmv-log-stream-utils.h"
