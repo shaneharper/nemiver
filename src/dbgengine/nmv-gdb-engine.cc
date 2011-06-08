@@ -842,6 +842,7 @@ public:
             set_state (IDebugger::RUNNING);
             return true;
         }
+        LOG_ERROR ("Issuing of last command failed");
         return false;
     }
 
@@ -1406,8 +1407,10 @@ struct OnBreakpointHandler: OutputHandler {
                 && c.has_slot ()) {
                 IDebugger::BreakpointSlot slot =
                     c.get_slot<IDebugger::BreakpointSlot> ();
+                LOG_DD ("Calling slot of IDebugger::set_breakpoint()");
                 slot (p);
             }
+            LOG_DD ("Emitting IDebugger::breakpoint_set_signal()");
             m_engine->breakpoint_set_signal ().emit
                 (p, a_in.command ().cookie ());
             m_engine->set_state (IDebugger::READY);
@@ -1441,7 +1444,8 @@ struct OnBreakpointHandler: OutputHandler {
                            << "', but that's not a well formed number dude.");
             }
         } else if (has_breaks) {
-            LOG_DD ("firing IDebugger::breakpoint_set_signal()");
+            LOG_DD ("firing IDebugger::breakpoints_list_signal(), after command: "
+                    << a_in.command ().name ());
             m_engine->breakpoints_list_signal ().emit
                 (m_engine->get_cached_breakpoints (),
                  a_in.command ().cookie ());
@@ -2900,8 +2904,10 @@ GDBEngine::load_program (const UString &a_prog,
 
         // In case we are restarting GDB after a crash, the command
         // queue might be stuck.  Let's restart it.
-        if (a_force)
+        if (a_force) {
+            LOG_DD ("Reset command queue");
             m_priv->reset_command_queue ();
+        }
 
         queue_command (Command ("set breakpoint pending on"));
 
