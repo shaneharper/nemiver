@@ -567,7 +567,7 @@ public:
                           const map<UString, UString> &a_env,
                           const UString &a_cwd,
                           const vector<IDebugger::Breakpoint> &a_breaks,
-                          bool a_restarting = true,
+                          bool a_restarting = false,
                           bool a_close_opened_files = false);
 
     void attach_to_program ();
@@ -6266,7 +6266,9 @@ DBGPerspective::execute_program ()
     map<UString, UString> env = dialog.environment_variables();
 
     vector<IDebugger::Breakpoint> breaks;
-    execute_program (prog, args, env, cwd, breaks, true, true);
+    execute_program (prog, args, env, cwd, breaks,
+                     /*a_restarting=*/true,
+                     /*a_close_opened_files=*/true);
     m_priv->reused_session = false;
 }
 
@@ -6332,6 +6334,8 @@ DBGPerspective::restart_local_inferior ()
     }
 }
 
+/// Execute a program for the first time.  Do not use this to restart
+/// an existing program; rather, use restart_inferior for that.
 void
 DBGPerspective::execute_program (const UString &a_prog,
                                  const vector<UString> &a_args,
@@ -6341,7 +6345,7 @@ DBGPerspective::execute_program (const UString &a_prog,
 {
     vector<IDebugger::Breakpoint> bps;
     execute_program (a_prog, a_args, a_env,
-                     a_cwd, bps, true,
+                     a_cwd, bps, /*a_restarting=*/false,
                      a_close_opened_files);
 }
 
