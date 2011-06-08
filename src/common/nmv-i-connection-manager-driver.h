@@ -23,8 +23,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_I_CONNECTION_MANAGER_DRIVER_H__
-#define __NEMIVER_I_CONNECTION_MANAGER_DRIVER_H__
+#ifndef __NMV_I_CONNECTION_MANAGER_DRIVER_H__
+#define __NMV_I_CONNECTION_MANAGER_DRIVER_H__
 
 #include "nmv-ustring.h"
 #include "nmv-dynamic-module.h"
@@ -104,5 +104,5 @@ typedef common::SafePtr<IConnectionManagerDriver,
                         common::ObjectUnref> IConnectionManagerDriverSafePtr;
 };//end namespace common
 };//end namespace nemiver
-#endif //__NEMIVER_I_CONNECTION_MANAGER_DRIVER_H__
+#endif //__NMV_I_CONNECTION_MANAGER_DRIVER_H__
 

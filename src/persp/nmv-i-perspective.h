@@ -22,8 +22,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_I_PERSPECTIVE_H__
-#define __NEMIVER_I_PERSPECTIVE_H__
+#ifndef __NMV_I_PERSPECTIVE_H__
+#define __NMV_I_PERSPECTIVE_H__
 
 #include <gtkmm.h>
 #include <list>
@@ -146,5 +146,5 @@ public:
 
 NEMIVER_END_NAMESPACE (nemiver)
 
-#endif //__NEMIVER_I_PERSPECTIVE_H__
+#endif //__NMV_I_PERSPECTIVE_H__
 

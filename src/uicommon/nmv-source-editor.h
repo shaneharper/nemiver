@@ -22,8 +22,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_SOURCE_EDITOR_H__
-#define __NEMIVER_SOURCE_EDITOR_H__
+#ifndef __NMV_SOURCE_EDITOR_H__
+#define __NMV_SOURCE_EDITOR_H__
 
 #include <list>
 #include <functional>
@@ -208,5 +208,5 @@ public:
 
 NEMIVER_END_NAMESPACE (nemiver)
 
-#endif //__NEMIVER_DBG_SOURCE_EDITOR_H__
+#endif //__NMV_DBG_SOURCE_EDITOR_H__
 

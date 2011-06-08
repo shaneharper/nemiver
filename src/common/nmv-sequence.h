@@ -25,8 +25,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_SEQUENCE_H__
-#define __NEMIVER_SEQUENCE_H__
+#ifndef __NMV_SEQUENCE_H__
+#define __NMV_SEQUENCE_H__
 
 #include "nmv-api-macros.h"
 #include "nmv-object.h"
@@ -65,5 +65,5 @@ public:
 
 }//end namespace common
 }//end namespace nemiver
-#endif // __NEMIVER_SEQUENCE_H__
+#endif // __NMV_SEQUENCE_H__
 

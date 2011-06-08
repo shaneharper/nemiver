@@ -23,8 +23,8 @@
  *See COPYRIGHT file copyright information.
  */
 
-#ifndef __NEMIVER_SET_JUMP_TO_DIALOG_H__
-#define __NEMIVER_SET_JUMP_TO_DIALOG_H__
+#ifndef __NMV_SET_JUMP_TO_DIALOG_H__
+#define __NMV_SET_JUMP_TO_DIALOG_H__
 
 #include "common/nmv-safe-ptr-utils.h"
 #include "nmv-dialog.h"
@@ -55,4 +55,4 @@ class SetJumpToDialog : public Dialog
 
 NEMIVER_END_NAMESPACE (nemiver)
 
-#endif // __NEMIVER_JUMP_TO_DIALOG_H__
+#endif // __NMV_JUMP_TO_DIALOG_H__

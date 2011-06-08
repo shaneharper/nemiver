@@ -23,8 +23,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_CONNECTION_H__
-#define __NEMIVER_CONNECTION_H__
+#ifndef __NMV_CONNECTION_H__
+#define __NMV_CONNECTION_H__
 
 #include "nmv-safe-ptr-utils.h"
 #include "nmv-object.h"
@@ -110,5 +110,5 @@ typedef common::SafePtr<Connection,
 
 }//end namespace common
 }//end nemiver
-#endif //end __NEMIVER_CONNECTION_H__
+#endif //end __NMV_CONNECTION_H__
 

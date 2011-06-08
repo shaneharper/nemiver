@@ -22,8 +22,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_ASM_INSTR_H__
-#define __NEMIVER_ASM_INSTR_H__
+#ifndef __NMV_ASM_INSTR_H__
+#define __NMV_ASM_INSTR_H__
 
 #include <list>
 #include <boost/variant.hpp>
@@ -230,4 +230,4 @@ class DisassembleInfo {
 NEMIVER_END_NAMESPACE (common)
 NEMIVER_END_NAMESPACE (nemiver)
 
-#endif // __NEMIVER_ASM_INSTR_H__
+#endif // __NMV_ASM_INSTR_H__

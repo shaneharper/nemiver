@@ -22,8 +22,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_LOAD_CORE_DIALOG_H__
-#define __NEMIVER_LOAD_CORE_DIALOG_H__
+#ifndef __NMV_LOAD_CORE_DIALOG_H__
+#define __NMV_LOAD_CORE_DIALOG_H__
 
 #include "common/nmv-safe-ptr-utils.h"
 #include "nmv-dialog.h"
@@ -54,5 +54,5 @@ public:
 
 NEMIVER_END_NAMESPACE (nemiver)
 
-#endif //__NEMIVER_LOAD_CORE_DIALOG_H__
+#endif //__NMV_LOAD_CORE_DIALOG_H__
 

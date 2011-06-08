@@ -22,8 +22,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_CPP_AST_H__
-#define __NEMIVER_CPP_AST_H__
+#ifndef __NMV_CPP_AST_H__
+#define __NMV_CPP_AST_H__
 
 #include <string>
 #include <list>
@@ -2750,5 +2750,5 @@ public:
 
 NEMIVER_END_NAMESPACE (cpp)
 NEMIVER_END_NAMESPACE (nemiver)
-#endif /*__NEMIVER_CPP_AST_H__*/
+#endif /*__NMV_CPP_AST_H__*/
 

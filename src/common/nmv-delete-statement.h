@@ -23,8 +23,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_DELETE_STATEMENT_H__
-#define __NEMIVER_DELETE_STATEMENT_H__
+#ifndef __NMV_DELETE_STATEMENT_H__
+#define __NMV_DELETE_STATEMENT_H__
 
 #include "nmv-sql-statement.h"
 
@@ -56,5 +56,5 @@ public:
 }//end namespace common
 }//end namespace nemiver
 
-#endif //__NEMIVER_DELETE_STATEMENT_H__
+#endif //__NMV_DELETE_STATEMENT_H__
 

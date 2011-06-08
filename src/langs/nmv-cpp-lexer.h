@@ -22,8 +22,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_CPP_LEXER_H__
-#define __NEMIVER_CPP_LEXER_H__
+#ifndef __NMV_CPP_LEXER_H__
+#define __NMV_CPP_LEXER_H__
 
 #include <string>
 #include "nmv-cpp-ast.h"
@@ -118,5 +118,5 @@ public:
 NEMIVER_END_NAMESPACE (cpp)
 NEMIVER_END_NAMESPACE (nemiver)
 
-#endif /*__NEMIVER_CPP_LEXER_H__*/
+#endif /*__NMV_CPP_LEXER_H__*/
 

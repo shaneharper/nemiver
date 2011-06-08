@@ -28,8 +28,8 @@
 #include "nmv-exception.h"
 #include "nmv-transaction.h"
 
-#ifndef __NEMIVER_TOOLS_H__
-#define __NEMIVER_TOOLS_H__
+#ifndef __NMV_TOOLS_H__
+#define __NMV_TOOLS_H__
 
 using namespace std;
 
@@ -54,5 +54,5 @@ bool NEMIVER_API execute_one_statement (const common::UString &a_sql_string,
 }//end namespace common 
 }//end namespace verissimus
 
-#endif //__NEMIVER_TOOL_H__
+#endif //__NMV_TOOL_H__
 

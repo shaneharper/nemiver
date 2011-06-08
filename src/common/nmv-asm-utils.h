@@ -22,8 +22,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_ASM_UTILS_H__
-#define __NEMIVER_ASM_UTILS_H__
+#ifndef __NMV_ASM_UTILS_H__
+#define __NMV_ASM_UTILS_H__
 
 #include "nmv-asm-instr.h"
 
@@ -137,4 +137,4 @@ bool write_asm_instr (const common::Asm &a_asm,
 NEMIVER_END_NAMESPACE (common)
 NEMIVER_END_NAMESPACE (nemiver)
 
-#endif // __NEMIVER_ASM_UTILS_H__
+#endif // __NMV_ASM_UTILS_H__

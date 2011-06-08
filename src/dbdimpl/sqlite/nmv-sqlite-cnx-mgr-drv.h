@@ -23,8 +23,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_SQLITE_CNX_MGR_DRV_H__
-#define __NEMIVER_SQLITE_CNX_MGR_DRV_H__
+#ifndef __NMV_SQLITE_CNX_MGR_DRV_H__
+#define __NMV_SQLITE_CNX_MGR_DRV_H__
 
 #include "common/nmv-i-connection-manager-driver.h"
 #include "common/nmv-i-connection-driver.h"
@@ -58,5 +58,5 @@ public:
 }//end namespace dbd
 }//end namespace nemiver
 
-#endif //__NEMIVER_SQLITE_CNX_MGR_DRV_H__
+#endif //__NMV_SQLITE_CNX_MGR_DRV_H__
 

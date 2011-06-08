@@ -22,8 +22,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_SQL_STATEMENT_H__
-#define __NEMIVER_SQL_STATEMENT_H__
+#ifndef __NMV_SQL_STATEMENT_H__
+#define __NMV_SQL_STATEMENT_H__
 
 //#pragma GCC visibility push(default)
 #include <vector>
@@ -124,4 +124,4 @@ NEMIVER_API common::LogStream & operator<< (common::LogStream &,
 
 }//end namespace common
 }//end namespace nemiver
-#endif //__NEMIVER_SQL_STATEMENT_H__
+#endif //__NMV_SQL_STATEMENT_H__

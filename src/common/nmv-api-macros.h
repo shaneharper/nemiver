@@ -26,8 +26,8 @@
  *
  */
 #include "config.h"
-#ifndef __NEMIVER_API_MACROS_H__
-#define __NEMIVER_API_MACROS_H__
+#ifndef __NMV_API_MACROS_H__
+#define __NMV_API_MACROS_H__
 
 # ifdef HAS_GCC_VISIBILITY_SUPPORT
 #  ifndef DSO_EXPORTED

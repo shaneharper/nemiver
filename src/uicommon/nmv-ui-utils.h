@@ -25,8 +25,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_UI_UTILS_H__
-#define __NEMIVER_UI_UTILS_H__
+#ifndef __NMV_UI_UTILS_H__
+#define __NMV_UI_UTILS_H__
 
 #include "common/nmv-api-macros.h"
 #include <gtkmm.h>
@@ -198,5 +198,5 @@ struct WidgetUnref {
 }//end namespace ui_utils
 }//end namespace nemiver
 
-#endif// __NEMIVER_UI_UTILS_H__
+#endif// __NMV_UI_UTILS_H__
 

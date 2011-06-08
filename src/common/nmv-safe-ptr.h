@@ -27,8 +27,8 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  */
-#ifndef __NEMIVER_SAFE_PTR_H__
-#define __NEMIVER_SAFE_PTR_H__
+#ifndef __NMV_SAFE_PTR_H__
+#define __NMV_SAFE_PTR_H__
 
 #include <cstdlib>
 
@@ -259,5 +259,5 @@ public:
 }//end namespace common
 }//end namespace nemiver
 
-#endif //__NEMIVER_SAFR_PTR_H__
+#endif //__NMV_SAFR_PTR_H__
 

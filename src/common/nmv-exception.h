@@ -27,8 +27,8 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  */
-#ifndef __NEMIVER_EXCEPTION_H__
-#define __NEMIVER_EXCEPTION_H__
+#ifndef __NMV_EXCEPTION_H__
+#define __NMV_EXCEPTION_H__
 
 #include <cstdlib>
 #include <stdexcept>
@@ -148,4 +148,4 @@ return; \
 }//end namespace common
 }//end namespace nemiver 
 
-#endif //__NEMIVER_EXCEPTION_H__
+#endif //__NMV_EXCEPTION_H__

@@ -21,8 +21,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_INITIALIZER_H__
-#define __NEMIVER_INITIALIZER_H__
+#ifndef __NMV_INITIALIZER_H__
+#define __NMV_INITIALIZER_H__
 
 #include "nmv-api-macros.h"
 
@@ -43,5 +43,5 @@ public:
 }//end namespace common
 }//end namespace nemiver
 
-#endif //__NEMIVER_INITIALIZER_H__
+#endif //__NMV_INITIALIZER_H__
 

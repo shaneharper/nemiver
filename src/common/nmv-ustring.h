@@ -27,8 +27,8 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  */
-#ifndef __NEMIVER_USTRING_H__
-#define __NEMIVER_USTRING_H__
+#ifndef __NMV_USTRING_H__
+#define __NMV_USTRING_H__
 
 #include <vector>
 #include <string>

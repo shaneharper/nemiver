@@ -23,8 +23,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_I_CONNECTION_DRIVER_H__
-#define __NEMIVER_I_CONNECTION_DRIVER_H__
+#ifndef __NMV_I_CONNECTION_DRIVER_H__
+#define __NMV_I_CONNECTION_DRIVER_H__
 
 #include <glib.h>
 #include "nmv-object.h"
@@ -102,5 +102,5 @@ typedef common::SafePtr<IConnectionDriver,
 }//end common
 }//end nemiver
 
-#endif //__NEMIVER_I_CONNECTION_DRIVER_H__
+#endif //__NMV_I_CONNECTION_DRIVER_H__
 

@@ -27,8 +27,8 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  */
-#ifndef __NEMIVER_I_INPUT_STREAM_H__
-#define __NEMIVER_I_INPUT_STREAM_H__
+#ifndef __NMV_I_INPUT_STREAM_H__
+#define __NMV_I_INPUT_STREAM_H__
 
 #include "nmv-object.h"
 
@@ -62,5 +62,5 @@ public:
 };//end class InputStream
 }//end namespace common
 }//end namespace nemiver
-#endif //__NEMIVER_INPUT_STREAM_H__
+#endif //__NMV_INPUT_STREAM_H__
 

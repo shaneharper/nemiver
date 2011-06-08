@@ -27,8 +27,8 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  */
-#ifndef __NEMIVER_DYNAMIC_MODULE_H__
-#define __NEMIVER_DYNAMIC_MODULE_H__
+#ifndef __NMV_DYNAMIC_MODULE_H__
+#define __NMV_DYNAMIC_MODULE_H__
 
 #include <vector>
 #include <list>
@@ -432,5 +432,5 @@ load_iface_using_context (DynamicModule &a_dynmod,
 NEMIVER_END_NAMESPACE (common)
 NEMIVER_END_NAMESPACE (nemiver)
 
-#endif// __NEMIVER_DYNAMIC_MODULE_H__
+#endif// __NMV_DYNAMIC_MODULE_H__
 

@@ -23,8 +23,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NEMIVER_I_DEBUGGER_H__
-#define __NEMIVER_I_DEBUGGER_H__
+#ifndef __NMV_I_DEBUGGER_H__
+#define __NMV_I_DEBUGGER_H__
 
 #include <stdint.h>
 #include <vector>
@@ -1379,5 +1379,5 @@ public:
 
 NEMIVER_END_NAMESPACE (nemiver)
 
-#endif //__NEMIVER_I_DEBUGGER_H__
+#endif //__NMV_I_DEBUGGER_H__
 
