@@ -44,9 +44,6 @@ class PreferencesDialog : public Dialog {
 public:
     PreferencesDialog (IWorkbench &a_workbench,
                        const UString &a_root_path);
-    PreferencesDialog (IWorkbench &a_workbench,
-                       const UString &a_root_path,
-                       const std::vector<UString> &a_source_dirs);
     virtual ~PreferencesDialog ();
     const std::vector<UString>& source_directories () const;
     void source_directories (const std::vector<UString> &a_dirs);
