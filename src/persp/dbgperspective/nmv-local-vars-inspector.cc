@@ -52,7 +52,7 @@ public:
     IDebuggerSafePtr debugger;
     IWorkbench &workbench;
     IPerspective &perspective;
-    VarsTreeViewSafePtr tree_view;
+    VarsTreeView *tree_view;
     Glib::RefPtr<Gtk::TreeStore> tree_store;
     Gtk::TreeModel::iterator cur_selected_row;
     SafePtr<Gtk::TreeRowReference> local_variables_row_ref;
@@ -83,7 +83,7 @@ public:
           IPerspective& a_perspective) :
         workbench (a_workbench),
         perspective (a_perspective),
-        tree_view (VarsTreeView::create ()),
+        tree_view (Gtk::manage (VarsTreeView::create ())),
         is_new_frame (false),
         is_up2date (true),
         saved_reason (IDebugger::UNDEFINED_REASON),
@@ -93,10 +93,6 @@ public:
         module_manager (0)
     {
         LOG_FUNCTION_SCOPE_NORMAL_DD;
-        // We are going to unref the tree_view when an instance of
-        // this type is going to be distroyed.  So we need to hold a
-        // reference on tree_view.
-        tree_view.reference ();
         THROW_IF_FAIL (a_debugger);
         debugger = a_debugger;
         THROW_IF_FAIL (tree_view);

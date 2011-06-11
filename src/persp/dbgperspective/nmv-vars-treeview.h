@@ -47,7 +47,7 @@ class NEMIVER_API VarsTreeView : public Gtk::TreeView
             VARIABLE_VALUE_COLUMN_INDEX,
             VARIABLE_TYPE_COLUMN_INDEX
         };
-        static VarsTreeViewSafePtr create ();
+        static VarsTreeView* create ();
         Glib::RefPtr<Gtk::TreeStore>& get_tree_store ();
 
     protected:

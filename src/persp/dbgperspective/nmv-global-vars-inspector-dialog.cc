@@ -50,7 +50,7 @@ public:
     IVarListWalkerSafePtr global_variables_walker_list;
 
     IWorkbench &workbench;
-    VarsTreeViewSafePtr tree_view;
+    VarsTreeView* tree_view;
     Glib::RefPtr<Gtk::TreeStore> tree_store;
     Gtk::TreeModel::iterator cur_selected_row;
     SafePtr<Gtk::Menu> contextual_menu;
@@ -62,7 +62,8 @@ public:
           IWorkbench &a_workbench) :
         dialog (a_dialog),
         gtkbuilder (a_gtkbuilder),
-        workbench (a_workbench)
+        workbench (a_workbench),
+        tree_view (0)
     {
         LOG_FUNCTION_SCOPE_NORMAL_DD;
 

@@ -58,7 +58,7 @@ class VarInspector::Priv : public sigc::trackable {
     // at a given point in time
     IDebugger::VariableSafePtr variable;
     IPerspective &perspective;
-    VarsTreeViewSafePtr tree_view;
+    VarsTreeView *tree_view;
     Glib::RefPtr<Gtk::TreeStore> tree_store;
     Gtk::TreeModel::iterator var_row_it;
     Gtk::TreeModel::iterator cur_selected_row;
@@ -72,7 +72,7 @@ class VarInspector::Priv : public sigc::trackable {
     build_widget ()
     {
         LOG_FUNCTION_SCOPE_NORMAL_DD;
-        tree_view = VarsTreeView::create ();
+        tree_view = Gtk::manage (VarsTreeView::create ());
         THROW_IF_FAIL (tree_view);
         tree_store = tree_view->get_tree_store ();
         THROW_IF_FAIL (tree_store);
@@ -583,6 +583,7 @@ public:
           enable_contextual_menu (false),
           debugger (a_debugger),
           perspective (a_perspective),
+          tree_view (0),
           var_inspector_menu (0),
           module_manager (0)
     {
