@@ -31,13 +31,13 @@ namespace vutil = nemiver::variables_utils2;
 
 NEMIVER_BEGIN_NAMESPACE (nemiver)
 
-VarsTreeViewSafePtr
+VarsTreeView*
 VarsTreeView::create ()
 {
     Glib::RefPtr<Gtk::TreeStore> model =
         Gtk::TreeStore::create (vutil::get_variable_columns ());
     THROW_IF_FAIL (model);
-    return VarsTreeViewSafePtr(new VarsTreeView (model));
+    return new VarsTreeView (model);
 }
 
 VarsTreeView::VarsTreeView (Glib::RefPtr<Gtk::TreeStore>& model) :
