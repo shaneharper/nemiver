@@ -438,139 +438,139 @@ UnqualifiedOpFuncID::to_string (string &a_result) const
 {
     switch (get_kind ()) {
         case Token::OPERATOR_NEW:
-            a_result = "opreator new";
+            a_result = "operator new";
             break;
         case Token::OPERATOR_DELETE:
-            a_result = "opreator delete";
+            a_result = "operator delete";
             break;
         case Token::OPERATOR_NEW_VECT:
-            a_result = "opreator new []";
+            a_result = "operator new []";
             break;
         case Token::OPERATOR_DELETE_VECT:
-            a_result = "opreator delete";
+            a_result = "operator delete";
             break;
         case Token::OPERATOR_PLUS:
-            a_result = "opreator +";
+            a_result = "operator +";
             break;
         case Token::OPERATOR_MINUS:
-            a_result = "opreator -";
+            a_result = "operator -";
             break;
         case Token::OPERATOR_MULT:
-            a_result = "opreator *";
+            a_result = "operator *";
             break;
         case Token::OPERATOR_DIV:
-            a_result = "opreator /";
+            a_result = "operator /";
             break;
         case Token::OPERATOR_MOD:
-            a_result = "opreator %";
+            a_result = "operator %";
             break;
         case Token::OPERATOR_BIT_XOR:
-            a_result = "opreator ^";
+            a_result = "operator ^";
             break;
         case Token::OPERATOR_BIT_AND:
-            a_result = "opreator &";
+            a_result = "operator &";
             break;
         case Token::OPERATOR_BIT_OR:
-            a_result = "opreator |";
+            a_result = "operator |";
             break;
         case Token::OPERATOR_BIT_COMPLEMENT:
-            a_result = "opreator ~";
+            a_result = "operator ~";
             break;
         case Token::OPERATOR_NOT:
-            a_result = "opreator !";
+            a_result = "operator !";
             break;
         case Token::OPERATOR_ASSIGN:
-            a_result = "opreator =";
+            a_result = "operator =";
             break;
         case Token::OPERATOR_LT:
-            a_result = "opreator <";
+            a_result = "operator <";
             break;
         case Token::OPERATOR_GT:
-            a_result = "opreator >";
+            a_result = "operator >";
             break;
         case Token::OPERATOR_PLUS_EQ:
-            a_result = "opreator +=";
+            a_result = "operator +=";
             break;
         case Token::OPERATOR_MINUS_EQ:
-            a_result = "opreator -=";
+            a_result = "operator -=";
             break;
         case Token::OPERATOR_MULT_EQ:
-            a_result = "opreator *=";
+            a_result = "operator *=";
             break;
         case Token::OPERATOR_DIV_EQ:
-            a_result = "opreator /+";
+            a_result = "operator /+";
             break;
         case Token::OPERATOR_MOD_EQ:
-            a_result = "opreator %=";
+            a_result = "operator %=";
             break;
         case Token::OPERATOR_BIT_XOR_EQ:
-            a_result = "opreator ^=";
+            a_result = "operator ^=";
             break;
         case Token::OPERATOR_BIT_AND_EQ:
-            a_result = "opreator &=";
+            a_result = "operator &=";
             break;
         case Token::OPERATOR_BIT_OR_EQ:
-            a_result = "opreator |=";
+            a_result = "operator |=";
             break;
         case Token::OPERATOR_BIT_LEFT_SHIFT:
-            a_result = "opreator <<";
+            a_result = "operator <<";
             break;
         case Token::OPERATOR_BIT_RIGHT_SHIFT:
-            a_result = "opreator >>";
+            a_result = "operator >>";
             break;
         case Token::OPERATOR_BIT_LEFT_SHIFT_EQ:
-            a_result = "opreator <<=";
+            a_result = "operator <<=";
             break;
         case Token::OPERATOR_BIT_RIGHT_SHIFT_EQ:
-            a_result = "opreator >>=";
+            a_result = "operator >>=";
             break;
         case Token::OPERATOR_EQUALS:
-            a_result = "opreator ==";
+            a_result = "operator ==";
             break;
         case Token::OPERATOR_NOT_EQUAL:
-            a_result = "opreator !=";
+            a_result = "operator !=";
             break;
         case Token::OPERATOR_LT_EQ:
-            a_result = "opreator <=";
+            a_result = "operator <=";
             break;
         case Token::OPERATOR_GT_EQ:
-            a_result = "opreator >=";
+            a_result = "operator >=";
             break;
         case Token::OPERATOR_AND:
-            a_result = "opreator &&";
+            a_result = "operator &&";
             break;
         case Token::OPERATOR_OR:
-            a_result = "opreator ||";
+            a_result = "operator ||";
             break;
         case Token::OPERATOR_PLUS_PLUS:
-            a_result = "opreator ++";
+            a_result = "operator ++";
             break;
         case Token::OPERATOR_MINUS_MINUS:
-            a_result = "opreator --";
+            a_result = "operator --";
             break;
         case Token::OPERATOR_SEQ_EVAL:
-            a_result = "opreator ,";
+            a_result = "operator ,";
             break;
         case Token::OPERATOR_ARROW_STAR:
-            a_result = "opreator ->*";
+            a_result = "operator ->*";
             break;
         case Token::OPERATOR_DEREF:
-            a_result = "opreator ->";
+            a_result = "operator ->";
             break;
         case Token::OPERATOR_GROUP:
-            a_result = "opreator ()";
+            a_result = "operator ()";
             break;
         case Token::OPERATOR_ARRAY_ACCESS:
-            a_result = "opreator []";
+            a_result = "operator []";
             break;
         case Token::OPERATOR_SCOPE_RESOL:
-            a_result = "opreator ::";
+            a_result = "operator ::";
             break;
         case Token::OPERATOR_DOT:
-            a_result = "opreator .";
+            a_result = "operator .";
             break;
         case Token::OPERATOR_DOT_STAR:
-            a_result = "opreator .*";
+            a_result = "operator .*";
             break;
         default:
             return false;
