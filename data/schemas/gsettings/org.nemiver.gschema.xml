@@ -114,6 +114,12 @@
       <description>If a fork happens, follow the parent parent process if the key is set to 'parent', or follow the child process if the key is set to 'child'.</description>
     </key>
 
+    <key name="disassembly-flavor" type="s">
+      <default>'att'</default>
+      <summary>Which instruction set to use for the assembly</summary>
+      <description>Can be either att or intel (Apply only for the x86 family CPU)</description>
+    </key>
+
     <key name="callstack-expansion-chunk" type="i">
       <default>25</default>
       <summary>The size of the call stack to display</summary>

@@ -213,6 +213,17 @@
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/nemiver/dbgperspective/disassembly-flavor</key>
+      <applyto>/apps/nemiver/dbgperspective/disassembly-flavor</applyto>
+      <owner>nemiver</owner>
+      <type>string</type>
+      <default>att</default>
+      <locale name="C">
+        <short>Which instruction set to use for the assembly</short>
+        <long>Can be either att or intel (Apply only for the x86 family CPU)</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/nemiver/dbgperspective/callstack-expansion-chunk</key>
       <applyto>/apps/nemiver/dbgperspective/callstack-expansion-chunk</applyto>
       <owner>nemiver</owner>
