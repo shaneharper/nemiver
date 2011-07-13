@@ -77,6 +77,8 @@ public:
     Gtk::CheckButton *system_font_check_button;
     Gtk::FontButton *custom_font_button;
     Gtk::ComboBox *editor_style_combo;
+    SafePtr<Gtk::ComboBoxText> asm_flavor_combo;
+    Gtk::Alignment *asm_flavor_alignment;
     Glib::RefPtr<Gtk::ListStore> m_editor_style_model;
     StyleModelColumns m_style_columns;
     Gtk::CellRendererText m_style_name_renderer;
@@ -199,6 +201,11 @@ public:
     void on_editor_style_changed_signal ()
     {
         update_editor_style_key ();
+    }
+
+    void on_asm_flavor_changed_signal ()
+    {
+        update_asm_flavor_key ();
     }
 
     void on_reload_files_toggled_signal ()
@@ -388,6 +395,19 @@ public:
                  (*this,
                   &PreferencesDialog::Priv::on_asm_style_toggled_signal));
 
+        asm_flavor_combo.reset (new Gtk::ComboBoxText);
+        asm_flavor_combo->append_text ("Intel");
+        asm_flavor_combo->append_text ("AT&T");
+        asm_flavor_combo->signal_changed ().connect (sigc::mem_fun
+                    (*this,
+                     &PreferencesDialog::Priv::on_asm_flavor_changed_signal));
+        asm_flavor_alignment =
+            ui_utils::get_widget_from_gtkbuilder<Gtk::Alignment>
+                (gtkbuilder, "asmflavoralignment");
+        THROW_IF_FAIL (asm_flavor_alignment);
+        asm_flavor_alignment->add (*asm_flavor_combo);
+        asm_flavor_alignment->show_all ();
+
         mixed_asm_radio_button =
             ui_utils::get_widget_from_gtkbuilder<Gtk::RadioButton>
                 (gtkbuilder, "mixedasmradio");
@@ -543,6 +563,19 @@ public:
                     (CONF_KEY_EDITOR_STYLE_SCHEME, scheme);
     }
 
+    void update_asm_flavor_key ()
+    {
+        THROW_IF_FAIL (asm_flavor_combo);
+        UString asm_flavor = asm_flavor_combo->get_active_text ();
+        if (asm_flavor == "Intel") {
+            conf_manager ().set_key_value
+                    (CONF_KEY_DISASSEMBLY_FLAVOR, Glib::ustring ("intel"));
+        } else {
+            conf_manager ().set_key_value
+                    (CONF_KEY_DISASSEMBLY_FLAVOR, Glib::ustring ("att"));
+        }
+    }
+
     void update_reload_files_keys ()
     {
         THROW_IF_FAIL (always_reload_radio_button);
@@ -620,6 +653,7 @@ public:
         THROW_IF_FAIL (custom_font_button);
         THROW_IF_FAIL (custom_font_box);
         THROW_IF_FAIL (editor_style_combo);
+        THROW_IF_FAIL (asm_flavor_combo);
 
         bool is_on = true;
         if (!conf_manager ().get_key_value
@@ -673,6 +707,18 @@ public:
                 if ((*treeiter)[m_style_columns.scheme_id] == style_scheme) {
                     editor_style_combo->set_active(treeiter);
                 }
+            }
+        }
+
+        UString asm_flavor;
+        if (!conf_manager ().get_key_value
+                (CONF_KEY_DISASSEMBLY_FLAVOR, asm_flavor)) {
+            LOG_ERROR ("failed to get gconf key");
+        } else {
+            if (asm_flavor == "intel") {
+                asm_flavor_combo->set_active_text ("Intel");
+            } else {
+                asm_flavor_combo->set_active_text ("AT&T");
             }
         }
 
