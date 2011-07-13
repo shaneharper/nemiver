@@ -64,6 +64,7 @@ NEMIVER_BEGIN_NAMESPACE (nemiver)
 
 extern const char* CONF_KEY_GDB_BINARY;
 extern const char* CONF_KEY_FOLLOW_FORK_MODE;
+extern const char* CONF_KEY_DISASSEMBLY_FLAVOR;
 
 // Helper function to handle escaping the arguments 
 static UString
@@ -216,6 +217,7 @@ public:
     ILangTraitSafePtr lang_trait;
     UString debugger_full_path;
     UString follow_fork_mode;
+    UString disassembly_flavor;
     GDBMIParser gdbmi_parser;
     sigc::signal<void> gdb_died_signal;
     sigc::signal<void, const UString& > master_pty_signal;
@@ -538,6 +540,7 @@ public:
         cur_frame_level (0),
         cur_thread_num (1),
         follow_fork_mode ("parent"),
+        disassembly_flavor ("att"),
         gdbmi_parser (GDBMIParser::BROKEN_MODE)
     {
         gdb_stdout_signal.connect (sigc::mem_fun
@@ -795,6 +798,7 @@ public:
         if (!args.empty ())
 	  issue_command (Command ("set args " + args));
         set_debugger_parameter ("follow-fork-mode", follow_fork_mode);
+        set_debugger_parameter ("disassembly-flavor", disassembly_flavor);
 
         return true;
     }
@@ -888,6 +892,8 @@ public:
     {
         get_conf_mgr ()->get_key_value (CONF_KEY_FOLLOW_FORK_MODE,
                                         follow_fork_mode);
+        get_conf_mgr ()->get_key_value (CONF_KEY_DISASSEMBLY_FLAVOR,
+                                        disassembly_flavor);
     }
 
     /// Lists the frames which numbers are in a given range.
@@ -1153,6 +1159,10 @@ public:
         if (a_key == CONF_KEY_FOLLOW_FORK_MODE
                 && conf_mgr->get_key_value (a_key, follow_fork_mode, a_namespace)) {
             set_debugger_parameter ("follow-fork-mode", follow_fork_mode);
+        }
+        else if (a_key == CONF_KEY_DISASSEMBLY_FLAVOR && conf_mgr->get_key_value
+                    (a_key, disassembly_flavor, a_namespace)) {
+            set_debugger_parameter ("disassembly-flavor", disassembly_flavor);
         }
 
         NEMIVER_CATCH_NOX

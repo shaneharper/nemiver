@@ -56,6 +56,7 @@ const char* CONF_KEY_ASM_STYLE_PURE = "asm-style-pure";
 const char* CONF_KEY_DEFAULT_NUM_ASM_INSTRS = "default-num-asm-instrs";
 const char* CONF_KEY_GDB_BINARY = "gdb-binary";
 const char* CONF_KEY_FOLLOW_FORK_MODE = "follow-fork-mode";
+const char* CONF_KEY_DISASSEMBLY_FLAVOR = "disassembly-flavor";
 const char* CONF_KEY_CONTEXT_PANE_LOCATION = "context-pane-location";
 const char* CONF_KEY_NEMIVER_CALLSTACK_EXPANSION_CHUNK =
                 "callstack-expansion-chunk";
