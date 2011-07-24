@@ -151,13 +151,6 @@ public:
 
     virtual IDebuggerSafePtr& debugger () = 0;
 
-    virtual void add_text_to_command_view (const UString &a_text,
-                                           bool a_no_repeat=true) = 0;
-
-    virtual void add_text_to_target_output_view (const UString &a_text) = 0;
-
-    virtual void add_text_to_log_view (const UString &a_text) = 0;
-
     virtual bool set_where (const UString &a_uri,
                             int line,
                             bool a_do_scroll=true) = 0;
