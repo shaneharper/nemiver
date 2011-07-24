@@ -1,4 +1,4 @@
-//Author: Dodji Seketeli
+//Author: Fabien Parent
 /*
  *This file is part of the Nemiver project
  *
@@ -22,35 +22,53 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NMV_PREFERENCES_DIALOG_H__
-#define __NMV_PREFERENCES_DIALOG_H__
+#ifndef __NMV_LAYOUT_MANAGER_H__
+#define __NMV_LAYOUT_MANAGER_H__
 
-#include <vector>
+#include "common/nmv-safe-ptr-utils.h"
 #include "common/nmv-ustring.h"
-#include "nmv-dialog.h"
-
-using nemiver::common::UString;
+#include "nmv-layout.h"
+#include <vector>
 
 NEMIVER_BEGIN_NAMESPACE (nemiver)
 
-class IPerspective;
-class LayoutManager;
-class PreferencesDialog : public Dialog {
+using nemiver::common::SafePtr;
+using nemiver::common::UString;
 
-    class Priv;
+class Layout;
+class IPerspective;
+
+class LayoutManager {
+    //non copyable
+    LayoutManager (const LayoutManager&);
+    LayoutManager& operator= (const LayoutManager&);
+
+    struct Priv;
     SafePtr<Priv> m_priv;
 
-    PreferencesDialog ();
-
 public:
-    PreferencesDialog (IPerspective &a_perspective,
-                       LayoutManager &a_layout_manager,
-                       const UString &a_root_path);
-    virtual ~PreferencesDialog ();
-    const std::vector<UString>& source_directories () const;
-    void source_directories (const std::vector<UString> &a_dirs);
-};//end class PreferencesDialog
+    LayoutManager ();
+
+    void register_layout (const LayoutSafePtr &a_layout);
+
+    void load_layout (const UString &a_layout, IPerspective &a_perspective);
+
+    Layout* layout () const;
+
+    std::vector<Layout*> layouts () const;
+
+    bool is_layout_registered (const UString &a_layout_identifier) const;
+
+    /// \name signals
+    /// @{
+
+    sigc::signal<void>& layout_changed_signal () const;
+
+    /// @}
+
+    virtual ~LayoutManager ();
+};
 
 NEMIVER_END_NAMESPACE (nemiver)
 
-#endif //__NMV_PREFERENCES_DIALOG
+#endif //__NMV_LAYOUT_MANAGER_H__

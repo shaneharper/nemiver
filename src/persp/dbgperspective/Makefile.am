@@ -67,7 +67,21 @@ $(h)/nmv-vars-treeview.cc \
 $(h)/nmv-call-function-dialog.h \
 $(h)/nmv-call-function-dialog.cc \
 $(h)/nmv-set-jump-to-dialog.h \
-$(h)/nmv-set-jump-to-dialog.cc
+$(h)/nmv-set-jump-to-dialog.cc \
+$(h)/nmv-dbg-perspective-default-layout.cc \
+$(h)/nmv-dbg-perspective-default-layout.h \
+$(h)/nmv-dbg-perspective-two-pane-layout.cc \
+$(h)/nmv-dbg-perspective-two-pane-layout.h \
+$(h)/nmv-dbg-perspective-wide-layout.cc \
+$(h)/nmv-dbg-perspective-wide-layout.h
+
+if BUILD_DYNAMICLAYOUT
+dynamiclayout_sources = \
+$(h)/nmv-dbg-perspective-dynamic-layout.cc \
+$(h)/nmv-dbg-perspective-dynamic-layout.h
+else
+dynamiclayout_sources =
+endif
 
 if BUILD_MEMORYVIEW
 memoryview_sources = \
@@ -77,7 +91,8 @@ else
 memoryview_sources =
 endif
 
-libdbgperspectiveplugin_la_SOURCES=$(sources) $(memoryview_sources)
+libdbgperspectiveplugin_la_SOURCES=$(sources) $(memoryview_sources) \
+$(dynamiclayout_sources)
 libdbgperspectiveplugin_la_LDFLAGS= -module -avoid-version -Wl,--as-needed
 libdbgperspectiveplugin_la_LIBADD= \
 @NEMIVERDBGPERSP_LIBS@ \
@@ -93,4 +108,3 @@ INCLUDES=@NEMIVERDBGPERSP_CFLAGS@ -DENABLE_NLS=1 -DDATADIR=\"${datadir}\" \
 -I$(abs_top_srcdir)/src/workbench \
 -I$(abs_top_srcdir)/src/persp \
 -I$(abs_top_srcdir)/src/dbgperspective
-

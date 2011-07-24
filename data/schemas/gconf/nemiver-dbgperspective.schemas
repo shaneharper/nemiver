@@ -2,6 +2,17 @@
 <gconfschemafile>
   <schemalist>
     <schema>
+      <key>/schemas/apps/nemiver/dbgperspective/layout</key>
+      <applyto>/apps/nemiver/dbgperspective/layout</applyto>
+      <owner>nemiver</owner>
+      <type>string</type>
+      <default>default-layout</default>
+      <locale name="C">
+	<short>Layout of the perspective</short>
+	<long>The layout that is loaded by the debugging perspective</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/nemiver/dbgperspective/source-search-dirs</key>
       <applyto>/apps/nemiver/dbgperspective/source-search-dirs</applyto>
       <owner>nemiver</owner>
@@ -136,14 +147,47 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/nemiver/dbgperspective/status-pane-location</key>
-      <applyto>/apps/nemiver/dbgperspective/status-pane-location</applyto>
+      <key>/schemas/apps/nemiver/dbgperspective/default-layout-status-pane-location</key>
+      <applyto>/apps/nemiver/dbgperspective/default-layout-status-pane-location</applyto>
       <owner>nemiver</owner>
       <type>int</type>
       <default>-1</default>
       <locale name="C">
-	<short>The location of the status pane</short>
-	<long>The location of the status pane</long>
+	<short>The location of the status pane for the default layout</short>
+	<long>The location of the status pane for the default layout</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/nemiver/dbgperspective/wide-layout-status-pane-location</key>
+      <applyto>/apps/nemiver/dbgperspective/wide-layout-status-pane-location</applyto>
+      <owner>nemiver</owner>
+      <type>int</type>
+      <default>-1</default>
+      <locale name="C">
+        <short>The location of the status pane for the wide layout</short>
+        <long>The location of the status pane for the wide layout</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/nemiver/dbgperspective/two-pane-layout-hpane-location</key>
+      <applyto>/apps/nemiver/dbgperspective/two-pane-layout-hpane-location</applyto>
+      <owner>nemiver</owner>
+      <type>int</type>
+      <default>-1</default>
+      <locale name="C">
+        <short>The location of the horizontal status pane for the two-pane layout</short>
+        <long>The location of the horizontal status pane for the two-pane layout</long>
+      </locale>
+    </schema>
+        <schema>
+      <key>/schemas/apps/nemiver/dbgperspective/two-pane-layout-vpane-location</key>
+      <applyto>/apps/nemiver/dbgperspective/two-pane-layout-vpane-location</applyto>
+      <owner>nemiver</owner>
+      <type>int</type>
+      <default>-1</default>
+      <locale name="C">
+        <short>The location of the vertical status pane for the two-pane layout</short>
+        <long>The location of the vertical status pane for the two-pane layout</long>
       </locale>
     </schema>
     <schema>

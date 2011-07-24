@@ -96,6 +96,7 @@ private:
     void on_about_menu_item_action ();
     void on_contents_menu_item_action ();
     void on_shutting_down_signal ();
+    void on_perspective_layout_changed_signal (IPerspectiveSafePtr);
     //************************
     //</slots (signal callbacks)>
     //************************
@@ -112,6 +113,7 @@ private:
                                Gtk::Widget *a_body);
     bool remove_perspective_body (IPerspectiveSafePtr &a_perspective);
     void remove_all_perspective_bodies ();
+    void disconnect_all_perspective_signals ();
     void select_perspective (IPerspectiveSafePtr &a_perspective);
 
     void save_window_geometry ();
@@ -340,6 +342,7 @@ Workbench::Workbench (DynamicModule *a_dynmod) :
 Workbench::~Workbench ()
 {
     remove_all_perspective_bodies ();
+    disconnect_all_perspective_signals ();
     LOG_D ("delete", "destructor-domain");
 }
 
@@ -430,6 +433,11 @@ Workbench::do_init (Gtk::Main &a_main)
                 if (perspective) {
                     m_priv->perspectives.push_front (perspective);
                     perspective->do_init (workbench);
+                    perspective->layout_changed_signal ().connect
+                        (sigc::bind<IPerspectiveSafePtr> (sigc::mem_fun
+                            (*this,
+                            &Workbench::on_perspective_layout_changed_signal),
+                        perspective));
                     perspective->edit_workbench_menu ();
                     toolbars.clear ();
                     perspective->get_toolbars (toolbars);
@@ -823,6 +831,25 @@ Workbench::add_perspective_body (IPerspectiveSafePtr &a_perspective,
         m_priv->bodies_container->insert_page (*a_body, -1);
 }
 
+void
+Workbench::on_perspective_layout_changed_signal
+        (IPerspectiveSafePtr a_perspective)
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+    THROW_IF_FAIL (m_priv);
+    THROW_IF_FAIL (m_priv->bodies_container);
+
+    if (!a_perspective) {return;}
+
+    int page = m_priv->bodies_index_map[a_perspective.get ()];
+
+    m_priv->bodies_container->remove_page (page);
+    m_priv->bodies_container->insert_page (*a_perspective->get_body (), page);
+
+    select_perspective (a_perspective);
+}
+
 bool
 Workbench::remove_perspective_body (IPerspectiveSafePtr &a_perspective)
 {
@@ -887,6 +914,19 @@ Workbench::remove_all_perspective_bodies ()
         m_priv->bodies_container->remove_page (it->second);
     }
     m_priv->bodies_index_map.clear ();
+}
+
+void
+Workbench::disconnect_all_perspective_signals ()
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+    list<IPerspectiveSafePtr>::iterator it;
+    for (it = m_priv->perspectives.begin ();
+         it != m_priv->perspectives.end ();
+         ++it) {
+        (*it)->layout_changed_signal ().clear ();
+    }
 }
 
 void

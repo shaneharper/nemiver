@@ -70,6 +70,8 @@ LIBGIOMM_WITH_GSETTINGS_VERSION=2.25.1
 AC_SUBST([GIOMM_WITH_GSETTINGS_VERSION])
 GSETTINGS_DESKTOP_SCHEMAS=0.0.1
 AC_SUBST([GSETTINGS_DESKTOP_SCHEMAS])
+LIBGDLMM_VERSION=2.30.0
+AC_SUBST([LIBGDLMM_VERSION])
 
 dnl *********************
 dnl Checks for programs.
@@ -178,6 +180,19 @@ else
     ENABLE_MEMORYVIEW=no
 fi
 AM_CONDITIONAL(BUILD_MEMORYVIEW, test x$ENABLE_MEMORYVIEW = xyes)
+
+
+AC_ARG_ENABLE(dynamiclayout,
+              AS_HELP_STRING([--enable-dynamiclayout=yes|no],
+                             [enable the dynamic layout (default is yes)]),
+              ENABLE_DYNAMICLAYOUT=$enableval,
+              [PKG_CHECK_EXISTS([gdlmm-1.0 >= $LIBGDLMM_VERSION], [ENABLE_DYNAMICLAYOUT=yes], [ENABLE_DYNAMICLAYOUT=no])])
+if test x$ENABLE_DYNAMICLAYOUT = xyes ; then
+    AC_DEFINE([WITH_DYNAMICLAYOUT], 1, [compile the dynamic layout])
+else
+    ENABLE_DYNAMICLAYOUT=no
+fi
+AM_CONDITIONAL(BUILD_DYNAMICLAYOUT, test x$ENABLE_DYNAMICLAYOUT = xyes)
 
 
 AC_ARG_ENABLE(sourceviewmm2,
@@ -304,6 +319,10 @@ if test x$ENABLE_MEMORYVIEW = xyes ; then
     DEP_MEMORYVIEW="gtkhex >= $GTKHEX_VERSION"
 fi
 
+if test x$ENABLE_DYNAMICLAYOUT = xyes ; then
+    DEP_DYNAMICLAYOUT="gdlmm-1.0 >= $LIBGDLMM_VERSION"
+fi
+
 dnl *******************
 dnl Configuration Manager
 dnl *******************
@@ -374,7 +393,7 @@ dnl library dependencies for the nemiver debug perspective plugin
 DEP_PERSP="$LIBGTKSOURCEVIEWMM_PKG >= $LIBGTKSOURCEVIEWMM_VERSION \
            vte >= $LIBVTE_VERSION"
 
-PKG_CHECK_MODULES(NEMIVERDBGPERSP, $DEP_UICOMMON $DEP_VFS $DEP_PERSP $DEP_MEMORYVIEW)
+PKG_CHECK_MODULES(NEMIVERDBGPERSP, $DEP_UICOMMON $DEP_VFS $DEP_PERSP $DEP_MEMORYVIEW $DEP_DYNAMICLAYOUT)
 NEMIVERDBGPERSP_LIBS="$NEMIVERDBGPERSP_LIBS $CPPUNIT_LIBS"
 NEMIVERDBGPERSP_CFLAGS="$NEMIVERDBGPERSP_CFLAGS $CPPUNIT_CFLAGS"
 
@@ -532,6 +551,7 @@ AC_MSG_NOTICE([
     Enable verbose debug messages   : ${ENABLE_DEBUG}
     Enable workbench                : ${ENABLE_WORKBENCH}
     Enable memory view              : ${ENABLE_MEMORYVIEW} (requires gtkhex > $GTKHEX_VERSION)
+    Enable dynamic layout           : ${ENABLE_DYNAMICLAYOUT} (requires gdlmm > $LIBGDLMM_VERSION)
     gtksourceviewmm version         : ${LIBGTKSOURCEVIEWMM_PKG}    
     VFS library                     : ${VFS_PKG}
     Configuration Manager           : ${CONF_MGR}

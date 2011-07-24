@@ -140,6 +140,10 @@ public:
     /// about its activation state (whether it is activated or not).
     virtual sigc::signal<void, bool>& activated_signal () = 0;
 
+    /// This signal is emited to notify the workbench when the
+    /// layout of the perspective changes.
+    virtual sigc::signal<void>& layout_changed_signal () = 0;
+
     /// @}
 
 };//end class IPerspective

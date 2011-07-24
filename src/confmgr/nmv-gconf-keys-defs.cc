@@ -60,8 +60,14 @@ const char* CONF_KEY_STATUS_WIDGET_MINIMUM_WIDTH =
                 "/apps/nemiver/dbgperspective/status-widget-minimum-width";
 const char* CONF_KEY_STATUS_WIDGET_MINIMUM_HEIGHT =
                 "/apps/nemiver/dbgperspective/status-widget-minimum-height";
-const char* CONF_KEY_STATUS_PANE_LOCATION =
-                "/apps/nemiver/dbgperspective/status-pane-location";
+const char* CONF_KEY_DEFAULT_LAYOUT_STATUS_PANE_LOCATION =
+                "/apps/nemiver/dbgperspective/default-layout-status-pane-location";
+const char* CONF_KEY_WIDE_LAYOUT_STATUS_PANE_LOCATION =
+                "/apps/nemiver/dbgperspective/wide-layout-status-pane-location";
+const char* CONF_KEY_TWO_PANE_LAYOUT_STATUS_VPANE_LOCATION =
+                "/apps/nemiver/dbgperspective/two-pane-layout-vpane-location";
+const char* CONF_KEY_TWO_PANE_LAYOUT_STATUS_HPANE_LOCATION =
+                "/apps/nemiver/dbgperspective/two-pane-layout-hpane-location";
 const char* CONF_KEY_DEBUGGER_ENGINE_DYNMOD_NAME =
                 "/apps/nemiver/dbgperspective/debugger-engine-dynmod";
 const char* CONF_KEY_EDITOR_STYLE_SCHEME =
@@ -80,7 +86,8 @@ const char* CONF_KEY_CONTEXT_PANE_LOCATION =
                 "/apps/nemiver/dbgperspective/context-pane-location";
 const char* CONF_KEY_NEMIVER_CALLSTACK_EXPANSION_CHUNK =
                 "/apps/nemiver/dbgperspective/callstack-expansion-chunk";
-
+const char* CONF_KEY_DBG_PERSPECTIVE_LAYOUT =
+                "/apps/nemiver/dbgperspective/layout";
 
 /* Workbench */
 const char* CONF_KEY_NEMIVER_WINDOW_WIDTH =

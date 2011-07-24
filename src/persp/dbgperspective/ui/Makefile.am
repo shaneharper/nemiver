@@ -1,6 +1,5 @@
 PLUGIN_NAME=dbgperspective
-uifiles = bodycontainer.ui \
-runprogramdialog.ui \
+uifiles = runprogramdialog.ui \
 proclistdialog.ui \
 loadcoredialog.ui \
 savedsessionsdialog.ui \

@@ -49,7 +49,14 @@ const char* CONF_KEY_STATUS_WIDGET_MINIMUM_WIDTH =
                 "status-widget-minimum-width";
 const char* CONF_KEY_STATUS_WIDGET_MINIMUM_HEIGHT =
                 "status-widget-minimum-height";
-const char* CONF_KEY_STATUS_PANE_LOCATION = "status-pane-location";
+const char* CONF_KEY_DEFAULT_LAYOUT_STATUS_PANE_LOCATION =
+                "default-layout-pane-location";
+const char* CONF_KEY_WIDE_LAYOUT_STATUS_PANE_LOCATION =
+                "wide-layout-pane-location";
+const char* CONF_KEY_TWO_PANE_LAYOUT_STATUS_VPANE_LOCATION =
+                "two-pane-layout-vpane-location";
+const char* CONF_KEY_TWO_PANE_LAYOUT_STATUS_HPANE_LOCATION =
+                "two-pane-layout-hpane-location";
 const char* CONF_KEY_DEBUGGER_ENGINE_DYNMOD_NAME = "debugger-engine-dynmod";
 const char* CONF_KEY_EDITOR_STYLE_SCHEME = "editor-style-scheme";
 const char* CONF_KEY_ASM_STYLE_PURE = "asm-style-pure";
@@ -60,7 +67,7 @@ const char* CONF_KEY_DISASSEMBLY_FLAVOR = "disassembly-flavor";
 const char* CONF_KEY_CONTEXT_PANE_LOCATION = "context-pane-location";
 const char* CONF_KEY_NEMIVER_CALLSTACK_EXPANSION_CHUNK =
                 "callstack-expansion-chunk";
-
+const char* CONF_KEY_DBG_PERSPECTIVE_LAYOUT = "dbg-perspective-layout";
 
 /* Workbench */
 const char* CONF_KEY_NEMIVER_WINDOW_WIDTH = "window-width";
