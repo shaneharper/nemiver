@@ -101,6 +101,13 @@
 #include "nmv-watchpoint-dialog.h"
 #include "nmv-debugger-utils.h"
 #include "nmv-set-jump-to-dialog.h"
+#include "nmv-dbg-perspective-default-layout.h"
+#include "nmv-dbg-perspective-wide-layout.h"
+#include "nmv-dbg-perspective-two-pane-layout.h"
+#ifdef WITH_DYNAMICLAYOUT
+#include "nmv-dbg-perspective-dynamic-layout.h"
+#endif // WITH_DYNAMICLAYOUT
+#include "nmv-layout-manager.h"
 
 using namespace std;
 using namespace nemiver::common;
@@ -118,11 +125,11 @@ const char *STEP_OVER         = "nmv-step-over";
 const char *STEP_OUT          = "nmv-step-out";
 
 // labels for widget tabs in the status notebook
-const char *CONTEXT_TITLE           = _("Context");
-const char *TARGET_TERMINAL_TITLE   = _("Target Terminal");
-const char *BREAKPOINTS_TITLE       = _("Breakpoints");
-const char *REGISTERS_VIEW_TITLE    = _("Registers");
-const char *MEMORY_VIEW_TITLE       = _("Memory");
+const char *CONTEXT_VIEW_TITLE         = _("Context");
+const char *TARGET_TERMINAL_VIEW_TITLE = _("Target Terminal");
+const char *BREAKPOINTS_VIEW_TITLE     = _("Breakpoints");
+const char *REGISTERS_VIEW_TITLE       = _("Registers");
+const char *MEMORY_VIEW_TITLE          = _("Memory");
 
 const char *SESSION_NAME = "sessionname";
 const char *PROGRAM_NAME = "programname";
@@ -138,7 +145,7 @@ const char *DISASSEMBLY_TITLE = "<Disassembly>";
 
 static const int NUM_INSTR_TO_DISASSEMBLE = 20;
 
-
+const char *DBG_PERSPECTIVE_DEFAULT_LAYOUT = "default-layout";
 
 const Gtk::StockID STOCK_SET_BREAKPOINT (SET_BREAKPOINT);
 const Gtk::StockID STOCK_LINE_POINTER (LINE_POINTER);
@@ -384,6 +391,7 @@ private:
     bool on_file_content_changed (const UString &a_path);
     void on_notebook_tabs_reordered(Gtk::Widget* a_page, guint a_page_num);
 
+    void on_layout_changed ();
     void on_activate_context_view ();
     void on_activate_target_terminal_view ();
     void on_activate_breakpoints_view ();
@@ -403,8 +411,8 @@ private:
                          const UString &icon_dir,
                          const UString &icon_name);
     void add_perspective_menu_entries ();
-    void init_perspective_menu_entries ();
     void add_perspective_toolbar_entries ();
+    void register_layouts ();
     void init_icon_factory ();
     void init_actions ();
     void init_toolbar ();
@@ -450,6 +458,7 @@ private:
     PopupTip& get_popup_tip ();
     void hide_popup_tip_if_mouse_is_outside (int x, int y);
     FindTextDialog& get_find_text_dialog ();
+    void add_views_to_layout ();
 
 public:
 
@@ -464,6 +473,8 @@ public:
     void get_toolbars (list<Gtk::Widget*> &a_tbs);
 
     Gtk::Widget* get_body ();
+
+    Gtk::Widget& get_source_view_widget ();
 
     IWorkbench& get_workbench ();
 
@@ -729,18 +740,6 @@ public:
 
     ThreadList& get_thread_list ();
 
-    void set_show_context_view (bool);
-
-    void set_show_terminal_view (bool);
-
-    void set_show_breakpoints_view (bool);
-
-    void set_show_registers_view (bool);
-
-#ifdef WITH_MEMORYVIEW
-    void set_show_memory_view (bool);
-#endif // WITH_MEMORYVIEW
-
     bool set_where (const IDebugger::Frame &a_frame,
                     bool a_do_scroll = true,
                     bool a_try_hard = false);
@@ -776,13 +775,12 @@ public:
 
     bool do_unmonitor_file (const UString &a_path);
 
-    void activate_status_view(Gtk::Widget& page);
-
     bool agree_to_shutdown ();
 
     sigc::signal<void, bool>& activated_signal ();
     sigc::signal<void, bool>& attached_to_target_signal ();
     sigc::signal<void, bool>& debugger_ready_signal ();
+    sigc::signal<void>& layout_changed_signal ();
     sigc::signal<void>& debugger_not_started_signal ();
     sigc::signal<void>& going_to_run_target_signal ();
     sigc::signal<void>& default_config_read_signal ();
@@ -851,8 +849,6 @@ struct DBGPerspective::Priv {
     list<UString> session_search_paths;
     list<UString> global_search_paths;
     map<UString, bool> paths_to_ignore;
-    Glib::RefPtr<Gtk::Builder> body_builder;
-    SafePtr<Gtk::Window> body_window;
     SafePtr<CallStack> call_stack;
     SafePtr<Gtk::ScrolledWindow> call_stack_scrolled_win;
     SafePtr<Gtk::ScrolledWindow> thread_list_scrolled_win;
@@ -871,10 +867,11 @@ struct DBGPerspective::Priv {
     Gtk::UIManager::ui_merge_id toolbar_merge_id;
     Gtk::UIManager::ui_merge_id contextual_menu_merge_id;
     Gtk::Widget *contextual_menu;
-    Gtk::Box *top_box;
-    SafePtr<Gtk::Paned> body_main_paned;
+
+    LayoutManager layout_mgr;
     IWorkbench *workbench;
     SafePtr<Gtk::HBox> toolbar;
+    SafePtr<Gtk::Notebook> sourceviews_notebook;
     SafePtr<SpinnerToolItem> throbber;
     sigc::signal<void, bool> activated_signal;
     sigc::signal<void, bool> attached_to_target_signal;
@@ -882,14 +879,6 @@ struct DBGPerspective::Priv {
     sigc::signal<void> debugger_not_started_signal;
     sigc::signal<void> going_to_run_target_signal;
     sigc::signal<void> default_config_read_signal;
-    bool context_paned_view_is_visible;
-    bool terminal_view_is_visible;
-    bool breakpoints_view_is_visible;
-    bool registers_view_is_visible;
-#ifdef WITH_MEMORYVIEW
-    bool memory_view_is_visible;
-#endif // WITH_MEMORYVIEW
-    Gtk::Notebook *sourceviews_notebook;
     map<UString, int> path_2_pagenum_map;
     map<UString, int> basename_2_pagenum_map;
     map<int, SourceEditor*> pagenum_2_source_editor_map;
@@ -900,7 +889,6 @@ struct DBGPerspective::Priv {
     typedef map<UString, GnomeVFSMonitorHandle*> Path2MonitorMap;
 #endif // WITH_GIO
     Path2MonitorMap path_2_monitor_map;
-    Gtk::Notebook *statuses_notebook;
     SafePtr<LocalVarsInspector> variables_editor;
     SafePtr<Gtk::ScrolledWindow> variables_editor_scrolled_win;
     SafePtr<Terminal> terminal;
@@ -973,18 +961,7 @@ struct DBGPerspective::Priv {
         toolbar_merge_id (0),
         contextual_menu_merge_id(0),
         contextual_menu (0),
-        top_box (0),
-        /*body_main_paned (0),*/
         workbench (0),
-        context_paned_view_is_visible (false),
-        terminal_view_is_visible (false),
-        breakpoints_view_is_visible (false),
-        registers_view_is_visible (false),
-#ifdef WITH_MEMORYVIEW
-        memory_view_is_visible (false),
-#endif // WITH_MEMORYVIEW
-        sourceviews_notebook (0),
-        statuses_notebook (0),
         current_page_num (0),
         show_dbg_errors (false),
         use_system_font (true),
@@ -1003,6 +980,13 @@ struct DBGPerspective::Priv {
     {
     }
 
+    Layout&
+    layout ()
+    {
+        Layout *layout = layout_mgr.layout ();
+        THROW_IF_FAIL (layout);
+        return *layout;
+    }
 
 #ifdef WITH_SOURCEVIEWMM2
     void
@@ -1172,20 +1156,6 @@ struct DBGPerspective::Priv {
     }
 
 };//end struct DBGPerspective::Priv
-
-enum ViewsIndex
-{
-    COMMAND_VIEW_INDEX=0,
-    CONTEXT_VIEW_INDEX,
-    TERMINAL_VIEW_INDEX,
-    BREAKPOINTS_VIEW_INDEX,
-    REGISTERS_VIEW_INDEX,
-#ifdef WITH_MEMORYVIEW
-    MEMORY_VIEW_INDEX,
-#endif // WITH_MEMORYVIEW
-    TARGET_OUTPUT_VIEW_INDEX,
-    ERROR_VIEW_INDEX
-};
 
 #ifndef CHECK_P_INIT
 #define CHECK_P_INIT THROW_IF_FAIL(m_priv && m_priv->initialized);
@@ -2184,21 +2154,17 @@ DBGPerspective::update_toggle_menu_text (const IDebugger::Breakpoint *a_bp)
 void
 DBGPerspective::on_shutdown_signal ()
 {
-    LOG_FUNCTION_SCOPE_NORMAL_DD;
-    NEMIVER_TRY
-
-    // save the location of the status pane so
-    // that it'll open in the same place
-    // next time.
     IConfMgr &conf_mgr = get_conf_mgr ();
-    int pane_location = m_priv->body_main_paned->get_position();
     int context_pane_location = get_context_paned ().get_position ();
-
     NEMIVER_TRY
-    conf_mgr.set_key_value (CONF_KEY_STATUS_PANE_LOCATION, pane_location);
     conf_mgr.set_key_value (CONF_KEY_CONTEXT_PANE_LOCATION,
                             context_pane_location);
+
+    m_priv->layout ().save_configuration ();
     NEMIVER_CATCH_NOX
+
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+    NEMIVER_TRY
 
     if (m_priv->prog_path == "") {
         return;
@@ -2598,7 +2564,6 @@ DBGPerspective::on_debugger_running_signal ()
     LOG_FUNCTION_SCOPE_NORMAL_DD;
     NEMIVER_TRY
     THROW_IF_FAIL (m_priv->throbber);
-    THROW_IF_FAIL (m_priv->sourceviews_notebook);
     workbench ().get_root_window ().get_window ()->set_cursor
                                                 (Gdk::Cursor (Gdk::WATCH));
     m_priv->throbber->start ();
@@ -2922,22 +2887,15 @@ DBGPerspective::on_notebook_tabs_reordered (Gtk::Widget* /*a_page*/,
 }
 
 void
-DBGPerspective::activate_status_view (Gtk::Widget &a_page)
+DBGPerspective::on_layout_changed ()
 {
-    int pagenum = 0;
     LOG_FUNCTION_SCOPE_NORMAL_DD;
 
-    THROW_IF_FAIL (m_priv);
-    THROW_IF_FAIL (m_priv->statuses_notebook);
+    NEMIVER_TRY
 
-    pagenum = m_priv->statuses_notebook->page_num (a_page);
-    if (pagenum != -1) {
-        if (m_priv->statuses_notebook->get_current_page () != pagenum)
-            m_priv->statuses_notebook->set_current_page (pagenum);
-        a_page.grab_focus ();
-    } else {
-        LOG_DD ("Invalid Pagenum");
-    }
+    add_views_to_layout ();
+
+    NEMIVER_CATCH
 }
 
 void
@@ -2946,7 +2904,8 @@ DBGPerspective::on_activate_context_view ()
     LOG_FUNCTION_SCOPE_NORMAL_DD;
 
     NEMIVER_TRY
-    activate_status_view (get_context_paned ());
+    THROW_IF_FAIL (m_priv);
+    m_priv->layout ().activate_view (CONTEXT_VIEW_INDEX);
     NEMIVER_CATCH
 }
 
@@ -2957,7 +2916,8 @@ DBGPerspective::on_activate_target_terminal_view ()
 
     NEMIVER_TRY
 
-    activate_status_view (get_terminal_box ());
+    THROW_IF_FAIL (m_priv);
+    m_priv->layout ().activate_view (TARGET_TERMINAL_VIEW_INDEX);
 
     NEMIVER_CATCH
 }
@@ -2969,7 +2929,8 @@ DBGPerspective::on_activate_breakpoints_view ()
 
     NEMIVER_TRY
 
-    activate_status_view (get_breakpoints_scrolled_win ());
+    THROW_IF_FAIL (m_priv);
+    m_priv->layout ().activate_view (BREAKPOINTS_VIEW_INDEX);
 
     NEMIVER_CATCH
 }
@@ -2981,7 +2942,8 @@ DBGPerspective::on_activate_registers_view ()
 
     NEMIVER_TRY
 
-    activate_status_view (get_registers_scrolled_win ());
+    THROW_IF_FAIL (m_priv);
+    m_priv->layout ().activate_view (REGISTERS_VIEW_INDEX);
 
     NEMIVER_CATCH
 }
@@ -2994,7 +2956,8 @@ DBGPerspective::on_activate_memory_view ()
 
     NEMIVER_TRY
 
-    activate_status_view (get_memory_view ().widget ());
+    THROW_IF_FAIL (m_priv);
+    m_priv->layout ().activate_view (MEMORY_VIEW_INDEX);
 
     NEMIVER_CATCH
 }
@@ -3101,19 +3064,6 @@ DBGPerspective::add_perspective_menu_entries ()
     workbench ().get_ui_manager ()->add_ui_from_file
                                 (Glib::filename_to_utf8 (absolute_path));
 #endif // WITH_MEMORYVIEW
-}
-
-void
-DBGPerspective::init_perspective_menu_entries ()
-{
-    set_show_terminal_view (true);
-    set_show_context_view (true);
-    set_show_breakpoints_view (true);
-    set_show_registers_view (true);
-#ifdef WITH_MEMORYVIEW
-    set_show_memory_view (true);
-#endif // WITH_MEMORYVIEW
-    m_priv->statuses_notebook->set_current_page (0);
 }
 
 void
@@ -3491,7 +3441,7 @@ DBGPerspective::init_actions ()
         {
             "ActivateTargetTerminalViewMenuAction",
             nil_stock_id,
-            TARGET_TERMINAL_TITLE,
+            TARGET_TERMINAL_VIEW_TITLE,
             _("Switch to Target Terminal View"),
             sigc::mem_fun (*this,
                            &DBGPerspective::on_activate_target_terminal_view),
@@ -3502,7 +3452,7 @@ DBGPerspective::init_actions ()
         {
             "ActivateContextViewMenuAction",
             nil_stock_id,
-            CONTEXT_TITLE,
+            CONTEXT_VIEW_TITLE,
             _("Switch to Context View"),
             sigc::mem_fun (*this,
                            &DBGPerspective::on_activate_context_view),
@@ -3513,7 +3463,7 @@ DBGPerspective::init_actions ()
         {
             "ActivateBreakpointsViewMenuAction",
             nil_stock_id,
-            BREAKPOINTS_TITLE,
+            BREAKPOINTS_VIEW_TITLE,
             _("Switch to Breakpoints View"),
             sigc::mem_fun (*this,
                            &DBGPerspective::on_activate_breakpoints_view),
@@ -3785,59 +3735,7 @@ DBGPerspective::init_toolbar ()
 void
 DBGPerspective::init_body ()
 {
-    string relative_path = Glib::build_filename ("ui",
-                                                 "bodycontainer.ui");
-    string absolute_path;
-    THROW_IF_FAIL (build_absolute_resource_path
-                    (Glib::filename_to_utf8 (relative_path), absolute_path));
-    m_priv->body_builder = Gtk::Builder::create_from_file (absolute_path);
-    m_priv->body_window.reset
-        (ui_utils::get_widget_from_gtkbuilder<Gtk::Window> (m_priv->body_builder,
-                                                       "bodycontainer"));
-    m_priv->top_box =
-        ui_utils::get_widget_from_gtkbuilder<Gtk::Box> (m_priv->body_builder,
-                                                   "topbox");
-    m_priv->body_main_paned.reset
-        (ui_utils::get_widget_from_gtkbuilder<Gtk::Paned> (m_priv->body_builder,
-                                                      "mainbodypaned"));
-    // set the position of the status pane to the last saved position
     IConfMgr &conf_mgr = get_conf_mgr ();
-    int pane_location = -1; // don't specifically set a location
-                            // if we can't read the last location from gconf
-    NEMIVER_TRY
-    conf_mgr.get_key_value (CONF_KEY_STATUS_PANE_LOCATION, pane_location);
-    NEMIVER_CATCH_NOX
-
-    if (pane_location > 0) {
-        m_priv->body_main_paned->set_position (pane_location);
-    }
-
-    m_priv->sourceviews_notebook =
-        ui_utils::get_widget_from_gtkbuilder<Gtk::Notebook> (m_priv->body_builder,
-                                                        "sourceviewsnotebook");
-    m_priv->sourceviews_notebook->remove_page ();
-    m_priv->sourceviews_notebook->set_show_tabs ();
-    m_priv->sourceviews_notebook->set_scrollable ();
-#if GTK_CHECK_VERSION (2, 10, 0)
-    m_priv->sourceviews_notebook->signal_page_reordered ().connect
-        (sigc::mem_fun (this, &DBGPerspective::on_notebook_tabs_reordered));
-#endif
-
-    m_priv->statuses_notebook =
-        ui_utils::get_widget_from_gtkbuilder<Gtk::Notebook> (m_priv->body_builder,
-                                                        "statusesnotebook");
-    int width=100, height=70;
-
-    NEMIVER_TRY
-    conf_mgr.get_key_value (CONF_KEY_STATUS_WIDGET_MINIMUM_WIDTH, width);
-    conf_mgr.get_key_value (CONF_KEY_STATUS_WIDGET_MINIMUM_HEIGHT, height);
-    NEMIVER_CATCH_NOX
-
-    LOG_DD ("setting status widget min size: width: "
-            << width
-            << ", height: "
-            << height);
-    m_priv->statuses_notebook->set_size_request (width, height);
 
     get_thread_list_scrolled_win ().add (get_thread_list ().widget ());
     get_call_stack_paned ().add1 (get_thread_list_scrolled_win ());
@@ -3846,7 +3744,6 @@ DBGPerspective::init_body ()
 
     get_context_paned ().pack1 (get_call_stack_paned ());
     get_context_paned ().pack2 (get_local_vars_inspector_scrolled_win ());
-
 
     int context_pane_location = -1;
     NEMIVER_TRY
@@ -3863,13 +3760,27 @@ DBGPerspective::init_body ()
     get_breakpoints_scrolled_win ().add (get_breakpoints_view ().widget());
     get_registers_scrolled_win ().add (get_registers_view ().widget());
 
-    //unparent the body_main_paned, so that we can pack it
-    //in the workbench later
-    m_priv->top_box->remove (*m_priv->body_main_paned);
-    m_priv->body_main_paned->show_all ();
+    m_priv->sourceviews_notebook.reset (new Gtk::Notebook);
+    m_priv->sourceviews_notebook->remove_page ();
+    m_priv->sourceviews_notebook->set_show_tabs ();
+    m_priv->sourceviews_notebook->set_scrollable ();
+#if GTK_CHECK_VERSION (2, 10, 0)
+    m_priv->sourceviews_notebook->signal_page_reordered ().connect
+        (sigc::mem_fun (this, &DBGPerspective::on_notebook_tabs_reordered));
+#endif
 
-    //must be last
-    init_perspective_menu_entries ();
+    UString layout = DBG_PERSPECTIVE_DEFAULT_LAYOUT;
+    NEMIVER_TRY
+    conf_mgr.get_key_value (CONF_KEY_DBG_PERSPECTIVE_LAYOUT, layout);
+
+    // If the layout is not registered, we use the default layout
+    if (!m_priv->layout_mgr.is_layout_registered (layout)) {
+        layout = DBG_PERSPECTIVE_DEFAULT_LAYOUT;
+    }
+    NEMIVER_CATCH_NOX
+
+    m_priv->layout_mgr.load_layout (layout, *this);
+    add_views_to_layout ();
 }
 
 void
@@ -3902,6 +3813,9 @@ DBGPerspective::init_signals ()
 
     default_config_read_signal ().connect (sigc::mem_fun (this,
                 &DBGPerspective::on_default_config_read));
+
+    m_priv->layout_mgr.layout_changed_signal ().connect (sigc::mem_fun
+            (*this, &DBGPerspective::on_layout_changed));
 }
 
 /// Connect slots (callbacks) to the signals emitted by the
@@ -4368,6 +4282,8 @@ DBGPerspective::bring_source_as_current (SourceEditor *a_editor)
 
     if (a_editor == 0)
         return;
+
+    THROW_IF_FAIL (m_priv);
 
     UString path = a_editor->get_path ();
     map<UString, int>::iterator iter =
@@ -5111,6 +5027,33 @@ DBGPerspective::get_find_text_dialog ()
 }
 
 void
+DBGPerspective::add_views_to_layout ()
+{
+    THROW_IF_FAIL (m_priv);
+
+#ifdef WITH_MEMORYVIEW
+    m_priv->layout ().add_view (get_memory_view ().widget (),
+                                MEMORY_VIEW_TITLE,
+                                MEMORY_VIEW_INDEX);
+#endif // WITH_MEMORYVIEW
+    m_priv->layout ().add_view (get_registers_scrolled_win (),
+                                REGISTERS_VIEW_TITLE,
+                                REGISTERS_VIEW_INDEX);
+    m_priv->layout ().add_view (get_breakpoints_scrolled_win (),
+                                BREAKPOINTS_VIEW_TITLE,
+                                BREAKPOINTS_VIEW_INDEX);
+    m_priv->layout ().add_view (get_context_paned (),
+                                CONTEXT_VIEW_TITLE,
+                                CONTEXT_VIEW_INDEX);
+    m_priv->layout ().add_view (get_terminal_box (),
+                                TARGET_TERMINAL_VIEW_TITLE,
+                                TARGET_TERMINAL_VIEW_INDEX);
+
+    m_priv->layout ().do_init ();
+
+}
+
+void
 DBGPerspective::record_and_save_session (ISessMgr::Session &a_session)
 {
     THROW_IF_FAIL (m_priv);
@@ -5241,6 +5184,7 @@ DBGPerspective::do_init (IWorkbench *a_workbench)
 {
     THROW_IF_FAIL (m_priv);
     m_priv->workbench = a_workbench;
+    register_layouts ();
     init_icon_factory ();
     init_actions ();
     init_toolbar ();
@@ -5268,6 +5212,23 @@ DBGPerspective::get_perspective_identifier ()
 }
 
 void
+DBGPerspective::register_layouts ()
+{
+    THROW_IF_FAIL (m_priv);
+
+    m_priv->layout_mgr.register_layout
+        (LayoutSafePtr (new DBGPerspectiveDefaultLayout));
+    m_priv->layout_mgr.register_layout
+        (LayoutSafePtr (new DBGPerspectiveTwoPaneLayout));
+    m_priv->layout_mgr.register_layout
+        (LayoutSafePtr (new DBGPerspectiveWideLayout));
+#ifdef WITH_DYNAMICLAYOUT
+    m_priv->layout_mgr.register_layout
+        (LayoutSafePtr (new DBGPerspectiveDynamicLayout));
+#endif // WITH_DYNAMICLAYOUT
+}
+
+void
 DBGPerspective::get_toolbars (list<Gtk::Widget*>  &a_tbs)
 {
     CHECK_P_INIT;
@@ -5278,7 +5239,13 @@ Gtk::Widget*
 DBGPerspective::get_body ()
 {
     CHECK_P_INIT;
-    return m_priv->body_main_paned.get ();
+    return m_priv->layout ().widget ();
+}
+
+Gtk::Widget&
+DBGPerspective::get_source_view_widget ()
+{
+    return *m_priv->sourceviews_notebook;
 }
 
 IWorkbench&
@@ -5294,7 +5261,6 @@ DBGPerspective::edit_workbench_menu ()
     CHECK_P_INIT;
 
     add_perspective_menu_entries ();
-    //init_perspective_menu_entries ();
 }
 
 SourceEditor*
@@ -5744,6 +5710,8 @@ void
 DBGPerspective::update_file_maps ()
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+    THROW_IF_FAIL (m_priv);
 
     m_priv->path_2_pagenum_map.clear ();
     m_priv->basename_2_pagenum_map.clear ();
@@ -6441,7 +6409,7 @@ void
 DBGPerspective::edit_preferences ()
 {
     THROW_IF_FAIL (m_priv);
-    PreferencesDialog dialog (workbench (), plugin_path ());
+    PreferencesDialog dialog (*this, m_priv->layout_mgr, plugin_path ());
     dialog.run ();
 }
 
@@ -8239,138 +8207,6 @@ DBGPerspective::get_memory_view ()
 }
 #endif // WITH_MEMORYVIEW
 
-void
-DBGPerspective::set_show_context_view (bool a_show)
-{
-    if (a_show) {
-        if (!get_context_paned ().get_parent ()
-            && m_priv->context_paned_view_is_visible == false) {
-            get_context_paned ().show_all ();
-            int page_num = m_priv->statuses_notebook->insert_page
-                                (get_context_paned (),
-                                 CONTEXT_TITLE,
-                                 CONTEXT_VIEW_INDEX);
-            m_priv->context_paned_view_is_visible = true;
-            m_priv->statuses_notebook->set_current_page (page_num);
-        }
-    } else {
-        if (get_context_paned ().get_parent ()
-            && m_priv->context_paned_view_is_visible) {
-            LOG_DD ("removing context pane");
-            m_priv->statuses_notebook->remove_page
-                                (get_context_paned ());
-            m_priv->context_paned_view_is_visible = false;
-        }
-        m_priv->context_paned_view_is_visible = false;
-    }
-}
-
-void
-DBGPerspective::set_show_terminal_view (bool a_show)
-{
-    if (a_show) {
-        if (!get_terminal_box ().get_parent ()
-            && m_priv->terminal_view_is_visible == false) {
-            get_terminal_box ().show_all ();
-            int page_num = m_priv->statuses_notebook->insert_page
-                                            (get_terminal_box (),
-                                             TARGET_TERMINAL_TITLE,
-                                             TERMINAL_VIEW_INDEX);
-            m_priv->terminal_view_is_visible = true;
-            m_priv->statuses_notebook->set_current_page (page_num);
-        }
-    } else {
-        if (get_terminal_box ().get_parent ()
-            && m_priv->terminal_view_is_visible) {
-            LOG_DD ("removing terminal view");
-            m_priv->statuses_notebook->remove_page
-                                        (get_terminal_box ());
-            m_priv->terminal_view_is_visible = false;
-        }
-        m_priv->terminal_view_is_visible = false;
-    }
-}
-
-void
-DBGPerspective::set_show_breakpoints_view (bool a_show)
-{
-    if (a_show) {
-        if (!get_breakpoints_scrolled_win ().get_parent ()
-            && m_priv->breakpoints_view_is_visible == false) {
-            get_breakpoints_scrolled_win ().show_all ();
-            int page_num = m_priv->statuses_notebook->insert_page
-                                            (get_breakpoints_scrolled_win (),
-                                             BREAKPOINTS_TITLE,
-                                             BREAKPOINTS_VIEW_INDEX);
-            m_priv->breakpoints_view_is_visible = true;
-            m_priv->statuses_notebook->set_current_page (page_num);
-        }
-    } else {
-        if (get_breakpoints_scrolled_win ().get_parent ()
-            && m_priv->breakpoints_view_is_visible) {
-            LOG_DD ("removing breakpoints view");
-            m_priv->statuses_notebook->remove_page
-                                        (get_breakpoints_scrolled_win ());
-            m_priv->breakpoints_view_is_visible = false;
-        }
-        m_priv->breakpoints_view_is_visible = false;
-    }
-}
-
-void
-DBGPerspective::set_show_registers_view (bool a_show)
-{
-    if (a_show) {
-        if (!get_registers_scrolled_win ().get_parent ()
-            && m_priv->registers_view_is_visible == false) {
-            get_registers_scrolled_win ().show_all ();
-            int page_num = m_priv->statuses_notebook->insert_page
-                                            (get_registers_scrolled_win (),
-                                             REGISTERS_VIEW_TITLE,
-                                             REGISTERS_VIEW_INDEX);
-            m_priv->registers_view_is_visible = true;
-            m_priv->statuses_notebook->set_current_page (page_num);
-        }
-    } else {
-        if (get_registers_scrolled_win ().get_parent ()
-            && m_priv->registers_view_is_visible) {
-            LOG_DD ("removing registers view");
-            m_priv->statuses_notebook->remove_page
-                                        (get_registers_scrolled_win ());
-            m_priv->registers_view_is_visible = false;
-        }
-        m_priv->registers_view_is_visible = false;
-    }
-}
-
-#ifdef WITH_MEMORYVIEW
-void
-DBGPerspective::set_show_memory_view (bool a_show)
-{
-    if (a_show) {
-        if (!get_memory_view ().widget ().get_parent ()
-            && m_priv->memory_view_is_visible == false) {
-            get_memory_view ().widget ().show_all ();
-            int page_num = m_priv->statuses_notebook->insert_page
-                                            (get_memory_view ().widget (),
-                                             MEMORY_VIEW_TITLE,
-                                             MEMORY_VIEW_INDEX);
-            m_priv->memory_view_is_visible = true;
-            m_priv->statuses_notebook->set_current_page (page_num);
-        }
-    } else {
-        if (get_memory_view ().widget ().get_parent ()
-            && m_priv->memory_view_is_visible) {
-            LOG_DD ("removing memory view");
-            m_priv->statuses_notebook->remove_page
-                                        (get_memory_view ().widget ());
-            m_priv->memory_view_is_visible = false;
-        }
-        m_priv->memory_view_is_visible = false;
-    }
-}
-#endif // WITH_MEMORYVIEW
-
 
 struct ScrollTextViewToEndClosure {
     Gtk::TextView* text_view;
@@ -8411,6 +8247,13 @@ DBGPerspective::debugger_ready_signal ()
 }
 
 sigc::signal<void>&
+DBGPerspective::layout_changed_signal ()
+{
+    THROW_IF_FAIL (m_priv);
+    return m_priv->layout_mgr.layout_changed_signal ();
+}
+
+sigc::signal<void>&
 DBGPerspective::debugger_not_started_signal ()
 {
     return m_priv->debugger_not_started_signal;
@@ -8433,7 +8276,7 @@ DBGPerspective::agree_to_shutdown ()
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD;
     if (debugger ()->is_attached_to_target ()) {
-	UString message;
+        UString message;
         message.printf (_("There is a program being currently debugged. "
                           "Do you really want to exit from the debugger?"));
         if (nemiver::ui_utils::ask_yes_no_question (message) ==

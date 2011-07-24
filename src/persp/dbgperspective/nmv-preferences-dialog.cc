@@ -29,8 +29,9 @@
 #include "nmv-preferences-dialog.h"
 #include "nmv-ui-utils.h"
 #include "nmv-i-conf-mgr.h"
-#include "nmv-i-workbench.h"
+#include "nmv-i-perspective.h"
 #include "nmv-conf-keys.h"
+#include "nmv-layout-selector.h"
 #ifdef WITH_SOURCEVIEWMM2
 #include <gtksourceviewmm/sourcestyleschememanager.h>
 #endif
@@ -66,7 +67,8 @@ class PreferencesDialog::Priv {
     };
 
 public:
-    IWorkbench &workbench;
+    IPerspective &perspective;
+    LayoutManager &layout_manager;
     //source directories property widgets
     vector<UString> source_dirs;
     Glib::RefPtr<Gtk::ListStore> list_store;
@@ -83,6 +85,7 @@ public:
     StyleModelColumns m_style_columns;
     Gtk::CellRendererText m_style_name_renderer;
     Gtk::HBox *custom_font_box;
+    Gtk::Box *layout_box;
     Gtk::CheckButton *show_lines_check_button;
     Gtk::CheckButton *launch_terminal_check_button;
     Gtk::CheckButton *highlight_source_check_button;
@@ -96,15 +99,19 @@ public:
     Gtk::SpinButton  *default_num_asm_instrs_spin_button;
     Gtk::FileChooserButton *gdb_binary_path_chooser_button;
     Glib::RefPtr<Gtk::Builder> gtkbuilder;
+    SafePtr<LayoutSelector> layout_selector;
 
     Priv (const Glib::RefPtr<Gtk::Builder> &a_gtkbuilder,
-          IWorkbench &a_workbench) :
-        workbench (a_workbench),
+          IPerspective &a_perspective,
+          LayoutManager &a_layout_manager) :
+        perspective (a_perspective),
+        layout_manager (a_layout_manager),
         tree_view (0),
         remove_dir_button (0),
         system_font_check_button (0),
         custom_font_button (0),
         custom_font_box (0),
+        layout_box (0),
         show_lines_check_button (0),
         launch_terminal_check_button (0),
         highlight_source_check_button (0),
@@ -452,6 +459,18 @@ public:
             (sigc::mem_fun
                  (*this,
                   &PreferencesDialog::Priv::on_follow_fork_mode_toggle_signal));
+
+        // *************************************
+        // Handle the "Layout" preferences tab
+        // *************************************
+
+        layout_box = ui_utils::get_widget_from_gtkbuilder<Gtk::Box>
+            (gtkbuilder, "layoutbox");
+        THROW_IF_FAIL (layout_box);
+
+        layout_selector.reset (new LayoutSelector (layout_manager, perspective));
+        layout_box->pack_start (layout_selector->widget ());
+        layout_box->show_all_children ();
     }
 
     void collect_source_dirs ()
@@ -479,7 +498,8 @@ public:
 
     IConfMgr& conf_manager () const
     {
-        IConfMgrSafePtr conf_mgr = workbench.get_configuration_manager ();
+        IConfMgrSafePtr conf_mgr = perspective.get_workbench ()
+            .get_configuration_manager ();
         THROW_IF_FAIL (conf_mgr);
         return *conf_mgr;
     }
@@ -793,13 +813,14 @@ public:
     }
 };//end PreferencesDialog
 
-PreferencesDialog::PreferencesDialog (IWorkbench &a_workbench,
+PreferencesDialog::PreferencesDialog (IPerspective &a_perspective,
+                                      LayoutManager &a_layout_manager,
                                       const UString &a_root_path) :
     Dialog (a_root_path,
             "preferencesdialog.ui",
             "preferencesdialog")
 {
-    m_priv.reset (new Priv (gtkbuilder (), a_workbench));
+    m_priv.reset (new Priv (gtkbuilder (), a_perspective, a_layout_manager));
     m_priv->update_widget_from_conf ();
 }
 

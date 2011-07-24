@@ -1,5 +1,11 @@
 <schemalist>
   <schema id="org.nemiver" path="/apps/nemiver/">
+    <key name="dbg-perspective-layout" type="s">
+      <default>'default-layout'</default>
+      <summary>Layout of the perspective</summary>
+      <description>The layout that is loaded by the debugging perspective</description>
+    </key>
+
     <key name="source-search-dirs" type="s">
       <default>'.'</default>
       <summary>source directory dirs</summary>
@@ -72,10 +78,28 @@
       <description>The minimum height of the status widget.</description>
     </key>
 
-    <key name="status-pane-location" type="i">
+    <key name="default-layout-pane-location" type="i">
       <default>-1</default>
-      <summary>The location of the status pane</summary>
-      <description>The location of the status pane.</description>
+      <summary>The location of the status pane for the default layout</summary>
+      <description>The location of the status pane for the default layout</description>
+    </key>
+
+    <key name="wide-layout-pane-location" type="i">
+      <default>-1</default>
+      <summary>The location of the status pane for the wide layout</summary>
+      <description>The location of the status pane for the wide layout</description>
+    </key>
+
+    <key name="two-pane-layout-vpane-location" type="i">
+      <default>-1</default>
+      <summary>The location of the vertical status pane for the two-pane layout</summary>
+      <description>The location of the vertical status pane for the two-pane layout</description>
+    </key>
+
+    <key name="two-pane-layout-hpane-location" type="i">
+      <default>-1</default>
+      <summary>The location of the horizontal status pane for the two-pane layout</summary>
+      <description>The location of the horizontalstatus pane for the two-pane layout</description>
     </key>
 
     <key name="debugger-engine-dynmod" type="s">
