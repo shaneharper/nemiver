@@ -85,7 +85,7 @@ ProcMgr::get_all_process_list () const
 {
     glibtop_proclist buf_desc;
     memset (&buf_desc, 0, sizeof (buf_desc));
-    pid_t *pids=NULL;
+    pid_t *pids=0;
 
     m_process_list.clear ();
 
@@ -109,7 +109,7 @@ ProcMgr::get_all_process_list () const
     }
     if (pids) {
         g_free (pids);
-        pids=NULL;
+        pids=0;
     }
     return m_process_list;
 }
@@ -142,7 +142,7 @@ ProcMgr::get_process_from_pid (pid_t a_pid,
     }
     if (argv) {
         g_strfreev (argv);
-        argv=NULL;
+        argv=0;
     } else {
         LOG_DD ("got null process args, "
                 "it means there is no process with pid: '"
@@ -157,7 +157,7 @@ ProcMgr::get_process_from_pid (pid_t a_pid,
     process.ppid (proc_info.ppid);
     process.uid (proc_info.uid);
     process.euid (proc_info.uid);
-    struct passwd *passwd_info=NULL;
+    struct passwd *passwd_info=0;
     passwd_info = getpwuid (process.uid ());
     if (passwd_info) {
         process.user_name (passwd_info->pw_name);

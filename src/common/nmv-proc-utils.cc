@@ -85,7 +85,7 @@ launch_program (const std::vector<UString> &a_args,
     //RETURN_VAL_IF_FAIL (pipe (stdin_pipes) == 0, false);
 
     char pts_name[256]={0};
-    int pid  = forkpty (&master_pty_fd, pts_name, NULL, NULL);
+    int pid  = forkpty (&master_pty_fd, pts_name, 0, 0);
     LOG_DD ("process forked. pts_name: '"
             << pts_name << "', pid: '" << pid << "'");
 

@@ -40,7 +40,7 @@ get_current_datetime ()
 {
     struct timeval tv;
     memset (&tv, 0, sizeof (tv));
-    gettimeofday (&tv, NULL);
+    gettimeofday (&tv, 0);
     return tv.tv_sec;
 }
 

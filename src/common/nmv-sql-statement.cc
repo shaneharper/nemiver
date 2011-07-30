@@ -109,7 +109,7 @@ SQLStatement::~SQLStatement ()
     if (!m_priv)
         return;
     delete m_priv;
-    m_priv = NULL;
+    m_priv = 0;
 }
 
 SQLStatement::operator const char* () const

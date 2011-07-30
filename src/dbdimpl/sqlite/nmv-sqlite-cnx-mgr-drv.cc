@@ -58,7 +58,7 @@ SqliteCnxMgrDrv::~SqliteCnxMgrDrv ()
     }
 
     delete m_priv;
-    m_priv = NULL;
+    m_priv = 0;
 }
 
 
@@ -70,7 +70,7 @@ SqliteCnxMgrDrv::connect_to_db (const DBDesc &a_db_desc,
 
     if (a_user == "") {}
     if (a_pass == "") {}
-    sqlite3 *sqlite (NULL);
+    sqlite3 *sqlite (0);
 
     //HACK. As we are using sqlite, make sure to use a db file
     //that is in $HOME/.nemiver/db/sqlite

@@ -98,7 +98,7 @@ public:
     ~SafePtr ()
     {
         unreference ();
-        m_pointer = NULL;
+        m_pointer = 0;
     }
 
     SafePtr<PointerType, ReferenceFunctor, UnreferenceFunctor>&
@@ -223,7 +223,7 @@ public:
     release ()
     {
         PointerType* pointer = m_pointer;
-        m_pointer = NULL;
+        m_pointer = 0;
         return  pointer;
     }
 

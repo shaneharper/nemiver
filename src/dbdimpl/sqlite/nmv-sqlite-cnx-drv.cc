@@ -69,8 +69,8 @@ struct SqliteCnxDrv::Priv {
     int last_execution_result;
 
     Priv ():
-        sqlite (NULL),
-        cur_stmt (NULL),
+        sqlite (0),
+        cur_stmt (0),
         last_execution_result (-333)
      {
      }
@@ -116,7 +116,7 @@ decide:
                  << sqlite3_errmsg (sqlite.get ()));
             if (cur_stmt) {
                 sqlite3_finalize (cur_stmt);
-                cur_stmt = NULL;
+                cur_stmt = 0;
             }
             result = false;
             break;
@@ -124,7 +124,7 @@ decide:
             LOG_ERROR ("seems like sqlite3_step() has been called too much ...");
             if (cur_stmt) {
                 sqlite3_finalize (cur_stmt);
-                cur_stmt = NULL;
+                cur_stmt = 0;
             }
             result = false;
             break;
@@ -132,7 +132,7 @@ decide:
             LOG_ERROR ("got an unknown error code from sqlite3_step");
             if (cur_stmt) {
                 sqlite3_finalize (cur_stmt);
-                cur_stmt = NULL;
+                cur_stmt = 0;
             }
             result = false;
             break;
@@ -168,7 +168,7 @@ SqliteCnxDrv::get_last_error () const
     if (m_priv && m_priv->sqlite) {
         return sqlite3_errmsg (m_priv->sqlite.get ());
     }
-    return NULL;
+    return 0;
 }
 
 bool
@@ -208,7 +208,7 @@ SqliteCnxDrv::execute_statement (const SQLStatement &a_statement)
     //we go forward.
     if (m_priv->cur_stmt) {
         sqlite3_finalize (m_priv->cur_stmt);
-        m_priv->cur_stmt = NULL;
+        m_priv->cur_stmt = 0;
         m_priv->last_execution_result = SQLITE_OK;
     }
 
@@ -219,7 +219,7 @@ SqliteCnxDrv::execute_statement (const SQLStatement &a_statement)
                                   a_statement.to_string ().c_str (),
                                   a_statement.to_string ().bytes (),
                                   &m_priv->cur_stmt,
-                                  NULL);
+                                  0);
     if (status != SQLITE_OK) {
         LOG_ERROR ("sqlite3_prepare() failed, returning: "
              << status << ":" << get_last_error ()
@@ -400,7 +400,7 @@ SqliteCnxDrv::close ()
     if (m_priv->sqlite) {
         if (m_priv->cur_stmt) {
             sqlite3_finalize (m_priv->cur_stmt);
-            m_priv->cur_stmt = NULL;
+            m_priv->cur_stmt = 0;
         }
     }
 }

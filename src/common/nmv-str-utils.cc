@@ -130,7 +130,7 @@ parse_host_and_port (const std::string &a_str,
 size_t
 hexa_to_int (const string &a_hexa_str)
 {
-    return strtoll (a_hexa_str.c_str (), NULL, 16);
+    return strtoll (a_hexa_str.c_str (), 0, 16);
 }
 
 std::string

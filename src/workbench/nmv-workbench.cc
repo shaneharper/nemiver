@@ -252,7 +252,7 @@ Workbench::on_contents_menu_item_action ()
     UString cmd_line ("yelp " + path_to_help);
     LOG_DD ("going to spawn: " << cmd_line);
     bool is_ok = g_spawn_command_line_async (Glib::locale_from_utf8
-                                             (cmd_line).c_str (), NULL);
+                                             (cmd_line).c_str (), 0);
     if (!is_ok) {
         LOG_ERROR ("failed to spawn " << is_ok);
     }
@@ -527,7 +527,7 @@ Workbench::get_perspective (const UString &a_name)
         }
     }
     LOG_ERROR ("could not find perspective: '" << a_name << "'");
-    return NULL;
+    return 0;
 }
 
 /// Set the configuration manager

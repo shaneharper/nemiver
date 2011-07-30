@@ -89,7 +89,7 @@ Config::~Config ()
 {
     if (m_priv) {
         delete m_priv;
-        m_priv = NULL;
+        m_priv = 0;
     }
 }
 

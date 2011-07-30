@@ -63,7 +63,7 @@ UString::from_int (long long an_int)
 size_t
 UString::hexa_to_int (const string &a_hexa_str)
 {
-    return strtoll (a_hexa_str.c_str (), NULL, 16);
+    return strtoll (a_hexa_str.c_str (), 0, 16);
 }
 
 UString::UString ()
