@@ -195,12 +195,12 @@ private:
 
         SlotedButton () :
             Gtk::Button (),
-            perspective (NULL)
+            perspective (0)
         {}
 
         SlotedButton (const Gtk::StockID &a_id) :
             Gtk::Button (a_id),
-            perspective (NULL)
+            perspective (0)
         {}
 
         void on_clicked ()
@@ -1049,8 +1049,8 @@ struct DBGPerspective::Priv {
 #ifdef WITH_MEMORYVIEW
         memory_view_is_visible (false),
 #endif // WITH_MEMORYVIEW
-        sourceviews_notebook (NULL),
-        statuses_notebook (NULL),
+        sourceviews_notebook (0),
+        statuses_notebook (0),
         current_page_num (0),
         show_dbg_errors (false),
         use_system_font (true),
@@ -4426,7 +4426,7 @@ DBGPerspective::get_current_source_editor (bool a_load_if_nil)
 
     if (!m_priv->sourceviews_notebook) {
         LOG_ERROR ("NULL m_priv->sourceviews_notebook");
-        return NULL;
+        return 0;
     }
 
     if (a_load_if_nil
@@ -4448,7 +4448,7 @@ DBGPerspective::get_current_source_editor (bool a_load_if_nil)
     if (iter == nil) {
         LOG_ERROR ("Could not find page num: "
                    << m_priv->current_page_num);
-        return NULL;
+        return 0;
     }
 
     return iter->second;
@@ -6079,7 +6079,7 @@ DBGPerspective::update_file_maps ()
     m_priv->pagenum_2_source_editor_map.clear ();
     m_priv->pagenum_2_path_map.clear ();
 
-    SourceEditor *se = NULL;
+    SourceEditor *se = 0;
     UString path, basename;
     int nb_pages = m_priv->sourceviews_notebook->get_n_pages ();
 
@@ -8845,7 +8845,7 @@ DBGPerspective::set_show_memory_view (bool a_show)
 struct ScrollTextViewToEndClosure {
     Gtk::TextView* text_view;
 
-    ScrollTextViewToEndClosure (Gtk::TextView *a_view=NULL) :
+    ScrollTextViewToEndClosure (Gtk::TextView *a_view=0) :
         text_view (a_view)
     {
     }

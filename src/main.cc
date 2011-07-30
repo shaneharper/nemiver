@@ -89,7 +89,7 @@ static GOptionEntry entries[] =
       G_OPTION_ARG_NONE,
       &gv_list_sessions,
       _("List the saved debugging sessions"),
-      NULL
+      0
     },
     { "purge-sessions",
       0,
@@ -97,7 +97,7 @@ static GOptionEntry entries[] =
       G_OPTION_ARG_NONE,
       &gv_purge_sessions,
       _("Erase the saved debugging sessions"),
-      NULL
+      0
     },
     { "session",
       0,
@@ -113,7 +113,7 @@ static GOptionEntry entries[] =
       G_OPTION_ARG_NONE,
       &gv_last_session,
       _("Execute the last session"),
-      NULL
+      0
     },
     { "log-domains",
       0,
@@ -129,7 +129,7 @@ static GOptionEntry entries[] =
       G_OPTION_ARG_NONE,
       &gv_log_debugger_output,
       _("Log the debugger output"),
-      NULL
+      0
     },
     { "use-launch-terminal",
       0,
@@ -137,7 +137,7 @@ static GOptionEntry entries[] =
       G_OPTION_ARG_NONE,
       &gv_use_launch_terminal,
       _("Use this terminal as the debugee's terminal"),
-      NULL
+      0
     },
     {
       "remote",
@@ -164,7 +164,7 @@ static GOptionEntry entries[] =
       G_OPTION_ARG_NONE,
       &gv_show_version,
       _("Show the version number of nemiver"),
-      NULL
+      0
     },
     {0, 0, 0, (GOptionArg) 0, 0, 0, 0}
 };
@@ -295,7 +295,7 @@ parse_command_line (int& a_argc,
     }
     nmv_argv = a_argv;
     inf_argv = a_argv + i;
-    GError *error = NULL;
+    GError *error = 0;
     if (g_option_context_parse (context.get (),
                                 &nmv_argc,
                                 &nmv_argv,
@@ -308,7 +308,7 @@ parse_command_line (int& a_argc,
 
         GCharSafePtr help_message;
         help_message.reset (g_option_context_get_help (context.get (),
-                                                       true, NULL));
+                                                       true, 0));
         cerr << help_message.get () << std::endl;
         return false;
     }
@@ -334,7 +334,7 @@ parse_command_line (int& a_argc,
             cerr << _("Otherwise, find below the full set of nemiver options.\n");
             GCharSafePtr help_message;
             help_message.reset (g_option_context_get_help (context.get (),
-                                                           true, NULL));
+                                                           true, 0));
             cerr << help_message.get () << std::endl;
             return false;
         }

@@ -39,7 +39,7 @@ struct ConnectionPriv {
     Glib::Mutex mutex;
 
     ConnectionPriv () :
-            driver_iface (NULL), initialized (false)
+            driver_iface (0), initialized (false)
     {}
 
     common::IConnectionDriver&
@@ -108,7 +108,7 @@ Connection::~Connection ()
     }
     close ();
     delete m_priv;
-    m_priv = NULL;
+    m_priv = 0;
 }
 
 const char*

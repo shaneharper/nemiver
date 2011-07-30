@@ -191,12 +191,12 @@ class OfstreamLogSink : public LogSink {
     }
 
 public:
-    OfstreamLogSink (const UString &a_file_path) : LogSink (NULL)
+    OfstreamLogSink (const UString &a_file_path) : LogSink (0)
     {
         init_from_path (a_file_path);
     }
 
-    OfstreamLogSink () : LogSink (NULL)
+    OfstreamLogSink () : LogSink (0)
     {
         vector<string> path_elems;
         path_elems.push_back (Glib::get_current_dir ());

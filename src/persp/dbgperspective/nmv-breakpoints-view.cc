@@ -554,7 +554,7 @@ public:
                 // only pop up a context menu if there's a valid item at the
                 // point where the user clicked
                 Gtk::TreeModel::Path path;
-                Gtk::TreeViewColumn* p_column = NULL;
+                Gtk::TreeViewColumn* p_column = 0;
                 int cell_x=0, cell_y=0;
                 if (tree_view->get_path_at_pos (
                             static_cast<int>(a_event->x),

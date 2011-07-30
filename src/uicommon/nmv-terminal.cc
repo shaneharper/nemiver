@@ -109,7 +109,7 @@ struct Terminal::Priv {
 
     bool init_pty ()
     {
-        if (openpty (&master_pty, &slave_pty, NULL, NULL, NULL)) {
+        if (openpty (&master_pty, &slave_pty, 0, 0, 0)) {
             LOG_ERROR ("oops");
             return false;
         }

@@ -170,7 +170,7 @@ GConfMgr::register_namespace (const UString &a_name)
                              name.c_str (),
                              (GConfClientNotifyFunc) client_notify_add_func,
                              this,
-                             NULL,
+                             0,
                              &err);
     error.reset (err);
     THROW_IF_FAIL2 (!error, error->message);
@@ -202,7 +202,7 @@ GConfMgr::get_key_value (const UString &a_key,
 {
     THROW_IF_FAIL (m_gconf_client);
 
-    GError *err=NULL;
+    GError *err=0;
     GCharSafePtr value (gconf_client_get_string (m_gconf_client,
                                                  a_key.c_str (),
                                                  &err));
@@ -221,7 +221,7 @@ GConfMgr::set_key_value (const UString &a_key,
                          const UString &)
 {
     THROW_IF_FAIL (m_gconf_client);
-    GError *err=NULL;
+    GError *err=0;
 
     gconf_client_set_string (m_gconf_client,
                              a_key.c_str (),
@@ -240,7 +240,7 @@ GConfMgr::get_key_value (const UString &a_key,
 {
     THROW_IF_FAIL (m_gconf_client);
 
-    GError *err=NULL;
+    GError *err=0;
     bool value = gconf_client_get_bool (m_gconf_client,
                                         a_key.c_str (),
                                         &err);
@@ -259,7 +259,7 @@ GConfMgr::set_key_value (const UString &a_key,
                          const UString &)
 {
     THROW_IF_FAIL (m_gconf_client);
-    GError *err=NULL;
+    GError *err=0;
 
     gconf_client_set_bool (m_gconf_client,
                            a_key.c_str (),
@@ -278,7 +278,7 @@ GConfMgr::get_key_value (const UString &a_key,
 {
     THROW_IF_FAIL (m_gconf_client);
 
-    GError *err=NULL;
+    GError *err=0;
     int value = gconf_client_get_int (m_gconf_client,
                                       a_key.c_str (),
                                       &err);
@@ -297,7 +297,7 @@ GConfMgr::set_key_value (const UString &a_key,
                          const UString &)
 {
     THROW_IF_FAIL (m_gconf_client);
-    GError *err=NULL;
+    GError *err=0;
 
     gconf_client_set_int (m_gconf_client,
                           a_key.c_str (),
@@ -316,7 +316,7 @@ GConfMgr::get_key_value (const UString &a_key,
 {
     THROW_IF_FAIL (m_gconf_client);
 
-    GError *err=NULL;
+    GError *err=0;
     double value = gconf_client_get_float (m_gconf_client,
                                            a_key.c_str (),
                                            &err);
@@ -335,7 +335,7 @@ GConfMgr::set_key_value (const UString &a_key,
                          const UString &)
 {
     THROW_IF_FAIL (m_gconf_client);
-    GError *err=NULL;
+    GError *err=0;
 
     gconf_client_set_float (m_gconf_client,
                             a_key.c_str (),
@@ -355,8 +355,8 @@ GConfMgr::get_key_value (const UString &a_key,
     bool result=false;
     THROW_IF_FAIL (m_gconf_client);
 
-    GError *err=NULL;
-    GSList *list=NULL;
+    GError *err=0;
+    GSList *list=0;
     list = gconf_client_get_list (m_gconf_client,
                                   a_key.c_str (),
                                   GCONF_VALUE_STRING,
@@ -377,7 +377,7 @@ out:
             g_free (cur->data);
         }
         g_slist_free (list);
-        list = NULL;
+        list = 0;
     }
     return result;
 }
@@ -390,7 +390,7 @@ GConfMgr::set_key_value (const UString &a_key,
     if (a_value.empty ())
         return;
     THROW_IF_FAIL (m_gconf_client);
-    GSList *list=NULL;
+    GSList *list=0;
     std::list<UString>::const_iterator it;
     for (it = a_value.begin (); it != a_value.end (); ++it) {
         list = g_slist_prepend (list, g_strdup (it->c_str ()));
@@ -399,7 +399,7 @@ GConfMgr::set_key_value (const UString &a_key,
     list = g_slist_reverse (list);
     THROW_IF_FAIL (list);
 
-    GError *err=NULL;
+    GError *err=0;
     gconf_client_set_list (m_gconf_client, a_key.c_str (),
                            GCONF_VALUE_STRING,
                            list, &err);
@@ -407,7 +407,7 @@ GConfMgr::set_key_value (const UString &a_key,
         g_free (cur->data);
     }
     g_slist_free (list);
-    list = NULL;
+    list = 0;
     GErrorSafePtr error (err);
     if (error) {
         THROW (error->message);

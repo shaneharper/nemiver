@@ -50,7 +50,7 @@ struct ScopeLoggerPriv
                      enum LogStream::LogLevel a_level,
                      const UString &a_log_domain,
                      bool a_use_default_log_stream) :
-        out (NULL), can_free (false)
+        out (0), can_free (false)
     {
         if (!a_use_default_log_stream) {
             out = new LogStream (a_level);
@@ -85,7 +85,7 @@ struct ScopeLoggerPriv
                 delete out;
             }
         }
-        out = NULL;
+        out = 0;
     }
 };
 

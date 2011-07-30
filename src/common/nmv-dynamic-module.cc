@@ -315,7 +315,7 @@ DynamicModule::Loader::create_dynamic_module_instance (GModule *a_module)
     //get a pointer on the factory function exposes by
     //the module.
     //***********************************************
-    gpointer factory_function = NULL;
+    gpointer factory_function = 0;
     if (!g_module_symbol (a_module,
                 "nemiver_common_create_dynamic_module_instance",
                 &factory_function) || !factory_function) {
@@ -329,7 +329,7 @@ DynamicModule::Loader::create_dynamic_module_instance (GModule *a_module)
     //call the factory function to create an intance of
     //nemiver::common::DynamicModule
     //**************************************************
-    DynamicModule *loadable_module (NULL);
+    DynamicModule *loadable_module (0);
     ((bool (*) (void**)) factory_function) ((void**) &loadable_module);
 
     if (!loadable_module) {
@@ -401,7 +401,7 @@ struct DynamicModule::Priv {
     DynamicModule::Loader *loader;
 
     Priv () :
-        loader (NULL)
+        loader (0)
     {}
 };//end struct DynamicModule::Priv
 
