@@ -7,7 +7,8 @@ breakpointspopup.xml \
 callstackpopup.xml \
 varinspectorpopup.xml \
 localvarsinspectorpopup.todelete.xml \
-localvarsinspectorpopup.xml
+localvarsinspectorpopup.xml \
+terminalmenu.xml
 
 menusdir = @NEMIVER_PLUGINS_DIR@/$(PLUGIN_NAME)/menus
 menus_DATA = $(menusfiles)

@@ -8111,7 +8111,14 @@ DBGPerspective::get_terminal ()
 {
     THROW_IF_FAIL (m_priv);
     if (!m_priv->terminal) {
-        m_priv->terminal.reset (new Terminal);
+        string relative_path = Glib::build_filename ("menus",
+                                                     "terminalmenu.xml");
+        string absolute_path;
+        THROW_IF_FAIL (build_absolute_resource_path
+                (Glib::filename_to_utf8 (relative_path), absolute_path));
+
+        m_priv->terminal.reset(new Terminal
+                (absolute_path, workbench ().get_ui_manager ()));
     }
     THROW_IF_FAIL (m_priv->terminal);
     return *m_priv->terminal;

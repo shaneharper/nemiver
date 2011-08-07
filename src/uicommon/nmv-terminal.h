@@ -30,14 +30,19 @@
 #include "common/nmv-env.h"
 #include "common/nmv-ustring.h"
 #include "common/nmv-object.h"
+#include <string>
+#include <glibmm/refptr.h>
 
 using nemiver::common::UString;
 using nemiver::common::Object;
 using nemiver::common::SafePtr;
 
+using std::string;
+
 namespace Gtk {
     class Widget;
     class Adjustment;
+    class UIManager;
 }
 
 namespace Pango {
@@ -56,7 +61,8 @@ class Terminal : public Object {
 
 public:
 
-    Terminal ();
+    Terminal (const string &a_menu_file_path,
+              const Glib::RefPtr<Gtk::UIManager> &a_ui_manager);
     ~Terminal ();
     Gtk::Widget& widget () const;
     Gtk::Adjustment& adjustment () const;

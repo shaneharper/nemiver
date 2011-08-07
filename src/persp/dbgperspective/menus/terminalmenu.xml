@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+ <ui>
+  <popup name='TerminalMenu'>
+    <menuitem action='CopyAction'/>
+    <menuitem action='PasteAction'/>
+    <separator/>
+    <menuitem action='ResetAction'/>
+  </popup>
+ </ui>
+
