@@ -1159,6 +1159,10 @@ SourceEditor::get_file_name (UString &a_file_name)
     a_file_name = Glib::locale_to_utf8 (path);
 }
 
+///  \return true if a_char represents a variable name delimiter
+///  character, false otherwise.
+///
+///  \param a_char the character to consider.
 bool
 is_word_delimiter (gunichar a_char)
 {
