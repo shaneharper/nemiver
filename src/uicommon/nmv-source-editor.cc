@@ -1168,58 +1168,95 @@ is_word_delimiter (gunichar a_char)
     return false;
 }
 
+/// Parse the name of the variable that surrounds a_iter.  If a_iter
+/// is on the "bar" part of "foo->bar", the name returned is
+/// "foo->bar".  If it's on the "foo" part, the name returned is
+/// "foo".  Similarly for foo.bar.
+///
+/// \param a_iter the iterator from which the parsing starts
+///
+/// \param a_begin the resulting iterator pointing at the character
+/// that starts the variable name that has been parsed.
+///
+/// \param a_end the resulting iterator pointing at the character that
+/// ends the variable name that has been parsed.
+///
+/// \return true if the parsing succeeded, false otherwise.
+bool
+parse_word_around_iter (const Gtk::TextBuffer::iterator &a_iter,
+			Gtk::TextBuffer::iterator &a_begin,
+			Gtk::TextBuffer::iterator &a_end)
+{
+    if (!a_iter)
+	return false;
+
+    gunichar c = 0, prev_char = 0;
+    Gtk::TextBuffer::iterator iter = a_iter;
+
+    // First, go backward to find the first word delimiter before a_iter
+    while (iter.backward_char ()
+	   && (!is_word_delimiter (c = iter.get_char ())
+	       || c == '>' || c == '-' || c == '.')) {
+	if (c == '-') {
+	    if (prev_char == '>') {
+		// this is the '-' of the "->" operator.  Keep going.
+
+	    } else {
+		// This is the minus operator.  It's a word
+		// delimiter.  Stop here.
+		iter.forward_char ();
+		break;
+	    }
+	}
+	prev_char = c;
+    }
+    iter.forward_char ();
+    a_begin = iter;
+
+    // Then, go forward find the first word delimiter after a_iter
+    iter = a_iter;
+    while (iter.forward_char ()
+	   && !is_word_delimiter (iter.get_char ())) {}
+    a_end = iter;
+
+    return true;
+}
+
 bool
 SourceEditor::get_word_at_position (int a_x,
-                                    int a_y,
-                                    UString &a_word,
-                                    Gdk::Rectangle &a_start_rect,
-                                    Gdk::Rectangle &a_end_rect) const
+				    int a_y,
+				    UString &a_word,
+				    Gdk::Rectangle &a_start_rect,
+				    Gdk::Rectangle &a_end_rect) const
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD
 
     THROW_IF_FAIL (m_priv);
     int buffer_x=0, buffer_y=0;
     source_view ().window_to_buffer_coords (Gtk::TEXT_WINDOW_TEXT,
-                                            (int)a_x,
-                                            (int)a_y,
-                                            buffer_x, buffer_y);
+					    (int)a_x,
+					    (int)a_y,
+					    buffer_x, buffer_y);
     Gtk::TextBuffer::iterator clicked_at_iter;
     source_view ().get_iter_at_location (clicked_at_iter, buffer_x, buffer_y);
     if (!clicked_at_iter) {
-        return false;
+	return false;
     }
 
-    //go find the first white word delimiter before clicked_at_iter
-    Gtk::TextBuffer::iterator cur_iter = clicked_at_iter;
-    if (!cur_iter) {return false;}
-
-    while (cur_iter.backward_char ()
-           && !is_word_delimiter (cur_iter.get_char ())) {}
-    THROW_IF_FAIL (cur_iter.forward_char ());
-    Gtk::TextBuffer::iterator start_word_iter = cur_iter;
-
-    //go find the first word delimiter after clicked_at_iter
-    cur_iter = clicked_at_iter;
-    while (cur_iter.forward_char ()
-           && !is_word_delimiter (cur_iter.get_char ())) {}
-    Gtk::TextBuffer::iterator end_word_iter = cur_iter;
+    Gtk::TextBuffer::iterator start_word_iter, end_word_iter;
+    if (!parse_word_around_iter (clicked_at_iter,
+				 start_word_iter,
+				 end_word_iter))
+	return false;
 
     UString var_name = start_word_iter.get_slice (end_word_iter);
-    while (var_name != "" && !isalpha (var_name[0]) && var_name[0] != '_') {
-        var_name.erase (0, 1);
-    }
-    while (var_name != ""
-           && !isalnum (var_name[var_name.size () - 1])
-           && var_name[var_name.size () - 1] != '_') {
-        var_name.erase (var_name.size () - 1, 1);
-    }
 
     Gdk::Rectangle start_rect, end_rect;
     source_view ().get_iter_location (start_word_iter, start_rect);
     source_view ().get_iter_location (end_word_iter, end_rect);
     if (!(start_rect.get_x () <= buffer_x) || !(buffer_x <= end_rect.get_x ())) {
-        LOG_DD ("mouse not really on word: '" << var_name << "'");
-        return false;
+	LOG_DD ("mouse not really on word: '" << var_name << "'");
+	return false;
     }
     LOG_DD ("got variable candidate name: '" << var_name << "'");
     a_word = var_name;

@@ -1,6 +1,6 @@
 #include <iostream>
 
-class baz {
+struct baz {
     int m_a;
     int m_b;
 
@@ -23,7 +23,7 @@ public:
 };//end foo
 
 
-class bar {
+struct bar {
     baz *m_baz;
 
 public:
@@ -65,7 +65,7 @@ public:
     }
 };//end bar
 
-class foo {
+struct foo {
     bar * m_bar;
 public:
 
@@ -144,6 +144,23 @@ main ()
 
     change_baz (baz_ptr);
     change_baz_ptr (&baz_ptr);
+
+    if (foo_ptr->m_bar) {
+        ;
+    }
+
+    if (foo_ptr->m_bar->m_baz) {
+        ;
+    }
+    
+    if (foo_ptr->m_bar->m_baz->m_a) {
+        ;
+    }
+
+    baz b;
+    if (b.m_b) {
+        ;
+    }
 
     delete foo_ptr;
 
