@@ -709,10 +709,10 @@ GDBMIParser::parse_c_string_body (UString::size_type a_from,
         ++cur;
     } else {
         UString seq;
-        if (!m_priv->index_passed_end (cur+3)
-            && isdigit (RAW_CHAR_AT (cur +1))
-            && isdigit (RAW_CHAR_AT (cur +2))
-            && isdigit (RAW_CHAR_AT (cur +3))
+        if (!m_priv->index_passed_end (cur + 3)
+            && isdigit (RAW_CHAR_AT (cur + 1))
+            && isdigit (RAW_CHAR_AT (cur + 2))
+            && isdigit (RAW_CHAR_AT (cur + 3))
             && parse_octal_escape_sequence (cur, cur, seq)) {
             result += seq;
         } else {
