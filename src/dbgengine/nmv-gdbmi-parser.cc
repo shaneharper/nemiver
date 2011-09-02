@@ -728,8 +728,13 @@ GDBMIParser::parse_c_string_body (UString::size_type a_from,
         if (isascii (ch)) {
             if (ch == '"' && prev_ch != '\\') {
                 break;
-            }
-            if (ch == '\\') {
+            } else if (ch == '"' && prev_ch == '\\') {
+                // So '"' was escaped as '\"'.  Let's expand it into
+                // '"'.
+                result.erase (result.end () - 1);
+                result += ch;
+                ++cur;
+            } else if (ch == '\\') {
                 UString seq;
                 if (!m_priv->index_passed_end (cur+3)
                     && isdigit (RAW_CHAR_AT (cur +1))
