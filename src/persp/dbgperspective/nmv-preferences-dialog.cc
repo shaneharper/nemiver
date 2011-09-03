@@ -411,7 +411,7 @@ public:
 
         asm_flavor_combo.reset (new Gtk::ComboBoxText);
         asm_flavor_combo->append_text ("Intel");
-        asm_flavor_combo->append_text ("AT&T");
+        asm_flavor_combo->append_text ("ATT");
         asm_flavor_combo->signal_changed ().connect (sigc::mem_fun
                     (*this,
                      &PreferencesDialog::Priv::on_asm_flavor_changed_signal));
@@ -764,7 +764,7 @@ public:
             if (asm_flavor == "intel") {
                 asm_flavor_combo->set_active_text ("Intel");
             } else {
-                asm_flavor_combo->set_active_text ("AT&T");
+                asm_flavor_combo->set_active_text ("ATT");
             }
         }
 
