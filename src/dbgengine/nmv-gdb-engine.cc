@@ -4367,9 +4367,10 @@ GDBEngine::set_breakpoint (const UString &a_path,
       break_cmd += " -i " + UString::from_int (a_ignore_count);
 
     if (!a_path.empty ()) {
-        break_cmd += " " + a_path + ":";
+        break_cmd += " \"" + a_path + ":";
     }
     break_cmd += UString::from_int (a_line_num);
+    break_cmd += "\"";
     string cmd_name = count_point ? "set-countpoint" : "set-breakpoint";
     queue_command (Command (cmd_name,
 			    break_cmd, a_cookie));
