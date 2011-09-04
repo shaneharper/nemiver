@@ -6819,10 +6819,15 @@ DBGPerspective::append_breakpoint (const IDebugger::Breakpoint &a_breakpoint)
     m_priv->breakpoints[a_breakpoint.number ()] = a_breakpoint;
     m_priv->breakpoints[a_breakpoint.number ()].file_full_name (file_path);
 
-    // We don't know how to graphically represent non-standard
-    // breakpoints (e.g watchpoints) at this moment.
-    if (type != IDebugger::Breakpoint::STANDARD_BREAKPOINT_TYPE
-        && type != IDebugger::Breakpoint::COUNTPOINT_TYPE)
+
+    if (// We don't know how to graphically represent non-standard
+        // breakpoints (e.g watchpoints) at this moment, so let's not
+        // bother trying to graphically represent them.
+        (type != IDebugger::Breakpoint::STANDARD_BREAKPOINT_TYPE
+         && type != IDebugger::Breakpoint::COUNTPOINT_TYPE)
+        // Let's not bother trying to to graphically represent a
+        // pending breakpoint, either.
+        || a_breakpoint.is_pending ())
         return;
 
     editor = get_or_append_source_editor_from_path (file_path);
