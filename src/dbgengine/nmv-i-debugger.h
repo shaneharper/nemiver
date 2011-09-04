@@ -922,9 +922,9 @@ public:
                                          breakpoints_list_signal () const=0;
 
     virtual sigc::signal<void,
-                        const std::pair<int, const IDebugger::Breakpoint&>&,
+                        const std::map<int, IDebugger::Breakpoint>&,
                         const UString& /*cookie*/>&
-                        breakpoint_set_signal () const = 0;
+                        breakpoints_set_signal () const = 0;
 
     virtual sigc::signal<void,
                          const vector<OverloadsChoiceEntry>&,
@@ -1188,7 +1188,7 @@ public:
     virtual void set_breakpoint (const common::Loc &a_loc,
                                  const UString &a_condition,
                                  gint a_ignore_count,
-                                 const BreakpointSlot &a_slot,
+                                 const BreakpointsSlot &a_slot,
                                  const UString &a_cookie = "") = 0;
 
     virtual void set_breakpoint (const UString &a_path,

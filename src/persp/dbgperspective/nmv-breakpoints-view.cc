@@ -122,8 +122,8 @@ public:
         // breakpoints has changed.
         debugger->breakpoint_deleted_signal ().connect (sigc::mem_fun
                 (*this, &Priv::on_debugger_breakpoint_deleted_signal));
-        debugger->breakpoint_set_signal ().connect
-            (sigc::mem_fun (*this, &Priv::on_debugger_breakpoint_set_signal));
+        debugger->breakpoints_set_signal ().connect
+            (sigc::mem_fun (*this, &Priv::on_debugger_breakpoints_set_signal));
         debugger->breakpoints_list_signal ().connect (sigc::mem_fun
                 (*this, &Priv::on_debugger_breakpoints_list_signal));
         debugger->stopped_signal ().connect (sigc::mem_fun
@@ -517,16 +517,18 @@ public:
     }
 
     void
-    on_debugger_breakpoint_set_signal
-    (const std::pair<int, const IDebugger::Breakpoint&> &a,
+    on_debugger_breakpoints_set_signal
+    (const std::map<int, IDebugger::Breakpoint> &a,
      const UString &)
     {
         NEMIVER_TRY;
 
-        LOG_DD ("Adding breakpoint "
-                << a.second.number ());
-
-        append_breakpoint (a.second);
+        std::map<int, IDebugger::Breakpoint>::const_iterator i;
+        for (i = a.begin (); i != a.end (); ++i) {
+            LOG_DD ("Adding breakpoints "
+                    << i->second.number ());
+            append_breakpoint (i->second);
+        }
 
         NEMIVER_CATCH;
     }
