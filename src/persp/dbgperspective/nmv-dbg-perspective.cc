@@ -2397,9 +2397,7 @@ DBGPerspective::on_debugger_breakpoints_set_signal
 (const std::map<int, IDebugger::Breakpoint> &a,
  const UString&)
 {
-    std::map<int, IDebugger::Breakpoint>::const_iterator i;
-    for (i = a.begin (); i != a.end (); ++i)
-        append_breakpoint (i->second);
+    append_breakpoints (a);
 }
 
 void
