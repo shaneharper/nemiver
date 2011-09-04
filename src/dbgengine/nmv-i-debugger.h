@@ -160,7 +160,7 @@ public:
         bool is_write_watchpoint () const {return m_is_write_watchpoint;}
         void is_write_watchpoint (bool f) {m_is_write_watchpoint = f;}
 
-        bool is_pending ()
+        bool is_pending () const
         {
             if (m_address == "<PENDING>") {
                 return true;
