@@ -34,9 +34,9 @@ on_stopped_signal (IDebugger::StopReason a_reason,
     if (a_reason == IDebugger::EXITED_NORMALLY) {
         //okay, time to get out. Let's check if the overall test
         //went like we want
-        BOOST_REQUIRE (nb_var_type_set == 3);
+        BOOST_REQUIRE (nb_var_type_set == 4);
         BOOST_REQUIRE (nb_var_value_set == 3);
-        BOOST_REQUIRE (a_var_list->get_raw_list ().size () == 3);
+        BOOST_REQUIRE (a_var_list->get_raw_list ().size () == 4);
         IDebugger::VariableSafePtr var;
         BOOST_REQUIRE (a_var_list->find_variable ("foo_ptr", var));
         BOOST_REQUIRE (var);
@@ -62,7 +62,7 @@ on_stopped_signal (IDebugger::StopReason a_reason,
         ++nb_stops;
         if (nb_stops == 1) {
             debugger->list_local_variables ();
-        } else if (nb_stops == 4) {
+        } else if (nb_stops == 6) {
             a_var_list->update_state ();
             debugger->do_continue ();
             return;
@@ -96,8 +96,9 @@ on_var_type_set (const IDebugger::VariableSafePtr &a_var)
     BOOST_REQUIRE (a_var->type () != "");
 
     if (a_var->name () == "foo_ptr"
-        ||a_var->name () == "bar_ptr"
-        ||a_var->name () == "baz_ptr") {
+        || a_var->name () == "bar_ptr"
+        || a_var->name () == "baz_ptr"
+        || a_var->name () == "b") {
         ++nb_var_type_set;
         MESSAGE ("variable type set: "
                  <<a_var->name () << ":" << a_var->type ());

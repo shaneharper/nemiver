@@ -135,6 +135,7 @@ main ()
     foo *foo_ptr = new foo;
     bar *bar_ptr = new bar;
     baz *baz_ptr = new baz;
+    baz b;
 
     baz_ptr->set_a (10);
     baz_ptr->set_b (11);
@@ -157,7 +158,7 @@ main ()
         ;
     }
 
-    baz b;
+
     if (b.m_b) {
         ;
     }
