@@ -3955,7 +3955,7 @@ DBGPerspective::append_source_editor (SourceEditor &a_sv,
     close_button->set_relief (Gtk::RELIEF_NONE);
     close_button->set_focus_on_click (false);
     close_button->add (*cicon);
-    close_button->file_path = a_path;
+    close_button->file_path = path;
     close_button->signal_clicked ().connect
             (sigc::mem_fun (*close_button, &SlotedButton::on_clicked));
     UString message;
@@ -3971,7 +3971,7 @@ DBGPerspective::append_source_editor (SourceEditor &a_sv,
     event_box->add (*label);
     hbox->pack_start (*event_box);
     hbox->pack_start (*close_button, Gtk::PACK_SHRINK);
-    event_box->set_tooltip_text (a_path);
+    event_box->set_tooltip_text (path);
     hbox->show_all ();
     a_sv.show_all ();
     int page_num = m_priv->sourceviews_notebook->insert_page (a_sv,
@@ -3985,7 +3985,7 @@ DBGPerspective::append_source_editor (SourceEditor &a_sv,
     THROW_IF_FAIL (base_name != "");
     m_priv->basename_2_pagenum_map[Glib::filename_to_utf8 (base_name)] =
                                                                     page_num;
-    m_priv->path_2_pagenum_map[a_path] = page_num;
+    m_priv->path_2_pagenum_map[path] = page_num;
     m_priv->pagenum_2_source_editor_map[page_num] = &a_sv;
     m_priv->pagenum_2_path_map[page_num] = path;
 
