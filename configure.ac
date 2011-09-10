@@ -3,11 +3,11 @@ dnl Process this file with autoconf to produce a configure script.
 dnl **************************************************************
 
 MAJOR_VERSION=0
-MINOR_VERSION=8
-MICRO_VERSION=2
+MINOR_VERSION=9
+MICRO_VERSION=0gtk2
 
 AC_INIT([nemiver],
-        [0.8.2],
+        [0.9.0gtk2],
         [http://bugzilla.gnome.org/enter_bug.cgi?product=nemiver],
         [nemiver],
         [http://projects.gnome.org/nemiver])

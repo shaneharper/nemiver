@@ -1,3 +1,45 @@
+0.9.0gtk2 Release
+================
+
+Dodji Seketeli:
+      Add some logging to nmv-gdb-engine.cc
+      Avoid gratuitously resetting the dbg command queue
+      Reference the local var inspector view
+      Fix VarsTreeView memory management
+      Backend support for GDB/MI variable format
+      Enable GDB pretty printers by default
+      Fix tests that got broken a while ago
+      Initialize IDebugger dynmods with gconf in tests
+      Add preferences for GDB pretty printing
+      Support pretty printing instantly applied
+      Avoid emitting useless -enable-pretty-printing
+      Avoid over reacting to pretty printing key changes
+      Fix style
+      657834 Properly un-escape '\"' sequence
+      658097 Fix hovering over pointer dereference expression
+      Add comment to is_word_delimiter
+      644823 Cannot set BP in files with space in path
+      Fix tests/pointer-deref.c regression
+      658143 Fails to support multiple breakpoints
+      Use DBGPerspective::append_breakpoints
+      Don't forget to Gtk::Widget::show_all source views
+      constify IDebugger::Breakpoint::is_pending
+      632305 Avoid disassembling location of pending breakpoint
+      Don't append the disassembly editor multiple times
+      Misbehaving vertically enlarging var inspector
+
+Fabien Parent:
+      Remove not implemented constructor
+      Uniformize the header guard name.
+      Fix typo
+      Replace NULL symbol with 0
+      Support user defined assembly syntax
+      Add GUI to change the assembly syntax
+      Remove unused status widgets
+      New Layout Manager and 3 additionals new layouts
+      577496 561100 533437 656093 564992 Support Copy/Paste/Reset on target terminal
+      Use ATT for disassembly flavor to avoid a glade bug
+
 0.8.2 Release
 =============
 
