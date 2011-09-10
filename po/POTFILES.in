@@ -3,7 +3,7 @@
 data/nemiver.desktop.in
 src/main.cc
 src/uicommon/nmv-locate-file-dialog.cc
-[type: gettext/glade]src/persp/dbgperspective/ui/bodycontainer.ui
+src/uicommon/nmv-terminal.cc
 [type: gettext/glade]src/persp/dbgperspective/ui/callfunctiondialog.ui
 [type: gettext/glade]src/persp/dbgperspective/ui/findtextdialog.ui
 [type: gettext/glade]src/persp/dbgperspective/ui/loadcoredialog.ui
@@ -23,6 +23,10 @@ src/persp/dbgperspective/nmv-choose-overloads-dialog.cc
 src/persp/dbgperspective/nmv-breakpoints-view.cc
 src/persp/dbgperspective/nmv-call-stack.cc
 src/persp/dbgperspective/nmv-dbg-perspective.cc
+src/persp/dbgperspective/nmv-dbg-perspective-default-layout.cc
+src/persp/dbgperspective/nmv-dbg-perspective-dynamic-layout.cc
+src/persp/dbgperspective/nmv-dbg-perspective-two-pane-layout.cc
+src/persp/dbgperspective/nmv-dbg-perspective-wide-layout.cc
 src/persp/dbgperspective/nmv-file-list.cc
 src/persp/dbgperspective/nmv-memory-view.cc
 src/persp/dbgperspective/nmv-preferences-dialog.cc
