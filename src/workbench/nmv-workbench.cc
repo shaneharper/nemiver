@@ -621,7 +621,7 @@ Workbench::init_window ()
     IConfMgrSafePtr conf_mgr = get_configuration_manager ();
     THROW_IF_FAIL (conf_mgr);
 
-    int width=700, height=500, pos_x=0, pos_y=0;
+    int width = 700, height = 500, pos_x = 0, pos_y = 0;
     bool maximized=false;
 
     LOG_DD ("getting windows geometry from confmgr ...");
@@ -647,8 +647,8 @@ Workbench::init_window ()
         LOG_DD ("null window geometry from confmgr.");
     }
 
-    //set the minimum width/height of nemiver, just in case.
-    width=0, height=0;
+    // Allow the user to set the minimum width/height of nemiver.
+    width = 0, height = 0;
 
     NEMIVER_TRY
     conf_mgr->get_key_value (CONF_KEY_NEMIVER_WINDOW_MINIMUM_WIDTH, width);
