@@ -84,10 +84,10 @@ public:
     SafePtr<Gtk::Entry> m_address_entry;
     SafePtr<Gtk::Button> m_jump_button;
     SafePtr<Gtk::HBox> m_hbox;
-    SafePtr<Gtk::VBox> m_container;
+    SafePtr<Gtk::VBox> m_vbox;
     SafePtr<Gtk::Label> m_group_label;
     GroupingComboBox m_grouping_combo;
-    SafePtr<Gtk::ScrolledWindow> m_scrolledwindow;
+    SafePtr<Gtk::ScrolledWindow> m_container;
     Hex::DocumentSafePtr m_document;
     Hex::EditorSafePtr m_editor;
     IDebuggerSafePtr m_debugger;
@@ -98,19 +98,23 @@ public:
         m_address_entry (new Gtk::Entry ()),
         m_jump_button (new Gtk::Button (_("Show"))),
         m_hbox (new Gtk::HBox ()),
-        m_container (new Gtk::VBox ()),
+        m_vbox (new Gtk::VBox ()),
         m_group_label (new Gtk::Label (_("Group By:"))),
-        m_scrolledwindow (new Gtk::ScrolledWindow ()),
+        m_container (new Gtk::ScrolledWindow ()),
         m_document (Hex::Document::create ()),
         m_editor (Hex::Editor::create (m_document)),
         m_debugger (a_debugger)
     {
+        // For a reason, the hex editor (instance of m_editor) won't
+        // properly render itself if it's not put inside a scrolled
+        // window.  huh hoh.  So let's put inside one, then.
+        Gtk::ScrolledWindow *w = Gtk::manage (new Gtk::ScrolledWindow);
+        w->add (m_editor->get_widget ());
+        w->set_policy (Gtk::POLICY_NEVER, Gtk::POLICY_NEVER);
+
         m_editor->set_geometry (20 /*characters per line*/, 6 /*lines*/);
         m_editor->show_offsets ();
-        m_scrolledwindow->set_policy (Gtk::POLICY_NEVER, Gtk::POLICY_NEVER);
         m_editor->get_widget ().set_border_width (0);
-        m_scrolledwindow->add (m_editor->get_widget ());
-        m_scrolledwindow->set_shadow_type (Gtk::SHADOW_IN);
 
         m_hbox->set_spacing (6);
         m_hbox->set_border_width (3);
@@ -119,8 +123,18 @@ public:
         m_hbox->pack_start (*m_group_label, Gtk::PACK_SHRINK);
         m_hbox->pack_start (m_grouping_combo, Gtk::PACK_SHRINK);
         m_hbox->pack_start (*m_jump_button, Gtk::PACK_SHRINK);
-        m_container->pack_start (*m_hbox, Gtk::PACK_SHRINK);
-        m_container->pack_start (*m_scrolledwindow);
+        m_vbox->pack_start (*m_hbox, Gtk::PACK_SHRINK);
+        m_vbox->pack_start (*w);
+
+        // So the whole memory view widget is going to live inside a
+        // scrolled window container with automatic-policy scrollbars.
+        // The aim of this container is so that the user can shrink
+        // the memory view widget at will.  Otherwise, it'd have a
+        // fixed minimum size, as a result of the
+        // m_editor->set_geometry call above.
+        m_container->set_policy (Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+        m_container->set_shadow_type (Gtk::SHADOW_IN);
+        m_container->add (*m_vbox);
 
         connect_signals ();
     }
