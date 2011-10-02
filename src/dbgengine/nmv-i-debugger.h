@@ -288,7 +288,12 @@ public:
 
         bool operator== (const Frame &a) const
         {
-            return (address () == a.address ());
+            return (address () == a.address ()
+                    && level () == a.level ()
+                    && function_name () == a.function_name ()
+                    && file_name () == a.file_name ()
+                    && line () == a.line ()
+                    && library () == a.library ());
         }
 
         bool operator!= (const Frame &a) const {return !(operator== (a));}
