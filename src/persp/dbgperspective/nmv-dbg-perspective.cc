@@ -2528,11 +2528,18 @@ DBGPerspective::on_frame_selected_signal (int /* a_index */,
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD;
 
-    if (m_priv->current_frame == a_frame)
-        return;
-
     NEMIVER_TRY;
 
+    if (m_priv->current_frame == a_frame)
+    {
+        // So the user clicked on the frame to select it, even if we
+        // where already on it before.  That probably means that she
+        // has scrolled the source view a little bit, lost where the
+        // where-arrow was, and want to get it again.  So let's only
+        // set the where and bail out.
+        set_where (a_frame, /*a_do_scroll=*/true, /*a_try_hard=*/true);
+        return;
+    }
 
     m_priv->current_frame = a_frame;
 
