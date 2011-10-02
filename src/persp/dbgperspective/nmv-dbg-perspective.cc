@@ -4327,6 +4327,8 @@ bool
 DBGPerspective::set_where (const IDebugger::Frame &a_frame,
                            bool a_do_scroll, bool a_try_hard)
 {
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+
     UString file_path = a_frame.file_full_name ();
     if (file_path.empty ())
         file_path = a_frame.file_name ();
