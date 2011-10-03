@@ -62,6 +62,7 @@ public:
             return *this;
         m_data = a_buf.m_data;
         m_len = a_buf.m_len;
+        return *this;
     }
 
     const char* get_data () const
