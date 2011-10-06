@@ -1108,6 +1108,9 @@ public:
 
     virtual bool busy () const = 0;
 
+    virtual void set_non_persistent_debugger_path
+                (const UString &a_full_path) = 0;
+
     virtual const UString& get_debugger_full_path () const  = 0;
 
     virtual void set_solib_prefix_path (const UString &a_name) = 0;

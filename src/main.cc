@@ -25,6 +25,7 @@
 #include "config.h"
 #include <signal.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include <iostream>
 #include <gtkmm/window.h>
 #include <glib/gi18n.h>
@@ -62,6 +63,7 @@ static bool gv_show_version = false;
 static bool gv_use_launch_terminal = false;
 static gchar *gv_remote = 0;
 static gchar *gv_solib_prefix = 0;
+static gchar *gv_gdb_binary_filepath = 0;
 
 static GOptionEntry entries[] =
 {
@@ -157,6 +159,15 @@ static GOptionEntry entries[] =
       _("Where to look for shared libraries loaded by the inferior. "
 	"Use in conjunction with --remote"),
       "</path/to/prefix>"
+    },
+    {
+      "gdb-binary",
+      0,
+      0,
+      G_OPTION_ARG_STRING,
+      &gv_gdb_binary_filepath,
+      _("Set the path of the GDB binary to use to debug the inferior"),
+      "</path/to/gdb>"
     },
     { "version",
       0,
@@ -530,6 +541,21 @@ process_gui_options (int& a_argc, char** a_argv)
         dynamic_cast<IDBGPerspective*> (s_workbench->get_perspective
                                             (DBGPERSPECTIVE_PLUGIN_NAME));
     if (debug_persp) {
+        if (gv_gdb_binary_filepath) {
+            char *debugger_full_path = realpath (gv_gdb_binary_filepath, 0);
+            if (debugger_full_path) {
+                nemiver::IDebuggerSafePtr debugger = debug_persp->debugger ();
+                if (!debugger) {
+                    cerr << "Could not get the debugger instance" << endl;
+                    return false;
+                }
+                debugger->set_non_persistent_debugger_path (debugger_full_path);
+                free (debugger_full_path);
+            } else {
+                LOG_ERROR ("Could not resolve the full path of the debugger");
+            }
+        }
+
         map<UString, UString> env;
         if (gv_env_vars) {
             vector<UString> env_vars =

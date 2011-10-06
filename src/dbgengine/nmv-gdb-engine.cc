@@ -224,7 +224,8 @@ public:
     int cur_thread_num;
     Address cur_frame_address;
     ILangTraitSafePtr lang_trait;
-    UString debugger_full_path;
+    UString non_persistent_debugger_path;
+    mutable UString debugger_full_path;
     UString follow_fork_mode;
     UString disassembly_flavor;
     GDBMIParser gdbmi_parser;
@@ -422,16 +423,18 @@ public:
 
     const UString& get_debugger_full_path () const
     {
+        debugger_full_path = non_persistent_debugger_path;
+
         NEMIVER_TRY
-        get_conf_mgr ()->get_key_value (CONF_KEY_GDB_BINARY,
-                                        const_cast<Priv*>
-                                                (this)->debugger_full_path);
+        if (debugger_full_path.empty()) {
+            get_conf_mgr ()->get_key_value (CONF_KEY_GDB_BINARY,
+                                            debugger_full_path);
+        }
         NEMIVER_CATCH_NOX
 
         if (debugger_full_path == "" ||
             debugger_full_path == DEFAULT_GDB_BINARY) {
-            const_cast<Priv*> (this)->debugger_full_path =
-                                                    env::get_gdb_program ();
+            debugger_full_path = env::get_gdb_program ();
         }
         LOG_DD ("debugger: '" << debugger_full_path << "'");
         return debugger_full_path;
@@ -4041,6 +4044,13 @@ bool
 GDBEngine::busy () const
 {
     return false;
+}
+
+void
+GDBEngine::set_non_persistent_debugger_path (const UString &a_full_path)
+{
+    THROW_IF_FAIL (m_priv);
+    m_priv->non_persistent_debugger_path = a_full_path;
 }
 
 const UString&

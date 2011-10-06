@@ -270,7 +270,7 @@ public:
     void execute_command (const Command &a_command);
     bool queue_command (const Command &a_command);
     bool busy () const;
-    void set_debugger_full_path (const UString &a_full_path);
+    void set_non_persistent_debugger_path (const UString &a_full_path);
     const UString& get_debugger_full_path () const;
     void set_debugger_parameter (const UString &a_name,
                                  const UString &a_value);
