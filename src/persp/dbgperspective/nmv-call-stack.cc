@@ -720,8 +720,11 @@ struct CallStack::Priv {
         if (a_frames.size () >= nb_frames_expansion_chunk) {
             store_iter = store->append ();
             UString msg;
-            msg.printf (_("(Click here to see the next %d rows of the "
-                          "call stack)"),
+            msg.printf (ngettext ("(Click here to see the next %d row of the "
+                                  "call stack",
+                                  "(Click here to see the next %d rows of the "
+                                  "call stack)",
+                                  nb_frames_expansion_chunk),
                         nb_frames_expansion_chunk);
             (*store_iter)[columns ().frame_index_caption] = "...";
             (*store_iter)[columns ().location] = msg;
