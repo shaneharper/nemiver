@@ -48,7 +48,7 @@ void
 get_current_datetime (struct tm &a_tm)
 {
     time_t now = get_current_datetime ();
-    gmtime_r (&now, &a_tm);
+    localtime_r (&now, &a_tm);
 }
 
 void
