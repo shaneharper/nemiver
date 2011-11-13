@@ -76,7 +76,8 @@ public:
         connect_to_widget_signals ();
     }
 
-    void build_dialog ()
+    void
+    build_dialog ()
     {
         LOG_FUNCTION_SCOPE_NORMAL_DD;
 
@@ -108,7 +109,8 @@ public:
         dialog.show_all ();
     }
 
-    void connect_to_widget_signals ()
+    void
+    connect_to_widget_signals ()
     {
         THROW_IF_FAIL (inspect_button);
         THROW_IF_FAIL (var_name_entry);
@@ -120,7 +122,8 @@ public:
                 (*this, &Priv::do_inspect_variable));
     }
 
-    void do_inspect_variable ()
+    void 
+    do_inspect_variable ()
     {
         NEMIVER_TRY
 
@@ -133,8 +136,9 @@ public:
         NEMIVER_CATCH
     }
 
-    void inspect_variable (const UString& a_expr,
-                           bool a_expand)
+    void
+    inspect_variable (const UString& a_expr,
+                      bool a_expand)
     {
         THROW_IF_FAIL (var_inspector);
         THROW_IF_FAIL (m_variable_history);
@@ -154,8 +158,9 @@ public:
     /// 
     /// \return true if the variable expression a_expr exits in
     /// memory, false otherwise.
-    bool exists_in_history (const UString &a_expr,
-                            Gtk::TreeModel::iterator *a_iter = 0) const
+    bool
+    exists_in_history (const UString &a_expr,
+                       Gtk::TreeModel::iterator *a_iter = 0) const
     {
         THROW_IF_FAIL (m_variable_history);
 
@@ -176,7 +181,8 @@ public:
     ///
     /// \param a_iter the iterator pointing to the expression to erase
     /// from history.
-    void erase_expression_from_history (Gtk::TreeModel::iterator &a_iter)
+    void
+    erase_expression_from_history (Gtk::TreeModel::iterator &a_iter)
     {
         THROW_IF_FAIL (m_variable_history);
         m_variable_history->erase (a_iter);
@@ -193,9 +199,10 @@ public:
     ///
     /// \param allow_dups if true, allow expressions to be present in
     /// more than copy in history.
-    void add_to_history (const UString &a_expr,
-                         bool a_prepend = false,
-                         bool a_allow_dups = false)
+    void
+    add_to_history (const UString &a_expr,
+                    bool a_prepend = false,
+                    bool a_allow_dups = false)
     {
         // Don't append empty expressions.
         if (a_expr.empty ())
@@ -218,7 +225,8 @@ public:
         (*it)[get_cols ().varname] = a_expr;
     }
 
-    void get_history (std::list<UString> &a_hist) const
+    void
+    get_history (std::list<UString> &a_hist) const
     {
         Gtk::TreeModel::iterator it;
         for (it = m_variable_history->children ().begin ();
@@ -232,7 +240,8 @@ public:
     /// Set the current history of variable expression to a new one.
     ///
     /// \param a_hist the new history to set.
-    void set_history (const std::list<UString> &a_hist)
+    void
+    set_history (const std::list<UString> &a_hist)
     {
         m_variable_history->clear ();
         std::list<UString>::const_iterator it;
@@ -245,7 +254,8 @@ public:
     //<signal handlers>
     //*************************
 
-    void on_var_name_changed_signal ()
+    void
+    on_var_name_changed_signal ()
     {
         LOG_FUNCTION_SCOPE_NORMAL_DD;
         NEMIVER_TRY
