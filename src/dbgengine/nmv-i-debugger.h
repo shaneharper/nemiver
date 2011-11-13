@@ -286,10 +286,12 @@ public:
         /// \operators
         /// @{
 
-        bool operator== (const Frame &a)
+        bool operator== (const Frame &a) const
         {
             return (address () == a.address ());
         }
+
+        bool operator!= (const Frame &a) const {return !(operator== (a));}
 
         /// @}
         /// \name accessors

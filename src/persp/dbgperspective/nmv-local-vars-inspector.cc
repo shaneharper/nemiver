@@ -715,34 +715,23 @@ public:
         LOG_DD ("stopped, reason: " << a_reason);
         if (a_reason == IDebugger::EXITED_SIGNALLED
             || a_reason == IDebugger::EXITED_NORMALLY
-            || a_reason == IDebugger::EXITED) {
+            || a_reason == IDebugger::EXITED
+            || !a_has_frame) {
             return;
         }
 
         THROW_IF_FAIL (debugger);
-        if (a_has_frame) {
-            saved_frame = a_frame;
-            LOG_DD ("prev frame address: '"
-                    << previous_function_name
-                    << "'");
-            LOG_DD ("cur frame address: "
-                    << a_frame.function_name ()
-                    << "'");
-            if (previous_function_name == a_frame.function_name ()) {
-                is_new_frame = false;
-            } else {
-                is_new_frame = true;
-            }
+        is_new_frame = (saved_frame != a_frame);
+        saved_frame = a_frame;
 
-            if (should_process_now ()) {
-                finish_handling_debugger_stopped_event (a_reason,
-                                                        a_has_frame,
-                                                        a_frame);
-            } else {
-                saved_reason = a_reason;
-                saved_has_frame = a_has_frame;
-                is_up2date = false;
-            }
+        if (should_process_now ()) {
+            finish_handling_debugger_stopped_event (a_reason,
+                                                    a_has_frame,
+                                                    a_frame);
+        } else {
+            saved_reason = a_reason;
+            saved_has_frame = a_has_frame;
+            is_up2date = false;
         }
 
         NEMIVER_CATCH
