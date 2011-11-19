@@ -20,7 +20,7 @@ AC_CONFIG_MACRO_DIR([m4])
 
 AC_CANONICAL_TARGET
 
-AM_INIT_AUTOMAKE([1.11.1])
+AM_INIT_AUTOMAKE([1.11.1 no-dist-gzip dist-xz])
 AM_MAINTAINER_MODE([enable])
 
 dnl If we are running automake >= 1.11, we can have nicer
