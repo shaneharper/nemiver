@@ -34,11 +34,11 @@ RELEASE_UPLOAD_HOST = master.gnome.org
 RELEASE_UPLOAD_BASE = /home/users/$(USER)
 RELEASE_URL_BASE = http://download.gnome.org/sources/nemiver
 RELEASE_ANNOUNCE_LIST = nemiver-list@gnome.org (cc gnome-announce-list@gnome.org)
-tar_gz_file = $(PACKAGE)-$(VERSION).tar.gz
-sig_file = $(tar_gz_file).sig
+tar_xz_file = $(PACKAGE)-$(VERSION).tar.xz
+sig_file = $(tar_xz_file).sig
 
 # sign the release with gpg
-$(sig_file): $(tar_gz_file)
+$(sig_file): $(tar_xz_file)
 	gpg --output $@ --detach $^
 
 # update ChangeLog from git log
@@ -59,9 +59,9 @@ tag-release-only:
 	git tag -m "$(PACKAGE_NAME) release $(VERSION)" \
 	"$(PACKAGE_NAME)-$(VERSION)" $(RELEASED_BRANCH)
 
-release-upload: tag-release $(tar_gz_file) release-upload-only
+release-upload: tag-release $(tar_xz_file) release-upload-only
 release-upload-only:
-	scp $(tar_gz_file) $(RELEASE_UPLOAD_HOST):$(RELEASE_UPLOAD_BASE)/
+	scp $(tar_xz_file) $(RELEASE_UPLOAD_HOST):$(RELEASE_UPLOAD_BASE)/
 
 release : release-upload cat-announcement
 cat-announcement:
