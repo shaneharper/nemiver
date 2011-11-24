@@ -1699,12 +1699,12 @@ GDBMIParser::parse_out_of_band_record (UString::size_type a_from,
         record.has_stream_record (true);
         record.stream_record (stream_record);
 
-        while (m_priv->index_passed_end (cur)
+        while (!m_priv->index_passed_end (cur)
                && isspace (RAW_CHAR_AT (cur))) {++cur;}
     }
 
     if (!RAW_INPUT.compare (cur, strlen (PREFIX_STOPPED_ASYNC_OUTPUT),
-			    PREFIX_STOPPED_ASYNC_OUTPUT)) {
+                            PREFIX_STOPPED_ASYNC_OUTPUT)) {
         map<UString, UString> attrs;
         bool got_frame (false);
         IDebugger::Frame frame;
@@ -1762,7 +1762,9 @@ GDBMIParser::parse_out_of_band_record (UString::size_type a_from,
         goto end;
     }
 
-    if (RAW_CHAR_AT (cur) == '=' || RAW_CHAR_AT (cur) == '*') {
+    if (RAW_CHAR_AT (cur) == '='
+        || RAW_CHAR_AT (cur) == '*'
+        || RAW_CHAR_AT (cur) == '+') {
        //this is an unknown async notification sent by gdb.
        //For now, the only one
        //I have seen like this is of the form:
