@@ -3113,17 +3113,29 @@ GDBEngine::attach_to_target (unsigned int a_pid,
 
 bool
 GDBEngine::attach_to_remote_target (const UString &a_host,
-				    unsigned a_port)
+				    unsigned a_port,
+                                    bool a_load_inferior_on_connect)
 {
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
     queue_command (Command ("-target-select remote " + a_host +
                             ":" + UString::from_int (a_port)));
+    if (a_load_inferior_on_connect) {
+        queue_command (Command ("monitor reset halt"));
+        queue_command (Command ("load"));
+    }
     return true;
 }
 
 bool
-GDBEngine::attach_to_remote_target (const UString &a_serial_line)
+GDBEngine::attach_to_remote_target (const UString &a_serial_line,
+                                    bool a_load_inferior_on_connect)
 {
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
     queue_command (Command ("-target-select remote " + a_serial_line));
+    if (a_load_inferior_on_connect) {
+        queue_command (Command ("monitor reset halt"));
+        queue_command (Command ("load"));
+    }
     return true;
 }
 

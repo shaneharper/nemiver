@@ -125,6 +125,7 @@ const char *PROGRAM_ARGS = "programarguments";
 const char *PROGRAM_CWD = "programcwd";
 const char *LAST_RUN_TIME = "lastruntime";
 const char *REMOTE_TARGET = "remotetarget";
+const char *LOAD_INFERIOR_AFTER_CONNECT = "loadinferiorafterconnect";
 const char *SOLIB_PREFIX = "solibprefix";
 
 const char *DBG_PERSPECTIVE_MOUSE_MOTION_DOMAIN =
@@ -585,15 +586,18 @@ public:
     void connect_to_remote_target (const UString &a_server_address,
                                    unsigned a_server_port,
                                    const UString &a_prog_path,
-                                   const UString &a_solib_prefix);
+                                   const UString &a_solib_prefix,
+                                   bool a_load_inferior_on_connect);
 
     void connect_to_remote_target (const UString &a_serial_line,
                                    const UString &a_prog_path,
-                                   const UString &a_solib_prefix);
+                                   const UString &a_solib_prefix,
+                                   bool a_load_inferior_on_connect);
 
     void reconnect_to_remote_target (const UString &a_remote_target,
                                      const UString &a_prog_path,
-                                     const UString &a_solib_prefix);
+                                     const UString &a_solib_prefix,
+                                     bool a_load_inferior_on_connect);
 
     void pre_fill_remote_target_dialog (RemoteTargetDialog &a_dialog);
 
@@ -853,6 +857,7 @@ struct DBGPerspective::Priv {
     vector<UString> prog_args;
     UString prog_cwd;
     UString remote_target;
+    bool load_inferior_after_connect;
     UString solib_prefix;
     map<UString, UString> env_variables;
     list<UString> session_search_paths;
@@ -962,6 +967,7 @@ struct DBGPerspective::Priv {
         reused_session (false),
         debugger_has_just_run (false),
         debugger_engine_alive (false),
+        load_inferior_after_connect (false),
         menubar_merge_id (0),
         toolbar_merge_id (0),
         contextual_menu_merge_id(0),
@@ -4976,6 +4982,10 @@ DBGPerspective::record_and_save_session (ISessMgr::Session &a_session)
     a_session.properties ()[PROGRAM_CWD] = m_priv->prog_cwd;
     a_session.properties ()[REMOTE_TARGET] = m_priv->remote_target;
     a_session.properties ()[SOLIB_PREFIX] = m_priv->solib_prefix;
+    a_session.properties ()[LOAD_INFERIOR_AFTER_CONNECT] =
+        (m_priv->load_inferior_after_connect)
+        ? "true"
+        : "false";
 
     GTimeVal timeval;
     g_get_current_time (&timeval);
@@ -5743,8 +5753,14 @@ DBGPerspective::execute_session (ISessMgr::Session &a_session)
         if ((it = a_session.properties ().find (SOLIB_PREFIX)) != nil)
             solib_prefix = it->second;
     
+    bool load_inferior_after_connect =
+        (a_session.properties ()[LOAD_INFERIOR_AFTER_CONNECT] == "true")
+        ? true:
+        false;
+    
     if (!remote_target.empty ())
-        reconnect_to_remote_target (remote_target, prog_name, solib_prefix);
+        reconnect_to_remote_target (remote_target, prog_name, solib_prefix,
+                                    load_inferior_after_connect);
     else
         execute_program (prog_name,
                          args,
@@ -6103,11 +6119,13 @@ DBGPerspective::connect_to_remote_target ()
         == RemoteTargetDialog::TCP_CONNECTION_TYPE) {
         connect_to_remote_target (dialog.get_server_address (),
                                   dialog.get_server_port (),
-                                  path, solib_prefix);
+                                  path, solib_prefix,
+                                  dialog.get_load_inferior_after_connect ());
     } else if (dialog.get_connection_type ()
                == RemoteTargetDialog::SERIAL_CONNECTION_TYPE) {
         connect_to_remote_target (dialog.get_serial_port_name (),
-                                  path, solib_prefix);
+                                  path, solib_prefix,
+                                  dialog.get_load_inferior_after_connect ());
     }
 }
 
@@ -6115,7 +6133,8 @@ void
 DBGPerspective::connect_to_remote_target (const UString &a_server_address,
                                           unsigned a_server_port,
                                           const UString &a_prog_path,
-                                          const UString &a_solib_prefix)
+                                          const UString &a_solib_prefix,
+                                          bool a_load_inferior_on_connect)
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD
     THROW_IF_FAIL (debugger ());
@@ -6139,7 +6158,8 @@ DBGPerspective::connect_to_remote_target (const UString &a_server_address,
     LOG_DD ("solib prefix path: '" <<  a_solib_prefix << "'");
     debugger ()->set_solib_prefix_path (a_solib_prefix);
     debugger ()->attach_to_remote_target (a_server_address,
-                                          a_server_port);
+                                          a_server_port,
+                                          a_load_inferior_on_connect);
     std::ostringstream remote_target;
     remote_target << a_server_address << ":" << a_server_port;
     m_priv->remote_target = remote_target.str ();
@@ -6150,7 +6170,8 @@ DBGPerspective::connect_to_remote_target (const UString &a_server_address,
 void
 DBGPerspective::connect_to_remote_target (const UString &a_serial_line,
                                           const UString &a_prog_path,
-                                          const UString &a_solib_prefix)
+                                          const UString &a_solib_prefix,
+                                          bool a_load_inferior_on_connect)
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD
     THROW_IF_FAIL (debugger ());
@@ -6173,7 +6194,8 @@ DBGPerspective::connect_to_remote_target (const UString &a_serial_line,
     }
     LOG_DD ("solib prefix path: '" <<  a_solib_prefix << "'");
     debugger ()->set_solib_prefix_path (a_solib_prefix);
-    debugger ()->attach_to_remote_target (a_serial_line);
+    debugger ()->attach_to_remote_target (a_serial_line,
+                                          a_load_inferior_on_connect);
 
     std::ostringstream remote_target;
     remote_target << a_serial_line;
@@ -6185,7 +6207,8 @@ DBGPerspective::connect_to_remote_target (const UString &a_serial_line,
 void
 DBGPerspective::reconnect_to_remote_target (const UString &a_remote_target,
                                             const UString &a_prog_path,
-                                            const UString &a_solib_prefix)
+                                            const UString &a_solib_prefix,
+                                            bool a_load_inferior_on_connect)
 {
     if (a_remote_target.empty ())
         return;
@@ -6196,12 +6219,14 @@ DBGPerspective::reconnect_to_remote_target (const UString &a_remote_target,
         // Try to connect via IP
         connect_to_remote_target (host, port,
                                   a_prog_path,
-                                  a_solib_prefix);
+                                  a_solib_prefix,
+                                  a_load_inferior_on_connect);
     else
         // Try to connect via the serial line
         connect_to_remote_target (a_remote_target,
                                   a_prog_path,
-                                  a_solib_prefix);    
+                                  a_solib_prefix,
+                                  a_load_inferior_on_connect);
 }
 
 bool
@@ -6240,6 +6265,7 @@ DBGPerspective::pre_fill_remote_target_dialog (RemoteTargetDialog &a_dialog)
     } else {
         a_dialog.set_serial_port_name (m_priv->remote_target);
     }
+    a_dialog.set_load_inferior_after_connect (m_priv->load_inferior_after_connect);
 }
 
 void

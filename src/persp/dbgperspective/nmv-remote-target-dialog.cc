@@ -43,13 +43,16 @@ struct RemoteTargetDialog::Priv {
     mutable UString server_address;
     mutable UString serial_port_name;
     enum RemoteTargetDialog::ConnectionType connection_type;
+    mutable bool load_inferior_after_connect;
 
     Priv ();
 
     Priv (Gtk::Dialog &a_dialog,
           const Glib::RefPtr<Gtk::Builder> &a_gtkbuilder) :
         dialog (a_dialog),
-        gtkbuilder (a_gtkbuilder)
+        gtkbuilder (a_gtkbuilder),
+        connection_type (RemoteTargetDialog::TCP_CONNECTION_TYPE),
+        load_inferior_after_connect (false)
     {
         init_members ();
         init_from_gtkbuilder ();
@@ -326,6 +329,25 @@ struct RemoteTargetDialog::Priv {
         chooser->select_filename (a_name);
     }
 
+    bool
+    get_load_inferior_after_connect () const
+    {
+        Gtk::CheckButton *cb =
+            get_widget_from_gtkbuilder<Gtk::CheckButton>
+            (gtkbuilder, "loadafterconnectcheckbutton");
+        load_inferior_after_connect = cb->get_active ();
+        return load_inferior_after_connect;
+    }
+
+    void
+    set_load_inferior_after_connect (bool a_flag)
+    {
+        Gtk::CheckButton *cb =
+            get_widget_from_gtkbuilder<Gtk::CheckButton>
+            (gtkbuilder, "loadafterconnectcheckbutton");
+        cb->set_active (a_flag);
+    }
+
 };//end RemoteTargetDialog::Priv
 
 RemoteTargetDialog::RemoteTargetDialog (const UString &a_root_path) :
@@ -436,6 +458,20 @@ RemoteTargetDialog::set_serial_port_name (const UString &a_serial)
 {
     THROW_IF_FAIL (m_priv);
     return m_priv->set_serial_port_name (a_serial);
+}
+
+bool
+RemoteTargetDialog::get_load_inferior_after_connect () const
+{
+    THROW_IF_FAIL (m_priv);
+    return m_priv->get_load_inferior_after_connect ();
+}
+
+void
+RemoteTargetDialog::set_load_inferior_after_connect (bool a_flag)
+{
+    THROW_IF_FAIL (m_priv);
+    return m_priv->set_load_inferior_after_connect (a_flag);
 }
 
 NEMIVER_END_NAMESPACE (nemiver)

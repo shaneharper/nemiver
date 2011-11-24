@@ -63,6 +63,7 @@ static bool gv_show_version = false;
 static bool gv_use_launch_terminal = false;
 static gchar *gv_remote = 0;
 static gchar *gv_solib_prefix = 0;
+static bool gv_load_inferior_after_connect = false;
 static gchar *gv_gdb_binary_filepath = 0;
 
 static GOptionEntry entries[] =
@@ -159,6 +160,16 @@ static GOptionEntry entries[] =
         _("Where to look for shared libraries loaded by the inferior. "
           "Use in conjunction with --remote"),
         "</path/to/prefix>"
+    },
+    {
+        "load-inferior-after-connect",
+        0,
+        0,
+        G_OPTION_ARG_NONE,
+        &gv_load_inferior_after_connect,
+        _("Whether to issue a \"load\" command after connecting to the "
+          "remote target.  Use in conjunction with --remote"),
+        0
     },
     {
         "gdb-binary",
@@ -591,13 +602,15 @@ process_gui_options (int& a_argc, char** a_argv)
                 // "host:port", so let's try to connect to that.
                 debug_persp->connect_to_remote_target (host, port,
                                                        prog_path,
-                                                       solib_prefix);
+                                                       solib_prefix,
+                                                       gv_load_inferior_after_connect);
             } else {
                 // We think gv_remote contains a serial line address.
                 // Let's try to connect via the serial line then.
                 debug_persp->connect_to_remote_target (gv_remote,
                                                        prog_path,
-                                                       solib_prefix);
+                                                       solib_prefix,
+                                                       gv_load_inferior_after_connect);
             }
 	} else if (!prog_path.empty ()) {
             // The user wants to debug a local program

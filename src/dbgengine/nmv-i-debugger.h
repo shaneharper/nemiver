@@ -1140,9 +1140,11 @@ public:
                                    const UString &a_tty_path="") = 0;
 
     virtual bool attach_to_remote_target (const UString &a_host,
-                                          unsigned a_port) = 0;
+                                          unsigned a_port,
+                                          bool a_load_inferior_on_connect) = 0;
 
-    virtual bool attach_to_remote_target (const UString &a_serial_line) = 0;
+    virtual bool attach_to_remote_target (const UString &a_serial_line,
+                                          bool a_load_inferior_on_connect) = 0;
 
     virtual void detach_from_target (const UString &a_cookie="") = 0;
 

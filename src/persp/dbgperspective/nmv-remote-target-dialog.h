@@ -62,6 +62,9 @@ public:
 
     const UString& get_serial_port_name () const;
     void set_serial_port_name (const UString &a_serial);
+
+    bool get_load_inferior_after_connect () const;
+    void set_load_inferior_after_connect (bool);
 };//end RemoteTargetDialog
 
 NEMIVER_END_NAMESPACE (nemiver)

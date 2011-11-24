@@ -121,11 +121,13 @@ public:
     virtual void connect_to_remote_target (const UString &a_server_address,
 					   unsigned a_server_port,
                                            const UString &a_prog_path,
-                                           const UString &a_solib_prefix) = 0;
+                                           const UString &a_solib_prefix,
+					   bool load_inferior_after_connect) = 0;
 
     virtual void connect_to_remote_target (const UString &a_serial_line,
                                            const UString &a_prog_path,
-                                           const UString &a_solib_prefix) = 0;
+                                           const UString &a_solib_prefix,
+					   bool load_inferior_after_connect) = 0;
 
     virtual void load_core_file () = 0;
 
