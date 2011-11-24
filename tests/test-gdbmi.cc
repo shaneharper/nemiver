@@ -429,6 +429,7 @@ test_output_record ()
     // gv_output_record9 should not block.
     parser.push_input (gv_output_record9);
     is_ok = parser.parse_output_record (0, to, output);
+    BOOST_REQUIRE (is_ok);
 }
 
 void
