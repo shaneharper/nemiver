@@ -348,6 +348,15 @@ struct CallStack::Priv {
         // we will update the call stack with those.
         set_frame_list (a_stack, frames_args);
 
+	// If the current instruction pointer changed without the
+	// debugging engine telling us so, but we could detect that by
+	// querying the frame list, let's update our current state
+	// accordingly.
+	if (cur_frame_index == 0 && frames.front () != cur_frame) {
+	  cur_frame = frames.front ();
+	  frame_selected_signal.emit (cur_frame_index, cur_frame);
+	}
+
         // Okay so now, ask for frame arguments matching the frames we
         // just received.
         debugger->list_frames_arguments (a_stack[0].level (),
