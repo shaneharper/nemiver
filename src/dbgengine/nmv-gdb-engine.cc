@@ -4576,6 +4576,14 @@ GDBEngine::set_breakpoint_ignore_count (gint a_break_num,
                      a_cookie);
     queue_command (command);
     list_breakpoints (a_cookie);
+
+    typedef map<int, IDebugger::Breakpoint> BPMap;
+    BPMap &bp_cache =
+        get_cached_breakpoints ();
+    BPMap::iterator b_it;
+    if ((b_it = bp_cache.find (a_break_num)) == bp_cache.end ())
+        return;
+    b_it->second.initial_ignore_count (a_ignore_count);
 }
 
 void
@@ -4729,8 +4737,14 @@ GDBEngine::get_breakpoint_from_cache (int a_num,
     return true;
 }
 
+/// Append a breakpoint to the internal cache.
+///
+/// This function can also update the breakpoint given in parameter,
+/// for things like initial ignore count, that we simulate over GDB.
+///
+/// \param a_break the break point to append to the cache.
 void
-GDBEngine::append_breakpoint_to_cache (const IDebugger::Breakpoint &a_break)
+GDBEngine::append_breakpoint_to_cache (IDebugger::Breakpoint &a_break)
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD;
 
@@ -4751,7 +4765,10 @@ GDBEngine::append_breakpoint_to_cache (const IDebugger::Breakpoint &a_break)
                 << a_break.number ()
                 << " is not a count point");
     }
-        
+    LOG_DD ("initial_ignore_count on bp "
+            << (int)  a_break.number ()
+            << ": " << a_break.initial_ignore_count ());
+
     // First, let's see if a_break is already in our cache.
     cur = bp_cache.find (a_break.number ());
     if (cur != nil) {
@@ -4762,6 +4779,20 @@ GDBEngine::append_breakpoint_to_cache (const IDebugger::Breakpoint &a_break)
         // the content of a_break.
         if (cur->second.type () == IDebugger::Breakpoint::COUNTPOINT_TYPE)
             preserve_count_point = true;
+        
+        // Let's preserve the initial ignore count property.
+        if (cur->second.initial_ignore_count () != a_break.initial_ignore_count ()) {
+            a_break.initial_ignore_count (cur->second.initial_ignore_count ());
+            LOG_DD ("initial_ignore_count propagated on bp "
+                    << (int)  a_break.number ()
+                    << ": " << a_break.initial_ignore_count ());
+        }
+    } else {
+        // The breakpoint doesn't exist in the cache, so it's the
+        // first time we are seeing it.  In this case, the GDBMI
+        // parser should have properly set the initial ignore count
+        // property.  So there is nothing to do regarding ignore
+        // counts here.
     }
 
     // So now is the cache updating time.
@@ -4800,11 +4831,11 @@ GDBEngine::append_breakpoint_to_cache (const IDebugger::Breakpoint &a_break)
 /// \param a_breaks the set of breakpoints to append to the cache.
 void
 GDBEngine::append_breakpoints_to_cache
-                            (const map<int, IDebugger::Breakpoint> &a_breaks)
+                            (map<int, IDebugger::Breakpoint> &a_breaks)
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD;
 
-    map<int, IDebugger::Breakpoint>::const_iterator iter;
+    map<int, IDebugger::Breakpoint>::iterator iter;
     for (iter = a_breaks.begin (); iter != a_breaks.end (); ++iter)
         append_breakpoint_to_cache (iter->second);
 }

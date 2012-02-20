@@ -321,9 +321,9 @@ public:
 
     void init_output_handlers ();
 
-    void append_breakpoint_to_cache (const IDebugger::Breakpoint &a_break);
+    void append_breakpoint_to_cache (IDebugger::Breakpoint &a_break);
 
-    void append_breakpoints_to_cache (const map<int, IDebugger::Breakpoint>&);
+    void append_breakpoints_to_cache (map<int, IDebugger::Breakpoint>&);
 
     void do_continue (const UString &a_cookie);
 

@@ -2270,6 +2270,7 @@ GDBMIParser::parse_breakpoint (Glib::ustring::size_type a_from,
         }
     }
 
+    bool ignore_count_present = false;
     map<UString, UString>::iterator iter, null_iter = attrs.end ();
     // we use to require that the "fullname" property be present as
     // well, but it seems that a lot debug info set got shipped without
@@ -2333,6 +2334,7 @@ GDBMIParser::parse_breakpoint (Glib::ustring::size_type a_from,
     }
     a_bkpt.nb_times_hit (atoi (attrs["times"].c_str ()));
     if ((iter = attrs.find ("ignore")) != null_iter) {
+        ignore_count_present = true;
         a_bkpt.ignore_count (atoi (iter->second.c_str ()));
     }
 
@@ -2341,6 +2343,11 @@ GDBMIParser::parse_breakpoint (Glib::ustring::size_type a_from,
         a_bkpt.type (IDebugger::Breakpoint::STANDARD_BREAKPOINT_TYPE);
     else if (type.find ("watchpoint") != type.npos)
         a_bkpt.type (IDebugger::Breakpoint::WATCHPOINT_TYPE);
+
+    // Set the initial ignore count
+    if (ignore_count_present)
+        a_bkpt.initial_ignore_count (a_bkpt.ignore_count ()
+                                     + a_bkpt.nb_times_hit ());
 
     //TODO: get the 'at' attribute that is present on targets that
     //are not compiled with -g.

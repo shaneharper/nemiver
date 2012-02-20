@@ -635,6 +635,7 @@ public:
     void set_breakpoint (const Address &a_address,
                          bool a_is_count_point);
     void set_breakpoint (const IDebugger::Breakpoint &a_breakpoint);
+    void re_initialize_set_breakpoints ();
     void append_breakpoint (const IDebugger::Breakpoint &a_breakpoint);
     void append_breakpoints
                     (const map<int, IDebugger::Breakpoint> &a_breaks);
@@ -1825,7 +1826,10 @@ void
 DBGPerspective::on_going_to_run_target_signal ()
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD;
-    NEMIVER_TRY
+
+    NEMIVER_TRY;
+
+    re_initialize_set_breakpoints ();
     clear_session_data ();
     get_local_vars_inspector ().re_init_widget ();
     get_breakpoints_view ().re_init ();
@@ -1834,7 +1838,8 @@ DBGPerspective::on_going_to_run_target_signal ()
     get_memory_view ().clear ();
 #endif
     get_registers_view ().clear ();
-    NEMIVER_CATCH
+
+    NEMIVER_CATCH;
 }
 
 void
@@ -5026,7 +5031,7 @@ DBGPerspective::record_and_save_session (ISessMgr::Session &a_session)
                                      break_iter->second.line (),
                                      break_iter->second.enabled (),
                                      break_iter->second.condition (),
-                                     break_iter->second.ignore_count (),
+                                     break_iter->second.initial_ignore_count (),
                                      debugger ()->is_countpoint
                                      (break_iter->second));
             a_session.breakpoints ().push_back (bp);
@@ -5705,7 +5710,7 @@ DBGPerspective::execute_session (ISessMgr::Session &a_session)
         breakpoint.file_full_name (it->file_full_name ());
         breakpoint.enabled (it->enabled ());
         breakpoint.condition (it->condition ());
-        breakpoint.ignore_count (it->ignore_count ());
+        breakpoint.initial_ignore_count (it->ignore_count ());
         if (it->is_countpoint ()) {
             breakpoint.type (IDebugger::Breakpoint::COUNTPOINT_TYPE);
             LOG_DD ("breakpoint "
@@ -6655,7 +6660,7 @@ DBGPerspective::set_breakpoint (const IDebugger::Breakpoint &a_breakpoint)
         int ignore_count =
             debugger ()->is_countpoint (a_breakpoint)
             ? -1
-            : a_breakpoint.ignore_count ();
+            : a_breakpoint.initial_ignore_count ();
 
         if (!file_name.empty ())
             debugger ()->set_breakpoint (file_name,
@@ -6673,6 +6678,25 @@ DBGPerspective::set_breakpoint (const IDebugger::Breakpoint &a_breakpoint)
         debugger ()->set_watchpoint (a_breakpoint.expression (),
                                      a_breakpoint.is_write_watchpoint (),
                                      a_breakpoint.is_read_watchpoint ());
+    }
+}
+
+/// Re-set ignore count on breakpoints that are already set.
+void
+DBGPerspective::re_initialize_set_breakpoints ()
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+    typedef map<int, IDebugger::Breakpoint> BPMap;
+    BPMap &bps = m_priv->breakpoints;
+
+    // Re-set ignore count on set breakpoints.
+    for (BPMap::const_iterator i = bps.begin ();
+         i != bps.end ();
+         ++i) {
+        debugger ()->set_breakpoint_ignore_count
+            (i->second.number (),
+             i->second.initial_ignore_count ());
     }
 }
 

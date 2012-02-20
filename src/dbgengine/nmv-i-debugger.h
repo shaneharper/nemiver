@@ -108,6 +108,10 @@ public:
         Type m_type;
         int m_line;
         int m_nb_times_hit;
+        // The ignore count set by the user.
+        int m_initial_ignore_count;
+        // The current ignore count.  This one is decremented each
+        // time the breakpoint is hit.
         int m_ignore_count;
         bool m_is_read_watchpoint;
         bool m_is_write_watchpoint;
@@ -151,6 +155,14 @@ public:
         int nb_times_hit () const {return m_nb_times_hit;}
         void nb_times_hit (int a_nb) {m_nb_times_hit = a_nb;}
 
+        ///  This is the ignore count as set by the user through the
+        ///  user interface.
+        int initial_ignore_count () const {return m_initial_ignore_count;}
+        void initial_ignore_count (int a) {m_initial_ignore_count = a;}
+
+        /// This is the current ignore count present on the
+        /// breakpoint.  It gets decremented each time the breakpoint
+        /// is hit.
         int ignore_count () const {return m_ignore_count;}
         void ignore_count (int a) {m_ignore_count = a;}
 
@@ -186,6 +198,7 @@ public:
             m_line = 0;
             m_condition.clear ();
             m_nb_times_hit = 0;
+            m_initial_ignore_count = 0;
             m_ignore_count = 0;
             m_is_read_watchpoint = false;
             m_is_write_watchpoint = false;
