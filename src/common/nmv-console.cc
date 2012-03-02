@@ -297,24 +297,14 @@ struct Console::Priv {
         std::string command_name;
         std::vector<std::string> cmd_argv;
 
-        int size = std::strlen (a_buffer);
-        for (int i = 0, local_index = 0; i <= size; ++i, ++local_index) {
-            if (!std::isspace (a_buffer[local_index]) && i != size) {
-                continue;
-            }
+        std::istringstream is (a_buffer);
+        is >> command_name;
 
-            a_buffer[local_index] = '\0';
-            std::string token (a_buffer);
-            if (!token.empty ())
-            {
-                if (command_name.empty ()) {
-                    command_name = token;
-                } else {
-                    cmd_argv.push_back (token);
-                }
-            }
-            a_buffer += local_index + 1;
-            local_index = -1;
+        while (is.good ())
+        {
+            std::string arg;
+            is >> arg;
+            cmd_argv.push_back (arg);
         }
 
         if (command_name.empty ()) {
