@@ -574,6 +574,57 @@ struct CommandOpen : public Console::SynchronousCommand {
     }
 };
 
+struct CommandLoadExec : public Console::SynchronousCommand {
+    IDebugger &debugger;
+
+    CommandLoadExec (IDebugger &a_debugger) :
+        debugger (a_debugger)
+    {
+    }
+
+    const std::string&
+    name () const
+    {
+        static const std::string &s_name = "load-exec";
+        return s_name;
+    }
+
+    void
+    display_usage (const std::vector<UString>&, Console::Stream &a_stream) const
+    {
+        a_stream << "Usage:\n"
+                 << "\tload-exec PROGRAM_NAME [ARG1 ARG2 ...]\n";
+    }
+
+    void
+    execute (const std::vector<UString> &a_argv, Console::Stream &a_stream)
+    {
+        std::vector<UString> argv;
+        if (!a_argv.size ())
+        {
+            display_usage (argv, a_stream);
+            return;
+        }
+
+        for (std::vector<UString>::const_iterator iter = a_argv.begin ();
+             iter != a_argv.end ();
+             ++iter) {
+            UString path = *iter;
+            if (path.size () && path[0] == '~') {
+                path = path.replace (0, 1, Glib::get_home_dir ());
+            }
+            argv.push_back (path);
+        }
+
+        UString prog = argv[0];
+        argv.erase (argv.begin ());
+
+        if (!debugger.load_program (prog, argv)) {
+            a_stream << "Could not load program '" << prog << "'.\n";
+        }
+    }
+};
+
 struct DBGConsole::Priv {
     DebuggingData data;
 
@@ -589,6 +640,7 @@ struct DBGConsole::Priv {
     CommandNexti cmd_nexti;
     CommandStepi cmd_stepi;
     CommandOpen cmd_open;
+    CommandLoadExec cmd_load_exec;
 
     Priv (IDebugger &a_debugger) :
         data (a_debugger),
@@ -603,7 +655,8 @@ struct DBGConsole::Priv {
         cmd_stop (a_debugger),
         cmd_nexti (a_debugger),
         cmd_stepi (a_debugger),
-        cmd_open (data)
+        cmd_open (data),
+        cmd_load_exec (a_debugger)
     {
         init_signals ();
     }
@@ -652,6 +705,7 @@ DBGConsole::DBGConsole (int a_fd, IDebugger &a_debugger) :
     register_command (m_priv->cmd_nexti);
     register_command (m_priv->cmd_stepi);
     register_command (m_priv->cmd_open);
+    register_command (m_priv->cmd_load_exec);
 }
 
 void
