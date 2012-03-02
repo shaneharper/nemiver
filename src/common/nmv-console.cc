@@ -199,19 +199,19 @@ struct Console::Priv {
             }
         }
 
-        if (matches.size () == 1) {
-            std::string completion =
-                matches[0]->name ().substr (a_line.size ());
-            do_completion (completion);
-        } else if (matches.size () > 1) {
+        if (!matches.size ()) {
+            return;
+        }
+
+        std::string completion = matches[0]->name ().substr (a_line.size ());
+        if (matches.size () > 1) {
             std::string msg;
-            std::string completion =
-                matches[0]->name ().substr (a_line.size ());
             for (size_t i = 0; i < matches.size (); i++) {
                 size_t j = a_line.size ();
-                for (; j < matches[i]->name ().size ()
-                            && j < completion.size ()
-                            && matches[i]->name ()[j] == completion[j];
+                for (;
+                     j < matches[i]->name ().size ()
+                        && j < completion.size ()
+                        && matches[i]->name ()[j] == completion[j];
                      j++) {
                 }
                 completion = completion.substr (0, j);
@@ -219,8 +219,8 @@ struct Console::Priv {
             }
 
             display_message (msg);
-            do_completion (completion);
         }
+        do_completion (completion);
     }
 
     void
