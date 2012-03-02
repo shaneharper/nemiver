@@ -295,7 +295,7 @@ struct Console::Priv {
     execute_command (char *a_buffer)
     {
         std::string command_name;
-        std::vector<std::string> cmd_argv;
+        std::vector<UString> cmd_argv;
 
         std::istringstream is (a_buffer);
         is >> command_name;

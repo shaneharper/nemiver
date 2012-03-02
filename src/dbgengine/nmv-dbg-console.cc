@@ -75,7 +75,7 @@ struct CommandContinue : public Console::SynchronousCommand {
     }
 
     void
-    execute (const std::vector<std::string>&, Console::Stream&)
+    execute (const std::vector<UString>&, Console::Stream&)
     {
         debugger.do_continue ();
     }
@@ -108,7 +108,7 @@ struct CommandNext : public Console::SynchronousCommand {
     }
 
     void
-    execute (const std::vector<std::string>&, Console::Stream&)
+    execute (const std::vector<UString>&, Console::Stream&)
     {
         debugger.step_over ();
     }
@@ -141,8 +141,7 @@ struct CommandStep : public Console::SynchronousCommand {
     }
 
     void
-    execute (const std::vector<std::string>&,
-             Console::Stream&)
+    execute (const std::vector<UString>&, Console::Stream&)
     {
         debugger.step_in ();
     }
@@ -175,7 +174,7 @@ struct CommandNexti : public Console::SynchronousCommand {
     }
 
     void
-    execute (const std::vector<std::string>&, Console::Stream&)
+    execute (const std::vector<UString>&, Console::Stream&)
     {
         debugger.step_over_asm ();
     }
@@ -208,7 +207,7 @@ struct CommandStepi : public Console::SynchronousCommand {
     }
 
     void
-    execute (const std::vector<std::string>&, Console::Stream&)
+    execute (const std::vector<UString>&, Console::Stream&)
     {
         debugger.step_in_asm ();
     }
@@ -230,7 +229,7 @@ struct CommandStop : public Console::SynchronousCommand {
     }
 
     void
-    execute (const std::vector<std::string>&, Console::Stream&)
+    execute (const std::vector<UString>&, Console::Stream&)
     {
         debugger.stop_target ();
     }
@@ -252,7 +251,7 @@ struct CommandFinish : public Console::SynchronousCommand {
     }
 
     void
-    execute (const std::vector<std::string>&, Console::Stream&)
+    execute (const std::vector<UString>&, Console::Stream&)
     {
         debugger.step_out ();
     }
@@ -275,13 +274,13 @@ struct CommandCall : public Console::SynchronousCommand {
     }
 
     void
-    execute (const std::vector<std::string> &a_argv, Console::Stream &a_stream)
+    execute (const std::vector<UString> &a_argv, Console::Stream &a_stream)
     {
         if (a_argv.size ()) {
             cmd.clear ();
         }
 
-        for (std::vector<std::string>::const_iterator iter = a_argv.begin ();
+        for (std::vector<UString>::const_iterator iter = a_argv.begin ();
              iter != a_argv.end ();
              ++iter) {
             cmd += *iter;
@@ -356,7 +355,7 @@ struct CommandThread : public Console::AsynchronousCommand {
     }
 
     void
-    execute (const std::vector<std::string> &a_argv, Console::Stream &a_stream)
+    execute (const std::vector<UString> &a_argv, Console::Stream &a_stream)
     {
         if (a_argv.size () > 1) {
             a_stream << "Too much parameters.\n";
@@ -420,7 +419,7 @@ struct CommandBreak : public Console::SynchronousCommand {
     }
 
     void
-    execute (const std::vector<std::string> &a_argv, Console::Stream &a_stream)
+    execute (const std::vector<UString> &a_argv, Console::Stream &a_stream)
     {
         IDebugger::Frame &frame = dbg_data.current_frame;
         IDebugger &debugger = dbg_data.debugger;
@@ -501,13 +500,13 @@ struct CommandPrint : public Console::AsynchronousCommand {
     }
 
     void
-    execute (const std::vector<std::string> &a_argv, Console::Stream &a_stream)
+    execute (const std::vector<UString> &a_argv, Console::Stream &a_stream)
     {
         if (a_argv.size ()) {
             expression.clear ();
         }
 
-        for (std::vector<std::string>::const_iterator iter = a_argv.begin ();
+        for (std::vector<UString>::const_iterator iter = a_argv.begin ();
              iter != a_argv.end ();
              ++iter) {
             expression += *iter;
@@ -564,9 +563,9 @@ struct CommandOpen : public Console::SynchronousCommand {
     }
 
     void
-    execute (const std::vector<std::string> &a_argv, Console::Stream&)
+    execute (const std::vector<UString> &a_argv, Console::Stream&)
     {
-        for (std::vector<std::string>::const_iterator iter = a_argv.begin ();
+        for (std::vector<UString>::const_iterator iter = a_argv.begin ();
              iter != a_argv.end ();
              ++iter) {
             UString path = *iter;

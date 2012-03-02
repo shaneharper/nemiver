@@ -76,10 +76,10 @@ public:
         {
         }
 
-        virtual void execute (const std::vector<std::string> &a_argv,
+        virtual void execute (const std::vector<UString> &a_argv,
                               Stream &a_output) = 0;
 
-        virtual void operator() (const std::vector<std::string> &a_argv,
+        virtual void operator() (const std::vector<UString> &a_argv,
                          Stream &a_output)
         {
             execute (a_argv, a_output);
@@ -92,7 +92,7 @@ public:
 
     typedef Command AsynchronousCommand;
     struct SynchronousCommand : public Command{
-        virtual void operator() (const std::vector<std::string> &a_argv,
+        virtual void operator() (const std::vector<UString> &a_argv,
                          Stream &a_output)
         {
             execute (a_argv, a_output);
