@@ -310,7 +310,7 @@ struct Console::Priv {
                 cmd_argv.push_back (a_buffer);
             }
             a_buffer += local_index + 1;
-            local_index = 0;
+            local_index = -1;
         }
 
         if (command_name.empty ()) {
