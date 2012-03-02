@@ -343,7 +343,7 @@ struct CommandThread : public Console::AsynchronousCommand {
              ++iter) {
             a_stream << *iter << "\n";
         }
-        done_signal().emit ();
+        done_signal ().emit ();
 
         NEMIVER_CATCH_NOX
     }
@@ -370,7 +370,7 @@ struct CommandThread : public Console::AsynchronousCommand {
             a_stream << "Invalid argument: " << a_argv[0] << ".\n";
         }
 
-        done_signal().emit ();
+        done_signal ().emit ();
     }
 };
 
