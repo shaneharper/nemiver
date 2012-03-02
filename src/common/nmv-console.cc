@@ -304,10 +304,14 @@ struct Console::Priv {
             }
 
             a_buffer[local_index] = '\0';
-            if (command_name.empty ()) {
-                command_name = a_buffer;
-            } else {
-                cmd_argv.push_back (a_buffer);
+            std::string token (a_buffer);
+            if (!token.empty ())
+            {
+                if (command_name.empty ()) {
+                    command_name = token;
+                } else {
+                    cmd_argv.push_back (token);
+                }
             }
             a_buffer += local_index + 1;
             local_index = -1;
