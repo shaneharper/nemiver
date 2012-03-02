@@ -310,16 +310,18 @@ struct CommandThread : public Console::AsynchronousCommand {
         return s_name;
     }
 
-    void completions (const std::vector<UString> &a_argv,
-                      std::vector<UString> &a_completion_vector) const
+    void
+    completions (const std::vector<UString> &a_argv,
+                 std::vector<UString> &a_completion_vector) const
     {
         if (a_argv.size () == 0) {
             a_completion_vector.push_back ("list");
         }
     }
 
-    void display_usage (const std::vector<UString> &a_argv,
-                        Console::Stream &a_stream) const
+    void
+    display_usage (const std::vector<UString> &a_argv,
+                   Console::Stream &a_stream) const
     {
         if (a_argv.size ()) {
             return;
@@ -405,8 +407,8 @@ struct CommandBreak : public Console::SynchronousCommand {
         return s_aliases;
     }
 
-    void display_usage (const std::vector<UString>&,
-                        Console::Stream &a_stream) const
+    void
+    display_usage (const std::vector<UString>&, Console::Stream &a_stream) const
     {
         a_stream << "Usage:\n"
                  << "\tbreak\n"
@@ -552,8 +554,9 @@ struct CommandOpen : public Console::SynchronousCommand {
         return s_aliases;
     }
 
-    void completions (const std::vector<UString>&,
-                      std::vector<UString> &a_completion_vector) const
+    void
+    completions (const std::vector<UString>&,
+                 std::vector<UString> &a_completion_vector) const
     {
         a_completion_vector.insert (a_completion_vector.begin (),
                                     dbg_data.source_files.begin (),
