@@ -277,13 +277,7 @@ struct CommandCall : public Console::SynchronousCommand {
     execute (const std::vector<UString> &a_argv, Console::Stream &a_stream)
     {
         if (a_argv.size ()) {
-            cmd.clear ();
-        }
-
-        for (std::vector<UString>::const_iterator iter = a_argv.begin ();
-             iter != a_argv.end ();
-             ++iter) {
-            cmd += *iter;
+            cmd = str_utils::join (a_argv);
         }
 
         if (cmd.empty ()) {
