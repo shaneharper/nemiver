@@ -106,11 +106,13 @@ struct Console::Priv {
     Glib::RefPtr<Glib::IOSource> io_source;
     sigc::connection cmd_execution_done_connection;
     sigc::connection cmd_execution_timeout_connection;
+    bool done_signal_received;
 
     Priv (int a_fd) :
         fd (a_fd),
         stream (a_fd),
-        io_source (Glib::IOSource::create (a_fd, Glib::IO_IN))
+        io_source (Glib::IOSource::create (a_fd, Glib::IO_IN)),
+        done_signal_received (false)
     {
         init ();
     }
@@ -319,6 +321,7 @@ struct Console::Priv {
         }
 
         Command &command = commands.at (command_name);
+        done_signal_received = false;
         cmd_execution_done_connection = command.done_signal ().connect
             (sigc::mem_fun (*this, &Console::Priv::on_done_signal));
         commands.at (command_name) (cmd_argv, stream);
@@ -344,6 +347,11 @@ struct Console::Priv {
     {
         NEMIVER_TRY
 
+        if (done_signal_received) {
+            return;
+        }
+
+        done_signal_received = true;
         stream << CONSOLE_PROMPT;
         cmd_execution_timeout_connection.disconnect();
         cmd_execution_done_connection.disconnect ();
