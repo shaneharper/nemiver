@@ -174,6 +174,19 @@ struct Console::Priv {
     }
 
     void
+    display_message (const std::string &a_msg)
+    {
+        rl_save_prompt ();
+        rl_message ("%s%s\n%s\n%s",
+                    rl_display_prompt,
+                    std::string (rl_line_buffer, rl_end).c_str (),
+                    a_msg.c_str (),
+                    rl_display_prompt);
+        rl_clear_message ();
+        rl_restore_prompt ();
+    }
+
+    void
     do_command_completion (const std::string &a_line)
     {
         std::vector<Console::Command*> matches;
@@ -205,14 +218,7 @@ struct Console::Priv {
                 msg += matches[i]->name () + "\t";
             }
 
-            rl_save_prompt ();
-            rl_message ("%s%s\n%s\n%s",
-                        rl_display_prompt,
-                        std::string (rl_line_buffer, rl_end).c_str (),
-                        msg.c_str (),
-                        rl_display_prompt);
-            rl_clear_message ();
-            rl_restore_prompt ();
+            display_message (msg);
             do_completion (completion);
         }
     }
@@ -276,14 +282,8 @@ struct Console::Priv {
                     completion = completion.substr (0, j);
                     msg += matches[i] + "\t";
                 }
-                rl_save_prompt ();
-                rl_message ("%s%s\n%s\n%s",
-                            rl_display_prompt,
-                            std::string (rl_line_buffer, rl_end).c_str (),
-                            msg.c_str (),
-                            rl_display_prompt);
-                rl_clear_message ();
-                rl_restore_prompt ();
+
+                display_message (msg);
                 do_completion (completion);
             } else {
                 rl_complete (0, '\t');
