@@ -421,12 +421,15 @@ struct CommandBreak : public Console::SynchronousCommand {
         if (frame.file_full_name ().empty () ||
             dbg_data.current_file_path.empty ()) {
             a_stream << "Cannot set a breakpoint at this position.\n";
+            return;
         }
 
         if (a_argv.size () > 1) {
             a_stream << "Too much parameters.\n";
+            return;
         } else if (a_argv.size () == 0) {
             debugger.set_breakpoint (frame.file_full_name (), frame.line ());
+            return;
         }
 
         const char first_param_char = a_argv[0][0];
