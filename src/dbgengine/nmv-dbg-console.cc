@@ -760,7 +760,7 @@ DBGConsole::~DBGConsole ()
 {
 }
 
-sigc::signal<void, UString>
+sigc::signal<void, UString>&
 DBGConsole::file_opened_signal () const
 {
     THROW_IF_FAIL (m_priv);

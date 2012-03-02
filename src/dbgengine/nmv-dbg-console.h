@@ -49,7 +49,7 @@ public:
     void current_file_path (const UString &a_file_path);
     const UString& current_file_path () const;
 
-    sigc::signal<void, UString> file_opened_signal () const;
+    sigc::signal<void, UString>& file_opened_signal () const;
 };
 
 NEMIVER_END_NAMESPACE(nemiver)
