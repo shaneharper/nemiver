@@ -418,24 +418,28 @@ struct CommandBreak : public Console::SynchronousCommand {
         IDebugger::Frame &frame = dbg_data.current_frame;
         IDebugger &debugger = dbg_data.debugger;
 
-        if (frame.file_full_name ().empty () ||
-            dbg_data.current_file_path.empty ()) {
-            a_stream << "Cannot set a breakpoint at this position.\n";
-            return;
-        }
-
         if (a_argv.size () > 1) {
             a_stream << "Too much parameters.\n";
             return;
         } else if (a_argv.size () == 0) {
-            debugger.set_breakpoint (frame.file_full_name (), frame.line ());
+            if (!frame.file_full_name ().empty ()) {
+                debugger.set_breakpoint
+                    (frame.file_full_name (), frame.line ());
+            } else {
+                a_stream << "Cannot set a breakpoint at this position.\n";
+            }
             return;
         }
 
         const char first_param_char = a_argv[0][0];
         if (str_utils::string_is_number (a_argv[0])) {
-            debugger.set_breakpoint (dbg_data.current_file_path,
-                                     str_utils::from_string<int> (a_argv[0]));
+            if (!dbg_data.current_file_path.empty ()) {
+                debugger.set_breakpoint
+                    (dbg_data.current_file_path,
+                     str_utils::from_string<int> (a_argv[0]));
+            } else {
+                a_stream << "Cannot set a breakpoint at this position.\n";
+            }
         } else if ((first_param_char >= 'a' && first_param_char <= 'z')
                    || first_param_char == '_') {
             debugger.set_breakpoint (a_argv[0]);
@@ -456,7 +460,12 @@ struct CommandBreak : public Console::SynchronousCommand {
                 } else {
                     line -= str_utils::from_string<int> (offset);
                 }
-                debugger.set_breakpoint (frame.file_full_name (), line);
+
+                if (!frame.file_full_name ().empty ()) {
+                    debugger.set_breakpoint (frame.file_full_name (), line);
+                } else {
+                    a_stream << "Cannot set a breakpoint at this position.\n";
+                }
             } else {
                 a_stream << "Invalid offset: " << offset << ".\n";
             }
@@ -625,6 +634,28 @@ struct CommandLoadExec : public Console::SynchronousCommand {
     }
 };
 
+struct CommandRun : public Console::SynchronousCommand {
+    IDebugger &debugger;
+
+    CommandRun (IDebugger &a_debugger) :
+        debugger (a_debugger)
+    {
+    }
+
+    const std::string&
+    name () const
+    {
+        static const std::string &s_name = "run";
+        return s_name;
+    }
+
+    void
+    execute (const std::vector<UString>&, Console::Stream&)
+    {
+        debugger.run ();
+    }
+};
+
 struct DBGConsole::Priv {
     DebuggingData data;
 
@@ -641,6 +672,7 @@ struct DBGConsole::Priv {
     CommandStepi cmd_stepi;
     CommandOpen cmd_open;
     CommandLoadExec cmd_load_exec;
+    CommandRun cmd_run;
 
     Priv (IDebugger &a_debugger) :
         data (a_debugger),
@@ -656,7 +688,8 @@ struct DBGConsole::Priv {
         cmd_nexti (a_debugger),
         cmd_stepi (a_debugger),
         cmd_open (data),
-        cmd_load_exec (a_debugger)
+        cmd_load_exec (a_debugger),
+        cmd_run (a_debugger)
     {
         init_signals ();
     }
@@ -706,6 +739,7 @@ DBGConsole::DBGConsole (int a_fd, IDebugger &a_debugger) :
     register_command (m_priv->cmd_stepi);
     register_command (m_priv->cmd_open);
     register_command (m_priv->cmd_load_exec);
+    register_command (m_priv->cmd_run);
 }
 
 void
