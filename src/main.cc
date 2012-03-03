@@ -64,6 +64,7 @@ static bool gv_use_launch_terminal = false;
 static gchar *gv_remote = 0;
 static gchar *gv_solib_prefix = 0;
 static gchar *gv_gdb_binary_filepath = 0;
+static gchar *gv_command_filepath = 0;
 static gchar *gv_core_path = 0;
 
 static GOptionEntry entries[] =
@@ -178,6 +179,15 @@ static GOptionEntry entries[] =
         &gv_gdb_binary_filepath,
         _("Set the path of the GDB binary to use to debug the inferior"),
         "</path/to/gdb>"
+    },
+    {
+        "exec-command-file",
+        0,
+        0,
+        G_OPTION_ARG_STRING,
+        &gv_command_filepath,
+        _("Set the path of a file of commands to execute at start-up"),
+        "</path/to/command/file>"
     },
     { 
         "version",
@@ -650,6 +660,16 @@ process_gui_options (int& a_argc, char** a_argv)
             debug_persp->execute_program (prog_path,
                                           prog_args,
                                           env);
+        }
+
+        if (gv_command_filepath) {
+            char *command_filepath = realpath (gv_command_filepath, 0);
+            if (command_filepath) {
+                debug_persp->execute_command_file (command_filepath);
+            } else {
+                LOG_ERROR ("Could not resolve the full path "
+                           "of the command file");
+            }
         }
     } else {
         cerr << "Could not find the debugger perspective plugin\n";

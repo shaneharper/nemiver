@@ -559,6 +559,8 @@ public:
 
     ISessMgr& session_manager ();
 
+    void execute_command_file (const UString &a_command_file);
+
     void execute_session (ISessMgr::Session &a_session);
 
     void execute_program ();
@@ -5717,6 +5719,15 @@ ISessMgr&
 DBGPerspective::session_manager ()
 {
     return *session_manager_ptr ();
+}
+
+void
+DBGPerspective::execute_command_file (const UString &a_command_file)
+{
+    THROW_IF_FAIL (m_priv);
+    THROW_IF_FAIL (m_priv->dbg_console);
+
+    m_priv->dbg_console->execute_command_file (a_command_file);
 }
 
 void

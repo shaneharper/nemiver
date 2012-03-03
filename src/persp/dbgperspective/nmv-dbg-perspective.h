@@ -98,6 +98,8 @@ public:
 
     virtual ISessMgr& session_manager () = 0;
 
+    virtual void execute_command_file (const UString &a_command_file) = 0;
+
     virtual void execute_session (ISessMgr::Session &a_session) = 0;
 
     virtual void execute_program () = 0;

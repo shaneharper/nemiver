@@ -103,6 +103,8 @@ public:
     explicit Console (int a_fd);
     virtual ~Console ();
     void register_command (Console::Command &a_command);
+    void execute_command_file (const UString &a_command_file);
+    void execute_command (const UString &a_command);
 };
 
 NEMIVER_END_NAMESPACE(common)

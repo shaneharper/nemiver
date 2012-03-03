@@ -31,6 +31,7 @@
 #include <map>
 #include <vector>
 #include <cstring>
+#include <fstream>
 #include <cctype>
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -97,6 +98,7 @@ Console::Stream::operator<< (int a_int)
 struct Console::Priv {
     std::map<std::string, Console::Command&> commands;
     std::vector<Console::Command*> commands_vector;
+    std::list<UString> command_queue;
 
     int fd;
     struct readline_state console_state;
@@ -112,7 +114,7 @@ struct Console::Priv {
         fd (a_fd),
         stream (a_fd),
         io_source (Glib::IOSource::create (a_fd, Glib::IO_IN)),
-        done_signal_received (false)
+        done_signal_received (true)
     {
         init ();
     }
@@ -294,7 +296,7 @@ struct Console::Priv {
     }
 
     void
-    execute_command (char *a_buffer)
+    execute_command (const char *a_buffer)
     {
         std::string command_name;
         std::vector<UString> cmd_argv;
@@ -356,6 +358,17 @@ struct Console::Priv {
         cmd_execution_timeout_connection.disconnect();
         cmd_execution_done_connection.disconnect ();
 
+        while (command_queue.size ())
+        {
+            NEMIVER_TRY
+            UString command = command_queue.front ();
+            command_queue.pop_front ();
+            stream << command << "\n";
+            add_history (command.c_str ());
+            execute_command (command.c_str ());
+            NEMIVER_CATCH_NOX
+        }
+
         NEMIVER_CATCH_NOX
     }
 
@@ -413,6 +426,26 @@ struct Console::Priv {
 
         free (a_command);
     }
+
+    void
+    queue_command (const UString &a_command)
+    {
+        NEMIVER_TRY
+
+        if (a_command.empty ()) {
+            return;
+        }
+
+        if (!command_queue.size () && done_signal_received) {
+            stream << a_command << "\n";
+            add_history (a_command.c_str ());
+            execute_command (a_command.c_str ());
+        } else {
+            command_queue.push_back (a_command);
+        }
+
+        NEMIVER_CATCH_NOX
+    }
 };
 
 Console::Console (int a_fd) :
@@ -447,6 +480,25 @@ Console::register_command (Console::Command &a_command)
         m_priv->commands.insert (std::make_pair<std::string, Command&>
             (aliases[i], a_command));
     }
+}
+
+void
+Console::execute_command_file (const UString &a_command_file)
+{
+    std::ifstream file (a_command_file.c_str ());
+    while (file.good ()) {
+        std::string command;
+        std::getline (file, command);
+        execute_command (command);
+    }
+    file.close ();
+}
+
+void
+Console::execute_command (const UString &a_command)
+{
+    THROW_IF_FAIL (m_priv);
+    m_priv->queue_command (a_command);
 }
 
 NEMIVER_END_NAMESPACE(common)
