@@ -413,62 +413,100 @@ struct CommandBreak : public Console::SynchronousCommand {
     }
 
     void
-    execute (const std::vector<UString> &a_argv, Console::Stream &a_stream)
+    break_at_current_line (Console::Stream &a_stream)
     {
         IDebugger::Frame &frame = dbg_data.current_frame;
+        IDebugger &debugger = dbg_data.debugger;
+
+        if (!frame.file_full_name ().empty ()) {
+            debugger.set_breakpoint (frame.file_full_name (), frame.line ());
+        } else {
+            a_stream << "Cannot set a breakpoint at this position.\n";
+        }
+    }
+
+    void
+    break_at_line (const std::vector<UString> &a_argv,
+                   Console::Stream &a_stream)
+    {
+        IDebugger &debugger = dbg_data.debugger;
+
+        if (!dbg_data.current_file_path.empty ()) {
+            debugger.set_breakpoint (dbg_data.current_file_path,
+                                     str_utils::from_string<int> (a_argv[0]));
+        } else {
+            a_stream << "Cannot set a breakpoint at this position.\n";
+        }
+    }
+
+    void
+    break_at_offset (const std::vector<UString> &a_argv,
+                     Console::Stream &a_stream)
+    {
+        IDebugger::Frame &frame = dbg_data.current_frame;
+        IDebugger &debugger = dbg_data.debugger;
+
+        if (frame.file_full_name ().empty ()) {
+            a_stream << "Cannot set a breakpoint at this position.\n";
+            return;
+        }
+
+        std::string offset (a_argv[0].substr (1));
+        if (!str_utils::string_is_decimal_number (offset)) {
+            a_stream << "Invalid offset: " << offset << ".\n";
+            return;
+        }
+
+        int line = frame.line ();
+        if (a_argv[0][0] == '+') {
+            line += str_utils::from_string<int> (offset);
+        } else {
+            line -= str_utils::from_string<int> (offset);
+        }
+
+        debugger.set_breakpoint (frame.file_full_name (), line);
+    }
+
+    void
+    break_at_address (const std::vector<UString> &a_argv,
+                      Console::Stream &a_stream)
+    {
+        IDebugger &debugger = dbg_data.debugger;
+
+        std::string addr (a_argv[0].substr (1));
+        if (str_utils::string_is_hexa_number (addr)) {
+            Address address (addr);
+            debugger.set_breakpoint (address);
+        } else {
+            a_stream << "Invalid address: " << addr << ".\n";
+        }
+    }
+
+    void
+    execute (const std::vector<UString> &a_argv, Console::Stream &a_stream)
+    {
         IDebugger &debugger = dbg_data.debugger;
 
         if (a_argv.size () > 1) {
             a_stream << "Too much parameters.\n";
             return;
-        } else if (a_argv.size () == 0) {
-            if (!frame.file_full_name ().empty ()) {
-                debugger.set_breakpoint
-                    (frame.file_full_name (), frame.line ());
-            } else {
-                a_stream << "Cannot set a breakpoint at this position.\n";
-            }
+        }
+
+        if (a_argv.size () == 0) {
+            break_at_current_line (a_stream);
             return;
         }
 
         const char first_param_char = a_argv[0][0];
         if (str_utils::string_is_number (a_argv[0])) {
-            if (!dbg_data.current_file_path.empty ()) {
-                debugger.set_breakpoint
-                    (dbg_data.current_file_path,
-                     str_utils::from_string<int> (a_argv[0]));
-            } else {
-                a_stream << "Cannot set a breakpoint at this position.\n";
-            }
+            break_at_line (a_argv, a_stream);
         } else if ((first_param_char >= 'a' && first_param_char <= 'z')
                    || first_param_char == '_') {
             debugger.set_breakpoint (a_argv[0]);
         } else if (first_param_char == '*') {
-            std::string addr (a_argv[0].substr (1));
-            if (str_utils::string_is_hexa_number (addr)) {
-                Address address (addr);
-                debugger.set_breakpoint (address);
-            } else {
-                a_stream << "Invalid address: " << addr << ".\n";
-            }
+            break_at_address (a_argv, a_stream);
         } else if (first_param_char == '+' || first_param_char == '-') {
-            std::string offset (a_argv[0].substr (1));
-            if (str_utils::string_is_decimal_number (offset)) {
-                int line = frame.line ();
-                if (first_param_char == '+') {
-                    line += str_utils::from_string<int> (offset);
-                } else {
-                    line -= str_utils::from_string<int> (offset);
-                }
-
-                if (!frame.file_full_name ().empty ()) {
-                    debugger.set_breakpoint (frame.file_full_name (), line);
-                } else {
-                    a_stream << "Cannot set a breakpoint at this position.\n";
-                }
-            } else {
-                a_stream << "Invalid offset: " << offset << ".\n";
-            }
+            break_at_offset (a_argv, a_stream);
         } else {
             a_stream << "Invalid argument: " << a_argv[0] << ".\n";
         }
