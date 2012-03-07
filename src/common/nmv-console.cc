@@ -45,6 +45,11 @@ const unsigned int COMMAND_EXECUTION_TIMEOUT_IN_SECONDS = 10;
 struct Console::Stream::Priv {
     int fd;
 
+    Priv () :
+        fd (0)
+    {
+    }
+
     Priv (int a_fd) :
         fd (a_fd)
     {
