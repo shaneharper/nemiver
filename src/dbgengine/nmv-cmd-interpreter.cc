@@ -62,14 +62,13 @@ struct CommandContinue : public CmdInterpreter::SynchronousCommand {
         return s_name;
     }
 
-    const char**
+    const std::vector<UString>&
     aliases () const
     {
-        static const char *s_aliases[] =
-        {
-            "c",
-            0
-        };
+        static std::vector<UString> s_aliases;
+        if (!s_aliases.size ()) {
+            s_aliases.push_back ("c");
+        }
         return s_aliases;
     }
 
@@ -95,14 +94,13 @@ struct CommandNext : public CmdInterpreter::SynchronousCommand {
         return s_name;
     }
 
-    const char**
+    const std::vector<UString>&
     aliases () const
     {
-        static const char *s_aliases[] =
-        {
-            "n",
-            0
-        };
+        static std::vector<UString> s_aliases;
+        if (!s_aliases.size ()) {
+            s_aliases.push_back ("n");
+        }
         return s_aliases;
     }
 
@@ -128,14 +126,13 @@ struct CommandStep : public CmdInterpreter::SynchronousCommand {
         return s_name;
     }
 
-    const char**
+    const std::vector<UString>&
     aliases () const
     {
-        static const char *s_aliases[] =
-        {
-            "s",
-            0
-        };
+        static std::vector<UString> s_aliases;
+        if (!s_aliases.size ()) {
+            s_aliases.push_back ("s");
+        }
         return s_aliases;
     }
 
@@ -161,14 +158,13 @@ struct CommandNexti : public CmdInterpreter::SynchronousCommand {
         return s_name;
     }
 
-    const char**
+    const std::vector<UString>&
     aliases () const
     {
-        static const char *s_aliases[] =
-        {
-            "ni",
-            0
-        };
+        static std::vector<UString> s_aliases;
+        if (!s_aliases.size ()) {
+            s_aliases.push_back ("ni");
+        }
         return s_aliases;
     }
 
@@ -194,14 +190,13 @@ struct CommandStepi : public CmdInterpreter::SynchronousCommand {
         return s_name;
     }
 
-    const char**
+    const std::vector<UString>&
     aliases () const
     {
-        static const char *s_aliases[] =
-        {
-            "si",
-            0
-        };
+        static std::vector<UString> s_aliases;
+        if (!s_aliases.size ()) {
+            s_aliases.push_back ("si");
+        }
         return s_aliases;
     }
 
@@ -388,14 +383,13 @@ struct CommandBreak : public CmdInterpreter::SynchronousCommand {
         return s_name;
     }
 
-    const char**
+    const std::vector<UString>&
     aliases () const
     {
-        static const char *s_aliases[] =
-        {
-            "b",
-            0
-        };
+        static std::vector<UString> s_aliases;
+        if (!s_aliases.size ()) {
+            s_aliases.push_back ("b");
+        }
         return s_aliases;
     }
 
@@ -586,14 +580,13 @@ struct CommandOpen : public CmdInterpreter::SynchronousCommand {
         return s_name;
     }
 
-    const char**
+    const std::vector<UString>&
     aliases () const
     {
-        static const char *s_aliases[] =
-        {
-            "o",
-            0
-        };
+        static std::vector<UString> s_aliases;
+        if (!s_aliases.size ()) {
+            s_aliases.push_back ("o");
+        }
         return s_aliases;
     }
 
@@ -911,14 +904,16 @@ CmdInterpreter::register_command (CmdInterpreter::Command &a_command)
         (a_command.name (), a_command));
     m_priv->command_vector.push_back (&a_command);
 
-    const char **aliases = a_command.aliases ();
-    for (int i = 0; aliases && aliases[i]; i++) {
-        if (m_priv->commands.count (aliases[i])) {
-            LOG ("Command '" << aliases[i] << "' is already registered in"
+    const std::vector<UString> &aliases = a_command.aliases ();
+    for (std::vector<UString>::const_iterator iter = aliases.begin ();
+         iter != aliases.end ();
+         ++iter) {
+        if (m_priv->commands.count (*iter)) {
+            LOG ("Command '" << *iter << "' is already registered in"
                  " the console. The previous command will be overwritten");
         }
         m_priv->commands.insert (std::make_pair<std::string, Command&>
-            (aliases[i], a_command));
+            (*iter, a_command));
     }
 }
 

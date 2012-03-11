@@ -59,9 +59,10 @@ public:
 
         virtual const std::string& name () const = 0;
 
-        virtual const char** aliases () const
+        virtual const std::vector<UString>& aliases () const
         {
-            return 0;
+            static std::vector<UString> s_aliases;
+            return s_aliases;
         }
 
         virtual void completions (const std::vector<UString>&,
