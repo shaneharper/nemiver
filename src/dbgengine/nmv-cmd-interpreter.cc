@@ -40,6 +40,7 @@ struct DebuggingData {
     IDebugger::Frame current_frame;
     UString current_file_path;
     std::vector<UString> source_files;
+    sigc::signal<void, UString> file_opened_signal;
 
     DebuggingData (IDebugger &a_debugger) :
         debugger (a_debugger)
@@ -566,7 +567,6 @@ struct CommandPrint : public CmdInterpreter::AsynchronousCommand {
 
 struct CommandOpen : public CmdInterpreter::SynchronousCommand {
     DebuggingData &dbg_data;
-    sigc::signal<void, UString> file_opened_signal;
 
     CommandOpen (DebuggingData &a_dbg_data) :
         dbg_data (a_dbg_data)
@@ -609,7 +609,7 @@ struct CommandOpen : public CmdInterpreter::SynchronousCommand {
             if (path.size () && path[0] == '~') {
                 path = path.replace (0, 1, Glib::get_home_dir ());
             }
-            file_opened_signal.emit (path);
+            dbg_data.file_opened_signal.emit (path);
         }
     }
 };
@@ -687,8 +687,9 @@ struct CommandRun : public CmdInterpreter::SynchronousCommand {
 };
 
 struct CmdInterpreter::Priv {
+    std::vector<CommandSafePtr> commands;
     std::vector<CmdInterpreter::Command*> command_vector;
-    std::map<std::string, CmdInterpreter::Command&> commands;
+    std::map<std::string, CmdInterpreter::Command&> command_map;
     std::queue<UString> command_queue;
     std::ostream &output_stream;
     sigc::signal<void> ready_signal;
@@ -699,41 +700,34 @@ struct CmdInterpreter::Priv {
 
     DebuggingData data;
 
-    CommandContinue cmd_continue;
-    CommandNext cmd_next;
-    CommandStep cmd_step;
-    CommandBreak cmd_break;
-    CommandPrint cmd_print;
-    CommandCall cmd_call;
-    CommandFinish cmd_finish;
-    CommandThread cmd_thread;
-    CommandStop cmd_stop;
-    CommandNexti cmd_nexti;
-    CommandStepi cmd_stepi;
-    CommandOpen cmd_open;
-    CommandLoadExec cmd_load_exec;
-    CommandRun cmd_run;
-
     Priv (IDebugger &a_debugger, std::ostream &a_output_stream) :
         output_stream (a_output_stream),
         done_signal_received (true),
-        data (a_debugger),
-        cmd_continue (a_debugger),
-        cmd_next (a_debugger),
-        cmd_step (a_debugger),
-        cmd_break (data),
-        cmd_print (a_debugger),
-        cmd_call (a_debugger),
-        cmd_finish (a_debugger),
-        cmd_thread (a_debugger),
-        cmd_stop (a_debugger),
-        cmd_nexti (a_debugger),
-        cmd_stepi (a_debugger),
-        cmd_open (data),
-        cmd_load_exec (a_debugger),
-        cmd_run (a_debugger)
+        data (a_debugger)
     {
+        init_commands ();
         init_signals ();
+    }
+
+    void
+    init_commands ()
+    {
+        commands.push_back (CommandSafePtr (new CommandNext (data.debugger)));
+        commands.push_back (CommandSafePtr (new CommandStep (data.debugger)));
+        commands.push_back (CommandSafePtr (new CommandBreak (data)));
+        commands.push_back (CommandSafePtr (new CommandPrint (data.debugger)));
+        commands.push_back (CommandSafePtr (new CommandCall (data.debugger)));
+        commands.push_back (CommandSafePtr (new CommandFinish (data.debugger)));
+        commands.push_back (CommandSafePtr (new CommandThread (data.debugger)));
+        commands.push_back (CommandSafePtr (new CommandStop (data.debugger)));
+        commands.push_back (CommandSafePtr (new CommandNexti (data.debugger)));
+        commands.push_back (CommandSafePtr (new CommandStepi (data.debugger)));
+        commands.push_back (CommandSafePtr (new CommandOpen (data)));
+        commands.push_back (CommandSafePtr (new CommandRun (data.debugger)));
+        commands.push_back
+            (CommandSafePtr (new CommandLoadExec (data.debugger)));
+        commands.push_back
+            (CommandSafePtr (new CommandContinue (data.debugger)));
     }
 
     void
@@ -783,17 +777,17 @@ struct CmdInterpreter::Priv {
             return false;
         }
 
-        if (!commands.count (command_name)) {
+        if (!command_map.count (command_name)) {
             output_stream << "Undefined command: " << command_name << ".\n";
             ready_signal.emit ();
             return false;
         }
 
-        Command &command = commands.at (command_name);
+        Command &command = command_map.at (command_name);
         done_signal_received = false;
         cmd_execution_done_connection = command.done_signal ().connect
             (sigc::mem_fun (*this, &CmdInterpreter::Priv::on_done_signal));
-        commands.at (command_name) (cmd_argv, output_stream);
+        command_map.at (command_name) (cmd_argv, output_stream);
         cmd_execution_timeout_connection =
             Glib::signal_timeout().connect_seconds (sigc::mem_fun
                 (*this, &CmdInterpreter::Priv::on_cmd_execution_timeout_signal),
@@ -870,20 +864,15 @@ CmdInterpreter::CmdInterpreter (IDebugger &a_debugger,
                                 std::ostream &a_output_stream) :
     m_priv (new Priv (a_debugger, a_output_stream))
 {
-    register_command (m_priv->cmd_continue);
-    register_command (m_priv->cmd_next);
-    register_command (m_priv->cmd_step);
-    register_command (m_priv->cmd_break);
-    register_command (m_priv->cmd_print);
-    register_command (m_priv->cmd_call);
-    register_command (m_priv->cmd_finish);
-    register_command (m_priv->cmd_thread);
-    register_command (m_priv->cmd_stop);
-    register_command (m_priv->cmd_nexti);
-    register_command (m_priv->cmd_stepi);
-    register_command (m_priv->cmd_open);
-    register_command (m_priv->cmd_load_exec);
-    register_command (m_priv->cmd_run);
+    THROW_IF_FAIL (m_priv);
+
+    for (std::vector<CommandSafePtr >::iterator iter =
+            m_priv->commands.begin ();
+         iter != m_priv->commands.end ();
+         ++iter) {
+        THROW_IF_FAIL (*iter);
+        register_command (**iter);
+    }
 }
 
 CmdInterpreter::~CmdInterpreter ()
@@ -895,12 +884,12 @@ CmdInterpreter::register_command (CmdInterpreter::Command &a_command)
 {
     THROW_IF_FAIL (m_priv);
 
-    if (m_priv->commands.count (a_command.name ())) {
+    if (m_priv->command_map.count (a_command.name ())) {
         LOG ("Command '" << a_command.name () << "' is already registered in"
              " the console. The previous command will be overwritten");
     }
 
-    m_priv->commands.insert (std::make_pair<std::string, Command&>
+    m_priv->command_map.insert (std::make_pair<std::string, Command&>
         (a_command.name (), a_command));
     m_priv->command_vector.push_back (&a_command);
 
@@ -908,11 +897,11 @@ CmdInterpreter::register_command (CmdInterpreter::Command &a_command)
     for (std::vector<UString>::const_iterator iter = aliases.begin ();
          iter != aliases.end ();
          ++iter) {
-        if (m_priv->commands.count (*iter)) {
+        if (m_priv->command_map.count (*iter)) {
             LOG ("Command '" << *iter << "' is already registered in"
                  " the console. The previous command will be overwritten");
         }
-        m_priv->commands.insert (std::make_pair<std::string, Command&>
+        m_priv->command_map.insert (std::make_pair<std::string, Command&>
             (*iter, a_command));
     }
 }
@@ -935,7 +924,7 @@ sigc::signal<void, UString>&
 CmdInterpreter::file_opened_signal () const
 {
     THROW_IF_FAIL (m_priv);
-    return m_priv->cmd_open.file_opened_signal;
+    return m_priv->data.file_opened_signal;
 }
 
 sigc::signal<void>&

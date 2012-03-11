@@ -30,13 +30,19 @@
 #include "common/nmv-safe-ptr.h"
 #include "common/nmv-namespace.h"
 #include "common/nmv-ustring.h"
+#include "common/nmv-safe-ptr-utils.h"
 #include <sigc++/signal.h>
 #include <ostream>
 #include <vector>
 
 NEMIVER_BEGIN_NAMESPACE(nemiver)
 
-using namespace common;
+using common::UString;
+using common::SafePtr;
+using common::Object;
+using common::ObjectRef;
+using common::ObjectUnref;
+
 class IDebugger;
 
 class CmdInterpreter {
@@ -48,7 +54,7 @@ class CmdInterpreter {
     SafePtr<Priv> m_priv;
 
 public:
-    class Command {
+    class Command : public Object {
         sigc::signal<void> m_done_signal;
 
     public:
@@ -89,6 +95,7 @@ public:
         }
     };
 
+    typedef SafePtr<Command, ObjectRef, ObjectUnref> CommandSafePtr;
     typedef Command AsynchronousCommand;
     struct SynchronousCommand : public Command{
         virtual void operator() (const std::vector<UString> &a_argv,
