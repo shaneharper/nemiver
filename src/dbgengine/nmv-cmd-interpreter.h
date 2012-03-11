@@ -22,39 +22,36 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NMV_CONSOLE_H__
-#define __NMV_CONSOLE_H__
 
-#include "nmv-safe-ptr.h"
-#include "nmv-namespace.h"
-#include "nmv-exception.h"
-#include <string>
+
+#ifndef __NMV_CMD_INTERPRETER_H__
+#define __NMV_CMD_INTERPRETER_H__
+
+#include "common/nmv-safe-ptr.h"
+#include "common/nmv-namespace.h"
+#include "common/nmv-ustring.h"
+#include <sigc++/signal.h>
+#include <ostream>
 #include <vector>
 
 NEMIVER_BEGIN_NAMESPACE(nemiver)
-NEMIVER_BEGIN_NAMESPACE(common)
 
-class Console {
+using namespace common;
+class IDebugger;
+
+class CmdInterpreter {
+    //non copyable
+    CmdInterpreter (const CmdInterpreter&);
+    CmdInterpreter& operator= (const CmdInterpreter&);
+
     struct Priv;
     SafePtr<Priv> m_priv;
 
 public:
-    class Stream {
-        struct Priv;
-        SafePtr<Priv> m_priv;
-        
-    public:
-        explicit Stream (int a_fd);
-        Stream& operator<< (const char *const a_string);
-        Stream& operator<< (const std::string &a_string);
-        Stream& operator<< (unsigned int a_uint);
-        Stream& operator<< (int a_int);
-    };
-
     class Command {
         sigc::signal<void> m_done_signal;
 
-public:
+    public:
         sigc::signal<void>& done_signal ()
         {
             return m_done_signal;
@@ -72,15 +69,16 @@ public:
         {
         }
 
-        virtual void display_usage (const std::vector<UString>&, Stream&) const
+        virtual void display_usage (const std::vector<UString>&,
+                                    std::ostream&) const
         {
         }
 
         virtual void execute (const std::vector<UString> &a_argv,
-                              Stream &a_output) = 0;
+                              std::ostream &a_output) = 0;
 
         virtual void operator() (const std::vector<UString> &a_argv,
-                         Stream &a_output)
+                                 std::ostream &a_output)
         {
             execute (a_argv, a_output);
         }
@@ -93,22 +91,29 @@ public:
     typedef Command AsynchronousCommand;
     struct SynchronousCommand : public Command{
         virtual void operator() (const std::vector<UString> &a_argv,
-                         Stream &a_output)
+                                 std::ostream &a_output)
         {
             execute (a_argv, a_output);
             done_signal ().emit ();
         }
     };
 
-    explicit Console (int a_fd);
-    virtual ~Console ();
-    void register_command (Console::Command &a_command);
-    void execute_command_file (const UString &a_command_file);
+    CmdInterpreter (IDebugger &a_debugger, std::ostream &a_output_stream);
+    ~CmdInterpreter ();
+    void register_command (Command &a_command);
     void execute_command (const UString &a_command);
+    const std::vector<Command*>& commands() const;
+
+    void current_file_path (const UString &a_file_path);
+    const UString& current_file_path () const;
+
+    bool ready () const;
+
+    sigc::signal<void, UString>& file_opened_signal () const;
+    sigc::signal<void>& ready_signal () const;
 };
 
-NEMIVER_END_NAMESPACE(common)
 NEMIVER_END_NAMESPACE(nemiver)
 
-#endif /* __NMV_CONSOLE_H__ */
+#endif /* __NMV_CMD_INTERPRETER_H__ */
 

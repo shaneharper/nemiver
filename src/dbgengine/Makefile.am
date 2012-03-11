@@ -21,7 +21,7 @@ libgdbmiparser.la \
 libdbgcommon.la \
 libdebuggerutils.la \
 libgdbengine.la \
-libdbgconsole.la
+libcmdinterpreter.la
 
 h=$(abs_srcdir)
 
@@ -86,11 +86,11 @@ $(h)/nmv-debugger-utils.cc
 
 libdebuggerutils_la_CFLAGS=-fPIC -DPIC
 
-libdbgconsole_la_SOURCES= \
-$(h)/nmv-dbg-console.cc \
-$(h)/nmv-dbg-console.h
+libcmdinterpreter_la_SOURCES= \
+$(h)/nmv-cmd-interpreter.cc \
+$(h)/nmv-cmd-interpreter.h
 
-libdbgconsole_la_CFLAGS=-fPIC -DPIC
+libcmdinterpreter_la_CFLAGS=-fPIC -DPIC
 
 libgdbengine_la_SOURCES= \
 $(h)/nmv-gdb-engine.cc \
@@ -103,7 +103,7 @@ publicheadersdir=$(NEMIVER_INCLUDE_DIR)/dynmods
 
 libgdbmod_la_LDFLAGS=-module -avoid-version -Wl,--as-needed
 libgdbmod_la_LIBADD=libgdbmiparser.la \
-libgdbengine.la libdebuggerutils.la libdbgconsole.la @NEMIVERCOMMON_LIBS@ \
+libgdbengine.la libdebuggerutils.la libcmdinterpreter.la @NEMIVERCOMMON_LIBS@ \
 $(abs_top_builddir)/src/langs/libnemivercparser.la \
 $(abs_top_builddir)/src/common/libnemivercommon.la
 

@@ -73,7 +73,9 @@ $(h)/nmv-dbg-perspective-default-layout.h \
 $(h)/nmv-dbg-perspective-two-pane-layout.cc \
 $(h)/nmv-dbg-perspective-two-pane-layout.h \
 $(h)/nmv-dbg-perspective-wide-layout.cc \
-$(h)/nmv-dbg-perspective-wide-layout.h
+$(h)/nmv-dbg-perspective-wide-layout.h \
+$(h)/nmv-console.cc \
+$(h)/nmv-console.h
 
 if BUILD_DYNAMICLAYOUT
 dynamiclayout_sources = \

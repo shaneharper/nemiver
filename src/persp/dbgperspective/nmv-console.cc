@@ -27,8 +27,10 @@
 #define PREFER_STDARG
 
 #include "nmv-console.h"
-#include "nmv-str-utils.h"
-#include <map>
+#include "common/nmv-str-utils.h"
+#include "uicommon/nmv-terminal.h"
+#include "dbgengine/nmv-cmd-interpreter.h"
+#include "dbgengine/nmv-i-debugger.h"
 #include <vector>
 #include <cstring>
 #include <fstream>
@@ -37,89 +39,27 @@
 #include <readline/history.h>
 
 NEMIVER_BEGIN_NAMESPACE(nemiver)
-NEMIVER_BEGIN_NAMESPACE(common)
 
 const char *const CONSOLE_PROMPT = "> ";
-const unsigned int COMMAND_EXECUTION_TIMEOUT_IN_SECONDS = 10;
-
-struct Console::Stream::Priv {
-    int fd;
-
-    Priv () :
-        fd (0)
-    {
-    }
-
-    Priv (int a_fd) :
-        fd (a_fd)
-    {
-    }
-
-    void
-    write (const std::string &a_msg) const
-    {
-        THROW_IF_FAIL (fd);
-        ::write (fd, a_msg.c_str (), a_msg.size ());
-    }
-};
-
-Console::Stream::Stream (int a_fd) :
-    m_priv (new Priv (a_fd))
-{
-}
-
-Console::Stream&
-Console::Stream::operator<< (const char *const a_string)
-{
-    THROW_IF_FAIL (m_priv);
-    m_priv->write (a_string);
-    return *this;
-}
-
-Console::Stream&
-Console::Stream::operator<< (const std::string &a_string)
-{
-    THROW_IF_FAIL (m_priv);
-    m_priv->write (a_string);
-    return *this;
-}
-
-Console::Stream&
-Console::Stream::operator<< (unsigned int a_uint)
-{
-    THROW_IF_FAIL (m_priv);
-    m_priv->write (str_utils::to_string (a_uint));
-    return *this;
-}
-
-Console::Stream&
-Console::Stream::operator<< (int a_int)
-{
-    THROW_IF_FAIL (m_priv);
-    m_priv->write (str_utils::to_string (a_int));
-    return *this;
-}
 
 struct Console::Priv {
-    std::map<std::string, Console::Command&> commands;
-    std::vector<Console::Command*> commands_vector;
-    std::list<UString> command_queue;
+    Terminal terminal;
+    Console::Stream stream;
+    CmdInterpreter cmd_interpreter;
+    Glib::RefPtr<Glib::IOSource> io_source;
+    IDebugger &debugger;
 
-    int fd;
     struct readline_state console_state;
     struct readline_state saved_state;
 
-    Console::Stream stream;
-    Glib::RefPtr<Glib::IOSource> io_source;
-    sigc::connection cmd_execution_done_connection;
-    sigc::connection cmd_execution_timeout_connection;
-    bool done_signal_received;
-
-    Priv (int a_fd) :
-        fd (a_fd),
-        stream (a_fd),
-        io_source (Glib::IOSource::create (a_fd, Glib::IO_IN)),
-        done_signal_received (true)
+    Priv (IDebugger &a_debugger,
+          const std::string &a_menu_file_path,
+          const Glib::RefPtr<Gtk::UIManager> &a_ui_manager) :
+        terminal (a_menu_file_path, a_ui_manager),
+        stream (terminal.slave_fd ()),
+        cmd_interpreter (a_debugger, stream),
+        io_source (Glib::IOSource::create (terminal.slave_fd (), Glib::IO_IN)),
+        debugger (a_debugger)
     {
         init ();
     }
@@ -127,13 +67,15 @@ struct Console::Priv {
     void
     init ()
     {
+        int fd = terminal.slave_fd ();
         THROW_IF_FAIL (fd);
-        THROW_IF_FAIL (io_source);
-
         if (consoles ().count (fd)) {
             THROW ("Cannot create two consoles from the same file descriptor.");
         }
         consoles ()[fd] = this;
+
+        cmd_interpreter.ready_signal ().connect
+            (sigc::mem_fun (*this, &Console::Priv::on_ready_signal));
 
         io_source->connect (sigc::mem_fun (*this, &Console::Priv::read_char));
         io_source->attach ();
@@ -149,12 +91,18 @@ struct Console::Priv {
         rl_restore_state (&saved_state);
     }
 
+    void
+    on_ready_signal ()
+    {
+        stream << CONSOLE_PROMPT;
+    }
+
     bool
     read_char (Glib::IOCondition)
     {
         NEMIVER_TRY
 
-        if (cmd_execution_done_connection.connected ())
+        if (!cmd_interpreter.ready ())
             return false;
 
         rl_restore_state (&console_state);
@@ -198,10 +146,13 @@ struct Console::Priv {
     void
     do_command_completion (const std::string &a_line)
     {
-        std::vector<Console::Command*> matches;
-        for (std::vector<Console::Command*>::const_iterator iter =
-                commands_vector.begin ();
-             iter != commands_vector.end ();
+        const std::vector<CmdInterpreter::Command*> &commands =
+            cmd_interpreter.commands ();
+
+        std::vector<CmdInterpreter::Command*> matches;
+        for (std::vector<CmdInterpreter::Command*>::const_iterator iter =
+                commands.begin ();
+             iter != commands.end ();
              ++iter) {
             if (*iter && !(*iter)->name ().find (a_line)) {
                 matches.push_back (*iter);
@@ -239,10 +190,13 @@ struct Console::Priv {
             return;
         }
 
-        Console::Command* command = 0;
-        for (std::vector<Console::Command*>::const_iterator iter =
-                commands_vector.begin ();
-             iter != commands_vector.end ();
+        const std::vector<CmdInterpreter::Command*> &commands =
+            cmd_interpreter.commands ();
+
+        CmdInterpreter::Command* command = 0;
+        for (std::vector<CmdInterpreter::Command*>::const_iterator iter =
+                commands.begin ();
+             iter != commands.end ();
              ++iter) {
             if (*iter && (*iter)->name () == a_tokens[0]) {
                 command = *iter;
@@ -300,83 +254,6 @@ struct Console::Priv {
         }
     }
 
-    void
-    execute_command (const char *a_buffer)
-    {
-        std::string command_name;
-        std::vector<UString> cmd_argv;
-
-        std::istringstream is (a_buffer);
-        is >> command_name;
-
-        while (is.good ())
-        {
-            std::string arg;
-            is >> arg;
-            cmd_argv.push_back (arg);
-        }
-
-        if (command_name.empty ()) {
-            stream << CONSOLE_PROMPT;
-            return;
-        }
-
-        if (!commands.count (command_name)) {
-            stream << "Undefined command: " << command_name << ".\n"
-                   << CONSOLE_PROMPT;
-            return;
-        }
-
-        Command &command = commands.at (command_name);
-        done_signal_received = false;
-        cmd_execution_done_connection = command.done_signal ().connect
-            (sigc::mem_fun (*this, &Console::Priv::on_done_signal));
-        commands.at (command_name) (cmd_argv, stream);
-        cmd_execution_timeout_connection =
-            Glib::signal_timeout().connect_seconds
-                (sigc::mem_fun
-                    (*this, &Console::Priv::on_cmd_execution_timeout_signal),
-                 COMMAND_EXECUTION_TIMEOUT_IN_SECONDS);
-    }
-
-    bool
-    on_cmd_execution_timeout_signal ()
-    {
-        NEMIVER_TRY
-        on_done_signal ();
-        NEMIVER_CATCH_NOX
-
-        return true;
-    }
-
-    void
-    on_done_signal ()
-    {
-        NEMIVER_TRY
-
-        if (done_signal_received) {
-            return;
-        }
-
-        done_signal_received = true;
-        stream << CONSOLE_PROMPT;
-        cmd_execution_timeout_connection.disconnect();
-        cmd_execution_done_connection.disconnect ();
-
-        while (command_queue.size ())
-        {
-            NEMIVER_TRY
-            UString command = command_queue.front ();
-            command_queue.pop_front ();
-            stream << command << "\n";
-            add_history (command.c_str ());
-            execute_command (command.c_str ());
-            NEMIVER_CATCH_NOX
-        }
-
-        NEMIVER_CATCH_NOX
-    }
-
     static int
     on_tab_key_pressed (int, int)
     {
@@ -425,66 +302,23 @@ struct Console::Priv {
 
         THROW_IF_FAIL (a_command);
         add_history (a_command);
-        self ().execute_command (a_command);
+        self ().cmd_interpreter.execute_command (a_command);
 
         NEMIVER_CATCH_NOX
 
         free (a_command);
     }
-
-    void
-    queue_command (const UString &a_command)
-    {
-        NEMIVER_TRY
-
-        if (a_command.empty ()) {
-            return;
-        }
-
-        if (!command_queue.size () && done_signal_received) {
-            stream << a_command << "\n";
-            add_history (a_command.c_str ());
-            execute_command (a_command.c_str ());
-        } else {
-            command_queue.push_back (a_command);
-        }
-
-        NEMIVER_CATCH_NOX
-    }
 };
 
-Console::Console (int a_fd) :
-    m_priv (new Priv (a_fd))
+Console::Console (IDebugger &a_debugger,
+                  const std::string &a_menu_file_path,
+                  const Glib::RefPtr<Gtk::UIManager> &a_ui_manager) :
+    m_priv (new Priv (a_debugger, a_menu_file_path, a_ui_manager))
 {
 }
 
 Console::~Console ()
 {
-}
-
-void
-Console::register_command (Console::Command &a_command)
-{
-    THROW_IF_FAIL (m_priv);
-
-    if (m_priv->commands.count (a_command.name ())) {
-        LOG ("Command '" << a_command.name () << "' is already registered in"
-             " the console. The previous command will be overwritten");
-    }
-
-    m_priv->commands.insert (std::make_pair<std::string, Command&>
-        (a_command.name (), a_command));
-    m_priv->commands_vector.push_back (&a_command);
-
-    const char **aliases = a_command.aliases ();
-    for (int i = 0; aliases && aliases[i]; i++) {
-        if (m_priv->commands.count (aliases[i])) {
-            LOG ("Command '" << aliases[i] << "' is already registered in"
-                 " the console. The previous command will be overwritten");
-        }
-        m_priv->commands.insert (std::make_pair<std::string, Command&>
-            (aliases[i], a_command));
-    }
 }
 
 void
@@ -503,9 +337,31 @@ void
 Console::execute_command (const UString &a_command)
 {
     THROW_IF_FAIL (m_priv);
-    m_priv->queue_command (a_command);
+
+    rl_restore_state (&m_priv->console_state);
+
+    add_history (a_command.c_str ());
+    m_priv->stream << a_command << "\n";
+
+    rl_save_state (&m_priv->console_state);
+    rl_restore_state (&m_priv->saved_state);
+
+    m_priv->cmd_interpreter.execute_command (a_command);
 }
 
-NEMIVER_END_NAMESPACE(common)
+CmdInterpreter&
+Console::command_interpreter() const
+{
+    THROW_IF_FAIL (m_priv);
+    return m_priv->cmd_interpreter;
+}
+
+Terminal&
+Console::terminal () const
+{
+    THROW_IF_FAIL (m_priv);
+    return m_priv->terminal;
+}
+
 NEMIVER_END_NAMESPACE(nemiver)
 

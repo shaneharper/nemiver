@@ -23,18 +23,17 @@
  *See COPYRIGHT file copyright information.
  */
 
-#include "nmv-dbg-console.h"
+
+#include "nmv-cmd-interpreter.h"
 #include "nmv-i-debugger.h"
-#include "uicommon/nmv-terminal.h"
-#include "common/nmv-exception.h"
 #include "common/nmv-str-utils.h"
-#include "common/nmv-ustring.h"
+#include <map>
+#include <queue>
 
 NEMIVER_BEGIN_NAMESPACE(nemiver)
 
-const char *const NEMIVER_DBG_CONSOLE_COOKIE = "nemiver-dbg-console";
-
-using namespace common;
+const char *const NEMIVER_CMD_INTERPRETER_COOKIE = "nemiver-dbg-console";
+const unsigned int COMMAND_EXECUTION_TIMEOUT_IN_SECONDS = 10;
 
 struct DebuggingData {
     IDebugger &debugger;
@@ -48,7 +47,7 @@ struct DebuggingData {
     }
 };
 
-struct CommandContinue : public Console::SynchronousCommand {
+struct CommandContinue : public CmdInterpreter::SynchronousCommand {
     IDebugger &debugger;
 
     CommandContinue (IDebugger &a_debugger) :
@@ -75,13 +74,13 @@ struct CommandContinue : public Console::SynchronousCommand {
     }
 
     void
-    execute (const std::vector<UString>&, Console::Stream&)
+    execute (const std::vector<UString>&, std::ostream&)
     {
-        debugger.do_continue ();
+        debugger.do_continue (NEMIVER_CMD_INTERPRETER_COOKIE);
     }
 };
 
-struct CommandNext : public Console::SynchronousCommand {
+struct CommandNext : public CmdInterpreter::SynchronousCommand {
     IDebugger &debugger;
 
     CommandNext (IDebugger &a_debugger) :
@@ -108,13 +107,13 @@ struct CommandNext : public Console::SynchronousCommand {
     }
 
     void
-    execute (const std::vector<UString>&, Console::Stream&)
+    execute (const std::vector<UString>&, std::ostream&)
     {
-        debugger.step_over ();
+        debugger.step_over (NEMIVER_CMD_INTERPRETER_COOKIE);
     }
 };
 
-struct CommandStep : public Console::SynchronousCommand {
+struct CommandStep : public CmdInterpreter::SynchronousCommand {
     IDebugger &debugger;
 
     CommandStep (IDebugger &a_debugger) :
@@ -141,13 +140,13 @@ struct CommandStep : public Console::SynchronousCommand {
     }
 
     void
-    execute (const std::vector<UString>&, Console::Stream&)
+    execute (const std::vector<UString>&, std::ostream&)
     {
-        debugger.step_in ();
+        debugger.step_in (NEMIVER_CMD_INTERPRETER_COOKIE);
     }
 };
 
-struct CommandNexti : public Console::SynchronousCommand {
+struct CommandNexti : public CmdInterpreter::SynchronousCommand {
     IDebugger &debugger;
 
     CommandNexti (IDebugger &a_debugger) :
@@ -174,13 +173,13 @@ struct CommandNexti : public Console::SynchronousCommand {
     }
 
     void
-    execute (const std::vector<UString>&, Console::Stream&)
+    execute (const std::vector<UString>&, std::ostream&)
     {
-        debugger.step_over_asm ();
+        debugger.step_over_asm (NEMIVER_CMD_INTERPRETER_COOKIE);
     }
 };
 
-struct CommandStepi : public Console::SynchronousCommand {
+struct CommandStepi : public CmdInterpreter::SynchronousCommand {
     IDebugger &debugger;
 
     CommandStepi (IDebugger &a_debugger) :
@@ -207,13 +206,13 @@ struct CommandStepi : public Console::SynchronousCommand {
     }
 
     void
-    execute (const std::vector<UString>&, Console::Stream&)
+    execute (const std::vector<UString>&, std::ostream&)
     {
-        debugger.step_in_asm ();
+        debugger.step_in_asm (NEMIVER_CMD_INTERPRETER_COOKIE);
     }
 };
 
-struct CommandStop : public Console::SynchronousCommand {
+struct CommandStop : public CmdInterpreter::SynchronousCommand {
     IDebugger &debugger;
 
     CommandStop (IDebugger &a_debugger) :
@@ -229,13 +228,13 @@ struct CommandStop : public Console::SynchronousCommand {
     }
 
     void
-    execute (const std::vector<UString>&, Console::Stream&)
+    execute (const std::vector<UString>&, std::ostream&)
     {
         debugger.stop_target ();
     }
 };
 
-struct CommandFinish : public Console::SynchronousCommand {
+struct CommandFinish : public CmdInterpreter::SynchronousCommand {
     IDebugger &debugger;
 
     CommandFinish (IDebugger &a_debugger) :
@@ -251,13 +250,13 @@ struct CommandFinish : public Console::SynchronousCommand {
     }
 
     void
-    execute (const std::vector<UString>&, Console::Stream&)
+    execute (const std::vector<UString>&, std::ostream&)
     {
-        debugger.step_out ();
+        debugger.step_out (NEMIVER_CMD_INTERPRETER_COOKIE);
     }
 };
 
-struct CommandCall : public Console::SynchronousCommand {
+struct CommandCall : public CmdInterpreter::SynchronousCommand {
     IDebugger &debugger;
     std::string cmd;
 
@@ -274,7 +273,7 @@ struct CommandCall : public Console::SynchronousCommand {
     }
 
     void
-    execute (const std::vector<UString> &a_argv, Console::Stream &a_stream)
+    execute (const std::vector<UString> &a_argv, std::ostream &a_stream)
     {
         if (a_argv.size ()) {
             cmd = str_utils::join (a_argv);
@@ -283,12 +282,12 @@ struct CommandCall : public Console::SynchronousCommand {
         if (cmd.empty ()) {
             a_stream << "The history is empty.\n";
         } else {
-            debugger.call_function (cmd);
+            debugger.call_function (cmd, NEMIVER_CMD_INTERPRETER_COOKIE);
         }
     }
 };
 
-struct CommandThread : public Console::AsynchronousCommand {
+struct CommandThread : public CmdInterpreter::AsynchronousCommand {
     IDebugger &debugger;
 
     CommandThread (IDebugger &a_debugger) :
@@ -314,7 +313,7 @@ struct CommandThread : public Console::AsynchronousCommand {
 
     void
     display_usage (const std::vector<UString> &a_argv,
-                   Console::Stream &a_stream) const
+                   std::ostream &a_stream) const
     {
         if (a_argv.size ()) {
             return;
@@ -329,11 +328,11 @@ struct CommandThread : public Console::AsynchronousCommand {
     void
     threads_listed_signal (const std::list<int> a_thread_ids,
                            const UString &a_cookie,
-                           Console::Stream &a_stream)
+                           std::ostream &a_stream)
     {
         NEMIVER_TRY
 
-        if (a_cookie != NEMIVER_DBG_CONSOLE_COOKIE) {
+        if (a_cookie != NEMIVER_CMD_INTERPRETER_COOKIE) {
             return;
         }
 
@@ -349,7 +348,7 @@ struct CommandThread : public Console::AsynchronousCommand {
     }
 
     void
-    execute (const std::vector<UString> &a_argv, Console::Stream &a_stream)
+    execute (const std::vector<UString> &a_argv, std::ostream &a_stream)
     {
         if (a_argv.size () > 1) {
             a_stream << "Too much parameters.\n";
@@ -361,10 +360,10 @@ struct CommandThread : public Console::AsynchronousCommand {
                 (str_utils::from_string<unsigned int> (a_argv[0]));
         } else if (a_argv[0] == "list") {
             debugger.threads_listed_signal ().connect
-                (sigc::bind<Console::Stream&> (sigc::mem_fun
+                (sigc::bind<std::ostream&> (sigc::mem_fun
                     (*this, &CommandThread::threads_listed_signal),
                  a_stream));
-            debugger.list_threads (NEMIVER_DBG_CONSOLE_COOKIE);
+            debugger.list_threads (NEMIVER_CMD_INTERPRETER_COOKIE);
             return;
         } else {
             a_stream << "Invalid argument: " << a_argv[0] << ".\n";
@@ -374,7 +373,7 @@ struct CommandThread : public Console::AsynchronousCommand {
     }
 };
 
-struct CommandBreak : public Console::SynchronousCommand {
+struct CommandBreak : public CmdInterpreter::SynchronousCommand {
     DebuggingData &dbg_data;
 
     CommandBreak (DebuggingData &a_dbg_data) :
@@ -401,7 +400,7 @@ struct CommandBreak : public Console::SynchronousCommand {
     }
 
     void
-    display_usage (const std::vector<UString>&, Console::Stream &a_stream) const
+    display_usage (const std::vector<UString>&, std::ostream &a_stream) const
     {
         a_stream << "Usage:\n"
                  << "\tbreak\n"
@@ -413,7 +412,7 @@ struct CommandBreak : public Console::SynchronousCommand {
     }
 
     void
-    break_at_current_line (Console::Stream &a_stream)
+    break_at_current_line (std::ostream &a_stream)
     {
         IDebugger::Frame &frame = dbg_data.current_frame;
         IDebugger &debugger = dbg_data.debugger;
@@ -427,7 +426,7 @@ struct CommandBreak : public Console::SynchronousCommand {
 
     void
     break_at_line (const std::vector<UString> &a_argv,
-                   Console::Stream &a_stream)
+                   std::ostream &a_stream)
     {
         IDebugger &debugger = dbg_data.debugger;
 
@@ -441,7 +440,7 @@ struct CommandBreak : public Console::SynchronousCommand {
 
     void
     break_at_offset (const std::vector<UString> &a_argv,
-                     Console::Stream &a_stream)
+                     std::ostream &a_stream)
     {
         IDebugger::Frame &frame = dbg_data.current_frame;
         IDebugger &debugger = dbg_data.debugger;
@@ -464,26 +463,27 @@ struct CommandBreak : public Console::SynchronousCommand {
             line -= str_utils::from_string<int> (offset);
         }
 
-        debugger.set_breakpoint (frame.file_full_name (), line);
+        debugger.set_breakpoint
+            (frame.file_full_name (), line, NEMIVER_CMD_INTERPRETER_COOKIE);
     }
 
     void
     break_at_address (const std::vector<UString> &a_argv,
-                      Console::Stream &a_stream)
+                      std::ostream &a_stream)
     {
         IDebugger &debugger = dbg_data.debugger;
 
         std::string addr (a_argv[0].substr (1));
         if (str_utils::string_is_hexa_number (addr)) {
             Address address (addr);
-            debugger.set_breakpoint (address);
+            debugger.set_breakpoint (address, NEMIVER_CMD_INTERPRETER_COOKIE);
         } else {
             a_stream << "Invalid address: " << addr << ".\n";
         }
     }
 
     void
-    execute (const std::vector<UString> &a_argv, Console::Stream &a_stream)
+    execute (const std::vector<UString> &a_argv, std::ostream &a_stream)
     {
         IDebugger &debugger = dbg_data.debugger;
 
@@ -502,7 +502,7 @@ struct CommandBreak : public Console::SynchronousCommand {
             break_at_line (a_argv, a_stream);
         } else if ((first_param_char >= 'a' && first_param_char <= 'z')
                    || first_param_char == '_') {
-            debugger.set_breakpoint (a_argv[0]);
+            debugger.set_breakpoint (a_argv[0], NEMIVER_CMD_INTERPRETER_COOKIE);
         } else if (first_param_char == '*') {
             break_at_address (a_argv, a_stream);
         } else if (first_param_char == '+' || first_param_char == '-') {
@@ -513,7 +513,7 @@ struct CommandBreak : public Console::SynchronousCommand {
     }
 };
 
-struct CommandPrint : public Console::AsynchronousCommand {
+struct CommandPrint : public CmdInterpreter::AsynchronousCommand {
     IDebugger &debugger;
     std::string expression;
 
@@ -531,7 +531,7 @@ struct CommandPrint : public Console::AsynchronousCommand {
 
     void
     on_variable_created_signal (const IDebugger::VariableSafePtr a_var,
-                                Console::Stream &a_stream)
+                                std::ostream &a_stream)
     {
         NEMIVER_TRY
 
@@ -544,7 +544,7 @@ struct CommandPrint : public Console::AsynchronousCommand {
     }
 
     void
-    execute (const std::vector<UString> &a_argv, Console::Stream &a_stream)
+    execute (const std::vector<UString> &a_argv, std::ostream &a_stream)
     {
         if (a_argv.size ()) {
             expression.clear ();
@@ -563,14 +563,14 @@ struct CommandPrint : public Console::AsynchronousCommand {
         }
 
         debugger.create_variable
-            (expression, sigc::bind<Console::Stream&>
+            (expression, sigc::bind<std::ostream&>
                 (sigc::mem_fun
                     (*this, &CommandPrint::on_variable_created_signal),
                  a_stream));
     }
 };
 
-struct CommandOpen : public Console::SynchronousCommand {
+struct CommandOpen : public CmdInterpreter::SynchronousCommand {
     DebuggingData &dbg_data;
     sigc::signal<void, UString> file_opened_signal;
 
@@ -607,7 +607,7 @@ struct CommandOpen : public Console::SynchronousCommand {
     }
 
     void
-    execute (const std::vector<UString> &a_argv, Console::Stream&)
+    execute (const std::vector<UString> &a_argv, std::ostream&)
     {
         for (std::vector<UString>::const_iterator iter = a_argv.begin ();
              iter != a_argv.end ();
@@ -621,7 +621,7 @@ struct CommandOpen : public Console::SynchronousCommand {
     }
 };
 
-struct CommandLoadExec : public Console::SynchronousCommand {
+struct CommandLoadExec : public CmdInterpreter::SynchronousCommand {
     IDebugger &debugger;
 
     CommandLoadExec (IDebugger &a_debugger) :
@@ -637,18 +637,17 @@ struct CommandLoadExec : public Console::SynchronousCommand {
     }
 
     void
-    display_usage (const std::vector<UString>&, Console::Stream &a_stream) const
+    display_usage (const std::vector<UString>&, std::ostream &a_stream) const
     {
         a_stream << "Usage:\n"
                  << "\tload-exec PROGRAM_NAME [ARG1 ARG2 ...]\n";
     }
 
     void
-    execute (const std::vector<UString> &a_argv, Console::Stream &a_stream)
+    execute (const std::vector<UString> &a_argv, std::ostream &a_stream)
     {
         std::vector<UString> argv;
-        if (!a_argv.size ())
-        {
+        if (!a_argv.size ()) {
             display_usage (argv, a_stream);
             return;
         }
@@ -672,7 +671,7 @@ struct CommandLoadExec : public Console::SynchronousCommand {
     }
 };
 
-struct CommandRun : public Console::SynchronousCommand {
+struct CommandRun : public CmdInterpreter::SynchronousCommand {
     IDebugger &debugger;
 
     CommandRun (IDebugger &a_debugger) :
@@ -688,13 +687,23 @@ struct CommandRun : public Console::SynchronousCommand {
     }
 
     void
-    execute (const std::vector<UString>&, Console::Stream&)
+    execute (const std::vector<UString>&, std::ostream&)
     {
-        debugger.run ();
+        debugger.run (NEMIVER_CMD_INTERPRETER_COOKIE);
     }
 };
 
-struct DBGConsole::Priv {
+struct CmdInterpreter::Priv {
+    std::vector<CmdInterpreter::Command*> command_vector;
+    std::map<std::string, CmdInterpreter::Command&> commands;
+    std::queue<UString> command_queue;
+    std::ostream &output_stream;
+    sigc::signal<void> ready_signal;
+
+    sigc::connection cmd_execution_done_connection;
+    sigc::connection cmd_execution_timeout_connection;
+    bool done_signal_received;
+
     DebuggingData data;
 
     CommandContinue cmd_continue;
@@ -712,7 +721,9 @@ struct DBGConsole::Priv {
     CommandLoadExec cmd_load_exec;
     CommandRun cmd_run;
 
-    Priv (IDebugger &a_debugger) :
+    Priv (IDebugger &a_debugger, std::ostream &a_output_stream) :
+        output_stream (a_output_stream),
+        done_signal_received (true),
         data (a_debugger),
         cmd_continue (a_debugger),
         cmd_next (a_debugger),
@@ -733,6 +744,15 @@ struct DBGConsole::Priv {
     }
 
     void
+    init_signals ()
+    {
+        data.debugger.stopped_signal ().connect
+            (sigc::mem_fun (*this, &CmdInterpreter::Priv::on_stopped_signal));
+        data.debugger.files_listed_signal ().connect (sigc::mem_fun
+            (*this, &CmdInterpreter::Priv::on_files_listed_signal));
+    }
+
+    void
     on_stopped_signal (IDebugger::StopReason,
                        bool,
                        const IDebugger::Frame &a_frame,
@@ -750,19 +770,112 @@ struct DBGConsole::Priv {
         data.source_files = a_files;
     }
 
-    void
-    init_signals ()
+    bool
+    execute_command (const UString &a_buffer)
     {
-        data.debugger.stopped_signal ().connect
-            (sigc::mem_fun (*this, &DBGConsole::Priv::on_stopped_signal));
-        data.debugger.files_listed_signal ().connect (sigc::mem_fun
-            (*this, &DBGConsole::Priv::on_files_listed_signal));
+        std::string command_name;
+        std::vector<UString> cmd_argv;
+
+        std::istringstream is (a_buffer);
+        is >> command_name;
+
+        while (is.good ()) {
+            std::string arg;
+            is >> arg;
+            cmd_argv.push_back (arg);
+        }
+
+        if (command_name.empty ()) {
+            ready_signal.emit ();
+            return false;
+        }
+
+        if (!commands.count (command_name)) {
+            output_stream << "Undefined command: " << command_name << ".\n";
+            ready_signal.emit ();
+            return false;
+        }
+
+        Command &command = commands.at (command_name);
+        done_signal_received = false;
+        cmd_execution_done_connection = command.done_signal ().connect
+            (sigc::mem_fun (*this, &CmdInterpreter::Priv::on_done_signal));
+        commands.at (command_name) (cmd_argv, output_stream);
+        cmd_execution_timeout_connection =
+            Glib::signal_timeout().connect_seconds (sigc::mem_fun
+                (*this, &CmdInterpreter::Priv::on_cmd_execution_timeout_signal),
+            COMMAND_EXECUTION_TIMEOUT_IN_SECONDS);
+
+        return true;
+    }
+
+    bool
+    on_cmd_execution_timeout_signal ()
+    {
+        NEMIVER_TRY
+        on_done_signal ();
+        NEMIVER_CATCH_NOX
+
+        return true;
+    }
+
+    void
+    on_done_signal ()
+    {
+        NEMIVER_TRY
+
+        if (done_signal_received) {
+            return;
+        }
+
+        done_signal_received = true;
+        cmd_execution_done_connection.disconnect ();
+        cmd_execution_timeout_connection.disconnect ();
+
+        if (command_queue.size ()) {
+            process_command_queue ();
+        } else {
+            ready_signal.emit ();
+        }
+
+        NEMIVER_CATCH_NOX
+    }
+
+    void
+    process_command_queue ()
+    {
+        bool is_command_launched_successfully = false;
+        while (!is_command_launched_successfully && command_queue.size ()) {
+            NEMIVER_TRY
+            UString command = command_queue.front ();
+            command_queue.pop ();
+            is_command_launched_successfully = execute_command (command);
+            NEMIVER_CATCH_NOX
+        }
+    }
+
+    void
+    queue_command (const UString &a_command)
+    {
+        NEMIVER_TRY
+
+        if (a_command.empty ()) {
+            ready_signal.emit ();
+            return;
+        }
+
+        command_queue.push (a_command);
+        if (command_queue.size () == 1 && done_signal_received) {
+            process_command_queue ();
+        }
+
+        NEMIVER_CATCH_NOX
     }
 };
 
-DBGConsole::DBGConsole (int a_fd, IDebugger &a_debugger) :
-    Console (a_fd),
-    m_priv (new Priv (a_debugger))
+CmdInterpreter::CmdInterpreter (IDebugger &a_debugger,
+                                std::ostream &a_output_stream) :
+    m_priv (new Priv (a_debugger, a_output_stream))
 {
     register_command (m_priv->cmd_continue);
     register_command (m_priv->cmd_next);
@@ -780,29 +893,82 @@ DBGConsole::DBGConsole (int a_fd, IDebugger &a_debugger) :
     register_command (m_priv->cmd_run);
 }
 
+CmdInterpreter::~CmdInterpreter ()
+{
+}
+
 void
-DBGConsole::current_file_path (const UString &a_file_path)
+CmdInterpreter::register_command (CmdInterpreter::Command &a_command)
+{
+    THROW_IF_FAIL (m_priv);
+
+    if (m_priv->commands.count (a_command.name ())) {
+        LOG ("Command '" << a_command.name () << "' is already registered in"
+             " the console. The previous command will be overwritten");
+    }
+
+    m_priv->commands.insert (std::make_pair<std::string, Command&>
+        (a_command.name (), a_command));
+    m_priv->command_vector.push_back (&a_command);
+
+    const char **aliases = a_command.aliases ();
+    for (int i = 0; aliases && aliases[i]; i++) {
+        if (m_priv->commands.count (aliases[i])) {
+            LOG ("Command '" << aliases[i] << "' is already registered in"
+                 " the console. The previous command will be overwritten");
+        }
+        m_priv->commands.insert (std::make_pair<std::string, Command&>
+            (aliases[i], a_command));
+    }
+}
+
+void
+CmdInterpreter::current_file_path (const UString &a_file_path)
 {
     THROW_IF_FAIL (m_priv);
     m_priv->data.current_file_path = a_file_path;
 }
 
 const UString&
-DBGConsole::current_file_path () const
+CmdInterpreter::current_file_path () const
 {
     THROW_IF_FAIL (m_priv);
     return m_priv->data.current_file_path;
 }
 
-DBGConsole::~DBGConsole ()
-{
-}
-
 sigc::signal<void, UString>&
-DBGConsole::file_opened_signal () const
+CmdInterpreter::file_opened_signal () const
 {
     THROW_IF_FAIL (m_priv);
     return m_priv->cmd_open.file_opened_signal;
+}
+
+sigc::signal<void>&
+CmdInterpreter::ready_signal () const
+{
+    THROW_IF_FAIL (m_priv);
+    return m_priv->ready_signal;
+}
+
+const std::vector<CmdInterpreter::Command*>&
+CmdInterpreter::commands() const
+{
+    THROW_IF_FAIL (m_priv);
+    return m_priv->command_vector;
+}
+
+void
+CmdInterpreter::execute_command (const UString &a_command)
+{
+    THROW_IF_FAIL (m_priv);
+    m_priv->queue_command (a_command);
+}
+
+bool
+CmdInterpreter::ready () const
+{
+    THROW_IF_FAIL (m_priv);
+    return m_priv->done_signal_received && !m_priv->command_queue.size ();
 }
 
 NEMIVER_END_NAMESPACE(nemiver)

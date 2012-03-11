@@ -53,7 +53,7 @@
 #include "common/nmv-str-utils.h"
 #include "common/nmv-address.h"
 #include "common/nmv-loc.h"
-#include "nmv-dbg-console.h"
+#include "nmv-console.h"
 #include "nmv-sess-mgr.h"
 #include "nmv-dbg-perspective.h"
 #include "nmv-source-editor.h"
@@ -97,6 +97,7 @@
 #include "nmv-dbg-perspective-dynamic-layout.h"
 #endif // WITH_DYNAMICLAYOUT
 #include "nmv-layout-manager.h"
+#include "nmv-cmd-interpreter.h"
 
 using namespace std;
 using namespace nemiver::common;
@@ -744,7 +745,7 @@ public:
 
     Gtk::ScrolledWindow& get_local_vars_inspector_scrolled_win ();
 
-    Terminal& console_terminal ();
+    Console& dbg_console ();
 
     Gtk::Box& console_box ();
 
@@ -906,8 +907,7 @@ struct DBGPerspective::Priv {
     Path2MonitorMap path_2_monitor_map;
     SafePtr<LocalVarsInspector> variables_editor;
     SafePtr<Gtk::ScrolledWindow> variables_editor_scrolled_win;
-    SafePtr<Terminal> console_terminal;
-    SafePtr<DBGConsole> dbg_console;
+    SafePtr<Console> dbg_console;
     SafePtr<Gtk::Box> console_box;
     SafePtr<Terminal> terminal;
     SafePtr<Gtk::Box> terminal_box;
@@ -1780,8 +1780,8 @@ DBGPerspective::on_switch_page_signal (Gtk::Widget *a_page,
     if (iter != nil) {
         SourceEditor *editor = get_current_source_editor ();
         if (editor) {
-            THROW_IF_FAIL (m_priv->dbg_console);
-            m_priv->dbg_console->current_file_path (editor->get_path ());
+            dbg_console ().command_interpreter ().current_file_path
+                (editor->get_path ());
         }
     }
     NEMIVER_CATCH
@@ -3716,11 +3716,6 @@ DBGPerspective::init_body ()
         (sigc::mem_fun (this, &DBGPerspective::on_notebook_tabs_reordered));
 #endif
 
-    IDebuggerSafePtr& dbg = debugger ();
-    THROW_IF_FAIL (dbg);
-    m_priv->dbg_console.reset
-                (new DBGConsole (console_terminal ().slave_fd (), *dbg));
-
     UString layout = DBG_PERSPECTIVE_DEFAULT_LAYOUT;
     NEMIVER_TRY
     conf_mgr.get_key_value (CONF_KEY_DBG_PERSPECTIVE_LAYOUT, layout);
@@ -3769,9 +3764,8 @@ DBGPerspective::init_signals ()
     m_priv->layout_mgr.layout_changed_signal ().connect (sigc::mem_fun
             (*this, &DBGPerspective::on_layout_changed));
 
-    THROW_IF_FAIL (m_priv->dbg_console);
-    m_priv->dbg_console->file_opened_signal ().connect (sigc::mem_fun
-        (*this, &DBGPerspective::on_file_opened));
+    dbg_console ().command_interpreter ().file_opened_signal ().connect
+        (sigc::mem_fun (*this, &DBGPerspective::on_file_opened));
 }
 
 /// Connect slots (callbacks) to the signals emitted by the
@@ -5724,10 +5718,7 @@ DBGPerspective::session_manager ()
 void
 DBGPerspective::execute_command_file (const UString &a_command_file)
 {
-    THROW_IF_FAIL (m_priv);
-    THROW_IF_FAIL (m_priv->dbg_console);
-
-    m_priv->dbg_console->execute_command_file (a_command_file);
+    dbg_console ().execute_command_file (a_command_file);
 }
 
 void
@@ -8063,22 +8054,24 @@ DBGPerspective::get_local_vars_inspector_scrolled_win ()
     return *m_priv->variables_editor_scrolled_win;
 }
 
-Terminal&
-DBGPerspective::console_terminal ()
+Console&
+DBGPerspective::dbg_console ()
 {
     THROW_IF_FAIL (m_priv);
-    if (!m_priv->console_terminal) {
+    if (!m_priv->dbg_console) {
         string relative_path = Glib::build_filename ("menus",
                                                      "terminalmenu.xml");
         string absolute_path;
         THROW_IF_FAIL (build_absolute_resource_path
             (Glib::filename_to_utf8 (relative_path), absolute_path));
 
-        m_priv->console_terminal.reset (new Terminal
-            (absolute_path, workbench ().get_ui_manager ()));
+        IDebuggerSafePtr dbg = debugger ();
+        THROW_IF_FAIL (dbg);
+        m_priv->dbg_console.reset
+            (new Console (*dbg, absolute_path, workbench ().get_ui_manager ()));
     }
-    THROW_IF_FAIL (m_priv->console_terminal);
-    return *m_priv->console_terminal;
+    THROW_IF_FAIL (m_priv->dbg_console);
+    return *m_priv->dbg_console;
 }
 
 Gtk::Box&
@@ -8090,8 +8083,10 @@ DBGPerspective::console_box ()
         THROW_IF_FAIL (m_priv->console_box);
         Gtk::VScrollbar *scrollbar = Gtk::manage (new Gtk::VScrollbar);
         m_priv->console_box->pack_end (*scrollbar, false, false, 0);
-        m_priv->console_box->pack_start (console_terminal ().widget ());
-        scrollbar->set_adjustment (console_terminal ().adjustment ());
+
+        Terminal &terminal = dbg_console ().terminal ();
+        m_priv->console_box->pack_start (terminal.widget ());
+        scrollbar->set_adjustment (terminal.adjustment ());
     }
     THROW_IF_FAIL (m_priv->console_box);
     return *m_priv->console_box;
