@@ -86,6 +86,7 @@ private:
     void on_contents_menu_item_action ();
     void on_shutting_down_signal ();
     void on_perspective_layout_changed_signal (IPerspectiveSafePtr);
+    void on_perspective_changed ();
     //************************
     //</slots (signal callbacks)>
     //************************
@@ -100,10 +101,11 @@ private:
                                    list<Gtk::Widget*> &a_tbs);
     void add_perspective_body (IPerspectiveSafePtr &a_perspective,
                                Gtk::Widget *a_body);
+    void add_perspective_to_perspective_selector
+        (IPerspectiveSafePtr &a_perspective);
     bool remove_perspective_body (IPerspectiveSafePtr &a_perspective);
     void remove_all_perspective_bodies ();
     void disconnect_all_perspective_signals ();
-    void select_perspective (IPerspectiveSafePtr &a_perspective);
 
     void save_window_geometry ();
 
@@ -118,8 +120,10 @@ private:
 public:
     Workbench (DynamicModule *a_dynmod);
     virtual ~Workbench ();
+    void load_perspectives ();
     void do_init (Gtk::Main &a_main);
     void do_init (IConfMgrSafePtr &);
+    void select_perspective (IPerspectiveSafePtr &a_perspective);
     void shut_down ();
     Glib::RefPtr<Gtk::ActionGroup> get_default_action_group ();
     Glib::RefPtr<Gtk::ActionGroup> get_debugger_ready_action_group ();
@@ -128,7 +132,8 @@ public:
     Gtk::Window& get_root_window ();
     void set_title_extension (const UString &a_str);
     Glib::RefPtr<Gtk::UIManager>& get_ui_manager () ;
-    IPerspective* get_perspective (const UString &a_name);
+    IPerspectiveSafePtr get_perspective (const UString &a_name);
+    std::list<IPerspectiveSafePtr> perspectives () const;
     void set_configuration_manager (IConfMgrSafePtr &);
     IConfMgrSafePtr get_configuration_manager () ;
     Glib::RefPtr<Glib::MainContext> get_main_context () ;
@@ -145,6 +150,7 @@ struct Workbench::Priv {
     Gtk::Widget *menubar;
     Gtk::Notebook *toolbar_container;
     Gtk::Notebook *bodies_container;
+    Gtk::ComboBoxText *persp_selector_combobox;
     PluginManagerSafePtr plugin_manager;
     list<IPerspectiveSafePtr> perspectives;
     map<IPerspective*, int> toolbars_index_map;
@@ -153,6 +159,7 @@ struct Workbench::Priv {
     IConfMgrSafePtr conf_mgr;
     sigc::signal<void> shutting_down_signal;
     UString base_title;
+    std::list<Gtk::UIManager::ui_merge_id> perspective_menubar_merge_ids;
 
     Priv () :
         initialized (false),
@@ -193,6 +200,28 @@ Workbench::query_for_shutdown ()
 //*********************
 //signal slots methods
 //*********************
+void
+Workbench::on_perspective_changed ()
+{
+    NEMIVER_TRY;
+
+    THROW_IF_FAIL (m_priv);
+    THROW_IF_FAIL (m_priv->persp_selector_combobox);
+
+    UString name = m_priv->persp_selector_combobox->get_active_text ();
+    std::list<IPerspectiveSafePtr>::iterator iter;
+    for (iter = m_priv->perspectives.begin ();
+         iter != m_priv->perspectives.end ();
+         ++iter) {
+        if ((*iter)->name () == name) {
+            select_perspective (*iter);
+            return;
+        }
+    }
+
+    NEMIVER_CATCH;
+}
+
 bool
 Workbench::on_delete_event (GdkEventAny* a_event)
 {
@@ -346,6 +375,60 @@ Workbench::do_init (IConfMgrSafePtr &a_conf_mgr)
     set_configuration_manager (a_conf_mgr);
 }
 
+void
+Workbench::load_perspectives ()
+{
+    THROW_IF_FAIL (m_priv);
+
+    DynamicModule::Loader *loader =
+        get_dynamic_module ().get_module_loader ();
+    THROW_IF_FAIL (loader);
+
+    DynamicModuleManager *dynmod_manager =
+        loader->get_dynamic_module_manager ();
+    THROW_IF_FAIL (dynmod_manager);
+
+    m_priv->plugin_manager =
+        PluginManagerSafePtr (new PluginManager (*dynmod_manager));
+    THROW_IF_FAIL (m_priv->plugin_manager);
+
+    NEMIVER_TRY;
+
+    std::map<UString, PluginSafePtr>::const_iterator plugin_iter;
+    Plugin::EntryPointSafePtr entry_point;
+    IPerspectiveSafePtr perspective;
+
+    m_priv->plugin_manager->load_plugins ();
+
+    //**************************************************************
+    //store the list of perspectives we may have loaded as plugins,
+    //and init each of them.
+    //**************************************************************
+    for (plugin_iter = m_priv->plugin_manager->plugins_map ().begin ();
+         plugin_iter != m_priv->plugin_manager->plugins_map ().end ();
+         ++plugin_iter) {
+         LOG_D ("plugin '"
+                << plugin_iter->second->descriptor ()->name ()
+                << "' refcount: "
+                << (int) plugin_iter->second->get_refcount (),
+                "refcount-domain");
+        if (plugin_iter->second && plugin_iter->second->entry_point_ptr ()) {
+            entry_point = plugin_iter->second->entry_point_ptr ();
+            perspective = entry_point.do_dynamic_cast<IPerspective> ();
+            if (perspective) {
+                m_priv->perspectives.push_front (perspective);
+                LOG_D ("perspective '"
+                       << perspective->get_perspective_identifier ()
+                       << "' refcount: "
+                       << (int) perspective->get_refcount (),
+                       "refcount-domain");
+            }
+        }
+    }
+
+    NEMIVER_CATCH;
+}
+
 /// Initialize the workbench by doing all the graphical plumbling
 /// needed to setup the perspectives held by this workbench.  Calling
 /// this function is mandatory prior to using the workbench.
@@ -355,14 +438,6 @@ void
 Workbench::do_init (Gtk::Main &a_main)
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD;
-
-    DynamicModule::Loader *loader =
-        get_dynamic_module ().get_module_loader ();
-    THROW_IF_FAIL (loader);
-
-    DynamicModuleManager *dynmod_manager =
-        loader->get_dynamic_module_manager ();
-    THROW_IF_FAIL (dynmod_manager);
 
     m_priv->main = &a_main;
 
@@ -394,15 +469,8 @@ Workbench::do_init (Gtk::Main &a_main)
 
     m_priv->initialized = true;
 
-    m_priv->plugin_manager =
-        PluginManagerSafePtr (new PluginManager (*dynmod_manager));
-
     NEMIVER_TRY
-        m_priv->plugin_manager->load_plugins ();
-
-        map<UString, PluginSafePtr>::const_iterator plugin_iter;
         IPerspectiveSafePtr perspective;
-        Plugin::EntryPointSafePtr entry_point;
         list<Gtk::Widget*> toolbars;
 
         //**************************************************************
@@ -410,41 +478,31 @@ Workbench::do_init (Gtk::Main &a_main)
         //and init each of them.
         //**************************************************************
         IWorkbench *workbench = dynamic_cast<IWorkbench*> (this);
-        for (plugin_iter = m_priv->plugin_manager->plugins_map ().begin ();
-             plugin_iter != m_priv->plugin_manager->plugins_map ().end ();
-             ++plugin_iter) {
-             LOG_D ("plugin '"
-                    << plugin_iter->second->descriptor ()->name ()
-                    << "' refcount: "
-                    << (int) plugin_iter->second->get_refcount (),
-                    "refcount-domain");
-            if (plugin_iter->second && plugin_iter->second->entry_point_ptr ()) {
-                entry_point = plugin_iter->second->entry_point_ptr ();
-                perspective = entry_point.do_dynamic_cast<IPerspective> ();
-                if (perspective) {
-                    m_priv->perspectives.push_front (perspective);
-                    perspective->do_init (workbench);
-                    perspective->layout_changed_signal ().connect
-                        (sigc::bind<IPerspectiveSafePtr> (sigc::mem_fun
-                            (*this,
-                            &Workbench::on_perspective_layout_changed_signal),
-                        perspective));
-                    perspective->edit_workbench_menu ();
-                    toolbars.clear ();
-                    perspective->get_toolbars (toolbars);
-                    add_perspective_toolbars (perspective, toolbars);
-                    add_perspective_body (perspective, perspective->get_body ());
-                    LOG_D ("perspective '"
-                           << perspective->get_perspective_identifier ()
-                           << "' refcount: "
-                           << (int) perspective->get_refcount (),
-                           "refcount-domain");
-                }
+        std::list<IPerspectiveSafePtr>::iterator iter;
+        for (iter = m_priv->perspectives.begin ();
+             iter != m_priv->perspectives.end ();
+             ++iter) {
+            perspective = *iter;
+            if (perspective) {
+                perspective->do_init (workbench);
+                perspective->layout_changed_signal ().connect
+                    (sigc::bind<IPerspectiveSafePtr> (sigc::mem_fun
+                        (*this,
+                        &Workbench::on_perspective_layout_changed_signal),
+                    perspective));
+                toolbars.clear ();
+                perspective->get_toolbars (toolbars);
+                add_perspective_to_perspective_selector (perspective);
+                add_perspective_toolbars (perspective, toolbars);
+                add_perspective_body (perspective, perspective->get_body ());
             }
         }
 
         if (!m_priv->perspectives.empty ()) {
-            select_perspective (*m_priv->perspectives.begin ());
+            perspective = *m_priv->perspectives.begin ();
+            THROW_IF_FAIL (perspective);
+            m_priv->persp_selector_combobox->set_active_text
+                (perspective->name ());
         }
     NEMIVER_CATCH
 }
@@ -514,7 +572,14 @@ Workbench::get_ui_manager ()
     return m_priv->ui_manager;
 }
 
-IPerspective*
+std::list<IPerspectiveSafePtr>
+Workbench::perspectives () const
+{
+    THROW_IF_FAIL (m_priv);
+    return m_priv->perspectives;
+}
+
+IPerspectiveSafePtr
 Workbench::get_perspective (const UString &a_name)
 {
     list<IPerspectiveSafePtr>::const_iterator iter;
@@ -522,11 +587,11 @@ Workbench::get_perspective (const UString &a_name)
          iter != m_priv->perspectives.end ();
          ++iter) {
         if ((*iter)->descriptor ()->name () == a_name) {
-            return iter->get ();
+            return *iter;
         }
     }
-    LOG_ERROR ("could not find perspective: '" << a_name << "'");
-    return 0;
+
+    return IPerspectiveSafePtr ();
 }
 
 /// Set the configuration manager
@@ -772,6 +837,13 @@ Workbench::init_toolbar ()
     m_priv->toolbar_container =
         ui_utils::get_widget_from_gtkbuilder<Gtk::Notebook> (m_priv->builder,
                                                         "toolbarcontainer");
+
+    m_priv->persp_selector_combobox =
+        ui_utils::get_widget_from_gtkbuilder<Gtk::ComboBoxText>
+            (m_priv->builder, "perspectiveselector");
+    m_priv->persp_selector_combobox->set_entry_text_column (0);
+    m_priv->persp_selector_combobox->signal_changed ().connect (sigc::mem_fun
+        (*this, &Workbench::on_perspective_changed));
 }
 
 void
@@ -803,6 +875,18 @@ Workbench::add_perspective_toolbars (IPerspectiveSafePtr &a_perspective,
                     m_priv->toolbar_container->insert_page (*box, -1);
 
     box.release ();
+}
+
+void
+Workbench::add_perspective_to_perspective_selector
+    (IPerspectiveSafePtr &a_perspective)
+{
+    THROW_IF_FAIL (m_priv);
+    THROW_IF_FAIL (a_perspective);
+    THROW_IF_FAIL (m_priv->persp_selector_combobox);
+
+    m_priv->persp_selector_combobox->append
+        (a_perspective->name ());
 }
 
 void
@@ -923,6 +1007,7 @@ Workbench::select_perspective (IPerspectiveSafePtr &a_perspective)
     THROW_IF_FAIL (m_priv);
     THROW_IF_FAIL (m_priv->toolbar_container);
     THROW_IF_FAIL (m_priv->bodies_container);
+    THROW_IF_FAIL (a_perspective);
 
     map<IPerspective*, int>::const_iterator iter, nil;
     int toolbar_index=0, body_index=0;
@@ -939,9 +1024,24 @@ Workbench::select_perspective (IPerspectiveSafePtr &a_perspective)
         body_index = iter->second;
     }
 
+    std::list<Gtk::UIManager::ui_merge_id>::iterator merge_id;
+    for (merge_id = m_priv->perspective_menubar_merge_ids.begin ();
+         merge_id != m_priv->perspective_menubar_merge_ids.end ();
+         ++merge_id) {
+        m_priv->ui_manager->remove_ui (*merge_id);
+    }
+    m_priv->perspective_menubar_merge_ids =
+        a_perspective->edit_workbench_menu ();
+
     m_priv->toolbar_container->set_current_page (toolbar_index);
 
     m_priv->bodies_container->set_current_page (body_index);
+
+    UString name = m_priv->persp_selector_combobox->get_active_text ();
+    if (a_perspective->name () != name) {
+        m_priv->persp_selector_combobox->set_active_text
+            (a_perspective->name ());
+    }
 }
 
 class WorkbenchModule : public DynamicModule {

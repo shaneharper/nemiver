@@ -65,6 +65,16 @@ protected:
 
 public:
 
+    virtual bool process_gui_options (int a_argc, char **a_argv) = 0;
+
+    virtual bool process_options (GOptionContext *a_context,
+                                  int a_argc,
+                                  char **a_argv) = 0;
+
+    virtual GOptionGroup* option_group () const = 0;
+
+    virtual const UString& name () const = 0;
+
     /// initialize the perspective within the context of
     /// of the workbench that loads it.
     /// \param a_workbench, the workbench that loaded the
@@ -92,26 +102,7 @@ public:
     /// This method is only called once, during the
     /// perspective's initialisation time,
     /// by the workbench.
-    virtual void edit_workbench_menu () = 0;
-
-    /// \brief open a source file from a url
-    /// \param a_uri the uri of the file to open
-    /// \param a_cur_line the line to flag as being the current exceution line
-    /// if set to -1, this parameter is ignored.
-    virtual bool open_file (const UString &a_uri, int a_cur_line=-1) = 0;
-
-    /// \brief open a source file
-    ///
-    /// Let the user choose the set of files to open
-    /// via a file chooser dialog and open them.
-    virtual void open_file () = 0;
-
-    /// \brief close the currently selected file
-    virtual void close_current_file () = 0;
-
-    /// \brief closes a file
-    /// \param a_uri the uri that identifies the file to close
-    virtual void close_file (const UString &a_uri) = 0;
+    virtual std::list<Gtk::UIManager::ui_merge_id> edit_workbench_menu () = 0;
 
     /// \brief load a menu file
     /// \param a_filename the file name of the menu file.

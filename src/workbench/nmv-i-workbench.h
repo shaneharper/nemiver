@@ -69,6 +69,7 @@ using nemiver::common::UString;
 
 class IWorkbench;
 typedef SafePtr<IWorkbench, ObjectRef, ObjectUnref> IWorkbenchSafePtr;
+typedef SafePtr<IPerspective, ObjectRef, ObjectUnref> IPerspectiveSafePtr;
 
 /// \brief the interface of the Workbench.
 /// The workbench is what you see graphically when you use
@@ -136,8 +137,14 @@ public:
     /// \return the Gtk::UIManager of the workbench
     virtual Glib::RefPtr<Gtk::UIManager>& get_ui_manager () = 0;
 
+    virtual std::list<IPerspectiveSafePtr> perspectives () const = 0;
+
     /// \return the perspective that which name matches a_name
-    virtual IPerspective* get_perspective (const UString &a_name) = 0;
+    virtual IPerspectiveSafePtr get_perspective (const UString &a_name) = 0;
+
+    virtual void select_perspective (IPerspectiveSafePtr &a_perspective) = 0;
+
+    virtual void load_perspectives () = 0;
 
     /// set the configuration manager used by this interface
     virtual void do_init (IConfMgrSafePtr &) = 0;

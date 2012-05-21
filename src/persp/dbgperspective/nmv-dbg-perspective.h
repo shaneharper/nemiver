@@ -79,7 +79,7 @@ public:
 
     virtual IWorkbench& get_workbench () = 0;
 
-    virtual void edit_workbench_menu () = 0;
+    virtual std::list<Gtk::UIManager::ui_merge_id> edit_workbench_menu () = 0;
 
     virtual void open_file () = 0;
 
@@ -185,6 +185,8 @@ public:
     virtual sigc::signal<void, bool>& activated_signal () = 0;
 
     virtual sigc::signal<void>& layout_changed_signal () = 0;
+
+    virtual const UString& name () const = 0;
 
     virtual bool agree_to_shutdown () = 0;
 };//end class IDBGPerspective

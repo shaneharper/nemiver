@@ -147,6 +147,138 @@ const Gtk::StockID STOCK_STEP_OUT (STEP_OUT);
 
 const char *PROG_ARG_SEPARATOR = "#DUMMY-SEP007#";
 
+static gchar *gv_env_vars = 0;
+static gchar *gv_process_to_attach_to = 0;
+static bool gv_list_sessions = false;
+static bool gv_purge_sessions = false;
+static int gv_execute_session = 0;
+static bool gv_last_session = false;
+static bool gv_log_debugger_output = false;
+static bool gv_use_launch_terminal = false;
+static gchar *gv_remote = 0;
+static gchar *gv_solib_prefix = 0;
+static gchar *gv_gdb_binary_filepath = 0;
+static gchar *gv_core_path = 0;
+static bool gv_just_load = false;
+
+static const GOptionEntry entries[] =
+{
+    {
+        "env",
+        0,
+        0,
+        G_OPTION_ARG_STRING,
+        &gv_env_vars,
+        _("Set the environment of the program to debug"),
+        "<\"var0=val0 var1=val1 var2=val2 ...\">"
+    },
+    {
+        "attach",
+        0,
+        0,
+        G_OPTION_ARG_STRING,
+        &gv_process_to_attach_to,
+        _("Attach to a process"),
+        "<pid|process name>"
+    },
+    {
+        "load-core",
+        0,
+        0,
+        G_OPTION_ARG_STRING,
+        &gv_core_path,
+        _("Load a core file"),
+        "</path/to/core/file>"
+    },
+    { "list-sessions",
+      0,
+      0,
+      G_OPTION_ARG_NONE,
+      &gv_list_sessions,
+      _("List the saved debugging sessions"),
+      0
+    },
+    { "purge-sessions",
+      0,
+      0,
+      G_OPTION_ARG_NONE,
+      &gv_purge_sessions,
+      _("Erase the saved debugging sessions"),
+      0
+    },
+    { "session",
+      0,
+      0,
+      G_OPTION_ARG_INT,
+      &gv_execute_session,
+      _("Debug the program that was of session number N"),
+      "<N>"
+    },
+    { "last",
+      0,
+      0,
+      G_OPTION_ARG_NONE,
+      &gv_last_session,
+      _("Execute the last session"),
+      0
+    },
+    { "log-debugger-output",
+      0,
+      0,
+      G_OPTION_ARG_NONE,
+      &gv_log_debugger_output,
+      _("Log the debugger output"),
+      0
+    },
+    { "use-launch-terminal",
+      0,
+      0,
+      G_OPTION_ARG_NONE,
+      &gv_use_launch_terminal,
+      _("Use this terminal as the debugee's terminal"),
+      0
+    },
+    {
+        "remote",
+        0,
+        0,
+        G_OPTION_ARG_STRING,
+        &gv_remote,
+        _("Connect to remote target specified by HOST:PORT"),
+        "<HOST:PORT|serial-line-path>"
+    },
+    {
+        "solib-prefix",
+        0,
+        0,
+        G_OPTION_ARG_STRING,
+        &gv_solib_prefix,
+        _("Where to look for shared libraries loaded by the inferior. "
+          "Use in conjunction with --remote"),
+        "</path/to/prefix>"
+    },
+    {
+        "gdb-binary",
+        0,
+        0,
+        G_OPTION_ARG_STRING,
+        &gv_gdb_binary_filepath,
+        _("Set the path of the GDB binary to use to debug the inferior"),
+        "</path/to/gdb>"
+    },
+    {
+        "just-load",
+        0,
+        0,
+        G_OPTION_ARG_NONE,
+        &gv_just_load,
+        _("Do not set a breakpoint in 'main' "
+          "and do not run the inferior either"),
+        0
+    },
+    {0, 0, 0, (GOptionArg) 0, 0, 0, 0}
+};
+
 class DBGPerspective;
 
 static void
@@ -488,6 +620,14 @@ public:
 
     virtual ~DBGPerspective ();
 
+    GOptionGroup* option_group () const;
+
+    bool process_options (GOptionContext *a_context, int a_argc, char **a_argv);
+
+    bool process_gui_options (int a_argc, char **a_argv);
+
+    const UString& name () const;
+
     void do_init (IWorkbench *a_workbench);
 
     const UString& get_perspective_identifier ();
@@ -500,7 +640,7 @@ public:
 
     IWorkbench& get_workbench ();
 
-    void edit_workbench_menu ();
+    std::list<Gtk::UIManager::ui_merge_id> edit_workbench_menu ();
 
     SourceEditor* create_source_editor (Glib::RefPtr<Gsv::Buffer> &a_source_buf,
                                         bool a_asm_view,
@@ -871,7 +1011,8 @@ struct DBGPerspective::Priv {
     SafePtr<Gtk::ScrolledWindow> thread_list_scrolled_win;
     SafePtr<Gtk::HPaned> call_stack_paned;
     SafePtr<Gtk::HPaned> context_paned;
-   
+    GOptionGroup *option_group;
+
     Glib::RefPtr<Gtk::ActionGroup> default_action_group;
     Glib::RefPtr<Gtk::ActionGroup> target_not_started_action_group;
     Glib::RefPtr<Gtk::ActionGroup> inferior_loaded_action_group;
@@ -881,6 +1022,7 @@ struct DBGPerspective::Priv {
     Glib::RefPtr<Gtk::ActionGroup> debugger_busy_action_group;
     Glib::RefPtr<Gtk::UIManager> ui_manager;
     Glib::RefPtr<Gtk::IconFactory> icon_factory;
+    Gtk::UIManager::ui_merge_id memoryview_merge_id;
     Gtk::UIManager::ui_merge_id menubar_merge_id;
     Gtk::UIManager::ui_merge_id toolbar_merge_id;
     Gtk::UIManager::ui_merge_id contextual_menu_merge_id;
@@ -970,6 +1112,8 @@ struct DBGPerspective::Priv {
         reused_session (false),
         debugger_has_just_run (false),
         debugger_engine_alive (false),
+        option_group (0),
+        memoryview_merge_id (0),
         menubar_merge_id (0),
         toolbar_merge_id (0),
         contextual_menu_merge_id(0),
@@ -993,6 +1137,9 @@ struct DBGPerspective::Priv {
         var_popup_tip_x (0),
         var_popup_tip_y (0)
     {
+        option_group = g_option_group_new
+            ("debugger", _("Debugger"), _("Show debugger options"), 0, 0);
+        g_option_group_add_entries (option_group, entries);
     }
 
     Layout&
@@ -2992,6 +3139,8 @@ DBGPerspective::add_stock_icon (const UString &a_stock_id,
 void
 DBGPerspective::add_perspective_menu_entries ()
 {
+    THROW_IF_FAIL (m_priv);
+
     string relative_path = Glib::build_filename ("menus",
                                                  "menus.xml");
     string absolute_path;
@@ -3014,7 +3163,8 @@ DBGPerspective::add_perspective_menu_entries ()
     relative_path = Glib::build_filename ("menus", "memoryview-menu.xml");
     THROW_IF_FAIL (build_absolute_resource_path
                     (Glib::filename_to_utf8 (relative_path), absolute_path));
-    workbench ().get_ui_manager ()->add_ui_from_file
+    m_priv->memoryview_merge_id =
+        workbench ().get_ui_manager ()->add_ui_from_file
                                 (Glib::filename_to_utf8 (absolute_path));
 #endif // WITH_MEMORYVIEW
 }
@@ -5231,12 +5381,16 @@ DBGPerspective::get_workbench ()
     return workbench ();
 }
 
-void
+std::list<Gtk::UIManager::ui_merge_id>
 DBGPerspective::edit_workbench_menu ()
 {
     CHECK_P_INIT;
 
     add_perspective_menu_entries ();
+    std::list<Gtk::UIManager::ui_merge_id> merge_ids;
+    merge_ids.push_back (m_priv->menubar_merge_id);
+    merge_ids.push_back (m_priv->memoryview_merge_id);
+    return merge_ids;
 }
 
 SourceEditor*
@@ -5335,6 +5489,20 @@ DBGPerspective::open_file ()
         open_file_real (*iter, -1, true);
     }
     bring_source_as_current (*(paths.begin()));
+}
+
+GOptionGroup*
+DBGPerspective::option_group () const
+{
+    THROW_IF_FAIL (m_priv);
+    return m_priv->option_group;
+}
+
+const UString&
+DBGPerspective::name () const
+{
+    static const UString s_name (_("Debugger"));
+    return s_name;
 }
 
 bool
@@ -8026,6 +8194,280 @@ DBGPerspective::debugger ()
     }
     THROW_IF_FAIL (m_priv->debugger);
     return m_priv->debugger;
+}
+
+bool
+DBGPerspective::process_options (GOptionContext *a_context,
+                                 int a_argc,
+                                 char **a_argv)
+{
+    // If the user wants to debug a binary running on a remote target,
+    // make sure she provides us with a local copy of the binary too.
+    if (gv_remote) {
+        if (a_argc < 1 || a_argv[0][0] == '-') {
+            cerr << _("Please provide a local copy of the binary "
+                      "you intend to debug remotely.\n"
+                      "Like this:\n")
+                 << "nemiver --remote=" << gv_remote
+                 << " <binary-copy>\n\n";
+            cerr << _("Otherwise, find below the full set of Nemiver options."
+                      "\n");
+            GCharSafePtr help_message;
+            help_message.reset (g_option_context_get_help
+                (a_context, true, m_priv->option_group));
+            cerr << help_message.get () << std::endl;
+            return false;
+        }
+    }
+
+    // If the user wants to analyse a core dump, make sure she
+    // provides us with a path to the binary that generated the core
+    // dump too.
+    if (gv_core_path) {
+        if (a_argc < 1 || a_argv[0][0] == '-') {
+            cerr << _("Please provide the path to the binary "
+                      "that generated the core file too.\n"
+                      "Like this:\n")
+                 << "nemiver --load-core=\""
+                 << gv_core_path << "\" </path/to/binary>\n\n";
+            cerr << _("Otherwise, find below the full set of Nemiver options."
+                      "\n");
+            GCharSafePtr help_message;
+            help_message.reset (g_option_context_get_help
+                (a_context, true, m_priv->option_group));
+            cerr << help_message.get () << std::endl;
+            return false;
+        }
+    }
+
+    if (gv_log_debugger_output) {
+        LOG_STREAM.enable_domain ("gdbmi-output-domain");
+    }
+
+    if (gv_purge_sessions) {
+        session_manager ().delete_sessions ();
+    }
+
+    if (gv_list_sessions) {
+        session_manager ().load_sessions ();
+        list<ISessMgr::Session>::iterator session_iter;
+        list<ISessMgr::Session>& sessions = session_manager ().sessions ();
+        for (session_iter = sessions.begin ();
+             session_iter != sessions.end ();
+             ++session_iter) {
+            cout << session_iter->session_id ()
+                 << " "
+                 << session_iter->properties ()["sessionname"]
+                 << "\n";
+        }
+        return false;
+    }
+
+    return true;
+}
+
+bool
+DBGPerspective::process_gui_options (int a_argc, char **a_argv)
+{
+    if (gv_process_to_attach_to) {
+        using nemiver::common::IProcMgrSafePtr;
+        using nemiver::common::IProcMgr;
+        int pid = atoi (gv_process_to_attach_to);
+        if (!pid) {
+            IProcMgrSafePtr proc_mgr = IProcMgr::create ();
+            if (!proc_mgr) {
+                cerr << "Could not create proc mgr" << std::endl;
+                return false;
+            }
+            IProcMgr::Process process;
+            if (!proc_mgr->get_process_from_name (gv_process_to_attach_to,
+                                                  process, true)) {
+                cerr << "Could not find any process named '"
+                << gv_process_to_attach_to
+                << "'"
+                << std::endl;
+                return false;
+            }
+            pid = process.pid ();
+        }
+        if (!pid) {
+            cerr << "Could not find any process '"
+                 << gv_process_to_attach_to
+                 << "'"
+                 << std::endl;
+            return false;
+        } else {
+            uses_launch_terminal (gv_use_launch_terminal);
+            attach_to_program (pid);
+        }
+    }
+
+    if (gv_execute_session) {
+        session_manager ().load_sessions ();
+        list<ISessMgr::Session>::iterator session_iter;
+        list<ISessMgr::Session>& sessions = session_manager ().sessions ();
+        bool found_session = false;
+        uses_launch_terminal (gv_use_launch_terminal);
+        for (session_iter = sessions.begin ();
+             session_iter != sessions.end ();
+             ++session_iter) {
+            if (session_iter->session_id () == gv_execute_session) {
+                execute_session (*session_iter);
+                found_session = true;
+                break;
+            }
+        }
+
+        if (!found_session) {
+            cerr << "Could not find session of number "
+                 << gv_execute_session
+                 << "\n";
+            return false;
+        }
+        return true;
+    }
+
+    //execute the last session if one exists
+    if (gv_last_session) {
+        session_manager ().load_sessions ();
+        list<ISessMgr::Session>& sessions = session_manager ().sessions ();
+        if (!sessions.empty ()) {
+            uses_launch_terminal (gv_use_launch_terminal);
+            list<ISessMgr::Session>::iterator session_iter,
+                latest_session_iter;
+            glong time_val = 0;
+            for (session_iter = sessions.begin ();
+                    session_iter != sessions.end ();
+                    ++session_iter) {
+                std::map<UString, UString>::const_iterator map_iter =
+                    session_iter->properties ().find ("lastruntime");
+                if (map_iter != session_iter->properties ().end ()) {
+                    glong new_time = atoi (map_iter->second.c_str ());
+                    if (new_time > time_val) {
+                        time_val = new_time;
+                        latest_session_iter = session_iter;
+                    }
+                }
+            }
+            execute_session (*latest_session_iter);
+        } else {
+            cerr << "Could not find any sessions"
+                 << "\n";
+            return false;
+        }
+        return true;
+    }
+
+    // Load and analyse a core file
+    if (gv_core_path) {
+        UString prog_path = a_argv[0];
+        THROW_IF_FAIL (!prog_path.empty ());
+        load_core_file (prog_path, gv_core_path);
+        return true;
+    }
+
+    vector<UString> prog_args;
+    UString prog_path;
+    // Here, a_argc is the argument count of the inferior program.
+    // It's zero if there is there is no inferior program.
+    // Otherwise it equals the number of arguments to the inferior program + 1
+    if (a_argc > 0)
+        prog_path = a_argv[0];
+    for (int i = 1; i < a_argc; ++i) {
+        prog_args.push_back (Glib::locale_to_utf8 (a_argv[i]));
+    }
+
+    if (gv_gdb_binary_filepath) {
+        char *debugger_full_path = realpath (gv_gdb_binary_filepath, 0);
+        if (debugger_full_path) {
+            if (!debugger ()) {
+                cerr << "Could not get the debugger instance" << std::endl;
+                return false;
+            }
+            debugger ()->set_non_persistent_debugger_path (debugger_full_path);
+            free (debugger_full_path);
+        } else {
+            LOG_ERROR ("Could not resolve the full path of the debugger");
+        }
+    }
+
+    std::map<UString, UString> env;
+    if (gv_env_vars) {
+        std::vector<UString> env_vars =
+            UString (Glib::locale_to_utf8 (gv_env_vars)).split (" ");
+        for (std::vector<UString>::const_iterator it = env_vars.begin ();
+             it != env_vars.end ();
+             ++it) {
+            std::vector<UString> env_var = it->split ("=");
+            if (env_var.size () != 2) {
+                continue;
+            }
+            UString name = env_var[0];
+            name.chomp ();
+            UString value = env_var[1];
+            value.chomp ();
+            LOG_DD ("got env var: " << name << "=" << value);
+            env[name] = value;
+        }
+    }
+
+    if (gv_remote) {
+        // The user asked to connect to a remote target.
+        std::string host;
+        unsigned port = 0;
+        std::string solib_prefix;
+
+        if (gv_solib_prefix) {
+            solib_prefix = gv_solib_prefix;
+        }
+
+        if (nemiver::str_utils::parse_host_and_port (gv_remote, host,
+                                                     port)) {
+            // So it looks like gv_remote has the form
+            // "host:port", so let's try to connect to that.
+            connect_to_remote_target (host, port, prog_path, solib_prefix);
+        } else {
+            // We think gv_remote contains a serial line address.
+            // Let's try to connect via the serial line then.
+            connect_to_remote_target (gv_remote, prog_path, solib_prefix);
+        }
+    } else if (!prog_path.empty ()) {
+        // The user wants to debug a local program
+        uses_launch_terminal (gv_use_launch_terminal);
+        execute_program (prog_path,
+                         prog_args,
+                         env,
+                         /*a_cwd=*/".",
+                         /*a_clone_opened_files=*/false,
+                         /*a_break_in_main_run=*/!gv_just_load);
+    }
+    
+    if (gv_use_launch_terminal) {
+        // So the user wants the inferior to use the terminal Nemiver was
+        // launched from, for input/output.
+        //
+        // Letting the inferior use the terminal from which Nemiver was
+        // launched from implies calling the "set inferior-tty" GDB command,
+        // when we are using the GDB backend.
+        // That command is implemented using the TIOCSCTTY ioctl. It sets the
+        // terminal as the controlling terminal of the inferior process. But that
+        // ioctl requires (among other things) that the terminal shall _not_ be
+        // the controlling terminal of any other process in another process
+        // session already. Otherwise, GDB spits the error:
+        // "GDB: Failed to set controlling terminal: operation not
+        // permitted"
+        // The problem is, Nemiver itself uses that terminal as a
+        // controlling terminal. So Nemiver itself must relinquish its
+        // controlling terminal to avoid letting the ioctl fail.
+        // We do so by calling the setsid function below.
+        // The problem is that setsid will fail with EPERM if Nemiver is
+        // started as a process group leader already.
+        // Trying ioctl (tty_fd, TIOCNOTTY, 0) does not seem to properly
+        // disconnect Nemiver from its terminal either. Sigh.
+        setsid ();
+    }
+
+    return true;
 }
 
 IConfMgr&
