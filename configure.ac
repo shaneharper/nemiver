@@ -386,6 +386,14 @@ NEMIVERDBGPERSP_CFLAGS="$NEMIVERDBGPERSP_CFLAGS $CPPUNIT_CFLAGS"
 AC_SUBST(NEMIVERDBGPERSP_LIBS)
 AC_SUBST(NEMIVERDBGPERSP_CFLAGS)
 
+dnl library dependencies for the nemiver profiling perspective plugin
+PKG_CHECK_MODULES(NEMIVERPROFPERSP, $DEP_UICOMMON)
+NEMIVERPROFPERSP_LIBS="$NEMIVERPROFPERSP_LIBS $CPPUNIT_LIBS"
+NEMIVERPROFPERSP_CFLAGS="$NEMIVERPROFPERSP_CFLAGS $CPPUNIT_CFLAGS"
+
+AC_SUBST(NEMIVERPROFPERSP_LIBS)
+AC_SUBST(NEMIVERPROFPERSP_CFLAGS)
+
 NEMIVER_LIBS="$NEMIVERUICOMMON_LIBS"
 NEMIVER_CFLAGS="$NEMIVERUICOMMON_CFLAGS"
 
@@ -495,6 +503,8 @@ src/Makefile
     src/persp/dbgperspective/icons/Makefile
     src/persp/dbgperspective/sqlscripts/Makefile
     src/persp/dbgperspective/sqlscripts/sqlite/Makefile
+  src/persp/profperspective/Makefile
+  src/persp/profperspective/profperspective.conf
 data/Makefile
     data/icons/Makefile
         data/icons/16x16/Makefile

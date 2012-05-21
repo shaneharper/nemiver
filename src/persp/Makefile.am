@@ -1,4 +1,4 @@
-SUBDIRS=dbgperspective
+SUBDIRS=dbgperspective profperspective
 
 h=$(abs_srcdir)
 

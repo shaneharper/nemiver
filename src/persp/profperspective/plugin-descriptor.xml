@@ -1,0 +1,15 @@
+<plugindescriptor autoactivate="yes" candeactivate="no">
+    <name>profperspective</name>
+    <version>0.0.1</version>
+    <entrypoint>
+        <modulename>profperspective</modulename>
+        <interfacename>IProfPerspective</interfacename>
+    </entrypoint>
+    <dependencies>
+        <plugin>
+            <name>profperspective</name>
+            <version>0.0.1</version>
+        </plugin>
+    </dependencies>
+</plugindescriptor>
+
