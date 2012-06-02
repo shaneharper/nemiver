@@ -1,5 +1,5 @@
 WORKBENCH_STUFF=uicommon workbench persp
-NON_WORKBENCH_STUFF= common dbdimpl langs dbgengine confmgr
+NON_WORKBENCH_STUFF= common dbdimpl langs dbgengine confmgr profengine
 
 if ENABLE_WORKBENCH
 

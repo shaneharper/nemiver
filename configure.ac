@@ -489,6 +489,8 @@ src/Makefile
   src/dbgengine/varwalker.conf
   src/dbgengine/varobjwalker.conf
   src/dbgengine/varlistwalker.conf
+  src/profengine/Makefile
+  src/profengine/perfengine.conf
   src/confmgr/Makefile
   src/confmgr/gconfmgr.conf
   src/confmgr/gsettingsmgr.conf
