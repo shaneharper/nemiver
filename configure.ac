@@ -507,6 +507,8 @@ src/Makefile
     src/persp/dbgperspective/sqlscripts/sqlite/Makefile
   src/persp/profperspective/Makefile
   src/persp/profperspective/profperspective.conf
+    src/persp/profperspective/ui/Makefile
+    src/persp/profperspective/menus/Makefile
 data/Makefile
     data/icons/Makefile
         data/icons/16x16/Makefile

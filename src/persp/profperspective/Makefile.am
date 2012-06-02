@@ -1,3 +1,5 @@
+SUBDIRS=ui menus
+
 h=$(abs_srcdir)
 
 plugin_config_files= \
@@ -15,7 +17,11 @@ plugin_LTLIBRARIES=libprofperspectiveplugin.la
 plugindir=@NEMIVER_PLUGINS_DIR@/$(PLUGIN_NAME)
 sources= \
 $(h)/nmv-prof-perspective.cc \
-$(h)/nmv-prof-perspective.h
+$(h)/nmv-prof-perspective.h \
+$(h)/nmv-call-list.cc \
+$(h)/nmv-call-list.h \
+$(h)/nmv-load-report-dialog.cc \
+$(h)/nmv-load-report-dialog.h
 
 libprofperspectiveplugin_la_SOURCES=$(sources)
 libprofperspectiveplugin_la_LDFLAGS= -module -avoid-version -Wl,--as-needed
@@ -30,5 +36,5 @@ INCLUDES=@NEMIVERPROFPERSP_CFLAGS@ -DENABLE_NLS=1 -DDATADIR=\"${datadir}\" \
 -I$(abs_top_srcdir)/src/uicommon \
 -I$(abs_top_srcdir)/src/workbench \
 -I$(abs_top_srcdir)/src/persp \
--I$(abs_top_srcdir)/src/profperspective
-
+-I$(abs_top_srcdir)/src/profperspective \
+-I$(abs_top_srcdir)/src/profengine
