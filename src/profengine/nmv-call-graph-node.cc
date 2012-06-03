@@ -31,10 +31,10 @@ NEMIVER_BEGIN_NAMESPACE (nemiver)
 struct CallGraphNode::Priv {
     std::list<CallGraphNodeSafePtr> children;
     CallGraphNodeSafePtr parent;
-    unsigned cost;
-    UString filepath;
-    UString function;
-    float percentage;
+    UString command;
+    UString shared_object;
+    UString symbol;
+    float overhead;
 
     Priv () :
         parent (0)
@@ -90,60 +90,60 @@ CallGraphNode::add_child (const CallGraphNodeSafePtr &a_node)
     m_priv->children.push_back (a_node);
 }
 
-float
-CallGraphNode::percentage () const
+const float&
+CallGraphNode::overhead () const
 {
     THROW_IF_FAIL (m_priv);
-    return m_priv->percentage;
+    return m_priv->overhead;
 }
 
 void
-CallGraphNode::percentage (const float &a_percentage)
+CallGraphNode::overhead (const float &a_overhead)
 {
     THROW_IF_FAIL (m_priv);
-    m_priv->percentage = a_percentage;
+    m_priv->overhead = a_overhead;
 }
 
-unsigned
-CallGraphNode::cost () const
+const UString&
+CallGraphNode::symbol () const
 {
     THROW_IF_FAIL (m_priv);
-    return m_priv->cost;
-}
-
-void
-CallGraphNode::cost (unsigned a_cost)
-{
-    THROW_IF_FAIL (m_priv);
-    m_priv->cost = a_cost;
-}
-
-UString&
-CallGraphNode::filepath () const
-{
-    THROW_IF_FAIL (m_priv);
-    return m_priv->filepath;
+    return m_priv->symbol;
 }
 
 void
-CallGraphNode::filepath (const UString &a_filepath)
+CallGraphNode::symbol (const UString &a_symbol)
 {
     THROW_IF_FAIL (m_priv);
-    m_priv->filepath = a_filepath;
+    m_priv->symbol = a_symbol;
 }
 
-UString&
-CallGraphNode::function () const
+const UString&
+CallGraphNode::command () const
 {
     THROW_IF_FAIL (m_priv);
-    return m_priv->function;
+    return m_priv->command;
 }
 
 void
-CallGraphNode::function (const UString &a_function)
+CallGraphNode::command (const UString &a_command)
 {
     THROW_IF_FAIL (m_priv);
-    m_priv->function = a_function;
+    m_priv->command = a_command;
+}
+
+const UString&
+CallGraphNode::shared_object () const
+{
+    THROW_IF_FAIL (m_priv);
+    return m_priv->shared_object;
+}
+
+void
+CallGraphNode::shared_object (const UString &a_shared_object)
+{
+    THROW_IF_FAIL (m_priv);
+    m_priv->shared_object = a_shared_object;
 }
 
 NEMIVER_END_NAMESPACE (nemiver)

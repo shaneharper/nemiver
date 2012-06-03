@@ -49,11 +49,6 @@ struct PerfEngine::Priv {
 
     sigc::signal<void, CallGraphSafePtr> report_done_signal;
 
-/*
-    Glib::RefPtr<Glib::MainContext> event_context;
-    sigc::signal<void> program_exited_signal;
-    sigc::signal<void, const AnnotatedSourceFile&> annotation_done_signal;
-*/
     Priv () :
         perf_pid (0),
         master_pty_fd (0),
@@ -96,16 +91,18 @@ struct PerfEngine::Priv {
     parse_top_level_symbol (std::vector<UString> &a_tokens)
     {
         THROW_IF_FAIL (a_tokens.size ());
-        THROW_IF_FAIL (a_tokens[0].size ());
+        THROW_IF_FAIL (a_tokens[0].size () >= 4);
     
-        float percentage = 0.0;
+        float overhead = 0.0;
         std::istringstream is (a_tokens[0].substr(0, a_tokens[0].size () - 1));
-        is >> percentage;
+        is >> overhead;
 
         CallGraphNodeSafePtr node (new CallGraphNode);
         THROW_IF_FAIL (node);
-        node->percentage (percentage);
-        node->function (a_tokens[a_tokens.size () - 1]);
+        node->overhead (overhead);
+        node->command (a_tokens[1]);
+        node->shared_object (a_tokens[2]);
+        node->symbol (a_tokens[a_tokens.size () - 1]);
         call_graph->add_child (node);
 
         while (call_stack.size ()) {
@@ -140,26 +137,19 @@ struct PerfEngine::Priv {
         }
 
         THROW_IF_FAIL (call_stack.size ());
-        if (a_tokens.size () < 2) {
-            for (size_t i = 0; i < a_tokens[0].size (); i++) {
-                std::cout << std::hex << a_tokens[0][i] << " " << std::endl;
-            }
-            std::cout << std::endl;
-        }
-
         THROW_IF_FAIL (a_tokens.size () >= 2);
         if (a_tokens[a_tokens.size () - 2].find ("--") == std::string::npos) {
             return;
         }
 
-        float percentage = 0.0;
+        float overhead = 0.0;
         std::istringstream is (a_tokens[a_tokens.size () - 2].substr (3));
-        is >> percentage;
+        is >> overhead;
 
         CallGraphNodeSafePtr node (new CallGraphNode);
         THROW_IF_FAIL (node);
-        node->percentage (percentage);
-        node->function (a_tokens[a_tokens.size () - 1]);
+        node->overhead (overhead);
+        node->symbol (a_tokens[a_tokens.size () - 1]);
 
         THROW_IF_FAIL (call_stack.top ());
         call_stack.top ()->add_child (node);

@@ -38,14 +38,18 @@ struct CallListColumns : public Gtk::TreeModel::ColumnRecord
 {
     CallListColumns ()
     {
-        add (function_name);
-        add (usage);
+        add (symbol);
+        add (overhead);
         add (call_node);
+        add (command);
+        add (dso);
     }
 
     Gtk::TreeModelColumn<CallGraphNodeSafePtr> call_node;
-    Gtk::TreeModelColumn<Glib::ustring> function_name;
-    Gtk::TreeModelColumn<float> usage;
+    Gtk::TreeModelColumn<Glib::ustring> symbol;
+    Gtk::TreeModelColumn<float> overhead;
+    Gtk::TreeModelColumn<Glib::ustring> command;
+    Gtk::TreeModelColumn<Glib::ustring> dso;
 };
 
 struct CallList::Priv {
@@ -68,40 +72,18 @@ struct CallList::Priv {
             Gtk::manage (new Gtk::CellRendererProgress);
         THROW_IF_FAIL (renderer);
 
-        treeview.append_column (_("Function"), columns.function_name);
-        int usage_col_id = treeview.append_column (_("Usage"), *renderer);
+        treeview.append_column (_("Symbol"), columns.symbol);
+        treeview.append_column (_("Command"), columns.command);
+        treeview.append_column (_("Shared Object"), columns.dso);
+        int usage_col_id = treeview.append_column (_("Overhead"), *renderer);
         treeview.set_model (store);
-        //treeview.signal_row_activated ().connect
-        //    (sigc::mem_fun (*this, &CallList::Priv::on_signal_row_activated));
 
         Gtk::TreeViewColumn *column = treeview.get_column (usage_col_id - 1);
         if (column) {
-            column->add_attribute (renderer->property_value(), columns.usage);
+            column->add_attribute
+                (renderer->property_value(), columns.overhead);
         }
     }
-
-/*    void
-    on_signal_row_activated (const Gtk::TreeModel::Path &a_path,
-                             Gtk::TreeViewColumn*)
-    {
-        NEMIVER_TRY
-
-        THROW_IF_FAIL (store);
-
-        Gtk::TreeModel::iterator iter = store->get_iter (a_path);
-        if (!iter) {
-            return;
-        }
-
-        CallNodeSafePtr call_node = iter->get_value (columns.call_node);
-        THROW_IF_FAIL (call_node);
-        
-        THROW_IF_FAIL (profiler);
-        profiler->annotate_source_file (call_node->filepath ());
-
-        NEMIVER_CATCH
-    }
-*/
 
     void
     add_node (CallGraphNodeSafePtr a_call_graph_node,
@@ -122,8 +104,10 @@ struct CallList::Priv {
             }
 
             if (row) {
-                (*row)[columns.function_name] = (*iter)->function ();
-                (*row)[columns.usage] = (*iter)->percentage ();
+                (*row)[columns.symbol] = (*iter)->symbol ();
+                (*row)[columns.overhead] = (*iter)->overhead ();
+                (*row)[columns.command] = (*iter)->command ();
+                (*row)[columns.dso] = (*iter)->shared_object ();
                 (*row)[columns.call_node] = *iter;
             }
 

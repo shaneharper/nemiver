@@ -26,6 +26,9 @@
 #include "nmv-prof-perspective.h"
 #include "nmv-ui-utils.h"
 #include "nmv-load-report-dialog.h"
+#include "nmv-call-list.h"
+#include "nmv-spinner-tool-item.h"
+#include "common/nmv-safe-ptr-utils.h"
 
 #include <list>
 #include <glib/gi18n.h>
@@ -33,14 +36,39 @@
 
 NEMIVER_BEGIN_NAMESPACE (nemiver)
 
+using common::DynamicModuleManager;
+using common::GCharSafePtr;
+
+static gchar *gv_report_path = 0;
+
+static const GOptionEntry entries[] =
+{
+    {
+        "load-report",
+        0,
+        0,
+        G_OPTION_ARG_STRING,
+        &gv_report_path,
+        _("Load a report file"),
+        "</path/to/report/file>"
+    },
+    {0, 0, 0, (GOptionArg) 0, 0, 0, 0}
+};
+
 class ProfPerspective : public IProfPerspective {
     //non copyable
     ProfPerspective (const IProfPerspective&);
     ProfPerspective& operator= (const IProfPerspective&);
 
+    IProfilerSafePtr prof;
+    SafePtr<CallList> call_list;
+    SafePtr<SpinnerToolItem> throbber;
+    SafePtr<Gtk::Toolbar> toolbar;
+
     Glib::RefPtr<Gtk::ActionGroup> default_action_group;
     Gtk::HPaned body;
     IWorkbench *workbench;
+    GOptionGroup *opt_group;
 
     sigc::signal<void, bool> signal_activated;
     sigc::signal<void> signal_layout_changed;
@@ -64,36 +92,94 @@ public:
                             const UString &a_widget_name);
     bool agree_to_shutdown ();
     void init_actions ();
+    void init_signals ();
+    void init_toolbar ();
+    void init_body ();
     void load_report_file ();
+    void load_report_file (const UString &a_report_file);
+
     void on_load_report_file_action ();
+    void on_report_done_signal (CallGraphSafePtr a_call_graph);
+
+    IProfilerSafePtr& profiler ();
 
     sigc::signal<void, bool>& activated_signal ();
     sigc::signal<void>& layout_changed_signal ();
 }; // end class ProfPerspective
 
 ProfPerspective::ProfPerspective (DynamicModule *a_dynmod) :
-    IProfPerspective (a_dynmod)
+    IProfPerspective (a_dynmod),
+    workbench (0),
+    opt_group (0)
 {
+    opt_group = g_option_group_new
+        ("profiler", _("Profiler"), _("Show profiler options"), 0, 0);
+    g_option_group_add_entries (opt_group, entries);
 }
 
 GOptionGroup*
 ProfPerspective::option_group () const
 {
-    return 0;
+    return opt_group;
 }
 
 bool
-ProfPerspective::process_options (GOptionContext */*a_context*/,
-                 int /*a_argc*/,
-                 char **/*a_argv*/)
+ProfPerspective::process_options (GOptionContext *a_context,
+                                  int a_argc,
+                                  char **/*a_argv*/)
 {
+    if (a_argc && gv_report_path) {
+        std::cerr << _("You cannot provide a report file and a binary at "
+                       "the same time.\n");
+        GCharSafePtr help_message;
+        help_message.reset (g_option_context_get_help
+            (a_context, true, opt_group));
+        std::cerr << help_message.get () << std::endl;
+        return false;
+    }
+
     return true;
 }
 
 bool
 ProfPerspective::process_gui_options (int /*a_argc*/, char **/*a_argv*/)
 {
+    NEMIVER_TRY
+
+    if (gv_report_path) {
+        load_report_file (gv_report_path);
+    }
+
+    NEMIVER_CATCH
+
     return true;
+}
+
+IProfilerSafePtr&
+ProfPerspective::profiler ()
+{
+    if (!prof) {
+        DynamicModule::Loader *loader =
+            get_workbench ().get_dynamic_module ().get_module_loader ();
+        THROW_IF_FAIL (loader);
+
+        DynamicModuleManager *module_manager =
+                            loader->get_dynamic_module_manager ();
+        THROW_IF_FAIL (module_manager);
+
+        UString debugger_dynmod_name;
+
+        if (debugger_dynmod_name == "") {
+            debugger_dynmod_name = "perfengine";
+        }
+        LOG_DD ("using debugger_dynmod_name: '"
+                << debugger_dynmod_name << "'");
+        prof = module_manager->load_iface<IProfiler>
+            (debugger_dynmod_name, "IProfiler");
+    }
+
+    THROW_IF_FAIL (prof);
+    return prof;
 }
 
 const UString&
@@ -107,7 +193,10 @@ void
 ProfPerspective::do_init (IWorkbench *a_workbench)
 {
     workbench = a_workbench;
+    init_signals ();
+    init_toolbar ();
     init_actions ();
+    init_body ();
 }
 
 const UString&
@@ -118,9 +207,9 @@ ProfPerspective::get_perspective_identifier ()
 }
 
 void
-ProfPerspective::get_toolbars (std::list<Gtk::Widget*> &/*a_tbs*/)
+ProfPerspective::get_toolbars (std::list<Gtk::Widget*> &a_tbs)
 {
-
+    a_tbs.push_back (toolbar.get ());
 }
 
 Gtk::Widget*
@@ -137,12 +226,62 @@ ProfPerspective::get_workbench ()
 }
 
 void
+ProfPerspective::init_toolbar ()
+{
+    throbber.reset (new SpinnerToolItem);
+    toolbar.reset ((new Gtk::Toolbar));
+    THROW_IF_FAIL (toolbar);
+
+    Glib::RefPtr<Gtk::StyleContext> style_context =
+        toolbar->get_style_context ();
+    if (style_context) {
+        style_context->add_class (GTK_STYLE_CLASS_PRIMARY_TOOLBAR);
+    }
+
+    Gtk::SeparatorToolItem *sep = Gtk::manage (new Gtk::SeparatorToolItem);
+    sep->set_draw (false);
+    sep->set_expand (true);
+    toolbar->insert (*sep, -1);
+    toolbar->insert (*throbber, -1);
+    toolbar->show ();
+}
+
+void
+ProfPerspective::init_signals ()
+{
+    THROW_IF_FAIL (profiler ());
+    profiler ()->report_done_signal ().connect (sigc::mem_fun
+        (*this, &ProfPerspective::on_report_done_signal));
+}
+
+void
+ProfPerspective::init_body ()
+{
+    body.show_all ();
+}
+
+void
+ProfPerspective::on_report_done_signal (CallGraphSafePtr a_call_graph)
+{
+    NEMIVER_TRY
+
+    call_list.reset (new CallList (profiler ()));
+    call_list->load_call_graph (a_call_graph);
+    call_list->widget ().show ();
+    body.pack1 (call_list->widget ());
+    body.show_all ();
+
+    THROW_IF_FAIL (throbber);
+    throbber->stop ();
+
+    NEMIVER_CATCH
+}
+
+void
 ProfPerspective::init_actions ()
 {
     Gtk::StockID nil_stock_id ("");
     sigc::slot<void> nil_slot;
-    Glib::RefPtr<Gtk::UIManager> uimanager = get_workbench ().get_ui_manager ();
-    THROW_IF_FAIL (uimanager);
 
     static ui_utils::ActionEntry s_default_action_entries [] = {
         {
@@ -167,10 +306,9 @@ ProfPerspective::init_actions ()
     ui_utils::add_action_entries_to_action_group
         (s_default_action_entries, num_actions, default_action_group);
 
+    Glib::RefPtr<Gtk::UIManager> uimanager = get_workbench ().get_ui_manager ();
+    THROW_IF_FAIL (uimanager);
     uimanager->insert_action_group (default_action_group);
-
-    get_workbench ().get_root_window ().add_accel_group
-        (uimanager->get_accel_group ());
 }
 
 std::list<Gtk::UIManager::ui_merge_id>
@@ -192,6 +330,17 @@ ProfPerspective::edit_workbench_menu ()
 }
 
 void
+ProfPerspective::load_report_file (const UString &a_report_file)
+{
+    THROW_IF_FAIL (!a_report_file.empty ());
+    THROW_IF_FAIL (profiler ());
+    profiler ()->report (a_report_file);
+
+    THROW_IF_FAIL (throbber);
+    throbber->start ();
+}
+
+void
 ProfPerspective::load_report_file ()
 {
     LoadReportDialog dialog (plugin_path ());
@@ -200,6 +349,10 @@ ProfPerspective::load_report_file ()
     if (result != Gtk::RESPONSE_OK) {
         return;
     }
+
+    UString report_file = dialog.report_file ();
+    THROW_IF_FAIL (!report_file.empty ());
+    load_report_file (report_file);
 }
 
 void

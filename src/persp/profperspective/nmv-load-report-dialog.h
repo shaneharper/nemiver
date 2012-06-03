@@ -38,12 +38,14 @@ using nemiver::common::UString;
 using nemiver::common::SafePtr;
 
 class LoadReportDialog : public Dialog {
-    class Priv;
+    struct Priv;
     SafePtr<Priv> m_priv;
 
 public:
     LoadReportDialog (const UString &a_resource_root_path);
     virtual ~LoadReportDialog ();
+
+    UString report_file () const;
 
 };//end class LoadReportDialog
 

@@ -195,7 +195,10 @@ split (const UString &a_string, const UString &a_delim)
     gchar **splited = g_strsplit (buf.get (), a_delim.c_str (), -1);
     try {
         for (gchar **cur = splited; cur && *cur; ++cur) {
-            result.push_back (UString (*cur));
+            UString part = *cur;
+            if (!part.empty ()) {
+                result.push_back (part);
+            }
         }
     } catch (...) {
     }

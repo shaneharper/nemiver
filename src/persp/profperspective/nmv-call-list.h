@@ -38,9 +38,6 @@ NEMIVER_BEGIN_NAMESPACE (nemiver)
 
 using common::SafePtr;
 
-class CallNode;
-typedef CallNode CallTree;
-
 class CallList {
     //non copyable
     CallList (const CallList&);

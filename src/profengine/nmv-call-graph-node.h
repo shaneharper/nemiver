@@ -61,19 +61,17 @@ public:
     const std::list<CallGraphNodeSafePtr>& children () const;
     void add_child (const CallGraphNodeSafePtr&);
 
-    float percentage () const;
-    void percentage (const float&);
+    const float& overhead () const;
+    void overhead (const float&);
 
-    unsigned cost () const;
-    void cost (unsigned);
+    const UString& command () const;
+    void command (const UString&);
 
-    UString& filepath () const;
-    void filepath (const UString &a_filepath);
+    const UString& shared_object () const;
+    void shared_object (const UString&);
 
-    UString& function () const;
-    void function (const UString &a_function);
-
-    
+    const UString& symbol () const;
+    void symbol (const UString&);
 }; // end namespace CallGraphNode
 
 NEMIVER_END_NAMESPACE (nemiver)
