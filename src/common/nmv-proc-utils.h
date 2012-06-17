@@ -36,7 +36,9 @@ bool NEMIVER_API launch_program (const std::vector<UString> &a_args,
                                  int &a_pid,
                                  int &a_master_pty_fd,
                                  int &a_stdout_fd,
-                                 int &a_stderr_fd);
+                                 int &a_stderr_fd,
+                                 const std::vector<UString> &a_environments
+                                     = std::vector<UString> ());
 
 void NEMIVER_API attach_channel_to_loop_context_as_source
                         (Glib::IOCondition a_cond,

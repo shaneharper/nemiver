@@ -67,9 +67,17 @@ public:
     /// @{
     virtual sigc::signal<void, CallGraphSafePtr>
         report_done_signal () const = 0;
+
+    virtual sigc::signal<void, const UString&> record_done_signal () const = 0;
     /// @}
 
     virtual void report (const UString &a_data_file) = 0;
+
+    virtual void record (const UString &a_program_path,
+                         const std::vector<UString> &a_argv) = 0;
+
+//    virtual void attach_to_pid () = 0;
+
 
 };//end IProfiler
 

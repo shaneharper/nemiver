@@ -3,6 +3,8 @@
   <menubar name="MenuBar">
     <menu action="FileMenuAction" name="FileMenu">
         <placeholder name="FileMenuAdditions">
+            <menuitem action="RunExecutableAction"
+                      name="RunExecutableItem"/>
             <menuitem action="LoadReportMenuItemAction"
                       name="LoadReportMenuItem"/>
         </placeholder>

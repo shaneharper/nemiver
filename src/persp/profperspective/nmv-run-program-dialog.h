@@ -1,4 +1,4 @@
-//Author: Fabien Parent
+//Author: Dodji Seketeli
 /*
  *This file is part of the Nemiver project
  *
@@ -22,38 +22,48 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NMV_PERF_ENGINE_H__
-#define __NMV_PERF_ENGINE_H__
+#ifndef __NMV_RUN_PROGRAM_DIALOG_H__
+#define __NMV_RUN_PROGRAM_DIALOG_H__
 
-#include "nmv-i-profiler.h"
+#include <map>
+#include "common/nmv-safe-ptr-utils.h"
+#include "nmv-dialog.h"
 
 NEMIVER_BEGIN_NAMESPACE (nemiver)
 
-class PerfEngine : public IProfiler {
+namespace common {
+class UString;
+}
 
-    PerfEngine (const PerfEngine &);
-    PerfEngine& operator= (const PerfEngine &);
+using nemiver::common::UString;
+using nemiver::common::SafePtr;
+
+class RunProgramDialog : public Dialog {
 
     struct Priv;
     SafePtr<Priv> m_priv;
 
 public:
 
-    PerfEngine (DynamicModule *a_dynmod);
-    virtual ~PerfEngine ();
+    RunProgramDialog (const UString &a_resource_root_path);
 
-    void report (const UString &a_data_file);
+    virtual ~RunProgramDialog ();
 
-    void record (const UString &a_program_path,
-                 const std::vector<UString> &a_argv);
+    UString program_name () const;
+    void program_name (const UString &a_name);
 
-    sigc::signal<void, CallGraphSafePtr> report_done_signal () const;
-    sigc::signal<void> program_exited_signal () const;
-    sigc::signal<void, const UString&> record_done_signal () const;
-}; // end namespace PerfEngine
+    UString arguments () const;
+    void arguments (const UString &a_args);
+
+    UString working_directory () const;
+    void working_directory (const UString &);
+
+    std::map<UString, UString> environment_variables () const;
+    void environment_variables (const std::map<UString, UString> &);
+
+};//end class nemiver
 
 NEMIVER_END_NAMESPACE (nemiver)
 
-#endif /* __NMV_PERF_ENGINE_H__ */
-
+#endif //__NMV_RUN_PROGRAM_DIALOG_H__
 

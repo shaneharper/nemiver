@@ -28,7 +28,9 @@
 #include "nmv-load-report-dialog.h"
 #include "nmv-call-list.h"
 #include "nmv-spinner-tool-item.h"
+#include "nmv-run-program-dialog.h"
 #include "common/nmv-safe-ptr-utils.h"
+#include "common/nmv-str-utils.h"
 
 #include <list>
 #include <glib/gi18n.h>
@@ -97,9 +99,14 @@ public:
     void init_body ();
     void load_report_file ();
     void load_report_file (const UString &a_report_file);
+    void run_executable ();
+    void run_executable (const UString &a_program_name,
+                         const UString &a_arguments);
 
+    void on_run_executable_action ();
     void on_load_report_file_action ();
     void on_report_done_signal (CallGraphSafePtr a_call_graph);
+    void on_record_done_signal (const UString &a_report_file);
 
     IProfilerSafePtr& profiler ();
 
@@ -252,6 +259,9 @@ ProfPerspective::init_signals ()
     THROW_IF_FAIL (profiler ());
     profiler ()->report_done_signal ().connect (sigc::mem_fun
         (*this, &ProfPerspective::on_report_done_signal));
+
+    profiler ()->record_done_signal ().connect (sigc::mem_fun
+        (*this, &ProfPerspective::on_record_done_signal));
 }
 
 void
@@ -278,12 +288,33 @@ ProfPerspective::on_report_done_signal (CallGraphSafePtr a_call_graph)
 }
 
 void
+ProfPerspective::on_record_done_signal (const UString &a_report_path)
+{
+    NEMIVER_TRY
+
+    THROW_IF_FAIL (profiler ());
+    profiler ()->report (a_report_path);
+
+    NEMIVER_CATCH
+}
+
+void
 ProfPerspective::init_actions ()
 {
     Gtk::StockID nil_stock_id ("");
     sigc::slot<void> nil_slot;
 
     static ui_utils::ActionEntry s_default_action_entries [] = {
+        {
+            "RunExecutableAction",
+            nil_stock_id,
+            _("Run Executable..."),
+            _("Execute a program under the profiler"),
+            sigc::mem_fun (*this, &ProfPerspective::on_run_executable_action),
+            ui_utils::ActionEntry::DEFAULT,
+            "",
+            false
+        },
         {
             "LoadReportMenuItemAction",
             nil_stock_id,
@@ -330,6 +361,34 @@ ProfPerspective::edit_workbench_menu ()
 }
 
 void
+ProfPerspective::run_executable ()
+{
+    RunProgramDialog dialog (plugin_path ());
+
+    int result = dialog.run ();
+    if (result != Gtk::RESPONSE_OK) {
+        return;
+    }
+
+    run_executable (dialog.program_name (), dialog.arguments ());
+}
+
+void
+ProfPerspective::run_executable (const UString &a_program_name,
+                                 const UString &a_arguments)
+{
+    std::vector<UString> argv = str_utils::split (a_arguments, " ");
+
+    THROW_IF_FAIL (!a_program_name.empty ());
+    THROW_IF_FAIL (profiler ());
+
+    profiler ()->record (a_program_name, argv);
+
+    THROW_IF_FAIL (throbber);
+    throbber->start ();
+}
+
+void
 ProfPerspective::load_report_file (const UString &a_report_file)
 {
     THROW_IF_FAIL (!a_report_file.empty ());
@@ -361,6 +420,16 @@ ProfPerspective::on_load_report_file_action ()
     NEMIVER_TRY
 
     load_report_file ();
+
+    NEMIVER_CATCH
+}
+
+void
+ProfPerspective::on_run_executable_action ()
+{
+    NEMIVER_TRY
+
+    run_executable ();
 
     NEMIVER_CATCH
 }

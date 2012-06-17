@@ -1,5 +1,6 @@
 PLUGIN_NAME=profperspective
-uifiles = loadreportdialog.ui
+uifiles = loadreportdialog.ui \
+runprogramdialog.ui
 
 uidir = @NEMIVER_PLUGINS_DIR@/$(PLUGIN_NAME)/ui
 ui_DATA = $(uifiles)

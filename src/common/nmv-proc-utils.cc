@@ -57,7 +57,8 @@ launch_program (const std::vector<UString> &a_args,
                 int &a_pid,
                 int &a_master_pty_fd,
                 int &a_stdout_fd,
-                int &a_stderr_fd)
+                int &a_stderr_fd,
+                const std::vector<UString> &a_environments)
 {
     RETURN_VAL_IF_FAIL (!a_args.empty (), false);
 
@@ -143,6 +144,19 @@ launch_program (const std::vector<UString> &a_args,
         for (i=0; i < a_args.size () ; ++i) {
             args.get ()[i] =
             const_cast<char*> (a_args[i].c_str ());
+        }
+
+        std::auto_ptr<char *> environments;
+        environments.reset (new char* [a_environments.size () + 1]);
+        memset (environments.get (), 0,
+                sizeof (char*) * (a_environments.size () + 1));
+        if (!environments.get ()) {
+            exit (-1);
+        }
+
+        for (i = 0; i < a_environments.size (); ++i) {
+            environments.get ()[i] =
+            const_cast<char*> (a_environments[i].c_str ());
         }
 
         execvp (args.get ()[0], args.get ());

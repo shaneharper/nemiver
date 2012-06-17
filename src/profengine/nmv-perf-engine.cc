@@ -30,12 +30,15 @@
 #include <istream>
 #include <stack>
 #include <sys/wait.h>
+#include <cstdio>
 
 NEMIVER_BEGIN_NAMESPACE (nemiver)
 
 const char *const PERF_REPORT_PARSING_DOMAIN = "perf-report-parsing-domain";
 
 using common::DynModIfaceSafePtr;
+using common::FreeUnref;
+using common::DefaultRef;
 
 struct PerfEngine::Priv {
     int perf_pid;
@@ -43,11 +46,13 @@ struct PerfEngine::Priv {
     int perf_stdout_fd;
     int perf_stderr_fd;
     Glib::RefPtr<Glib::IOChannel> perf_stdout_channel;
+    UString record_filepath;
 
     std::stack<CallGraphNodeSafePtr> call_stack;
     CallGraphSafePtr call_graph;
 
     sigc::signal<void, CallGraphSafePtr> report_done_signal;
+    sigc::signal<void, const UString&> record_done_signal;
 
     Priv () :
         perf_pid (0),
@@ -57,6 +62,30 @@ struct PerfEngine::Priv {
         perf_stdout_channel (0),
         call_graph (0)
     {
+    }
+
+    bool
+    on_wait_for_record_to_exit ()
+    {
+        NEMIVER_TRY
+
+        int status = 0;
+        pid_t pid = waitpid (perf_pid, &status, WNOHANG);
+        if (pid == perf_pid && WIFEXITED (status)) {
+            g_spawn_close_pid (perf_pid);
+            perf_pid = 0;
+            master_pty_fd = 0;
+            perf_stdout_fd = 0;
+            perf_stderr_fd = 0;
+
+            record_done_signal.emit (record_filepath);
+
+            return false;
+        }
+
+        NEMIVER_CATCH_NOX
+
+        return true;
     }
 
     bool
@@ -221,6 +250,36 @@ PerfEngine::~PerfEngine ()
 }
 
 void
+PerfEngine::record (const UString &a_program_path,
+                    const std::vector<UString> &a_argv)
+{
+    SafePtr<char, DefaultRef, FreeUnref> tmp_filepath (tempnam(0, 0));
+    THROW_IF_FAIL (tmp_filepath);
+
+    THROW_IF_FAIL (m_priv);
+    m_priv->record_filepath = tmp_filepath.get ();
+
+    std::vector<UString> argv;
+    argv.push_back ("perf");
+    argv.push_back ("record");
+    argv.push_back ("--output");
+    argv.push_back (m_priv->record_filepath);
+    argv.push_back (a_program_path);
+    argv.insert (argv.end (), a_argv.begin (), a_argv.end ());
+
+    bool is_launched = common::launch_program (argv,
+                                               m_priv->perf_pid,
+                                               m_priv->master_pty_fd,
+                                               m_priv->perf_stdout_fd,
+                                               m_priv->perf_stderr_fd);
+    THROW_IF_FAIL (is_launched);
+
+    Glib::RefPtr<Glib::MainContext> context = Glib::MainContext::get_default ();
+    context->signal_idle ().connect (sigc::mem_fun
+        (m_priv.get (), &PerfEngine::Priv::on_wait_for_record_to_exit));
+}
+
+void
 PerfEngine::report (const UString &a_data_file)
 {
     std::vector<UString> argv;
@@ -259,6 +318,13 @@ PerfEngine::report_done_signal () const
 {
     THROW_IF_FAIL (m_priv);
     return m_priv->report_done_signal;
+}
+
+sigc::signal<void, const UString&>
+PerfEngine::record_done_signal () const
+{
+    THROW_IF_FAIL (m_priv);
+    return m_priv->record_done_signal;
 }
 
 //****************************
