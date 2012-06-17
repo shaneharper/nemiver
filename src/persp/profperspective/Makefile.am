@@ -21,7 +21,9 @@ $(h)/nmv-prof-perspective.h \
 $(h)/nmv-call-list.cc \
 $(h)/nmv-call-list.h \
 $(h)/nmv-load-report-dialog.cc \
-$(h)/nmv-load-report-dialog.h
+$(h)/nmv-load-report-dialog.h \
+$(h)/nmv-record-dialog.cc \
+$(h)/nmv-record-dalog.h
 
 libprofperspectiveplugin_la_SOURCES=$(sources)
 libprofperspectiveplugin_la_LDFLAGS= -module -avoid-version -Wl,--as-needed

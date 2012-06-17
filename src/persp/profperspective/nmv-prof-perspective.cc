@@ -28,7 +28,7 @@
 #include "nmv-load-report-dialog.h"
 #include "nmv-call-list.h"
 #include "nmv-spinner-tool-item.h"
-#include "nmv-run-program-dialog.h"
+#include "nmv-record-dialog.h"
 #include "common/nmv-safe-ptr-utils.h"
 #include "common/nmv-str-utils.h"
 
@@ -101,7 +101,10 @@ public:
     void load_report_file (const UString &a_report_file);
     void run_executable ();
     void run_executable (const UString &a_program_name,
-                         const UString &a_arguments);
+                         const UString &a_arguments,
+                         bool a_scale_counter_values,
+                         bool a_do_callgraph,
+                         bool a_child_inherit_counters);
 
     void on_run_executable_action ();
     void on_load_report_file_action ();
@@ -363,26 +366,32 @@ ProfPerspective::edit_workbench_menu ()
 void
 ProfPerspective::run_executable ()
 {
-    RunProgramDialog dialog (plugin_path ());
+    RecordDialog dialog (plugin_path ());
 
     int result = dialog.run ();
     if (result != Gtk::RESPONSE_OK) {
         return;
     }
 
-    run_executable (dialog.program_name (), dialog.arguments ());
+    run_executable (dialog.program_name (), dialog.arguments (),
+                    dialog.scale_counter_values (), dialog.callgraph (),
+                    dialog.child_inherit_counters ());
 }
 
 void
 ProfPerspective::run_executable (const UString &a_program_name,
-                                 const UString &a_arguments)
+                                 const UString &a_arguments,
+                                 bool a_scale_counter_values,
+                                 bool a_do_callgraph,
+                                 bool a_child_inherit_counters)
 {
     std::vector<UString> argv = str_utils::split (a_arguments, " ");
 
     THROW_IF_FAIL (!a_program_name.empty ());
     THROW_IF_FAIL (profiler ());
 
-    profiler ()->record (a_program_name, argv);
+    profiler ()->record (a_program_name, argv, a_scale_counter_values,
+                         a_do_callgraph, a_child_inherit_counters);
 
     THROW_IF_FAIL (throbber);
     throbber->start ();

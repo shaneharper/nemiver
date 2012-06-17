@@ -74,7 +74,10 @@ public:
     virtual void report (const UString &a_data_file) = 0;
 
     virtual void record (const UString &a_program_path,
-                         const std::vector<UString> &a_argv) = 0;
+                         const std::vector<UString> &a_argv,
+                         bool a_scale_counter_values,
+                         bool a_do_callgraph,
+                         bool a_child_inherit_counters) = 0;
 
 //    virtual void attach_to_pid () = 0;
 

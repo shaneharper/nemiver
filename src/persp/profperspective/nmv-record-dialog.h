@@ -1,4 +1,4 @@
-//Author: Dodji Seketeli
+//Authors: Dodji Seketeli, Fabien Parent
 /*
  *This file is part of the Nemiver project
  *
@@ -22,8 +22,8 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NMV_RUN_PROGRAM_DIALOG_H__
-#define __NMV_RUN_PROGRAM_DIALOG_H__
+#ifndef __NMV_RECORD_DIALOG_H__
+#define __NMV_RECORD_DIALOG_H__
 
 #include <map>
 #include "common/nmv-safe-ptr-utils.h"
@@ -38,16 +38,16 @@ class UString;
 using nemiver::common::UString;
 using nemiver::common::SafePtr;
 
-class RunProgramDialog : public Dialog {
+class RecordDialog : public Dialog {
 
     struct Priv;
     SafePtr<Priv> m_priv;
 
 public:
 
-    RunProgramDialog (const UString &a_resource_root_path);
+    RecordDialog (const UString &a_resource_root_path);
 
-    virtual ~RunProgramDialog ();
+    virtual ~RecordDialog ();
 
     UString program_name () const;
     void program_name (const UString &a_name);
@@ -61,9 +61,13 @@ public:
     std::map<UString, UString> environment_variables () const;
     void environment_variables (const std::map<UString, UString> &);
 
+    bool callgraph () const;
+    bool scale_counter_values () const;
+    bool child_inherit_counters () const;
+
 };//end class nemiver
 
 NEMIVER_END_NAMESPACE (nemiver)
 
-#endif //__NMV_RUN_PROGRAM_DIALOG_H__
+#endif //__NMV_RECORD_DIALOG_H__
 

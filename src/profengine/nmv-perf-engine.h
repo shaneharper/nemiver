@@ -45,7 +45,10 @@ public:
     void report (const UString &a_data_file);
 
     void record (const UString &a_program_path,
-                 const std::vector<UString> &a_argv);
+                 const std::vector<UString> &a_argv,
+                 bool a_scale_counter_values,
+                 bool a_do_callgraph,
+                 bool a_child_inherit_counters);
 
     sigc::signal<void, CallGraphSafePtr> report_done_signal () const;
     sigc::signal<void> program_exited_signal () const;

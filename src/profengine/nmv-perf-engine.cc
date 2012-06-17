@@ -251,7 +251,10 @@ PerfEngine::~PerfEngine ()
 
 void
 PerfEngine::record (const UString &a_program_path,
-                    const std::vector<UString> &a_argv)
+                    const std::vector<UString> &a_argv,
+                    bool a_scale_counter_values,
+                    bool a_do_callgraph,
+                    bool a_child_inherit_counters)
 {
     SafePtr<char, DefaultRef, FreeUnref> tmp_filepath (tempnam(0, 0));
     THROW_IF_FAIL (tmp_filepath);
@@ -262,7 +265,21 @@ PerfEngine::record (const UString &a_program_path,
     std::vector<UString> argv;
     argv.push_back ("perf");
     argv.push_back ("record");
+
+    if (a_scale_counter_values) {
+        argv.push_back ("-l");
+    }
+
+    if (a_do_callgraph) {
+        argv.push_back ("--call-graph");
+    }
+
+    if (a_child_inherit_counters) {
+        argv.push_back ("--inherit");
+    }
+
     argv.push_back ("--output");
+    argv.push_back ("--");
     argv.push_back (m_priv->record_filepath);
     argv.push_back (a_program_path);
     argv.insert (argv.end (), a_argv.begin (), a_argv.end ());

@@ -1,4 +1,4 @@
-//Author: Dodji Seketeli
+//Authors: Dodji Seketeli, Fabien Parent
 /*
  *This file is part of the Nemiver project
  *
@@ -35,7 +35,7 @@
 #include "common/nmv-exception.h"
 #include "common/nmv-env.h"
 #include "common/nmv-ustring.h"
-#include "nmv-run-program-dialog.h"
+#include "nmv-record-dialog.h"
 #include "nmv-ui-utils.h"
 
 using namespace std;
@@ -51,7 +51,7 @@ struct EnvVarModelColumns : public Gtk::TreeModel::ColumnRecord
     EnvVarModelColumns() { add (varname); add (value); }
 };
 
-struct RunProgramDialog::Priv {
+struct RecordDialog::Priv {
 private:
     Priv ();
 
@@ -65,7 +65,9 @@ public:
     Glib::RefPtr<Gtk::ListStore> model;
     Gtk::Dialog &dialog;
     Glib::RefPtr<Gtk::Builder> gtkbuilder;
-
+    Gtk::CheckButton *scalecounter_checkbutton;
+    Gtk::CheckButton *callgraph_checkbutton;
+    Gtk::CheckButton *inherit_checkbutton;
 
     Priv (Gtk::Dialog &a_dialog,
         const Glib::RefPtr<Gtk::Builder> &a_gtkbuilder) :
@@ -107,13 +109,13 @@ public:
         THROW_IF_FAIL (add_button);
 
         add_button->signal_clicked().connect(sigc::mem_fun(*this,
-                    &RunProgramDialog::Priv::on_add_new_variable));
+                    &RecordDialog::Priv::on_add_new_variable));
 
         remove_button = ui_utils::get_widget_from_gtkbuilder<Gtk::Button>
                                                 (gtkbuilder, "button_remove_var");
         THROW_IF_FAIL (remove_button);
         remove_button->signal_clicked().connect(sigc::mem_fun(*this,
-                    &RunProgramDialog::Priv::on_remove_variable));
+                    &RecordDialog::Priv::on_remove_variable));
 
         // we need to disable / enable sensitivity of the
         // "Remove variable" button based on whether a
@@ -121,7 +123,7 @@ public:
         treeview_environment->get_selection ()->signal_changed ().connect
             (sigc::mem_fun
                  (*this,
-                  &RunProgramDialog::Priv::on_variable_selection_changed));
+                  &RecordDialog::Priv::on_variable_selection_changed));
 
         fcbutton =
             ui_utils::get_widget_from_gtkbuilder<Gtk::FileChooserButton>
@@ -135,6 +137,21 @@ public:
         // arguments text box
         ui_utils::get_widget_from_gtkbuilder<Gtk::Entry>
                         (gtkbuilder, "argumentsentry")->set_activates_default ();
+
+        scalecounter_checkbutton =
+            ui_utils::get_widget_from_gtkbuilder<Gtk::CheckButton>
+                (gtkbuilder, "scalecheckbutton");
+        THROW_IF_FAIL (scalecounter_checkbutton);
+
+        callgraph_checkbutton =
+            ui_utils::get_widget_from_gtkbuilder<Gtk::CheckButton>
+                (gtkbuilder, "callgraphcheckbutton");
+        THROW_IF_FAIL (callgraph_checkbutton);
+
+        inherit_checkbutton =
+            ui_utils::get_widget_from_gtkbuilder<Gtk::CheckButton>
+                (gtkbuilder, "inheritcheckbutton");
+        THROW_IF_FAIL (inherit_checkbutton);
     }
 
     void on_add_new_variable ()
@@ -186,10 +203,10 @@ public:
             }
         }
     }
-};//end struct RunProgramDialog::Priv
+};//end struct RecordDialog::Priv
 
-RunProgramDialog::RunProgramDialog (const UString &a_root_path) :
-    Dialog (a_root_path, "runprogramdialog.ui", "runprogramdialog")
+RecordDialog::RecordDialog (const UString &a_root_path) :
+    Dialog (a_root_path, "recorddialog.ui", "recorddialog")
 {
     m_priv.reset (new Priv (widget (), gtkbuilder ()));
     THROW_IF_FAIL (m_priv);
@@ -197,13 +214,13 @@ RunProgramDialog::RunProgramDialog (const UString &a_root_path) :
     working_directory (Glib::filename_to_utf8 (Glib::get_current_dir ()));
 }
 
-RunProgramDialog::~RunProgramDialog ()
+RecordDialog::~RecordDialog ()
 {
     LOG_D ("destroyed", "destructor-domain");
 }
 
 UString
-RunProgramDialog::program_name () const
+RecordDialog::program_name () const
 {
     Gtk::FileChooserButton *chooser =
         ui_utils::get_widget_from_gtkbuilder<Gtk::FileChooserButton>
@@ -212,7 +229,7 @@ RunProgramDialog::program_name () const
 }
 
 void
-RunProgramDialog::program_name (const UString &a_name)
+RecordDialog::program_name (const UString &a_name)
 {
     THROW_IF_FAIL (m_priv);
 
@@ -224,7 +241,7 @@ RunProgramDialog::program_name (const UString &a_name)
 }
 
 UString
-RunProgramDialog::arguments () const
+RecordDialog::arguments () const
 {
     Gtk::Entry *entry =
         ui_utils::get_widget_from_gtkbuilder<Gtk::Entry> (gtkbuilder (),
@@ -234,7 +251,7 @@ RunProgramDialog::arguments () const
 }
 
 void
-RunProgramDialog::arguments (const UString &a_args)
+RecordDialog::arguments (const UString &a_args)
 {
     Gtk::Entry *entry =
         ui_utils::get_widget_from_gtkbuilder<Gtk::Entry> (gtkbuilder (),
@@ -244,7 +261,7 @@ RunProgramDialog::arguments (const UString &a_args)
 }
 
 UString
-RunProgramDialog::working_directory () const
+RecordDialog::working_directory () const
 {
     Gtk::FileChooserButton *chooser =
         ui_utils::get_widget_from_gtkbuilder<Gtk::FileChooserButton>
@@ -253,7 +270,7 @@ RunProgramDialog::working_directory () const
 }
 
 void
-RunProgramDialog::working_directory (const UString &a_dir)
+RecordDialog::working_directory (const UString &a_dir)
 {
     Gtk::FileChooserButton *chooser =
         ui_utils::get_widget_from_gtkbuilder<Gtk::FileChooserButton>
@@ -267,7 +284,7 @@ RunProgramDialog::working_directory (const UString &a_dir)
 }
 
 map<UString, UString>
-RunProgramDialog::environment_variables () const
+RecordDialog::environment_variables () const
 {
     THROW_IF_FAIL (m_priv);
     THROW_IF_FAIL (m_priv->model);
@@ -284,7 +301,7 @@ RunProgramDialog::environment_variables () const
 }
 
 void
-RunProgramDialog::environment_variables (const map<UString, UString> &vars)
+RecordDialog::environment_variables (const map<UString, UString> &vars)
 {
     THROW_IF_FAIL (m_priv);
     THROW_IF_FAIL (m_priv->model);
@@ -297,6 +314,30 @@ RunProgramDialog::environment_variables (const map<UString, UString> &vars)
         (*treeiter)[m_priv->env_columns.varname] = iter->first;
         (*treeiter)[m_priv->env_columns.value] = iter->second;
     }
+}
+
+bool
+RecordDialog::callgraph () const
+{
+    THROW_IF_FAIL (m_priv);
+    THROW_IF_FAIL (m_priv->callgraph_checkbutton);
+    return m_priv->callgraph_checkbutton->get_active ();
+}
+
+bool
+RecordDialog::scale_counter_values () const
+{
+    THROW_IF_FAIL (m_priv);
+    THROW_IF_FAIL (m_priv->scalecounter_checkbutton);
+    return m_priv->scalecounter_checkbutton->get_active ();
+}
+
+bool
+RecordDialog::child_inherit_counters () const
+{
+    THROW_IF_FAIL (m_priv);
+    THROW_IF_FAIL (m_priv->inherit_checkbutton);
+    return m_priv->inherit_checkbutton->get_active ();
 }
 
 }//end namespace nemiver
