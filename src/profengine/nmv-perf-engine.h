@@ -50,9 +50,13 @@ public:
                  bool a_do_callgraph,
                  bool a_child_inherit_counters);
 
+    void annotate_symbol (const UString &a_symbol_name);
+
     sigc::signal<void, CallGraphSafePtr> report_done_signal () const;
     sigc::signal<void> program_exited_signal () const;
     sigc::signal<void, const UString&> record_done_signal () const;
+    sigc::signal<void, const UString&, const UString&>
+        symbol_annotated_signal () const;
 }; // end namespace PerfEngine
 
 NEMIVER_END_NAMESPACE (nemiver)

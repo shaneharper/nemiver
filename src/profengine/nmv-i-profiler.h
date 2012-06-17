@@ -69,6 +69,9 @@ public:
         report_done_signal () const = 0;
 
     virtual sigc::signal<void, const UString&> record_done_signal () const = 0;
+
+    virtual sigc::signal<void, const UString&, const UString&>
+        symbol_annotated_signal () const = 0;
     /// @}
 
     virtual void report (const UString &a_data_file) = 0;
@@ -78,6 +81,8 @@ public:
                          bool a_scale_counter_values,
                          bool a_do_callgraph,
                          bool a_child_inherit_counters) = 0;
+
+    virtual void annotate_symbol (const UString &a_symbol_name) = 0;
 
 //    virtual void attach_to_pid () = 0;
 

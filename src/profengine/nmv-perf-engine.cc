@@ -34,6 +34,7 @@
 
 NEMIVER_BEGIN_NAMESPACE (nemiver)
 
+const char *const PERF_ANNOTATE_PARSING_DOMAIN = "perf-annotate-parsing-domain";
 const char *const PERF_REPORT_PARSING_DOMAIN = "perf-report-parsing-domain";
 
 using common::DynModIfaceSafePtr;
@@ -50,9 +51,12 @@ struct PerfEngine::Priv {
 
     std::stack<CallGraphNodeSafePtr> call_stack;
     CallGraphSafePtr call_graph;
+    UString annotation_buffer;
+    UString annotated_symbol;
 
     sigc::signal<void, CallGraphSafePtr> report_done_signal;
     sigc::signal<void, const UString&> record_done_signal;
+    sigc::signal<void, const UString&, const UString&> symbol_annotated_signal;
 
     Priv () :
         perf_pid (0),
@@ -79,6 +83,34 @@ struct PerfEngine::Priv {
             perf_stderr_fd = 0;
 
             record_done_signal.emit (record_filepath);
+
+            return false;
+        }
+
+        NEMIVER_CATCH_NOX
+
+        return true;
+    }
+
+    bool
+    on_wait_for_symbol_annotation_to_exit ()
+    {
+        NEMIVER_TRY
+
+        THROW_IF_FAIL (perf_stdout_channel);
+
+        int status = 0;
+        pid_t pid = waitpid (perf_pid, &status, WNOHANG);
+        if (pid == perf_pid && WIFEXITED (status)) {
+            perf_stdout_channel->close ();
+            perf_stdout_channel.reset ();
+            g_spawn_close_pid (perf_pid);
+            perf_pid = 0;
+            master_pty_fd = 0;
+            perf_stdout_fd = 0;
+            perf_stderr_fd = 0;
+
+            symbol_annotated_signal.emit (annotated_symbol, annotation_buffer);
 
             return false;
         }
@@ -212,6 +244,27 @@ struct PerfEngine::Priv {
     }
 
     bool
+    read_symbol_annotation (Glib::IOCondition)
+    {
+        NEMIVER_TRY
+
+        THROW_IF_FAIL (perf_stdout_channel);
+
+        UString line;
+        Glib::IOStatus status;
+
+        do {
+            status = perf_stdout_channel->read_line (line);
+            LOG_D (line, PERF_ANNOTATE_PARSING_DOMAIN);
+            annotation_buffer += line;
+        } while (status == Glib::IO_STATUS_NORMAL);
+
+        NEMIVER_CATCH_NOX
+
+        return false;
+    }
+
+    bool
     read_report (Glib::IOCondition)
     {
         NEMIVER_TRY
@@ -279,8 +332,8 @@ PerfEngine::record (const UString &a_program_path,
     }
 
     argv.push_back ("--output");
-    argv.push_back ("--");
     argv.push_back (m_priv->record_filepath);
+    argv.push_back ("--");
     argv.push_back (a_program_path);
     argv.insert (argv.end (), a_argv.begin (), a_argv.end ());
 
@@ -307,6 +360,8 @@ PerfEngine::report (const UString &a_data_file)
     argv.push_back (a_data_file);
 
     THROW_IF_FAIL (m_priv);
+    m_priv->record_filepath = a_data_file;
+
     bool is_launched = common::launch_program (argv,
                                                m_priv->perf_pid,
                                                m_priv->master_pty_fd,
@@ -330,6 +385,43 @@ PerfEngine::report (const UString &a_data_file)
         (m_priv.get (), &PerfEngine::Priv::on_wait_for_report_to_exit));
 }
 
+void
+PerfEngine::annotate_symbol (const UString &a_symbol_name)
+{
+    THROW_IF_FAIL (m_priv);
+    m_priv->annotation_buffer.clear ();
+    m_priv->annotated_symbol = a_symbol_name;
+
+    std::vector<UString> argv;
+    argv.push_back ("perf");
+    argv.push_back ("annotate");
+    argv.push_back ("--stdio");
+    argv.push_back ("-i");
+    argv.push_back (m_priv->record_filepath);
+    argv.push_back (a_symbol_name);
+
+    bool is_launched = common::launch_program (argv,
+                                               m_priv->perf_pid,
+                                               m_priv->master_pty_fd,
+                                               m_priv->perf_stdout_fd,
+                                               m_priv->perf_stderr_fd);
+    THROW_IF_FAIL (is_launched);
+
+    m_priv->perf_stdout_channel =
+        Glib::IOChannel::create_from_fd (m_priv->perf_stdout_fd);
+
+    Glib::RefPtr<Glib::IOSource> io_source =
+        m_priv->perf_stdout_channel->create_watch (Glib::IO_IN);
+    io_source->connect (sigc::mem_fun
+        (m_priv.get (), &PerfEngine::Priv::read_symbol_annotation));
+    io_source->attach ();
+
+    Glib::RefPtr<Glib::MainContext> context = Glib::MainContext::get_default ();
+    context->signal_idle ().connect (sigc::mem_fun
+        (m_priv.get (),
+         &PerfEngine::Priv::on_wait_for_symbol_annotation_to_exit));
+}
+
 sigc::signal<void, CallGraphSafePtr>
 PerfEngine::report_done_signal () const
 {
@@ -342,6 +434,13 @@ PerfEngine::record_done_signal () const
 {
     THROW_IF_FAIL (m_priv);
     return m_priv->record_done_signal;
+}
+
+sigc::signal<void, const UString&, const UString&>
+PerfEngine::symbol_annotated_signal () const
+{
+    THROW_IF_FAIL (m_priv);
+    return m_priv->symbol_annotated_signal;
 }
 
 //****************************

@@ -29,8 +29,10 @@
 #include "nmv-call-list.h"
 #include "nmv-spinner-tool-item.h"
 #include "nmv-record-dialog.h"
+#include "nmv-i-profiler.h"
 #include "common/nmv-safe-ptr-utils.h"
 #include "common/nmv-str-utils.h"
+#include "uicommon/nmv-source-editor.h"
 
 #include <list>
 #include <glib/gi18n.h>
@@ -68,7 +70,7 @@ class ProfPerspective : public IProfPerspective {
     SafePtr<Gtk::Toolbar> toolbar;
 
     Glib::RefPtr<Gtk::ActionGroup> default_action_group;
-    Gtk::HPaned body;
+    Gtk::Notebook body;
     IWorkbench *workbench;
     GOptionGroup *opt_group;
 
@@ -105,11 +107,14 @@ public:
                          bool a_scale_counter_values,
                          bool a_do_callgraph,
                          bool a_child_inherit_counters);
+    void annotate_symbol (const UString &a_symbol_name);
 
     void on_run_executable_action ();
     void on_load_report_file_action ();
     void on_report_done_signal (CallGraphSafePtr a_call_graph);
     void on_record_done_signal (const UString &a_report_file);
+    void on_symbol_annotated_signal (const UString &a_symbol_name,
+                                     const UString &a_annotation);
 
     IProfilerSafePtr& profiler ();
 
@@ -265,12 +270,40 @@ ProfPerspective::init_signals ()
 
     profiler ()->record_done_signal ().connect (sigc::mem_fun
         (*this, &ProfPerspective::on_record_done_signal));
+
+    profiler ()->symbol_annotated_signal ().connect (sigc::mem_fun
+        (*this, &ProfPerspective::on_symbol_annotated_signal));
 }
 
 void
 ProfPerspective::init_body ()
 {
+    call_list.reset (new CallList (*this));
+    call_list->widget ().show ();
+    body.append_page (call_list->widget (), _("Report"));
     body.show_all ();
+}
+
+void
+ProfPerspective::on_symbol_annotated_signal (const UString &a_symbol_name,
+                                             const UString &a_annotation)
+{
+    NEMIVER_TRY
+
+    Glib::RefPtr<Gsv::Buffer> buffer = SourceEditor::create_source_buffer ();
+    THROW_IF_FAIL (buffer);
+    buffer->set_text (a_annotation);
+
+    SourceEditor *editor = new SourceEditor (".", buffer);
+    THROW_IF_FAIL (editor);
+    int page = body.append_page (*Gtk::manage (editor), a_symbol_name);
+    body.set_current_page (page);
+    body.show_all ();
+
+    THROW_IF_FAIL (throbber);
+    throbber->stop ();
+
+    NEMIVER_CATCH
 }
 
 void
@@ -278,11 +311,7 @@ ProfPerspective::on_report_done_signal (CallGraphSafePtr a_call_graph)
 {
     NEMIVER_TRY
 
-    call_list.reset (new CallList (profiler ()));
     call_list->load_call_graph (a_call_graph);
-    call_list->widget ().show ();
-    body.pack1 (call_list->widget ());
-    body.show_all ();
 
     THROW_IF_FAIL (throbber);
     throbber->stop ();
@@ -421,6 +450,16 @@ ProfPerspective::load_report_file ()
     UString report_file = dialog.report_file ();
     THROW_IF_FAIL (!report_file.empty ());
     load_report_file (report_file);
+}
+
+void
+ProfPerspective::annotate_symbol (const UString &a_symbol_name)
+{
+    THROW_IF_FAIL (profiler ());
+    profiler ()->annotate_symbol (a_symbol_name);
+
+    THROW_IF_FAIL (throbber);
+    throbber->start ();
 }
 
 void

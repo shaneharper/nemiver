@@ -646,7 +646,7 @@ struct SourceEditor::Priv {
         string path;
         if (!get_absolute_resource_path (a_image,
                                          path)) {
-            THROW ("could not get path to " + a_image);
+            return; //THROW ("could not get path to " + a_image);
         }
 
         Glib::RefPtr<Gsv::MarkAttributes> attributes = Gsv::MarkAttributes::create ();
@@ -735,7 +735,7 @@ SourceEditor::init ()
     //****************************
     string path = "";
     if (!m_priv->get_absolute_resource_path ("icons/line-pointer.png", path)) {
-        THROW ("could not get path to line-pointer.png");
+        return; //THROW ("could not get path to line-pointer.png");
     }
     Glib::RefPtr<Gsv::MarkAttributes> attributes = Gsv::MarkAttributes::create ();
     attributes->set_icon (Gio::Icon::create (path));

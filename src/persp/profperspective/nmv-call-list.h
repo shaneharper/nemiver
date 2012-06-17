@@ -28,7 +28,7 @@
 #include "common/nmv-safe-ptr.h"
 #include "common/nmv-namespace.h"
 #include "nmv-call-graph-node.h"
-#include "nmv-i-profiler.h"
+#include "nmv-prof-perspective.h"
 
 namespace Gtk {
     class Widget;
@@ -47,7 +47,7 @@ class CallList {
     SafePtr<Priv> m_priv;
 public:
 
-    CallList (const IProfilerSafePtr&);
+    CallList (IProfPerspective&);
     ~CallList ();
     Gtk::Widget& widget () const;
     void load_call_graph (CallGraphSafePtr);

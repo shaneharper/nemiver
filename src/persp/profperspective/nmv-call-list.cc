@@ -57,10 +57,10 @@ struct CallList::Priv {
     Gtk::ScrolledWindow body;
     CallListColumns columns;
     Glib::RefPtr<Gtk::TreeStore> store;
-    IProfilerSafePtr profiler;
+    IProfPerspective &perspective;
 
-    Priv (const IProfilerSafePtr &a_profiler) :
-        profiler (a_profiler)
+    Priv (IProfPerspective &a_perspective) :
+        perspective (a_perspective)
     {
         body.add (treeview);
         body.set_policy (Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
@@ -77,12 +77,35 @@ struct CallList::Priv {
         treeview.append_column (_("Shared Object"), columns.dso);
         int usage_col_id = treeview.append_column (_("Overhead"), *renderer);
         treeview.set_model (store);
+        treeview.signal_row_activated ().connect
+            (sigc::mem_fun (*this, &CallList::Priv::on_signal_row_activated));
 
         Gtk::TreeViewColumn *column = treeview.get_column (usage_col_id - 1);
         if (column) {
             column->add_attribute
                 (renderer->property_value(), columns.overhead);
         }
+    }
+
+    void
+    on_signal_row_activated (const Gtk::TreeModel::Path &a_path,
+                             Gtk::TreeViewColumn*)
+    {
+        NEMIVER_TRY
+
+        THROW_IF_FAIL (store);
+
+        Gtk::TreeModel::iterator iter = store->get_iter (a_path);
+        if (!iter) {
+            return;
+        }
+
+        CallGraphNodeSafePtr node = iter->get_value (columns.call_node);
+        THROW_IF_FAIL (node);
+
+        perspective.annotate_symbol (node->symbol ());
+
+        NEMIVER_CATCH
     }
 
     void
@@ -129,8 +152,8 @@ CallList::load_call_graph (CallGraphSafePtr a_call_graph)
     m_priv->add_node(a_call_graph);
 }
 
-CallList::CallList (const IProfilerSafePtr &a_profiler) :
-    m_priv (new Priv (a_profiler))
+CallList::CallList (IProfPerspective &a_perspective) :
+    m_priv (new Priv (a_perspective))
 {
 }
 

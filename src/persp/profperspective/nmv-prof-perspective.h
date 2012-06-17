@@ -41,6 +41,8 @@ public:
     {
     }
 
+    virtual void annotate_symbol (const UString &a_symbol_name) = 0;
+
     virtual ~IProfPerspective () {};
 };//end class IProfPerspective
 
