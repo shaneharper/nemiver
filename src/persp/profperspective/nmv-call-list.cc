@@ -72,19 +72,41 @@ struct CallList::Priv {
             Gtk::manage (new Gtk::CellRendererProgress);
         THROW_IF_FAIL (renderer);
 
-        treeview.append_column (_("Symbol"), columns.symbol);
+        int usage_col_id = treeview.append_column (_("Overhead"), *renderer);
         treeview.append_column (_("Command"), columns.command);
         treeview.append_column (_("Shared Object"), columns.dso);
-        int usage_col_id = treeview.append_column (_("Overhead"), *renderer);
+        treeview.append_column (_("Symbol"), columns.symbol);
         treeview.set_model (store);
         treeview.signal_row_activated ().connect
             (sigc::mem_fun (*this, &CallList::Priv::on_signal_row_activated));
 
         Gtk::TreeViewColumn *column = treeview.get_column (usage_col_id - 1);
         if (column) {
+            column->set_cell_data_func (*renderer, sigc::mem_fun
+                (*this, &CallList::Priv::overhead_cell_data_func));
             column->add_attribute
                 (renderer->property_value(), columns.overhead);
         }
+    }
+
+    void
+    overhead_cell_data_func (Gtk::CellRenderer *a_renderer,
+                             const Gtk::TreeModel::iterator &a_iter)
+    {
+        NEMIVER_TRY;
+
+        Gtk::CellRendererProgress *renderer =
+            dynamic_cast<Gtk::CellRendererProgress*> (a_renderer);
+        THROW_IF_FAIL (renderer);
+
+        THROW_IF_FAIL (a_iter);
+        CallGraphNodeSafePtr node = a_iter->get_value (columns.call_node);
+        THROW_IF_FAIL (node);
+
+        renderer->property_text () =
+            UString::compose ("%1%%", node->overhead ());
+
+        NEMIVER_CATCH;
     }
 
     void
