@@ -82,6 +82,7 @@ struct CallList::Priv {
 
         Gtk::TreeViewColumn *column = treeview.get_column (usage_col_id - 1);
         if (column) {
+            column->set_min_width (150);
             column->set_cell_data_func (*renderer, sigc::mem_fun
                 (*this, &CallList::Priv::overhead_cell_data_func));
             column->add_attribute
