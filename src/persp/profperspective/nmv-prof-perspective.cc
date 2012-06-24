@@ -69,6 +69,7 @@ class ProfPerspective : public IProfPerspective {
     SafePtr<SpinnerToolItem> throbber;
     SafePtr<Gtk::Toolbar> toolbar;
 
+    std::map<UString, int> symbol_to_pagenum_map;
     Glib::RefPtr<Gtk::ActionGroup> default_action_group;
     Gtk::Notebook body;
     IWorkbench *workbench;
@@ -108,6 +109,7 @@ public:
                          bool a_do_callgraph,
                          bool a_child_inherit_counters);
     void annotate_symbol (const UString &a_symbol_name);
+    void close_symbol_annotation (UString a_symbol_name);
 
     void on_run_executable_action ();
     void on_load_report_file_action ();
@@ -285,10 +287,74 @@ ProfPerspective::init_body ()
 }
 
 void
+ProfPerspective::close_symbol_annotation (UString a_symbol_name)
+{
+    NEMIVER_TRY;
+
+    THROW_IF_FAIL (symbol_to_pagenum_map.count (a_symbol_name));
+
+    int pagenum = symbol_to_pagenum_map[a_symbol_name];
+    body.remove_page (pagenum);
+    symbol_to_pagenum_map.erase (a_symbol_name);
+
+    NEMIVER_CATCH;
+}
+
+void
 ProfPerspective::on_symbol_annotated_signal (const UString &a_symbol_name,
                                              const UString &a_annotation)
 {
-    NEMIVER_TRY
+    NEMIVER_TRY;
+
+    Gtk::Label *label = Gtk::manage (new Gtk::Label (a_symbol_name));
+    THROW_IF_FAIL (label);
+    label->set_ellipsize (Pango::ELLIPSIZE_MIDDLE);
+    label->set_width_chars (a_symbol_name.length ());
+    label->set_max_width_chars (25);
+    label->set_justify (Gtk::JUSTIFY_LEFT);
+
+    Gtk::Image *close_icon = Gtk::manage (new Gtk::Image
+        (Gtk::StockID (Gtk::Stock::CLOSE), Gtk::ICON_SIZE_MENU));
+
+    static const std::string button_style =
+        "* {\n"
+          "-GtkButton-default-border : 0;\n"
+          "-GtkButton-default-outside-border : 0;\n"
+          "-GtkButton-inner-border: 0;\n"
+          "-GtkWidget-focus-line-width : 0;\n"
+          "-GtkWidget-focus-padding : 0;\n"
+          "padding: 0;\n"
+        "}";
+    Glib::RefPtr<Gtk::CssProvider> css = Gtk::CssProvider::create ();
+    css->load_from_data (button_style);
+
+    int w = 0;
+    int h = 0;
+    Gtk::IconSize::lookup (Gtk::ICON_SIZE_MENU, w, h);
+
+    Gtk::Button *close_button = Gtk::manage (new Gtk::Button ());
+    close_button->set_size_request (w + 2, h + 2);
+    close_button->set_relief (Gtk::RELIEF_NONE);
+    close_button->set_focus_on_click (false);
+    close_button->add (*close_icon);
+    close_button->signal_clicked ().connect (sigc::bind<UString>
+        (sigc::mem_fun (*this, &ProfPerspective::close_symbol_annotation),
+         a_symbol_name));
+
+    UString message;
+    message.printf (_("Close %s"), a_symbol_name.c_str ());
+    close_button->set_tooltip_text (message);
+
+    Glib::RefPtr<Gtk::StyleContext> context =
+        close_button->get_style_context ();
+    context->add_provider (css, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+    Gtk::HBox *hbox = Gtk::manage (new Gtk::HBox ());
+    // add a bit of space between the label and the close button
+    hbox->set_spacing (4);
+    hbox->pack_start (*label);
+    hbox->pack_start (*close_button, Gtk::PACK_SHRINK);
+    hbox->show_all_children ();
 
     Glib::RefPtr<Gsv::Buffer> buffer = SourceEditor::create_source_buffer ();
     THROW_IF_FAIL (buffer);
@@ -296,14 +362,17 @@ ProfPerspective::on_symbol_annotated_signal (const UString &a_symbol_name,
 
     SourceEditor *editor = new SourceEditor (".", buffer);
     THROW_IF_FAIL (editor);
-    int page = body.append_page (*Gtk::manage (editor), a_symbol_name);
+
+    int page = body.insert_page (*Gtk::manage (editor), *hbox, -1);
     body.set_current_page (page);
     body.show_all ();
+
+    symbol_to_pagenum_map[a_symbol_name] = page;
 
     THROW_IF_FAIL (throbber);
     throbber->stop ();
 
-    NEMIVER_CATCH
+    NEMIVER_CATCH;
 }
 
 void
@@ -455,11 +524,18 @@ ProfPerspective::load_report_file ()
 void
 ProfPerspective::annotate_symbol (const UString &a_symbol_name)
 {
-    THROW_IF_FAIL (profiler ());
-    profiler ()->annotate_symbol (a_symbol_name);
+    if (symbol_to_pagenum_map.count (a_symbol_name))
+    {
+        body.set_current_page (symbol_to_pagenum_map[a_symbol_name]);
+    }
+    else
+    {
+        THROW_IF_FAIL (profiler ());
+        profiler ()->annotate_symbol (a_symbol_name);
 
-    THROW_IF_FAIL (throbber);
-    throbber->start ();
+        THROW_IF_FAIL (throbber);
+        throbber->start ();
+    }
 }
 
 void
