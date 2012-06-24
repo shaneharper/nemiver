@@ -152,7 +152,7 @@ struct PerfEngine::Priv {
     parse_top_level_symbol (std::vector<UString> &a_tokens)
     {
         THROW_IF_FAIL (a_tokens.size ());
-        THROW_IF_FAIL (a_tokens[0].size () >= 4);
+        THROW_IF_FAIL (a_tokens[0].size () >= 5);
     
         float overhead = 0.0;
         std::istringstream is (a_tokens[0].substr(0, a_tokens[0].size () - 1));
@@ -163,7 +163,10 @@ struct PerfEngine::Priv {
         node->overhead (overhead);
         node->command (a_tokens[1]);
         node->shared_object (a_tokens[2]);
-        node->symbol (a_tokens[a_tokens.size () - 1]);
+
+        std::vector<UString>::const_iterator first_symbol_token = a_tokens.begin () + 4;
+        std::vector<UString>::const_iterator last_symbol_token = a_tokens.end ();
+        node->symbol (str_utils::join (first_symbol_token, last_symbol_token));
         call_graph->add_child (node);
 
         while (call_stack.size ()) {
@@ -210,7 +213,10 @@ struct PerfEngine::Priv {
         CallGraphNodeSafePtr node (new CallGraphNode);
         THROW_IF_FAIL (node);
         node->overhead (overhead);
-        node->symbol (a_tokens[a_tokens.size () - 1]);
+
+        std::vector<UString>::const_iterator first_symbol_token = a_tokens.begin () + 4;
+        std::vector<UString>::const_iterator last_symbol_token = a_tokens.end ();
+        node->symbol (str_utils::join (first_symbol_token, last_symbol_token));
 
         THROW_IF_FAIL (call_stack.top ());
         call_stack.top ()->add_child (node);
