@@ -44,11 +44,22 @@ public:
 
     void report (const UString &a_data_file);
 
+    void attach_to_pid (int a_pid,
+                        bool a_scale_counter_values,
+                        bool a_do_callgraph,
+                        bool a_child_inherit_counters);
+    void record (const std::vector<UString> &a_argv,
+                 bool a_scale_counter_values,
+                 bool a_do_callgraph,
+                 bool a_child_inherit_counters,
+                 bool a_run_as_root = false);
     void record (const UString &a_program_path,
                  const std::vector<UString> &a_argv,
                  bool a_scale_counter_values,
                  bool a_do_callgraph,
                  bool a_child_inherit_counters);
+
+    void stop_recording ();
 
     void annotate_symbol (const UString &a_symbol_name);
 

@@ -67,7 +67,7 @@ class ProfPerspective : public IProfPerspective {
     IProfilerSafePtr prof;
     SafePtr<CallList> call_list;
     SafePtr<SpinnerToolItem> throbber;
-    SafePtr<Gtk::Toolbar> toolbar;
+    SafePtr<Gtk::HBox> toolbar;
 
     std::map<UString, int> symbol_to_pagenum_map;
     Glib::RefPtr<Gtk::ActionGroup> default_action_group;
@@ -110,7 +110,10 @@ public:
                          bool a_child_inherit_counters);
     void annotate_symbol (const UString &a_symbol_name);
     void close_symbol_annotation (UString a_symbol_name);
+    void load_toolbar ();
 
+    void stop_recording ();
+    void on_stop_recording_action ();
     void on_run_executable_action ();
     void on_load_report_file_action ();
     void on_report_done_signal (CallGraphSafePtr a_call_graph);
@@ -210,9 +213,10 @@ void
 ProfPerspective::do_init (IWorkbench *a_workbench)
 {
     workbench = a_workbench;
+    init_actions ();
+    load_toolbar ();
     init_signals ();
     init_toolbar ();
-    init_actions ();
     init_body ();
 }
 
@@ -243,14 +247,34 @@ ProfPerspective::get_workbench ()
 }
 
 void
+ProfPerspective::load_toolbar ()
+{
+    THROW_IF_FAIL (workbench);
+
+    std::string relative_path = Glib::build_filename ("menus",
+                                                      "toolbar.xml");
+    string absolute_path;
+    THROW_IF_FAIL (build_absolute_resource_path
+        (Glib::filename_to_utf8 (relative_path), absolute_path));
+
+    workbench->get_ui_manager ()->add_ui_from_file
+        (Glib::filename_to_utf8 (absolute_path));
+}
+
+
+void
 ProfPerspective::init_toolbar ()
 {
     throbber.reset (new SpinnerToolItem);
-    toolbar.reset ((new Gtk::Toolbar));
+    toolbar.reset ((new Gtk::HBox));
     THROW_IF_FAIL (toolbar);
 
+    Gtk::Toolbar *glade_toolbar = dynamic_cast<Gtk::Toolbar*>
+        (workbench->get_ui_manager ()->get_widget ("/ProfToolBar"));
+    THROW_IF_FAIL (glade_toolbar);
+
     Glib::RefPtr<Gtk::StyleContext> style_context =
-        toolbar->get_style_context ();
+        glade_toolbar->get_style_context ();
     if (style_context) {
         style_context->add_class (GTK_STYLE_CLASS_PRIMARY_TOOLBAR);
     }
@@ -258,8 +282,9 @@ ProfPerspective::init_toolbar ()
     Gtk::SeparatorToolItem *sep = Gtk::manage (new Gtk::SeparatorToolItem);
     sep->set_draw (false);
     sep->set_expand (true);
-    toolbar->insert (*sep, -1);
-    toolbar->insert (*throbber, -1);
+    glade_toolbar->insert (*sep, -1);
+    glade_toolbar->insert (*throbber, -1);
+    toolbar->pack_start (*glade_toolbar);
     toolbar->show ();
 }
 
@@ -425,6 +450,16 @@ ProfPerspective::init_actions ()
             ui_utils::ActionEntry::DEFAULT,
             "",
             false
+        },
+        {
+            "StopProfilingMenuItemAction",
+            Gtk::Stock::STOP,
+            _("_Stop the profiling"),
+            _("Stop the profiling"),
+            sigc::mem_fun (*this, &ProfPerspective::on_stop_recording_action),
+            ui_utils::ActionEntry::DEFAULT,
+            "",
+            false
         }
     };
 
@@ -507,6 +542,13 @@ ProfPerspective::load_report_file (const UString &a_report_file)
 }
 
 void
+ProfPerspective::stop_recording ()
+{
+    THROW_IF_FAIL (profiler ());
+    profiler ()->stop_recording ();
+}
+
+void
 ProfPerspective::load_report_file ()
 {
     LoadReportDialog dialog (plugin_path ());
@@ -536,6 +578,16 @@ ProfPerspective::annotate_symbol (const UString &a_symbol_name)
         THROW_IF_FAIL (throbber);
         throbber->start ();
     }
+}
+
+void
+ProfPerspective::on_stop_recording_action ()
+{
+    NEMIVER_TRY
+
+    stop_recording ();
+
+    NEMIVER_CATCH
 }
 
 void

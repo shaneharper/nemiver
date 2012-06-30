@@ -30,6 +30,8 @@
 #include <istream>
 #include <stack>
 #include <sys/wait.h>
+#include <sys/types.h>
+#include <signal.h>
 #include <cstdio>
 
 NEMIVER_BEGIN_NAMESPACE (nemiver)
@@ -309,11 +311,25 @@ PerfEngine::~PerfEngine ()
 }
 
 void
-PerfEngine::record (const UString &a_program_path,
-                    const std::vector<UString> &a_argv,
+PerfEngine::attach_to_pid (int a_pid,
+                           bool a_scale_counter_values,
+                           bool a_do_callgraph,
+                           bool a_child_inherit_counters)
+{
+    std::vector<UString> argv;
+    argv.push_back ("--pid");
+    argv.push_back (UString::compose ("%1", a_pid));
+
+    record (argv, a_scale_counter_values, a_do_callgraph,
+            a_child_inherit_counters);
+}
+
+void
+PerfEngine::record (const std::vector<UString> &a_argv,
                     bool a_scale_counter_values,
                     bool a_do_callgraph,
-                    bool a_child_inherit_counters)
+                    bool a_child_inherit_counters,
+                    bool a_run_as_root)
 {
     SafePtr<char, DefaultRef, FreeUnref> tmp_filepath (tempnam(0, 0));
     THROW_IF_FAIL (tmp_filepath);
@@ -322,6 +338,10 @@ PerfEngine::record (const UString &a_program_path,
     m_priv->record_filepath = tmp_filepath.get ();
 
     std::vector<UString> argv;
+    if (a_run_as_root) {
+        argv.push_back ("gksudo");
+    }
+
     argv.push_back ("perf");
     argv.push_back ("record");
 
@@ -339,8 +359,6 @@ PerfEngine::record (const UString &a_program_path,
 
     argv.push_back ("--output");
     argv.push_back (m_priv->record_filepath);
-    argv.push_back ("--");
-    argv.push_back (a_program_path);
     argv.insert (argv.end (), a_argv.begin (), a_argv.end ());
 
     bool is_launched = common::launch_program (argv,
@@ -353,6 +371,30 @@ PerfEngine::record (const UString &a_program_path,
     Glib::RefPtr<Glib::MainContext> context = Glib::MainContext::get_default ();
     context->signal_idle ().connect (sigc::mem_fun
         (m_priv.get (), &PerfEngine::Priv::on_wait_for_record_to_exit));
+}
+
+void
+PerfEngine::record (const UString &a_program_path,
+                    const std::vector<UString> &a_argv,
+                    bool a_scale_counter_values,
+                    bool a_do_callgraph,
+                    bool a_child_inherit_counters)
+{
+    std::vector<UString> argv;
+    argv.push_back ("--");
+    argv.push_back (a_program_path);
+    argv.insert (argv.end (), a_argv.begin (), a_argv.end ());
+
+    record (argv, a_scale_counter_values, a_do_callgraph,
+            a_child_inherit_counters);
+}
+
+void
+PerfEngine::stop_recording ()
+{
+    THROW_IF_FAIL (m_priv);
+    THROW_IF_FAIL (m_priv->perf_pid);
+    kill(m_priv->perf_pid, SIGQUIT);
 }
 
 void

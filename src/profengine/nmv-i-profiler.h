@@ -82,6 +82,8 @@ public:
                          bool a_do_callgraph,
                          bool a_child_inherit_counters) = 0;
 
+    virtual void stop_recording () = 0;
+
     virtual void annotate_symbol (const UString &a_symbol_name) = 0;
 
 //    virtual void attach_to_pid () = 0;
