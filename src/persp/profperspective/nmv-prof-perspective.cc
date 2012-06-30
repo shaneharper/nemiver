@@ -32,7 +32,9 @@
 #include "nmv-i-profiler.h"
 #include "common/nmv-safe-ptr-utils.h"
 #include "common/nmv-str-utils.h"
+#include "common/nmv-proc-mgr.h"
 #include "uicommon/nmv-source-editor.h"
+#include "uicommon/nmv-proc-list-dialog.h"
 
 #include <list>
 #include <glib/gi18n.h>
@@ -42,6 +44,8 @@ NEMIVER_BEGIN_NAMESPACE (nemiver)
 
 using common::DynamicModuleManager;
 using common::GCharSafePtr;
+using nemiver::common::IProcMgrSafePtr;
+using nemiver::common::IProcMgr;
 
 static gchar *gv_report_path = 0;
 
@@ -74,6 +78,7 @@ class ProfPerspective : public IProfPerspective {
     Gtk::Notebook body;
     IWorkbench *workbench;
     GOptionGroup *opt_group;
+    IProcMgrSafePtr proc_manager;
 
     sigc::signal<void, bool> signal_activated;
     sigc::signal<void> signal_layout_changed;
@@ -111,8 +116,12 @@ public:
     void annotate_symbol (const UString &a_symbol_name);
     void close_symbol_annotation (UString a_symbol_name);
     void load_toolbar ();
-
     void stop_recording ();
+    void attach_to_process ();
+    void attach_to_process (unsigned a_pid);
+    IProcMgr* process_manager ();
+
+    void on_attach_to_process_action ();
     void on_stop_recording_action ();
     void on_run_executable_action ();
     void on_load_report_file_action ();
@@ -141,6 +150,17 @@ GOptionGroup*
 ProfPerspective::option_group () const
 {
     return opt_group;
+}
+
+IProcMgr*
+ProfPerspective::process_manager ()
+{
+    if (!proc_manager) {
+        proc_manager = IProcMgr::create ();
+        THROW_IF_FAIL (proc_manager);
+    }
+
+    return proc_manager.get ();
 }
 
 bool
@@ -452,6 +472,17 @@ ProfPerspective::init_actions ()
             false
         },
         {
+            "AttachToProcessAction",
+            Gtk::Stock::CONNECT,
+            _("Attach to Running Program..."),
+            _("Profile a program that's already running"),
+            sigc::mem_fun (*this,
+                           &ProfPerspective::on_attach_to_process_action),
+            ui_utils::ActionEntry::DEFAULT,
+            "",
+            false
+        },
+        {
             "StopProfilingMenuItemAction",
             Gtk::Stock::STOP,
             _("_Stop the profiling"),
@@ -548,6 +579,34 @@ ProfPerspective::stop_recording ()
 }
 
 void
+ProfPerspective::attach_to_process ()
+{
+    IProcMgr *process_mgr = process_manager ();
+    THROW_IF_FAIL (process_mgr);
+    ProcListDialog dialog ("", *process_mgr);
+    int result = dialog.run ();
+    if (result != Gtk::RESPONSE_OK) {
+        return;
+    }
+
+    if (dialog.has_selected_process ()) {
+        IProcMgr::Process process;
+        THROW_IF_FAIL (dialog.get_selected_process (process));
+        attach_to_process (process.pid ());
+    }
+}
+
+void
+ProfPerspective::attach_to_process (unsigned a_pid)
+{
+    THROW_IF_FAIL (profiler ());
+    profiler ()->attach_to_pid (a_pid, false, true, false);
+
+    THROW_IF_FAIL (throbber);
+    throbber->start ();
+}
+
+void
 ProfPerspective::load_report_file ()
 {
     LoadReportDialog dialog (plugin_path ());
@@ -577,6 +636,16 @@ ProfPerspective::annotate_symbol (const UString &a_symbol_name)
         THROW_IF_FAIL (throbber);
         throbber->start ();
     }
+}
+
+void
+ProfPerspective::on_attach_to_process_action ()
+{
+    NEMIVER_TRY;
+
+    attach_to_process ();
+
+    NEMIVER_CATCH;
 }
 
 void

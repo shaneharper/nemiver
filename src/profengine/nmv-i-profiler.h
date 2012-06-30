@@ -74,6 +74,11 @@ public:
         symbol_annotated_signal () const = 0;
     /// @}
 
+    virtual void attach_to_pid (int a_pid,
+                                bool a_scale_counter_values,
+                                bool a_do_callgraph,
+                                bool a_child_inherit_counters) = 0;
+
     virtual void report (const UString &a_data_file) = 0;
 
     virtual void record (const UString &a_program_path,

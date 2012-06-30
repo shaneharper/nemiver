@@ -328,8 +328,7 @@ void
 PerfEngine::record (const std::vector<UString> &a_argv,
                     bool a_scale_counter_values,
                     bool a_do_callgraph,
-                    bool a_child_inherit_counters,
-                    bool a_run_as_root)
+                    bool a_child_inherit_counters)
 {
     SafePtr<char, DefaultRef, FreeUnref> tmp_filepath (tempnam(0, 0));
     THROW_IF_FAIL (tmp_filepath);
@@ -338,10 +337,6 @@ PerfEngine::record (const std::vector<UString> &a_argv,
     m_priv->record_filepath = tmp_filepath.get ();
 
     std::vector<UString> argv;
-    if (a_run_as_root) {
-        argv.push_back ("gksudo");
-    }
-
     argv.push_back ("perf");
     argv.push_back ("record");
 
@@ -394,7 +389,7 @@ PerfEngine::stop_recording ()
 {
     THROW_IF_FAIL (m_priv);
     THROW_IF_FAIL (m_priv->perf_pid);
-    kill(m_priv->perf_pid, SIGQUIT);
+    kill(m_priv->perf_pid, SIGINT);
 }
 
 void

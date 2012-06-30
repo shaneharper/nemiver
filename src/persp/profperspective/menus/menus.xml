@@ -7,6 +7,8 @@
                       name="RunExecutableItem"/>
             <menuitem action="LoadReportMenuItemAction"
                       name="LoadReportMenuItem"/>
+            <menuitem action="AttachToProcessAction"
+                      name="AttachToProcessItem"/>
         </placeholder>
     </menu>
   </menubar>

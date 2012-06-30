@@ -6,6 +6,8 @@ sources = \
 $(public_headers) \
 $(h)/nmv-run-program-dialog.cc \
 $(h)/nmv-run-program-dialog.h \
+$(h)/nmv-proc-list-dialog.cc \
+$(h)/nmv-proc-list-dialog.h \
 $(h)/nmv-ui-utils.h \
 $(h)/nmv-ui-utils.cc \
 $(h)/nmv-dialog.cc \

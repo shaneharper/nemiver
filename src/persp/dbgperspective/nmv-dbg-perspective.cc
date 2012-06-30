@@ -6298,8 +6298,7 @@ DBGPerspective::attach_to_program ()
 
     IProcMgr *process_manager = get_process_manager ();
     THROW_IF_FAIL (process_manager);
-    ProcListDialog dialog (plugin_path (),
-                           *process_manager);
+    ProcListDialog dialog ("", *process_manager);
     int result = dialog.run ();
     if (result != Gtk::RESPONSE_OK) {
         return;

@@ -22,8 +22,6 @@ $(h)/nmv-saved-sessions-dialog.h \
 $(h)/nmv-saved-sessions-dialog.cc \
 $(h)/nmv-preferences-dialog.h \
 $(h)/nmv-preferences-dialog.cc \
-$(h)/nmv-proc-list-dialog.cc \
-$(h)/nmv-proc-list-dialog.h \
 $(h)/nmv-expr-inspector-dialog.cc \
 $(h)/nmv-expr-inspector-dialog.h \
 $(h)/nmv-find-text-dialog.cc \
