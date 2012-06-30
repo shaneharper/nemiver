@@ -28,7 +28,7 @@
 #include "nmv-load-report-dialog.h"
 #include "nmv-call-list.h"
 #include "nmv-spinner-tool-item.h"
-#include "nmv-record-dialog.h"
+#include "nmv-run-program-dialog.h"
 #include "nmv-i-profiler.h"
 #include "common/nmv-safe-ptr-utils.h"
 #include "common/nmv-str-utils.h"
@@ -499,7 +499,7 @@ ProfPerspective::edit_workbench_menu ()
 void
 ProfPerspective::run_executable ()
 {
-    RecordDialog dialog (plugin_path ());
+    RunProgramDialog dialog ("");
 
     int result = dialog.run ();
     if (result != Gtk::RESPONSE_OK) {
@@ -507,8 +507,7 @@ ProfPerspective::run_executable ()
     }
 
     run_executable (dialog.program_name (), dialog.arguments (),
-                    dialog.scale_counter_values (), dialog.callgraph (),
-                    dialog.child_inherit_counters ());
+                    false, true, false);
 }
 
 void

@@ -1,4 +1,4 @@
-uifiles = workbench.ui locatefiledialog.ui
+uifiles = workbench.ui locatefiledialog.ui runprogramdialog.ui
 
 uidir = $(datadir)/@PACKAGE@/ui
 ui_DATA = $(uifiles)

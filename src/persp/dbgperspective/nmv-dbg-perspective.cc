@@ -6010,7 +6010,7 @@ DBGPerspective::execute_session (ISessMgr::Session &a_session)
 void
 DBGPerspective::execute_program ()
 {
-    RunProgramDialog dialog (plugin_path ());
+    RunProgramDialog dialog ("");
 
     // set defaults from session
     if (debugger ()->get_target_path () != "") {

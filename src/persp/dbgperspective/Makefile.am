@@ -16,8 +16,6 @@ pluginconfigdir=@NEMIVER_PLUGINS_DIR@/$(PLUGIN_NAME)
 plugin_LTLIBRARIES=libdbgperspectiveplugin.la
 plugindir=@NEMIVER_PLUGINS_DIR@/$(PLUGIN_NAME)
 sources= \
-$(h)/nmv-run-program-dialog.cc \
-$(h)/nmv-run-program-dialog.h \
 $(h)/nmv-load-core-dialog.cc \
 $(h)/nmv-load-core-dialog.h \
 $(h)/nmv-saved-sessions-dialog.h \
