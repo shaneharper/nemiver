@@ -74,22 +74,18 @@ public:
         symbol_annotated_signal () const = 0;
     /// @}
 
-    virtual void attach_to_pid (int a_pid,
-                                bool a_scale_counter_values,
-                                bool a_do_callgraph,
-                                bool a_child_inherit_counters) = 0;
+    virtual void attach_to_pid (int a_pid) = 0;
 
     virtual void report (const UString &a_data_file) = 0;
 
     virtual void record (const UString &a_program_path,
-                         const std::vector<UString> &a_argv,
-                         bool a_scale_counter_values,
-                         bool a_do_callgraph,
-                         bool a_child_inherit_counters) = 0;
+                         const std::vector<UString> &a_argv) = 0;
 
     virtual void stop_recording () = 0;
 
     virtual void annotate_symbol (const UString &a_symbol_name) = 0;
+
+    virtual void do_init (IConfMgrSafePtr a_conf_mgr) = 0;
 
 //    virtual void attach_to_pid () = 0;
 

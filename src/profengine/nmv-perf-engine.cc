@@ -25,6 +25,7 @@
 
 #include "nmv-perf-engine.h"
 #include "nmv-call-graph-node.h"
+#include "nmv-conf-keys.h"
 #include "common/nmv-proc-utils.h"
 #include "common/nmv-str-utils.h"
 #include <istream>
@@ -44,6 +45,7 @@ using common::FreeUnref;
 using common::DefaultRef;
 
 struct PerfEngine::Priv {
+    IConfMgrSafePtr conf_manager;
     int perf_pid;
     int master_pty_fd;
     int perf_stdout_fd;
@@ -61,6 +63,7 @@ struct PerfEngine::Priv {
     sigc::signal<void, const UString&, const UString&> symbol_annotated_signal;
 
     Priv () :
+        conf_manager (0),
         perf_pid (0),
         master_pty_fd (0),
         perf_stdout_fd (0),
@@ -68,6 +71,13 @@ struct PerfEngine::Priv {
         perf_stdout_channel (0),
         call_graph (0)
     {
+    }
+
+    IConfMgr&
+    conf_mgr () const
+    {
+        THROW_IF_FAIL (conf_manager);
+        return *conf_manager;
     }
 
     bool
@@ -326,45 +336,99 @@ PerfEngine::~PerfEngine ()
 }
 
 void
-PerfEngine::attach_to_pid (int a_pid,
-                           bool a_scale_counter_values,
-                           bool a_do_callgraph,
-                           bool a_child_inherit_counters)
+PerfEngine::do_init (IConfMgrSafePtr a_conf_mgr)
+{
+    THROW_IF_FAIL (m_priv);
+    m_priv->conf_manager = a_conf_mgr;
+}
+
+void
+PerfEngine::attach_to_pid (int a_pid)
 {
     std::vector<UString> argv;
     argv.push_back ("--pid");
     argv.push_back (UString::compose ("%1", a_pid));
 
-    record (argv, a_scale_counter_values, a_do_callgraph,
-            a_child_inherit_counters);
+    record (argv);
 }
 
 void
-PerfEngine::record (const std::vector<UString> &a_argv,
-                    bool a_scale_counter_values,
-                    bool a_do_callgraph,
-                    bool a_child_inherit_counters)
+PerfEngine::record (const std::vector<UString> &a_argv)
 {
     SafePtr<char, DefaultRef, FreeUnref> tmp_filepath (tempnam(0, 0));
     THROW_IF_FAIL (tmp_filepath);
 
     THROW_IF_FAIL (m_priv);
     m_priv->record_filepath = tmp_filepath.get ();
+    bool do_callgraph_recording = true;
+    bool do_collect_without_buffering = false;
+    bool do_collect_raw_sample_records = false;
+    bool do_system_wide_collection = false;
+    bool do_sample_addresses = false;
+    bool do_sample_timestamps = false;
+
+    if (!m_priv->conf_mgr ().get_key_value (CONF_KEY_DO_CALLGRAPH_RECORDING,
+                                    do_callgraph_recording)) {
+        LOG_ERROR ("failed to get gconf key "
+                   << CONF_KEY_DO_CALLGRAPH_RECORDING);
+    }
+
+    if (!m_priv->conf_mgr ().get_key_value (CONF_KEY_COLLECT_WITHOUT_BUFFERING,
+                                    do_collect_without_buffering)) {
+        LOG_ERROR ("failed to get gconf key "
+                   << CONF_KEY_COLLECT_WITHOUT_BUFFERING);
+    }
+
+    if (!m_priv->conf_mgr ().get_key_value (CONF_KEY_COLLECT_RAW_SAMPLE_RECORDS,
+                                    do_collect_raw_sample_records)) {
+        LOG_ERROR ("failed to get gconf key "
+                   << CONF_KEY_COLLECT_RAW_SAMPLE_RECORDS);
+    }
+
+    if (!m_priv->conf_mgr ().get_key_value (CONF_KEY_SYSTEM_WIDE_COLLECTION,
+                                    do_system_wide_collection)) {
+        LOG_ERROR ("failed to get gconf key "
+                   << CONF_KEY_SYSTEM_WIDE_COLLECTION);
+    }
+
+    if (!m_priv->conf_mgr ().get_key_value (CONF_KEY_SAMPLE_ADDRESSES,
+                                    do_sample_addresses)) {
+        LOG_ERROR ("failed to get gconf key "
+                   << CONF_KEY_SAMPLE_ADDRESSES);
+    }
+
+    if (!m_priv->conf_mgr ().get_key_value (CONF_KEY_SAMPLE_TIMESTAMPS,
+                                    do_sample_timestamps)) {
+        LOG_ERROR ("failed to get gconf key "
+                   << CONF_KEY_SAMPLE_TIMESTAMPS);
+    }
 
     std::vector<UString> argv;
     argv.push_back ("perf");
     argv.push_back ("record");
 
-    if (a_scale_counter_values) {
-        argv.push_back ("-l");
-    }
-
-    if (a_do_callgraph) {
+    if (do_callgraph_recording) {
         argv.push_back ("--call-graph");
     }
 
-    if (a_child_inherit_counters) {
-        argv.push_back ("--inherit");
+    if (do_collect_without_buffering) {
+        argv.push_back ("--no-delay");
+    }
+
+    if (do_collect_raw_sample_records) {
+        argv.push_back ("--raw-samples");
+    }
+
+    if (do_system_wide_collection) {
+        argv.push_back ("--all-cpus");
+    }
+
+    if (do_sample_addresses) {
+        argv.push_back ("--data");
+    }
+
+    if (do_sample_timestamps) {
+        argv.push_back ("--timestamp");
     }
 
     argv.push_back ("--output");
@@ -385,18 +449,14 @@ PerfEngine::record (const std::vector<UString> &a_argv,
 
 void
 PerfEngine::record (const UString &a_program_path,
-                    const std::vector<UString> &a_argv,
-                    bool a_scale_counter_values,
-                    bool a_do_callgraph,
-                    bool a_child_inherit_counters)
+                    const std::vector<UString> &a_argv)
 {
     std::vector<UString> argv;
     argv.push_back ("--");
     argv.push_back (a_program_path);
     argv.insert (argv.end (), a_argv.begin (), a_argv.end ());
 
-    record (argv, a_scale_counter_values, a_do_callgraph,
-            a_child_inherit_counters);
+    record (argv);
 }
 
 void

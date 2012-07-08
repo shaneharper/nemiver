@@ -110,10 +110,7 @@ public:
     void load_report_file (const UString &a_report_file);
     void run_executable ();
     void run_executable (const UString &a_program_name,
-                         const UString &a_arguments,
-                         bool a_scale_counter_values,
-                         bool a_do_callgraph,
-                         bool a_child_inherit_counters);
+                         const UString &a_arguments);
     void annotate_symbol (const UString &a_symbol_name);
     void close_symbol_annotation (UString a_symbol_name);
     void load_toolbar ();
@@ -218,6 +215,8 @@ ProfPerspective::profiler ()
                 << debugger_dynmod_name << "'");
         prof = module_manager->load_iface<IProfiler>
             (debugger_dynmod_name, "IProfiler");
+        THROW_IF_FAIL (prof);
+        prof->do_init (get_workbench ().get_configuration_manager ());
     }
 
     THROW_IF_FAIL (prof);
@@ -549,24 +548,19 @@ ProfPerspective::run_executable ()
         return;
     }
 
-    run_executable (dialog.program_name (), dialog.arguments (),
-                    false, true, false);
+    run_executable (dialog.program_name (), dialog.arguments ());
 }
 
 void
 ProfPerspective::run_executable (const UString &a_program_name,
-                                 const UString &a_arguments,
-                                 bool a_scale_counter_values,
-                                 bool a_do_callgraph,
-                                 bool a_child_inherit_counters)
+                                 const UString &a_arguments)
 {
     std::vector<UString> argv = str_utils::split (a_arguments, " ");
 
     THROW_IF_FAIL (!a_program_name.empty ());
     THROW_IF_FAIL (profiler ());
 
-    profiler ()->record (a_program_name, argv, a_scale_counter_values,
-                         a_do_callgraph, a_child_inherit_counters);
+    profiler ()->record (a_program_name, argv);
 
     THROW_IF_FAIL (throbber);
     throbber->start ();
@@ -612,7 +606,7 @@ void
 ProfPerspective::attach_to_process (unsigned a_pid)
 {
     THROW_IF_FAIL (profiler ());
-    profiler ()->attach_to_pid (a_pid, false, true, false);
+    profiler ()->attach_to_pid (a_pid);
 
     THROW_IF_FAIL (throbber);
     throbber->start ();
