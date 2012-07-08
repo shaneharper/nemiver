@@ -70,6 +70,14 @@ const char* CONF_KEY_NEMIVER_CALLSTACK_EXPANSION_CHUNK =
                 "callstack-expansion-chunk";
 const char* CONF_KEY_DBG_PERSPECTIVE_LAYOUT = "dbg-perspective-layout";
 
+/* profperspective */
+const char* CONF_KEY_DO_CALLGRAPH_RECORDING = "do-callgraph-recording";
+const char* CONF_KEY_COLLECT_WITHOUT_BUFFERING = "collect-without-buffering";
+const char* CONF_KEY_COLLECT_RAW_SAMPLE_RECORDS = "collect-raw-sample-records";
+const char* CONF_KEY_SYSTEM_WIDE_COLLECTION = "system-wide-collection";
+const char* CONF_KEY_SAMPLE_ADDRESSES = "sample-addresses";
+const char* CONF_KEY_SAMPLE_TIMESTAMPS = "sample-timestamps";
+
 /* Workbench */
 const char* CONF_KEY_NEMIVER_WINDOW_WIDTH = "window-width";
 const char* CONF_KEY_NEMIVER_WINDOW_HEIGHT = "window-height";

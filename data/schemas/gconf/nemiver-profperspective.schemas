@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<gconfschemafile>
+  <schemalist>
+    <schema>
+      <key>/schemas/apps/nemiver/profperspective/do-callgraph-recording</key>
+      <applyto>/apps/nemiver/dbgperspective/do-callgraph-recording</applyto>
+      <owner>nemiver</owner>
+      <type>bool</type>
+      <default>true</default>
+      <locale name="C">
+        <short>Whether to record the callgraph while profiling</short>
+        <long>Whether to record the callgraph while profiling</long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/nemiver/profperspective/collect-without-buffering</key>
+      <applyto>/apps/nemiver/dbgperspective/collect-without-buffering</applyto>
+      <owner>nemiver</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+        <short>Whether to collect data without buffering while profiling</short>
+        <long>Whether to collect data without buffering while profiling</long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/nemiver/profperspective/collect-raw-sample-records</key>
+      <applyto>/apps/nemiver/dbgperspective/collect-raw-sample-records</applyto>
+      <owner>nemiver</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+        <short>Whether to collect raw sample records while profiling</short>
+        <long>Whether to collect raw sample records from all opened counters while profiling</long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/nemiver/profperspective/system-wide-collection</key>
+      <applyto>/apps/nemiver/dbgperspective/system-wide-collection</applyto>
+      <owner>nemiver</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+        <short>Whether to do a system wide data collection while profiling</short>
+        <long>Whether to do a system wide data collection from all CPUs while profiling</long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/nemiver/profperspective/sample-addresses</key>
+      <applyto>/apps/nemiver/dbgperspective/sample-addresses</applyto>
+      <owner>nemiver</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+        <short>Whether to sample addresses while profiling</short>
+        <long>Whether to sample addresses while profiling</long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/nemiver/profperspective/sample-timestamps</key>
+      <applyto>/apps/nemiver/dbgperspective/sample-timestamps</applyto>
+      <owner>nemiver</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+        <short>Whether to sample timestamps while profiling</short>
+        <long>Whether to sample timestamps while profiling</long>
+      </locale>
+    </schema>
+  </schemalist>
+</gconfschemafile>
+

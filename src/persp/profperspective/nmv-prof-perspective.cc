@@ -23,6 +23,7 @@
  *See COPYRIGHT file copyright information.
  */
 
+#include "nmv-prof-preferences-dialog.h"
 #include "nmv-prof-perspective.h"
 #include "nmv-ui-utils.h"
 #include "nmv-load-report-dialog.h"
@@ -121,6 +122,7 @@ public:
     void attach_to_process (unsigned a_pid);
     IProcMgr* process_manager ();
 
+    void on_preferences_action ();
     void on_attach_to_process_action ();
     void on_stop_recording_action ();
     void on_run_executable_action ();
@@ -491,6 +493,16 @@ ProfPerspective::init_actions ()
             ui_utils::ActionEntry::DEFAULT,
             "",
             false
+        },
+        {
+            "ProfilerPreferencesAction",
+            Gtk::Stock::PREFERENCES,
+            _("Pr_eferences"),
+            _("Profiler's preferences"),
+            sigc::mem_fun (*this, &ProfPerspective::on_preferences_action),
+            ui_utils::ActionEntry::DEFAULT,
+            "",
+            false
         }
     };
 
@@ -651,31 +663,42 @@ ProfPerspective::on_attach_to_process_action ()
 void
 ProfPerspective::on_stop_recording_action ()
 {
-    NEMIVER_TRY
+    NEMIVER_TRY;
 
     stop_recording ();
 
-    NEMIVER_CATCH
+    NEMIVER_CATCH;
 }
 
 void
 ProfPerspective::on_load_report_file_action ()
 {
-    NEMIVER_TRY
+    NEMIVER_TRY;
 
     load_report_file ();
 
-    NEMIVER_CATCH
+    NEMIVER_CATCH;
+}
+
+void
+ProfPerspective::on_preferences_action ()
+{
+    NEMIVER_TRY;
+
+    ProfPreferencesDialog dialog (*this, plugin_path ());
+    dialog.run ();
+
+    NEMIVER_CATCH;
 }
 
 void
 ProfPerspective::on_run_executable_action ()
 {
-    NEMIVER_TRY
+    NEMIVER_TRY;
 
     run_executable ();
 
-    NEMIVER_CATCH
+    NEMIVER_CATCH;
 }
 
 Gtk::Widget*

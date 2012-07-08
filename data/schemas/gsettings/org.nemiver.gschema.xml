@@ -203,5 +203,41 @@
       <summary>window minimum height</summary>
       <description>The workbench main window minium height.</description>
     </key>
+
+    <key name="do-callgraph-recording" type="b">
+      <default>true</default>
+      <summary>Whether to record the callgraph while profiling</summary>
+      <description>Whether to record the callgraph while profiling</description>
+    </key>
+
+    <key name="collect-without-buffering" type="b">
+      <default>false</default>
+      <summary>Whether to collect data without buffering while profiling</summary>
+      <description>Whether to collect data without buffering while profiling</description>
+    </key>
+
+    <key name="collect-raw-sample-records" type="b">
+      <default>false</default>
+      <summary>Whether to collect raw sample records while profiling</summary>
+      <description>Whether to collect raw sample records from all opened counters while profiling</description>
+    </key>
+
+    <key name="system-wide-collection" type="b">
+      <default>false</default>
+      <summary>Whether to do a system wide data collection while profiling</summary>
+      <description>Whether to do a system wide data collection from all CPUs while profiling</description>
+    </key>
+
+    <key name="sample-addresses" type="b">
+      <default>false</default>
+      <summary>Whether to sample addresses while profiling</summary>
+      <description>Whether to sample addresses while profiling</description>
+    </key>
+
+    <key name="sample-timestamps" type="b">
+      <default>false</default>
+      <summary>Whether to sample timestamps while profiling</summary>
+      <description>Whether to sample timestamps while profiling</description>
+    </key>
   </schema>
 </schemalist>

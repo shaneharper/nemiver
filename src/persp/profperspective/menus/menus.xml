@@ -11,6 +11,12 @@
                       name="AttachToProcessItem"/>
         </placeholder>
     </menu>
+    <menu action="EditMenuAction" name="EditMenu">
+        <placeholder name="EditMenuAdditions">
+            <menuitem action="ProfilerPreferencesAction"
+                      name="ProfilerPreferencesItem"/>
+        </placeholder>
+    </menu>
   </menubar>
  </ui>
 

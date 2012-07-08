@@ -1,4 +1,7 @@
-files=nemiver-dbgperspective.schemas nemiver-workbench.schemas
+files=nemiver-dbgperspective.schemas \
+nemiver-workbench.schemas \
+nemiver-profperspective.schemas
+
 schemasdir = $(GCONF_SCHEMA_FILE_DIR)
 schemas_DATA = $(files)
 
