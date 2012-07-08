@@ -73,11 +73,11 @@ struct PerfEngine::Priv {
     bool
     on_wait_for_record_to_exit ()
     {
-        NEMIVER_TRY
-
         int status = 0;
         pid_t pid = waitpid (perf_pid, &status, WNOHANG);
-        if (pid == perf_pid && WIFEXITED (status)) {
+        bool is_terminated = WIFEXITED (status) || WIFSIGNALED (status);
+
+        if (pid == perf_pid && is_terminated) {
             g_spawn_close_pid (perf_pid);
             perf_pid = 0;
             master_pty_fd = 0;
@@ -89,35 +89,38 @@ struct PerfEngine::Priv {
             return false;
         }
 
-        NEMIVER_CATCH_NOX
-
         return true;
     }
 
     bool
     on_wait_for_symbol_annotation_to_exit ()
     {
-        NEMIVER_TRY
-
-        THROW_IF_FAIL (perf_stdout_channel);
-
         int status = 0;
         pid_t pid = waitpid (perf_pid, &status, WNOHANG);
-        if (pid == perf_pid && WIFEXITED (status)) {
+        bool is_terminated = WIFEXITED (status) || WIFSIGNALED (status);
+
+        if (pid == perf_pid && is_terminated) {
+            NEMIVER_TRY;
+            THROW_IF_FAIL (perf_stdout_channel);
             perf_stdout_channel->close ();
             perf_stdout_channel.reset ();
+
             g_spawn_close_pid (perf_pid);
             perf_pid = 0;
             master_pty_fd = 0;
             perf_stdout_fd = 0;
             perf_stderr_fd = 0;
 
-            symbol_annotated_signal.emit (annotated_symbol, annotation_buffer);
+            THROW_IF_FAIL (WIFEXITED (status));
+            if (WEXITSTATUS (status) == 0) {
+                symbol_annotated_signal.emit
+                    (annotated_symbol, annotation_buffer);
+            }
+
+            NEMIVER_CATCH_NOX
 
             return false;
         }
-
-        NEMIVER_CATCH_NOX
 
         return true;
     }
@@ -125,27 +128,29 @@ struct PerfEngine::Priv {
     bool
     on_wait_for_report_to_exit ()
     {
-        NEMIVER_TRY
-
-        THROW_IF_FAIL (perf_stdout_channel);
-
         int status = 0;
         pid_t pid = waitpid (perf_pid, &status, WNOHANG);
-        if (pid == perf_pid && WIFEXITED (status)) {
+        bool is_terminated = WIFEXITED (status) || WIFSIGNALED (status);
+
+        if (pid == perf_pid && is_terminated) {
+            NEMIVER_TRY;
+
+            THROW_IF_FAIL (perf_stdout_channel);
             perf_stdout_channel->close ();
             perf_stdout_channel.reset ();
+
             g_spawn_close_pid (perf_pid);
             perf_pid = 0;
             master_pty_fd = 0;
             perf_stdout_fd = 0;
             perf_stderr_fd = 0;
 
+            THROW_IF_FAIL (WIFEXITED (status) && WEXITSTATUS (status) == 0);
             report_done_signal.emit (call_graph);
 
+            NEMIVER_CATCH_NOX;
             return false;
         }
-
-        NEMIVER_CATCH_NOX
 
         return true;
     }
@@ -216,9 +221,19 @@ struct PerfEngine::Priv {
         THROW_IF_FAIL (node);
         node->overhead (overhead);
 
-        std::vector<UString>::const_iterator first_symbol_token = a_tokens.begin () + 4;
-        std::vector<UString>::const_iterator last_symbol_token = a_tokens.end ();
-        node->symbol (str_utils::join (first_symbol_token, last_symbol_token));
+        if (a_tokens.size () > 4)
+        {
+            std::vector<UString>::const_iterator first_symbol_token =
+                a_tokens.begin () + 4;
+            std::vector<UString>::const_iterator last_symbol_token =
+                a_tokens.end ();
+            node->symbol
+                (str_utils::join (first_symbol_token, last_symbol_token));
+        }
+        else
+        {
+            node->symbol (a_tokens[a_tokens.size () - 1]);
+        }
 
         THROW_IF_FAIL (call_stack.top ());
         call_stack.top ()->add_child (node);
