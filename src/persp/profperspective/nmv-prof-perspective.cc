@@ -76,6 +76,7 @@ class ProfPerspective : public IProfPerspective {
 
     std::map<UString, int> symbol_to_pagenum_map;
     Glib::RefPtr<Gtk::ActionGroup> default_action_group;
+    Glib::RefPtr<Gtk::ActionGroup> recording_action_group;
     Gtk::Notebook body;
     IWorkbench *workbench;
     GOptionGroup *opt_group;
@@ -442,6 +443,8 @@ ProfPerspective::on_record_done_signal (const UString &a_report_path)
     THROW_IF_FAIL (profiler ());
     profiler ()->report (a_report_path);
 
+    recording_action_group->set_sensitive (false);
+
     NEMIVER_CATCH
 }
 
@@ -484,16 +487,6 @@ ProfPerspective::init_actions ()
             false
         },
         {
-            "StopProfilingMenuItemAction",
-            Gtk::Stock::STOP,
-            _("_Stop the profiling"),
-            _("Stop the profiling"),
-            sigc::mem_fun (*this, &ProfPerspective::on_stop_recording_action),
-            ui_utils::ActionEntry::DEFAULT,
-            "",
-            false
-        },
-        {
             "ProfilerPreferencesAction",
             Gtk::Stock::PREFERENCES,
             _("Pr_eferences"),
@@ -505,19 +498,44 @@ ProfPerspective::init_actions ()
         }
     };
 
+    static ui_utils::ActionEntry s_recording_action_entries [] = {
+        {
+            "StopProfilingMenuItemAction",
+            Gtk::Stock::STOP,
+            _("_Stop the profiling"),
+            _("Stop the profiling"),
+            sigc::mem_fun (*this, &ProfPerspective::on_stop_recording_action),
+            ui_utils::ActionEntry::DEFAULT,
+            "",
+            false
+        }
+    };
+
     default_action_group =
         Gtk::ActionGroup::create ("profiler-default-action-group");
     default_action_group->set_sensitive (true);
 
-    int num_actions =
+    recording_action_group =
+        Gtk::ActionGroup::create ("profiler-recording-action-group");
+    recording_action_group->set_sensitive (false);
+
+    int num_default_actions =
         sizeof (s_default_action_entries) / sizeof (ui_utils::ActionEntry);
 
+    int num_recording_actions =
+        sizeof (s_recording_action_entries) / sizeof (ui_utils::ActionEntry);
+
     ui_utils::add_action_entries_to_action_group
-        (s_default_action_entries, num_actions, default_action_group);
+        (s_default_action_entries, num_default_actions, default_action_group);
+
+    ui_utils::add_action_entries_to_action_group (s_recording_action_entries,
+                                                  num_recording_actions,
+                                                  recording_action_group);
 
     Glib::RefPtr<Gtk::UIManager> uimanager = get_workbench ().get_ui_manager ();
     THROW_IF_FAIL (uimanager);
     uimanager->insert_action_group (default_action_group);
+    uimanager->insert_action_group (recording_action_group);
 }
 
 std::list<Gtk::UIManager::ui_merge_id>
@@ -564,6 +582,9 @@ ProfPerspective::run_executable (const UString &a_program_name,
 
     THROW_IF_FAIL (throbber);
     throbber->start ();
+
+    THROW_IF_FAIL (recording_action_group);
+    recording_action_group->set_sensitive (true);
 }
 
 void
