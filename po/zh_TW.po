@@ -1,0 +1,1482 @@
+# Chinese (Taiwan) translation for nemiver.
+# Copyright (C) 2012 nemiver's COPYRIGHT HOLDER
+# This file is distributed under the same license as the nemiver package.
+# Cheng-Chia Tseng <pswo10680@gmail.com>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: nemiver master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=nemiver&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-07-07 17:04+0000\n"
+"PO-Revision-Date: 2012-07-07 18:51+0800\n"
+"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
+"Language-Team: Chinese (Taiwan) <chinese-l10n@googlegroups.com>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ../data/nemiver.desktop.in.h:1 ../ui/workbench.ui.h:1
+msgid "Nemiver"
+msgstr "Nemiver"
+
+#: ../data/nemiver.desktop.in.h:2
+msgid "C/C++ Debugger"
+msgstr "C/C++ 除錯器"
+
+#: ../data/nemiver.desktop.in.h:3
+msgid "Nemiver C/C++ Debugger"
+msgstr "Nemiver C/C++ 除錯器"
+
+#: ../data/nemiver.desktop.in.h:4
+msgid "Debug Applications"
+msgstr "對應用程式除錯"
+
+#: ../src/main.cc:78
+msgid "Set the environment of the program to debug"
+msgstr "設定程式的環境來除錯"
+
+#: ../src/main.cc:87
+msgid "Attach to a process"
+msgstr ""
+
+#: ../src/main.cc:96
+msgid "Load a core file"
+msgstr "載入核心檔案"
+
+#: ../src/main.cc:104
+#, fuzzy
+msgid "List the saved debugging sessions"
+msgstr "列出儲存的除錯"
+
+#: ../src/main.cc:112
+msgid "Erase the saved debugging sessions"
+msgstr ""
+
+#: ../src/main.cc:120
+msgid "Debug the program that was of session number N"
+msgstr ""
+
+#: ../src/main.cc:128
+msgid "Execute the last session"
+msgstr ""
+
+#: ../src/main.cc:136
+msgid "Enable logging domains DOMAINS"
+msgstr ""
+
+#: ../src/main.cc:144
+msgid "Log the debugger output"
+msgstr ""
+
+#: ../src/main.cc:152
+msgid "Use this terminal as the debugee's terminal"
+msgstr ""
+
+#: ../src/main.cc:161
+msgid "Connect to remote target specified by HOST:PORT"
+msgstr ""
+
+#: ../src/main.cc:170
+msgid ""
+"Where to look for shared libraries loaded by the inferior. Use in "
+"conjunction with --remote"
+msgstr ""
+
+#: ../src/main.cc:180
+msgid "Set the path of the GDB binary to use to debug the inferior"
+msgstr ""
+
+#: ../src/main.cc:189
+msgid "Do not set a breakpoint in 'main' and do not run the inferior either"
+msgstr ""
+
+#: ../src/main.cc:198
+msgid "Show the version number of Nemiver"
+msgstr ""
+
+#: ../src/main.cc:264
+msgid " [<prog-to-debug> [prog-args]]"
+msgstr ""
+
+#: ../src/main.cc:267 ../src/workbench/nmv-workbench.cc:263
+msgid "A C/C++ debugger for GNOME"
+msgstr ""
+
+#: ../src/main.cc:361
+msgid ""
+"Please provide a local copy of the binary you intend to debug remotely.\n"
+"Like this:\n"
+msgstr ""
+
+#: ../src/main.cc:366 ../src/main.cc:385
+msgid "Otherwise, find below the full set of Nemiver options.\n"
+msgstr ""
+
+#: ../src/main.cc:380
+msgid ""
+"Please provide the path to the binary that generated the core file too.\n"
+"Like this:\n"
+msgstr ""
+
+#. create the columns of the tree view
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:148
+#: ../src/persp/dbgperspective/nmv-registers-view.cc:100
+#: ../src/persp/dbgperspective/nmv-saved-sessions-dialog.cc:101
+msgid "ID"
+msgstr "ID"
+
+#. create the columns of the tree view
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:149
+#: ../src/persp/dbgperspective/nmv-file-list.cc:108
+msgid "File Name"
+msgstr "檔案名稱"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:150
+msgid "Line"
+msgstr "列"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:151
+#: ../src/persp/dbgperspective/nmv-call-stack.cc:602
+msgid "Function"
+msgstr "函式"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:152
+#: ../src/persp/dbgperspective/nmv-call-stack.cc:605
+msgid "Address"
+msgstr "位址"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:153
+#, fuzzy
+msgid "Condition"
+msgstr "條件"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:155
+#, fuzzy
+msgid "Toggle countpoint"
+msgstr "切換"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:157
+#: ../src/persp/dbgperspective/nmv-vars-treeview.cc:70
+msgid "Type"
+msgstr "類型"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:158
+msgid "Hits"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:159
+msgid "Expression"
+msgstr "表述式"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:162
+#, fuzzy
+msgid "Ignore count"
+msgstr "忽略"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:348
+msgid "breakpoint"
+msgstr "中斷點"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:352
+msgid "watchpoint"
+msgstr "監看點"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:355
+#, fuzzy
+msgid "countpoint"
+msgstr "點"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:358
+msgid "unknown"
+msgstr "未知"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:418
+msgid "_Delete"
+msgstr "刪除(_D)"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:419
+msgid "Remove this breakpoint"
+msgstr "移除此中斷點"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:428
+msgid "_Go to Source"
+msgstr "前往來源(_G)"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:429
+msgid "Find this breakpoint in the source editor"
+msgstr "在來源編輯器中尋找此中斷點"
+
+#: ../src/persp/dbgperspective/nmv-call-stack.cc:177
+#: ../src/uicommon/nmv-terminal.cc:173
+msgid "_Copy"
+msgstr "複製(_C)"
+
+#: ../src/persp/dbgperspective/nmv-call-stack.cc:178
+msgid "Copy the call stack to the clipboard"
+msgstr "複製呼叫堆疊至剪貼簿"
+
+#: ../src/persp/dbgperspective/nmv-call-stack.cc:601
+msgid "Frame"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-call-stack.cc:603
+msgid "Arguments"
+msgstr "引數"
+
+#: ../src/persp/dbgperspective/nmv-call-stack.cc:604
+#: ../src/persp/dbgperspective/nmv-choose-overloads-dialog.cc:112
+msgid "Location"
+msgstr "位置"
+
+#: ../src/persp/dbgperspective/nmv-call-stack.cc:606
+msgid "Binary"
+msgstr "二進位"
+
+#: ../src/persp/dbgperspective/nmv-call-stack.cc:762
+#, c-format
+msgid "(Click here to see the next %d row of the call stack"
+msgid_plural "(Click here to see the next %d rows of the call stack)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../src/persp/dbgperspective/nmv-choose-overloads-dialog.cc:110
+msgid "Function Name"
+msgstr "函式名稱"
+
+#. labels for widget tabs in the status notebook
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:117
+msgid "Context"
+msgstr "情境"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:118
+msgid "Target Terminal"
+msgstr "目標終端機"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:119
+msgid "Breakpoints"
+msgstr "中斷點"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:120
+#, fuzzy
+msgid "Registers"
+msgstr "註冊器"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:121
+msgid "Memory"
+msgstr "記憶體"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:122
+#, fuzzy
+msgid "Expression Monitor"
+msgstr "表述式監視器"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:1689
+msgid "Reached end of file"
+msgstr "已達檔案結尾"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:1692
+#, c-format
+msgid "Could not find string %s"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2070
+msgid "Change to Standard Breakpoint"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2073
+msgid "Change to Countpoint"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2075
+msgid "Remove _Breakpoint"
+msgstr "移除中斷點(_B)"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2078
+msgid "Disable Breakpoint"
+msgstr "停用中斷點"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2080
+msgid "Enable Breakpoint"
+msgstr "啟用中斷點"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2083
+msgid "Set _Breakpoint"
+msgstr "設定中斷點(_B)"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2085
+msgid "Set Countpoint"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2248
+#, c-format
+msgid "%s (path=\"%s\", pid=%i)"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2262
+msgid "Connected to remote target!"
+msgstr "已連接至遠端目標！"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2418
+msgid "Program exited"
+msgstr "程式已離開"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2448
+msgid "The underlying debugger engine process died."
+msgstr ""
+
+#. translators: first %s is the signal name, second one is the reason
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2536
+#, c-format
+msgid "Target received a signal: %s, %s"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2551
+#, c-format
+msgid "An error occurred: %s"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2714
+#, c-format
+msgid "File %s has been modified. Do you want to reload it?"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3057
+msgid "_Run or Restart"
+msgstr "執行或重新啟動(_R)"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3058
+msgid "Run or Restart the target"
+msgstr "執行或重新啟動目標"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3070
+msgid "_Detach From the Running Program"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3071
+msgid "Disconnect the debugger from the running target without killing it"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3086
+msgid "_Save Session to Disk"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3087
+msgid "Save the current debugging session to disk"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3096
+msgid "Set Breakpoint with Dialog..."
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3097
+msgid "Set a breakpoint at the current line using a dialog"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3108
+msgid "Set Breakpoint..."
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3109
+msgid "Set a breakpoint at a function or line number"
+msgstr ""
+
+#. Depending on the context we will want this string to be
+#. either "Set Breakpoint", or "Remove Breakpoint". Hence
+#. this string is updated by
+#. DBGPerspective::update_toggle_menu_text when needed. So
+#. this initial value is going to be displayed only when
+#. Nemiver is launched with no executable on the command
+#. line.
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3125
+msgid "Toggle _Breakpoint"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3126
+msgid "Set/Unset a breakpoint at the current cursor location"
+msgstr ""
+
+#. Depending on the context we will want this string to be
+#. either "Enable Breakpoint", or "Disable
+#. Breakpoint". Hence this string is updated by
+#. DBGPerspective::update_toggle_menu_text when needed. So
+#. this initial value is going to be displayed only when
+#. Nemiver is launched with no executable on the command
+#. line.
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3143
+msgid "Enable/Disable Breakpoint"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3144
+msgid ""
+"Enable or disable the breakpoint that is set at the current cursor location"
+msgstr ""
+
+#. Depending on the context we will want this string to be
+#. either "Set Countpoint", or "Change to Countpoint", or
+#. "Change to Standard Breakpoint". Hence
+#. this string is updated by
+#. DBGPerspective::update_toggle_menu_text when needed. So
+#. this initial value is going to be displayed only when
+#. Nemiver is launched with no executable on the command
+#. line.
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3164
+msgid "Toggle _Countpoint"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3165
+msgid "Set/Unset a countpoint at the current cursor location"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3175
+msgid "Set Watchpoint with Dialog..."
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3176
+msgid "Set a watchpoint using a dialog"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3191
+msgid "_Next"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3192
+msgid "Execute next line stepping over the next function, if any"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3201
+msgid "_Step"
+msgstr "步進(_S)"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3202
+msgid "Execute next line, stepping into the next function, if any"
+msgstr "執行下一列，步進下個函式，如果有的話"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3211
+msgid "Step _Out"
+msgstr "步出(_O)"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3212
+msgid "Finish the execution of the current function"
+msgstr "完成目前函式的執行"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3221
+msgid "Step Into asm"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3222
+msgid "Step into the next assembly instruction"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3231
+msgid "Step Over asm"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3232
+msgid "Step over the next assembly instruction"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3241
+msgid "_Continue or start"
+msgstr "繼續或開始(_C)"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3242
+msgid "Start or continue program execution until the next breakpoint"
+msgstr "開始或繼續程式執行直到下個中斷點"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3251
+msgid "Run to Cursor"
+msgstr "執行至游標處"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3252
+msgid "Continue program execution until the currently selected line is reached"
+msgstr "繼續程式執行直到游標目前選取的那列"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3262
+msgid "Jump to Cursor"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3263
+msgid "Jump to the currently selected line"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3273
+msgid "Jump and Stop to Cursor"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3274
+msgid "Sets a breakpoint to the currently selected line and jump there"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3286
+msgid "Jump to a Given Location"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3287
+msgid "Select a given code location and jump there"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3298
+#: ../src/persp/dbgperspective/ui/exprinspectordialog.ui.h:1
+msgid "Inspect an Expression"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3299
+msgid "Inspect a global or local expression"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3309
+#: ../src/persp/dbgperspective/ui/callfunctiondialog.ui.h:1
+msgid "Call a Function"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3310
+msgid "Call a function in the program being debugged"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3319
+msgid "Show Global Variables"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3320
+msgid "Display all global variables"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3330
+msgid "Refresh Locals"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3331
+msgid "Refresh the list of variables local to the current function"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3340
+msgid "Show Assembly"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3341
+msgid ""
+"Show the assembly code of the source code being currently debugged, in "
+"another tab"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3353
+msgid "Switch to Assembly"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3354
+msgid "Show the assembly code of the source code being currently debugged"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3366
+msgid "Switch to Source"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3367
+msgid "Show the source code being currently debugged"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3379
+msgid "Stop"
+msgstr "停止"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3380
+msgid "Stop the debugger"
+msgstr "停止除錯器"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3392
+msgid "_View"
+msgstr "檢視(_V)"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3403
+msgid "Switch to Target Terminal View"
+msgstr "切換至目標終端機檢視畫面"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3414
+msgid "Switch to Context View"
+msgstr "切換至情境檢視畫面"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3425
+msgid "Switch to Breakpoints View"
+msgstr "切換至中斷點檢視畫面"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3436
+#, fuzzy
+msgid "Switch to Registers View"
+msgstr "切換至註冊器檢視畫面"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3448
+msgid "Switch to Memory View"
+msgstr "切換至記憶體檢視畫面"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3459
+#, fuzzy
+msgid "Switch to Variables Monitor View"
+msgstr "切換至變數監視器檢視畫面"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3468
+msgid "_Debug"
+msgstr "除錯(_D)"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3478
+msgid "_Open Source File..."
+msgstr "開起來源檔(_O)..."
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3479
+msgid "Open a source file for viewing"
+msgstr "開啟來源檔以供檢視"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3488
+msgid "Load _Executable..."
+msgstr "載入可執行檔(_E)..."
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3489
+msgid "Execute a program"
+msgstr "執行程式"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3499
+msgid "_Load Core File..."
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3500
+msgid "Load a core file from disk"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3510
+msgid "_Attach to Running Program..."
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3511
+msgid "Debug a program that's already running"
+msgstr "對已在執行中程式除錯"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3521
+msgid "_Connect to Remote Target..."
+msgstr "連接至遠端目標(_C)..."
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3522
+msgid "Connect to a debugging server to debug a remote target"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3533
+msgid "Resume Sa_ved Session..."
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3534
+msgid "Open a previously saved debugging session"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3544
+msgid "_Preferences"
+msgstr "偏好設定(_P)"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3545
+#, fuzzy
+msgid "Edit the properties of the current session"
+msgstr "編輯目前的屬性"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3559
+msgid "_Reload Source File"
+msgstr "重新載入來源檔(_R)"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3560
+msgid "Reloads the source file"
+msgstr "重新載入來源檔"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3569
+msgid "_Close Source File"
+msgstr "關比來源檔(_C)"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3570
+msgid "Close the opened file"
+msgstr "關閉開啟的檔案"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3579
+msgid "_Find"
+msgstr "尋找(_F)"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3580
+msgid "Find a text string in file"
+msgstr "在檔案中尋找文字字串"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3939
+#, c-format
+msgid "Close %s"
+msgstr "關閉 %s"
+
+#. We cannot restart an inferior running on a remote target at
+#. the moment.
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:5897
+#, fuzzy
+msgid "Sorry, it's impossible to restart a remote inferior"
+msgstr "很抱歉，無法重新啟動遠端 inferior"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6020
+#, c-format
+msgid "Could not find file %s"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6084
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6226
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6261
+#, c-format
+msgid "Could not load program: %s"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6155
+msgid "You cannot attach to Nemiver itself"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6168
+msgid "You cannot attach to the underlying debugger engine"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6463
+msgid "Failed to stop the debugger"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6707
+#, c-format
+msgid "Invalid line number: %i"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:8318
+#, c-format
+msgid ""
+"There is a program being currently debugged. Do you really want to exit from "
+"the debugger?"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective-default-layout.cc:138
+msgid "Default Layout"
+msgstr "預設配置"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective-default-layout.cc:145
+msgid "Nemiver's default layout"
+msgstr "Nemiver 的預設版面配置"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective-dynamic-layout.cc:132
+msgid "Source Code"
+msgstr "來源代碼"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective-dynamic-layout.cc:195
+msgid "Dynamic Layout"
+msgstr "動態配置"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective-dynamic-layout.cc:202
+msgid "A layout which can be modified"
+msgstr "可以修改的版面配置"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective-two-pane-layout.cc:179
+msgid "Two Status Pane"
+msgstr "兩個狀態窗格"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective-two-pane-layout.cc:186
+msgid "A layout with two status pane"
+msgstr "有兩個狀態窗格的版面配置"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective-wide-layout.cc:135
+msgid "Wide Layout"
+msgstr "寬配置"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective-wide-layout.cc:142
+#, fuzzy
+msgid "A layout for very large monitors"
+msgstr "為超大螢幕設計的配置"
+
+#: ../src/persp/dbgperspective/nmv-file-list.cc:128
+msgid "Expand _Selected"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-file-list.cc:134
+msgid "Expand _All"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-file-list.cc:144
+msgid "_Collapse"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-file-list.cc:427
+msgid "Loading files from target executable..."
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-global-vars-inspector-dialog.cc:301
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:547
+#: ../src/persp/dbgperspective/nmv-expr-inspector.cc:233
+#, c-format
+msgid ""
+"Variable type is: \n"
+" %s"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:124
+msgid "Local Variables"
+msgstr "區域變數"
+
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:132
+msgid "Function Arguments"
+msgstr "函式引數"
+
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:258
+#: ../src/persp/dbgperspective/nmv-expr-inspector.cc:136
+msgid "_Copy Variable Name"
+msgstr "複製變數名稱(_C)"
+
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:259
+#: ../src/persp/dbgperspective/nmv-expr-inspector.cc:137
+msgid "Copy the variable path expression to the clipboard"
+msgstr "複製變數路徑表述式至剪貼簿"
+
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:270
+#: ../src/persp/dbgperspective/nmv-expr-inspector.cc:148
+msgid "_Copy Variable Value"
+msgstr "複製變數值(_C)"
+
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:271
+#: ../src/persp/dbgperspective/nmv-expr-inspector.cc:149
+msgid "Copy the variable value to the clipboard"
+msgstr "複製變數值至剪貼簿"
+
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:282
+msgid "Create Watchpoint"
+msgstr "建立監看點"
+
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:283
+msgid ""
+"Create a watchpoint that triggers when the value of the expression changes"
+msgstr "建立表述式值改變時會觸發的監看點"
+
+#: ../src/persp/dbgperspective/nmv-memory-view.cc:49
+msgid "Byte"
+msgstr "位元組"
+
+#: ../src/persp/dbgperspective/nmv-memory-view.cc:52
+msgid "Word"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-memory-view.cc:55
+msgid "Long Word"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-memory-view.cc:98
+#: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:9
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:8
+#: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:9
+msgid "Address:"
+msgstr "位址："
+
+#: ../src/persp/dbgperspective/nmv-memory-view.cc:100
+msgid "Show"
+msgstr "顯示"
+
+#: ../src/persp/dbgperspective/nmv-memory-view.cc:103
+msgid "Group By:"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-preferences-dialog.cc:149
+#: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:5
+msgid "Choose a Directory"
+msgstr "選擇目錄"
+
+#: ../src/persp/dbgperspective/nmv-preferences-dialog.cc:259
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:18
+msgid "Source Directories"
+msgstr "來源目錄"
+
+#: ../src/persp/dbgperspective/nmv-proc-list-dialog.cc:132
+msgid "User Name"
+msgstr "使用者名稱"
+
+#: ../src/persp/dbgperspective/nmv-proc-list-dialog.cc:139
+msgid "Proc Args"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-registers-view.cc:101
+#: ../src/persp/dbgperspective/nmv-run-program-dialog.cc:99
+msgid "Name"
+msgstr "名稱"
+
+#: ../src/persp/dbgperspective/nmv-registers-view.cc:102
+#: ../src/persp/dbgperspective/nmv-run-program-dialog.cc:102
+#: ../src/persp/dbgperspective/nmv-vars-treeview.cc:59
+msgid "Value"
+msgstr "值"
+
+#: ../src/persp/dbgperspective/nmv-saved-sessions-dialog.cc:71
+msgid "Session"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-set-breakpoint-dialog.cc:117
+msgid "Throw Exception"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-set-breakpoint-dialog.cc:121
+msgid "Catch Exception"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-set-breakpoint-dialog.cc:125
+msgid "Fork System Call"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-set-breakpoint-dialog.cc:129
+msgid "Vfork System Call"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-set-breakpoint-dialog.cc:133
+msgid "Exec System Call"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-thread-list.cc:184
+msgid "Thread ID"
+msgstr ""
+
+#. create the columns of the tree view
+#: ../src/persp/dbgperspective/nmv-vars-treeview.cc:50
+msgid "Variable"
+msgstr "變數"
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:128
+msgid "In scope expressions"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:133
+msgid "Out of scope expressions"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:237
+msgid "Remove"
+msgstr "移除"
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:238
+msgid "Remove selected expressions from the monitor"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:247
+msgid "New..."
+msgstr "新增..."
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:248
+#, fuzzy
+msgid "Add a new expression to the monitor"
+msgstr "加入新的表述式至監視器"
+
+#: ../src/persp/dbgperspective/ui/callfunctiondialog.ui.h:2
+#, fuzzy
+msgid "Call a function:"
+msgstr "呼叫函式："
+
+#: ../src/persp/dbgperspective/ui/chooseoverloadsdialog.ui.h:1
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:1
+msgid "Set Breakpoint"
+msgstr "設定中斷點"
+
+#: ../src/persp/dbgperspective/ui/chooseoverloadsdialog.ui.h:2
+#, fuzzy
+msgid "Choose Overloaded Function"
+msgstr "選擇過載函式"
+
+#: ../src/persp/dbgperspective/ui/chooseoverloadsdialog.ui.h:3
+#, fuzzy
+msgid ""
+"Multiple functions match the specified name. Please choose one from the list "
+"below."
+msgstr "多個函式符合指定的名稱。請從下方列表中選擇其一。"
+
+#: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:1
+msgid "Find Text"
+msgstr "尋找文字"
+
+#: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:2
+msgid "_Search:"
+msgstr "搜尋(_S)："
+
+#: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:3
+msgid "Match Options:"
+msgstr "比對選項："
+
+#: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:4
+msgid "Match c_ase"
+msgstr "比對大小寫(_A)"
+
+#: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:5
+msgid "Match _entire word only"
+msgstr "比對整個字詞(_E)"
+
+#: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:6
+msgid "Cycling Options:"
+msgstr "循環選項："
+
+#: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:7
+msgid "_Wrap around"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:8
+msgid "Search _backwards"
+msgstr "往後搜尋(_B)"
+
+#: ../src/persp/dbgperspective/ui/globalvarsinspector.ui.h:1
+msgid "Global Variables"
+msgstr "全域變數"
+
+#: ../src/persp/dbgperspective/ui/loadcoredialog.ui.h:1
+msgid "Choose a Core File to Debug"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/loadcoredialog.ui.h:2
+msgid "Select a Core File"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/loadcoredialog.ui.h:3
+msgid "Core File:"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/loadcoredialog.ui.h:4
+msgid "Select the executable that created the core file"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/loadcoredialog.ui.h:5
+msgid "Executable:"
+msgstr "可執行檔："
+
+#: ../src/persp/dbgperspective/ui/openfiledialog.ui.h:1
+msgid "Open Source Files"
+msgstr "開啟來源檔案"
+
+#: ../src/persp/dbgperspective/ui/openfiledialog.ui.h:2
+msgid "Select from _Target Executable"
+msgstr "從目標可執行檔選取(_T)"
+
+#: ../src/persp/dbgperspective/ui/openfiledialog.ui.h:3
+msgid "Select from _File System"
+msgstr "從檔案系統選取(_F)"
+
+#: ../src/persp/dbgperspective/ui/openfiledialog.ui.h:4
+msgid "Choose Source Files to Open"
+msgstr "選擇要開啟的來源檔案"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:1
+msgid "Preferences"
+msgstr "偏好設定"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:2
+msgid "Use system monospace font"
+msgstr "使用系統等寬字型"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:3
+msgid "Custom Font:"
+msgstr "自訂字型："
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:4
+msgid "Editor Font"
+msgstr "編輯器字型"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:5
+msgid "Visual Style"
+msgstr "可見樣式"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:6
+msgid "Display line numbers"
+msgstr "顯示列號"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:7
+msgid "Line Numbers"
+msgstr "列號"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:8
+msgid "Use launch terminal"
+msgstr "使用啟動終端機"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:9
+msgid "Terminal"
+msgstr "終端機"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:10
+msgid "When a source file is changed:"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:11
+msgid "Reload the file"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:12
+msgid "Do not reload the file"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:13
+msgid "Ask each time"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:14
+msgid "File Monitoring"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:15
+msgid "Enable syntax highlighting"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:16
+msgid "Syntax Highlighting"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:17
+msgid "Editor"
+msgstr "編輯器"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:19
+#, fuzzy
+msgid "Pure assembly"
+msgstr "純組譯"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:20
+msgid "Mixed source and assembly"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:21
+msgid "Assembly style"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:22
+msgid "Assembly flavor"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:23
+#: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:3
+msgid "Choose a File"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:24
+msgid "Path to the GDB binary used"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:25
+msgid "GDB Binary"
+msgstr "GDB 二進位"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:26
+#, fuzzy
+msgid "Number of instructions to disassemble by default"
+msgstr "預設要的數目"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:27
+msgid "Instructions"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:28
+msgid "Enable pretty printing (requires debugger restart)"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:29
+msgid "GDB Pretty Printing"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:30
+msgid "Follow parent"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:31
+msgid "Follow child"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:32
+msgid "GDB Follow Fork Mode"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:33
+msgid "Debugger"
+msgstr "除錯器"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:34
+msgid "Layout"
+msgstr "配置"
+
+#: ../src/persp/dbgperspective/ui/proclistdialog.ui.h:1
+msgid "Attach to a Running Program"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/proclistdialog.ui.h:2
+msgid "Choose a Process to Debug"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/proclistdialog.ui.h:3
+msgid "_Filter list:"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:1
+msgid "Connect to Remote Target"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:2
+msgid "Executable to Load"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:4
+msgid "Shared Libraries Location"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:6
+msgid "Remote Debugging Server"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:7
+msgid "TCP/IP Connection"
+msgstr "TCP/IP 連線"
+
+#: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:8
+msgid "Port:"
+msgstr "連接埠："
+
+#: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:10
+msgid "Serial Line Connection"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:1
+msgid "Choose a Program to Execute"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:2
+msgid "Choose an Executable"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:3
+msgid "Program:"
+msgstr "程式："
+
+#: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:4
+msgid "Arguments:"
+msgstr "引數："
+
+#: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:5
+msgid "Choose a Working Directory"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:6
+msgid "Working Directory:"
+msgstr ""
+
+#: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:7
+msgid "_Add"
+msgstr "加入(_A)"
+
+#: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:8
+msgid "_Remove"
+msgstr "移除(_R)"
+
+#: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:9
+msgid "Environment Variables:"
+msgstr "環境變數："
+
+#: ../src/persp/dbgperspective/ui/savedsessionsdialog.ui.h:1
+#, fuzzy
+msgid "Saved Sessions"
+msgstr "儲存的"
+
+#: ../src/persp/dbgperspective/ui/savedsessionsdialog.ui.h:2
+#, fuzzy
+msgid "Choose a Session to Debug"
+msgstr "選擇要除錯的"
+
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:2
+msgid "Set a Breakpoint:"
+msgstr "設定中斷點："
+
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:3
+#, fuzzy
+msgid "Condition:"
+msgstr "條件："
+
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:4
+msgid "_Event:"
+msgstr "事件(_E)："
+
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:5
+#: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:5
+msgid "_Binary Location:"
+msgstr "二進位位置(_B)："
+
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:6
+#: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:4
+msgid "_Source Location:"
+msgstr "來源位置(_S)："
+
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:7
+#: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:3
+msgid "F_unction Name:"
+msgstr "函式名稱(_U)："
+
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:9
+#: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:7
+msgid "File name:"
+msgstr "檔案名稱："
+
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:10
+#: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:6
+msgid "Function:"
+msgstr "函式："
+
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:11
+#: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:8
+msgid "Line:"
+msgstr "列："
+
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:12
+#, fuzzy
+msgid "Set as Countpoint"
+msgstr "設定點"
+
+#: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:1
+#, fuzzy
+msgid "Set Location to Jump To"
+msgstr "設定要跳過去的位置"
+
+#: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:2
+#, fuzzy
+msgid "Jump to location:"
+msgstr "跳去位置："
+
+#: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:10
+msgid "Break at Destination"
+msgstr "於目的地中斷"
+
+#: ../src/persp/dbgperspective/ui/exprinspectordialog.ui.h:2
+#, fuzzy
+msgid "Add to monitor"
+msgstr "加入監視器"
+
+#: ../src/persp/dbgperspective/ui/exprinspectordialog.ui.h:3
+msgid "_Variable Name:"
+msgstr "變數名稱(_V)："
+
+#: ../src/persp/dbgperspective/ui/exprinspectordialog.ui.h:4
+#, fuzzy
+msgid "_Inspect"
+msgstr "審閱(_I)"
+
+#: ../src/persp/dbgperspective/ui/watchpointdialog.ui.h:1
+msgid "Set a watchpoint:"
+msgstr "設定監看點："
+
+#: ../src/persp/dbgperspective/ui/watchpointdialog.ui.h:2
+msgid "Expression:"
+msgstr "表述式："
+
+#: ../src/persp/dbgperspective/ui/watchpointdialog.ui.h:3
+#, fuzzy
+msgid "Inspect"
+msgstr "審閱"
+
+#: ../src/persp/dbgperspective/ui/watchpointdialog.ui.h:4
+#, fuzzy
+msgid "Triggers on:"
+msgstr "觸發於："
+
+#: ../src/persp/dbgperspective/ui/watchpointdialog.ui.h:5
+msgid "Read"
+msgstr "讀取"
+
+#: ../src/persp/dbgperspective/ui/watchpointdialog.ui.h:6
+msgid "Write"
+msgstr "寫入"
+
+#: ../src/uicommon/nmv-locate-file-dialog.cc:65
+#, c-format
+msgid "Select Location for %s"
+msgstr "選取 %s 的位置"
+
+#: ../src/uicommon/nmv-locate-file-dialog.cc:75
+#, c-format
+msgid ""
+"Cannot find file '%s'.\n"
+"Please specify the location of this file:"
+msgstr ""
+"找不到檔案「%s」。\n"
+"請指定此檔案的位置："
+
+#: ../src/uicommon/nmv-source-editor.cc:611
+#, c-format
+msgid "Line: %i, Column: %i"
+msgstr "列：%i，欄：%i"
+
+#: ../src/uicommon/nmv-source-editor.cc:1439
+#, c-format
+msgid "Could not load file %s because its encoding is different from %s"
+msgstr "無法載入檔案 %s，因為它的編碼與 %s 不同"
+
+#: ../src/uicommon/nmv-terminal.cc:174
+msgid "Copy the selection"
+msgstr "複製選取項"
+
+#: ../src/uicommon/nmv-terminal.cc:180
+msgid "_Paste"
+msgstr "貼上(_P)"
+
+#: ../src/uicommon/nmv-terminal.cc:181
+msgid "Paste the clipboard"
+msgstr "貼上剪貼簿"
+
+#: ../src/uicommon/nmv-terminal.cc:187
+msgid "_Reset"
+msgstr "重設(_R)"
+
+#: ../src/uicommon/nmv-terminal.cc:188
+msgid "Reset the terminal"
+msgstr "重設終端機"
+
+#: ../src/uicommon/nmv-ui-utils.cc:91
+msgid "Do not ask me again"
+msgstr "別再問我"
+
+#: ../src/workbench/nmv-workbench.cc:275
+msgid "Project Website"
+msgstr "專案網站"
+
+#. Translators: change this to your name, separate multiple names with \n
+#: ../src/workbench/nmv-workbench.cc:295
+msgid "translator-credits"
+msgstr "Cheng-Chia Tseng <pswo10680@gmail.com>, 2012."
+
+#: ../src/workbench/nmv-workbench.cc:673
+msgid "_File"
+msgstr "檔案(_F)"
+
+#: ../src/workbench/nmv-workbench.cc:684
+msgid "_Quit"
+msgstr "退出(_Q)"
+
+#: ../src/workbench/nmv-workbench.cc:685
+msgid "Quit the application"
+msgstr "退出應用程式"
+
+#: ../src/workbench/nmv-workbench.cc:695
+msgid "_Edit"
+msgstr "編輯(_E)"
+
+#: ../src/workbench/nmv-workbench.cc:706
+msgid "_Help"
+msgstr "求助(_H)"
+
+#: ../src/workbench/nmv-workbench.cc:717
+msgid "_About"
+msgstr "關於(_A)"
+
+#: ../src/workbench/nmv-workbench.cc:718
+msgid "Display information about this application"
+msgstr "顯示有關此應用程式的資訊"
+
+#: ../src/workbench/nmv-workbench.cc:728
+msgid "_Contents"
+msgstr "內容(_C)"
+
+#: ../src/workbench/nmv-workbench.cc:729
+msgid "Display the user manual for this application"
+msgstr "顯示此應用程式的使用者手冊"
+
+#. end extern C
+#: ../ui/locatefiledialog.ui.h:1
+msgid "Select File Location"
+msgstr "選取檔案位置"
+
+#: ../ui/locatefiledialog.ui.h:2
+msgid "Locate File"
+msgstr "定位檔案"
