@@ -1,17 +1,16 @@
-# SOME DESCRIPTIVE TITLE.
+# Norwegian bokmål translation of nemiver.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # Kjartan Maraas <kmaraas@gnome.org>, 2012.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: nemiver 0.1\n"
+"Project-Id-Version: nemiver 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-14 10:49+0200\n"
-"PO-Revision-Date: 2012-05-14 11:03+0200\n"
+"POT-Creation-Date: 2012-07-10 14:08+0200\n"
+"PO-Revision-Date: 2012-07-10 14:17+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
-"Language-Team: Norsk, bokmål <i18n-nb@lister.ping.uio.no>\n"
+"Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,83 +33,87 @@ msgstr "Nemiver feilsøkingsprogram for C/C++"
 msgid "Debug Applications"
 msgstr "Feilsøk programmer"
 
-#: ../src/main.cc:77
+#: ../src/main.cc:78
 msgid "Set the environment of the program to debug"
-msgstr ""
+msgstr "Sett miljø for programmet som skal feilsøkes"
 
-#: ../src/main.cc:86
+#: ../src/main.cc:87
 msgid "Attach to a process"
 msgstr "Fest til prosess"
 
-#: ../src/main.cc:95
+#: ../src/main.cc:96
 msgid "Load a core file"
-msgstr ""
+msgstr "Last en core-fil"
 
-#: ../src/main.cc:103
+#: ../src/main.cc:104
 msgid "List the saved debugging sessions"
 msgstr ""
 
-#: ../src/main.cc:111
+#: ../src/main.cc:112
 msgid "Erase the saved debugging sessions"
 msgstr ""
 
-#: ../src/main.cc:119
+#: ../src/main.cc:120
 msgid "Debug the program that was of session number N"
 msgstr ""
 
-#: ../src/main.cc:127
+#: ../src/main.cc:128
 msgid "Execute the last session"
 msgstr "Kjør forrige økt"
 
-#: ../src/main.cc:135
+#: ../src/main.cc:136
 msgid "Enable logging domains DOMAINS"
 msgstr ""
 
-#: ../src/main.cc:143
+#: ../src/main.cc:144
 msgid "Log the debugger output"
 msgstr ""
 
-#: ../src/main.cc:151
+#: ../src/main.cc:152
 msgid "Use this terminal as the debugee's terminal"
 msgstr ""
 
-#: ../src/main.cc:160
+#: ../src/main.cc:161
 msgid "Connect to remote target specified by HOST:PORT"
 msgstr ""
 
-#: ../src/main.cc:169
+#: ../src/main.cc:170
 msgid ""
 "Where to look for shared libraries loaded by the inferior. Use in "
 "conjunction with --remote"
 msgstr ""
 
-#: ../src/main.cc:179
+#: ../src/main.cc:180
 msgid "Set the path of the GDB binary to use to debug the inferior"
 msgstr ""
 
-#: ../src/main.cc:188
+#: ../src/main.cc:189
+msgid "Do not set a breakpoint in 'main' and do not run the inferior either"
+msgstr ""
+
+#: ../src/main.cc:198
 msgid "Show the version number of Nemiver"
 msgstr "Vis versjonsnummer for Nemiver"
 
-#: ../src/main.cc:254
+#: ../src/main.cc:264
 msgid " [<prog-to-debug> [prog-args]]"
 msgstr ""
 
-#: ../src/main.cc:257 ../src/workbench/nmv-workbench.cc:263
+#: ../src/main.cc:267 ../src/workbench/nmv-workbench.cc:263
 msgid "A C/C++ debugger for GNOME"
 msgstr ""
 
-#: ../src/main.cc:351
+#: ../src/main.cc:361
 msgid ""
 "Please provide a local copy of the binary you intend to debug remotely.\n"
 "Like this:\n"
 msgstr ""
 
-#: ../src/main.cc:356 ../src/main.cc:375
+#: ../src/main.cc:366 ../src/main.cc:385
 msgid "Otherwise, find below the full set of Nemiver options.\n"
 msgstr ""
 
-#: ../src/main.cc:370
+#: ../src/main.cc:380
 msgid ""
 "Please provide the path to the binary that generated the core file too.\n"
 "Like this:\n"
@@ -238,198 +241,138 @@ msgid "Function Name"
 msgstr "Funksjonsnavn"
 
 #. labels for widget tabs in the status notebook
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:116
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:117
 msgid "Context"
 msgstr "Kontekst"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:117
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:118
 msgid "Target Terminal"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:118
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:119
 msgid "Breakpoints"
 msgstr "Stoppunkter"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:119
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:120
 msgid "Registers"
 msgstr "Registre"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:120
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:121
 msgid "Memory"
 msgstr "Minne"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:1667
-msgid "Reached end of file"
-msgstr ""
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:122
+msgid "Expression Monitor"
+msgstr "Uttrykksovervåking"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:1670
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:1689
+msgid "Reached end of file"
+msgstr "Nådde slutten på filen"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:1692
 #, c-format
 msgid "Could not find string %s"
 msgstr "Fant ikke streng %s"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2114
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2070
 msgid "Change to Standard Breakpoint"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2117
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2073
 msgid "Change to Countpoint"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2119
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2075
 msgid "Remove _Breakpoint"
 msgstr "Fjern sto_ppunkt"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2122
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2078
 msgid "Disable Breakpoint"
 msgstr "Slå av stoppunkt"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2124
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2080
 msgid "Enable Breakpoint"
 msgstr "Aktiver stoppunkt"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2127
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2083
 msgid "Set _Breakpoint"
-msgstr ""
+msgstr "Sett av_bruddspunkt"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2129
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2085
 msgid "Set Countpoint"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2292
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2248
 #, c-format
 msgid "%s (path=\"%s\", pid=%i)"
-msgstr ""
+msgstr "%s (sti=«%s», pid=%i)"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2306
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2262
 msgid "Connected to remote target!"
 msgstr "Koblet til eksternt mål!"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2450
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2418
 msgid "Program exited"
 msgstr "Programmet avsluttet"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2484
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2448
 msgid "The underlying debugger engine process died."
 msgstr ""
 
 #. translators: first %s is the signal name, second one is the reason
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2572
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2536
 #, c-format
 msgid "Target received a signal: %s, %s"
-msgstr ""
+msgstr "Målet mottok et signal: %s, %s"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2587
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2551
 #, c-format
 msgid "An error occurred: %s"
 msgstr "En feil oppsto: %s"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2755
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2714
 #, c-format
-msgid "File %s has been modified. Do want to reload it?"
-msgstr ""
+msgid "File %s has been modified. Do you want to reload it?"
+msgstr "Filen %s er endret. Vil du laste den på nytt?"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3019
-msgid "_Save Session to Disk"
-msgstr ""
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3057
+msgid "_Run or Restart"
+msgstr "Kjø_r eller start på nytt"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3020
-msgid "Save the current debugging session to disk"
-msgstr ""
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3058
+msgid "Run or Restart the target"
+msgstr "Kjør eller start mål på nytt"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3029
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3070
 msgid "_Detach From the Running Program"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3030
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3071
 msgid "Disconnect the debugger from the running target without killing it"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3044
-msgid "_Restart"
-msgstr "Sta_rt på nytt"
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3086
+msgid "_Save Session to Disk"
+msgstr "_Lagre økten til disk"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3045
-msgid "Restart the target, killing this process and starting a new one"
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3087
+msgid "Save the current debugging session to disk"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3058
-msgid "_Next"
-msgstr "_Neste"
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3059
-msgid "Execute next line stepping over the next function, if any"
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3096
+msgid "Set Breakpoint with Dialog..."
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3068
-msgid "_Step"
-msgstr "_Steg"
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3069
-msgid "Execute next line, stepping into the next function, if any"
-msgstr ""
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3078
-msgid "Step _Out"
-msgstr "Steg _ut"
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3079
-msgid "Finish the execution of the current function"
-msgstr ""
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3088
-msgid "Step Into asm"
-msgstr ""
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3089
-msgid "Step into the next assembly instruction"
-msgstr ""
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3098
-msgid "Step Over asm"
-msgstr ""
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3099
-msgid "Step over the next assembly instruction"
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3097
+msgid "Set a breakpoint at the current line using a dialog"
 msgstr ""
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3108
-msgid "_Continue"
-msgstr "_Fortsett"
+msgid "Set Breakpoint..."
+msgstr ""
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3109
-msgid "Continue program execution until the next breakpoint"
-msgstr ""
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3118
-msgid "Run to Cursor"
-msgstr ""
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3119
-msgid "Continue program execution until the currently selected line is reached"
-msgstr ""
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3129
-msgid "Jump to Cursor"
-msgstr ""
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3130
-msgid "Jump to the currently selected line"
-msgstr ""
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3140
-msgid "Jump and Stop to Cursor"
-msgstr ""
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3141
-msgid "Sets a breakpoint to the currently selected line and jump there"
-msgstr ""
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3153
-msgid "Jump to a Given Location"
-msgstr ""
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3154
-msgid "Select a given code location and jump there"
+msgid "Set a breakpoint at a function or line number"
 msgstr ""
 
 #. Depending on the context we will want this string to be
@@ -439,11 +382,11 @@ msgstr ""
 #. this initial value is going to be displayed only when
 #. Nemiver is launched with no executable on the command
 #. line.
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3172
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3125
 msgid "Toggle _Breakpoint"
 msgstr "Slå av/på sto_ppunkt"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3173
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3126
 msgid "Set/Unset a breakpoint at the current cursor location"
 msgstr ""
 
@@ -454,11 +397,11 @@ msgstr ""
 #. this initial value is going to be displayed only when
 #. Nemiver is launched with no executable on the command
 #. line.
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3190
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3143
 msgid "Enable/Disable Breakpoint"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3191
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3144
 msgid ""
 "Enable or disable the breakpoint that is set at the current cursor location"
 msgstr ""
@@ -471,255 +414,324 @@ msgstr ""
 #. this initial value is going to be displayed only when
 #. Nemiver is launched with no executable on the command
 #. line.
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3211
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3164
 msgid "Toggle _Countpoint"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3212
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3165
 msgid "Set/Unset a countpoint at the current cursor location"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3222
-msgid "Set Breakpoint..."
-msgstr ""
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3223
-msgid "Set a breakpoint at a function or line number"
-msgstr ""
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3232
-msgid "Set Breakpoint with Dialog..."
-msgstr ""
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3233
-msgid "Set a breakpoint at the current line using a dialog"
-msgstr ""
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3244
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3175
 msgid "Set Watchpoint with Dialog..."
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3245
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3176
 msgid "Set a watchpoint using a dialog"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3256
-#: ../src/persp/dbgperspective/ui/varinspectordialog.ui.h:1
-msgid "Inspect a Variable"
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3191
+msgid "_Next"
+msgstr "_Neste"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3192
+msgid "Execute next line stepping over the next function, if any"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3257
-msgid "Inspect a global or local variable"
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3201
+msgid "_Step"
+msgstr "_Steg"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3202
+msgid "Execute next line, stepping into the next function, if any"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3267
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3211
+msgid "Step _Out"
+msgstr "Steg _ut"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3212
+msgid "Finish the execution of the current function"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3221
+msgid "Step Into asm"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3222
+msgid "Step into the next assembly instruction"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3231
+msgid "Step Over asm"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3232
+msgid "Step over the next assembly instruction"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3241
+msgid "_Continue or start"
+msgstr "_Fortsett eller start"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3242
+msgid "Start or continue program execution until the next breakpoint"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3251
+msgid "Run to Cursor"
+msgstr "Kjør til markør"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3252
+msgid "Continue program execution until the currently selected line is reached"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3262
+msgid "Jump to Cursor"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3263
+msgid "Jump to the currently selected line"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3273
+msgid "Jump and Stop to Cursor"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3274
+msgid "Sets a breakpoint to the currently selected line and jump there"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3286
+msgid "Jump to a Given Location"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3287
+msgid "Select a given code location and jump there"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3298
+#: ../src/persp/dbgperspective/ui/exprinspectordialog.ui.h:1
+#, fuzzy
+msgid "Inspect an Expression"
+msgstr "Uttrykk"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3299
+msgid "Inspect a global or local expression"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3309
 #: ../src/persp/dbgperspective/ui/callfunctiondialog.ui.h:1
 msgid "Call a Function"
 msgstr "Kall en funksjon"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3268
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3310
 msgid "Call a function in the program being debugged"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3277
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3319
 msgid "Show Global Variables"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3278
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3320
 msgid "Display all global variables"
-msgstr ""
+msgstr "Vis alle globale variable"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3288
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3330
 msgid "Refresh Locals"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3289
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3331
 msgid "Refresh the list of variables local to the current function"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3298
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3340
 msgid "Show Assembly"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3299
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3341
 msgid ""
 "Show the assembly code of the source code being currently debugged, in "
 "another tab"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3311
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3353
 msgid "Switch to Assembly"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3312
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3354
 msgid "Show the assembly code of the source code being currently debugged"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3324
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3366
 msgid "Switch to Source"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3325
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3367
 msgid "Show the source code being currently debugged"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3337
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3379
 msgid "Stop"
 msgstr "Stopp"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3338
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3380
 msgid "Stop the debugger"
 msgstr "Stopp feilsøkingsprogram"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3350
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3392
 msgid "_View"
 msgstr "_Vis"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3361
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3403
 msgid "Switch to Target Terminal View"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3372
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3414
 msgid "Switch to Context View"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3383
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3425
 msgid "Switch to Breakpoints View"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3394
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3436
 msgid "Switch to Registers View"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3406
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3448
 msgid "Switch to Memory View"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3416
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3459
+msgid "Switch to Variables Monitor View"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3468
 msgid "_Debug"
 msgstr "_Feilsøk"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3426
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3478
 msgid "_Open Source File..."
 msgstr "_Åpne kildekodefil …"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3427
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3479
 msgid "Open a source file for viewing"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3436
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3488
 msgid "Load _Executable..."
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3437
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3489
 msgid "Execute a program"
 msgstr "Kjør et program"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3447
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3499
 msgid "_Load Core File..."
-msgstr ""
+msgstr "_Last en core-fil …"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3448
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3500
 msgid "Load a core file from disk"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3458
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3510
 msgid "_Attach to Running Program..."
-msgstr ""
+msgstr "K_oble til kjørende program …"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3459
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3511
 msgid "Debug a program that's already running"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3469
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3521
 msgid "_Connect to Remote Target..."
-msgstr ""
+msgstr "_Koble til eksternt mål …"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3470
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3522
 msgid "Connect to a debugging server to debug a remote target"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3481
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3533
 msgid "Resume Sa_ved Session..."
-msgstr ""
+msgstr "Gjenoppta la_gret økt …"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3482
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3534
 msgid "Open a previously saved debugging session"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3492
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3544
 msgid "_Preferences"
 msgstr "_Brukervalg"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3493
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3545
 msgid "Edit the properties of the current session"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3507
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3559
 msgid "_Reload Source File"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3508
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3560
 msgid "Reloads the source file"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3517
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3569
 msgid "_Close Source File"
-msgstr ""
+msgstr "_Lukk kildefil"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3518
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3570
 msgid "Close the opened file"
-msgstr ""
+msgstr "Lukk åpnet fil"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3527
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3579
 msgid "_Find"
 msgstr "_Finn"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3528
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3580
 msgid "Find a text string in file"
-msgstr ""
+msgstr "Finn en tekststreng i filen"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3879
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3939
 #, c-format
 msgid "Close %s"
 msgstr "Lukk %s"
 
 #. We cannot restart an inferior running on a remote target at
 #. the moment.
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:5832
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:5897
 msgid "Sorry, it's impossible to restart a remote inferior"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:5950
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6020
 #, c-format
 msgid "Could not find file %s"
 msgstr "Kunne ikke finne filen %s"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6014
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6156
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6191
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6084
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6226
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6261
 #, c-format
 msgid "Could not load program: %s"
-msgstr ""
+msgstr "Kunne ikke laste program: %s"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6093
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6155
 msgid "You cannot attach to Nemiver itself"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6098
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6168
 msgid "You cannot attach to the underlying debugger engine"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6381
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6463
 msgid "Failed to stop the debugger"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6620
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6707
 #, c-format
 msgid "Invalid line number: %i"
-msgstr ""
+msgstr "Ugyldig linjenummer: %i"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:8219
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:8318
 #, c-format
 msgid ""
 "There is a program being currently debugged. Do you really want to exit from "
@@ -728,11 +740,11 @@ msgstr ""
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective-default-layout.cc:138
 msgid "Default Layout"
-msgstr ""
+msgstr "Forvalgt utforming"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective-default-layout.cc:145
 msgid "Nemiver's default layout"
-msgstr ""
+msgstr "Nemiver's forvalgte utforming"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective-dynamic-layout.cc:132
 msgid "Source Code"
@@ -744,7 +756,7 @@ msgstr "Dynamisk utforming"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective-dynamic-layout.cc:202
 msgid "A layout which can be modified"
-msgstr ""
+msgstr "En utforming som kan endres"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective-two-pane-layout.cc:179
 msgid "Two Status Pane"
@@ -756,7 +768,7 @@ msgstr ""
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective-wide-layout.cc:135
 msgid "Wide Layout"
-msgstr ""
+msgstr "Bred utforming"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective-wide-layout.cc:142
 msgid "A layout for very large monitors"
@@ -764,7 +776,7 @@ msgstr ""
 
 #: ../src/persp/dbgperspective/nmv-file-list.cc:128
 msgid "Expand _Selected"
-msgstr ""
+msgstr "Utvid _valgt"
 
 #: ../src/persp/dbgperspective/nmv-file-list.cc:134
 msgid "Expand _All"
@@ -779,13 +791,15 @@ msgid "Loading files from target executable..."
 msgstr ""
 
 #: ../src/persp/dbgperspective/nmv-global-vars-inspector-dialog.cc:301
-#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:545
-#: ../src/persp/dbgperspective/nmv-var-inspector.cc:224
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:547
+#: ../src/persp/dbgperspective/nmv-expr-inspector.cc:233
 #, c-format
 msgid ""
 "Variable type is: \n"
 " %s"
 msgstr ""
+"Variabeltypen er: \n"
+" %s"
 
 #: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:124
 msgid "Local Variables"
@@ -793,40 +807,40 @@ msgstr "Lokale variabler"
 
 #: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:132
 msgid "Function Arguments"
-msgstr ""
+msgstr "Funksjonsargumenter"
 
-#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:256
-#: ../src/persp/dbgperspective/nmv-var-inspector.cc:127
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:258
+#: ../src/persp/dbgperspective/nmv-expr-inspector.cc:136
 msgid "_Copy Variable Name"
-msgstr ""
+msgstr "_Kopier variabelnavn"
 
-#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:257
-#: ../src/persp/dbgperspective/nmv-var-inspector.cc:128
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:259
+#: ../src/persp/dbgperspective/nmv-expr-inspector.cc:137
 msgid "Copy the variable path expression to the clipboard"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:268
-#: ../src/persp/dbgperspective/nmv-var-inspector.cc:139
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:270
+#: ../src/persp/dbgperspective/nmv-expr-inspector.cc:148
 msgid "_Copy Variable Value"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:269
-#: ../src/persp/dbgperspective/nmv-var-inspector.cc:140
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:271
+#: ../src/persp/dbgperspective/nmv-expr-inspector.cc:149
 msgid "Copy the variable value to the clipboard"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:280
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:282
 msgid "Create Watchpoint"
 msgstr ""
 
-#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:281
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:283
 msgid ""
 "Create a watchpoint that triggers when the value of the expression changes"
 msgstr ""
 
 #: ../src/persp/dbgperspective/nmv-memory-view.cc:49
 msgid "Byte"
-msgstr ""
+msgstr "Byte"
 
 #: ../src/persp/dbgperspective/nmv-memory-view.cc:52
 msgid "Word"
@@ -834,7 +848,7 @@ msgstr "Ord"
 
 #: ../src/persp/dbgperspective/nmv-memory-view.cc:55
 msgid "Long Word"
-msgstr ""
+msgstr "Langt ord"
 
 #: ../src/persp/dbgperspective/nmv-memory-view.cc:98
 #: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:9
@@ -906,24 +920,49 @@ msgstr ""
 
 #: ../src/persp/dbgperspective/nmv-thread-list.cc:184
 msgid "Thread ID"
-msgstr ""
+msgstr "Tråd-ID"
 
 #. create the columns of the tree view
 #: ../src/persp/dbgperspective/nmv-vars-treeview.cc:50
 msgid "Variable"
 msgstr "Variabel"
 
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:128
+#, fuzzy
+msgid "In scope expressions"
+msgstr "Uttrykk"
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:133
+msgid "Out of scope expressions"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:237
+msgid "Remove"
+msgstr "Fjern"
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:238
+msgid "Remove selected expressions from the monitor"
+msgstr ""
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:247
+msgid "New..."
+msgstr "Nytt …"
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:248
+msgid "Add a new expression to the monitor"
+msgstr ""
+
 #: ../src/persp/dbgperspective/ui/callfunctiondialog.ui.h:2
-msgid "<b>Call a function:</b>"
-msgstr "<b>Kall en funksjon:</b>"
+msgid "Call a function:"
+msgstr "Kall en funksjon:"
 
 #: ../src/persp/dbgperspective/ui/chooseoverloadsdialog.ui.h:1
 #: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:1
 msgid "Set Breakpoint"
-msgstr ""
+msgstr "Sett avbruddspunkt"
 
 #: ../src/persp/dbgperspective/ui/chooseoverloadsdialog.ui.h:2
-msgid "<b>Choose Overloaded Function</b>"
+msgid "Choose Overloaded Function"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/chooseoverloadsdialog.ui.h:3
@@ -934,14 +973,14 @@ msgstr ""
 
 #: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:1
 msgid "Find Text"
-msgstr ""
+msgstr "Finn tekst"
 
 #: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:2
 msgid "_Search:"
 msgstr "_Søk:"
 
 #: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:3
-msgid "<b>Match Options:</b>"
+msgid "Match Options:"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:4
@@ -953,7 +992,7 @@ msgid "Match _entire word only"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:6
-msgid "<b>Cycling Options:</b>"
+msgid "Cycling Options:"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:7
@@ -977,16 +1016,16 @@ msgid "Select a Core File"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/loadcoredialog.ui.h:3
-msgid "<b>Core File:</b>"
-msgstr ""
+msgid "Core File:"
+msgstr "Core-fil:"
 
 #: ../src/persp/dbgperspective/ui/loadcoredialog.ui.h:4
 msgid "Select the executable that created the core file"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/loadcoredialog.ui.h:5
-msgid "<b>Executable:</b>"
-msgstr "<b>Kjørbar fil:</b>"
+msgid "Executable:"
+msgstr "Kjørbar fil:"
 
 #: ../src/persp/dbgperspective/ui/openfiledialog.ui.h:1
 msgid "Open Source Files"
@@ -998,11 +1037,12 @@ msgstr ""
 
 #: ../src/persp/dbgperspective/ui/openfiledialog.ui.h:3
 msgid "Select from _File System"
-msgstr ""
+msgstr "Velg fra _filsystemet"
 
 #: ../src/persp/dbgperspective/ui/openfiledialog.ui.h:4
-msgid "<b>Choose Source Files to Open</b>"
-msgstr ""
+#, fuzzy
+msgid "Choose Source Files to Open"
+msgstr "Velg en fil"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:1
 msgid "Preferences"
@@ -1017,11 +1057,11 @@ msgid "Custom Font:"
 msgstr "Egendefinert skrift:"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:4
-msgid "<b>Editor Font</b>"
-msgstr "<b>Skrift for redigering</b>"
+msgid "Editor Font"
+msgstr "Skrift for redigering"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:5
-msgid "<b>Visual Style</b>"
+msgid "Visual Style"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:6
@@ -1029,8 +1069,8 @@ msgid "Display line numbers"
 msgstr "Vis linjenummer"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:7
-msgid "<b>Line Numbers</b>"
-msgstr ""
+msgid "Line Numbers"
+msgstr "Linjenummer"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:8
 msgid "Use launch terminal"
@@ -1038,7 +1078,7 @@ msgstr ""
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:9
 #, fuzzy
-msgid "<b>Terminal</b>"
+msgid "Terminal"
 msgstr "<b>Kjørbar fil:</b>"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:10
@@ -1058,7 +1098,7 @@ msgid "Ask each time"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:14
-msgid "<b>File Monitoring</b>"
+msgid "File Monitoring"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:15
@@ -1066,7 +1106,7 @@ msgid "Enable syntax highlighting"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:16
-msgid "<b>Syntax Highlighting</b>"
+msgid "Syntax Highlighting"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:17
@@ -1082,11 +1122,11 @@ msgid "Mixed source and assembly"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:21
-msgid "<b>Assembly style</b>"
+msgid "Assembly style"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:22
-msgid "<b>Assembly flavor</b>"
+msgid "Assembly flavor"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:23
@@ -1099,8 +1139,9 @@ msgid "Path to the GDB binary used"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:25
-msgid "<b>GDB Binary</b>"
-msgstr ""
+#, fuzzy
+msgid "GDB Binary"
+msgstr "Binær"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:26
 msgid "Number of instructions to disassemble by default"
@@ -1108,7 +1149,7 @@ msgstr ""
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:27
 #, fuzzy
-msgid "<b>Instructions</b>"
+msgid "Instructions"
 msgstr "<b>Kall en funksjon:</b>"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:28
@@ -1116,7 +1157,7 @@ msgid "Enable pretty printing (requires debugger restart)"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:29
-msgid "<b>GDB Pretty Printing</b>"
+msgid "GDB Pretty Printing"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:30
@@ -1128,7 +1169,7 @@ msgid "Follow child"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:32
-msgid "<b>GDB Follow Fork Mode</b>"
+msgid "GDB Follow Fork Mode"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:33
@@ -1145,8 +1186,9 @@ msgid "Attach to a Running Program"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/proclistdialog.ui.h:2
-msgid "<b>Choose a Process to Debug</b>"
-msgstr ""
+#, fuzzy
+msgid "Choose a Process to Debug"
+msgstr "Velg program som skal kjøres"
 
 #: ../src/persp/dbgperspective/ui/proclistdialog.ui.h:3
 msgid "_Filter list:"
@@ -1157,15 +1199,16 @@ msgid "Connect to Remote Target"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:2
-msgid "<b>Executable to Load</b>"
-msgstr ""
+#, fuzzy
+msgid "Executable to Load"
+msgstr "Kjør et program"
 
 #: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:4
-msgid "<b>Shared Libraries Location</b>"
+msgid "Shared Libraries Location"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:6
-msgid "<b>Remote Debugging Server</b>"
+msgid "Remote Debugging Server"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:7
@@ -1189,20 +1232,23 @@ msgid "Choose an Executable"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:3
-msgid "<b>Program:</b>"
-msgstr ""
+#, fuzzy
+msgid "Program:"
+msgstr "Programmet avsluttet"
 
 #: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:4
-msgid "<b>Arguments:</b>"
-msgstr ""
+#, fuzzy
+msgid "Arguments:"
+msgstr "Argumenter"
 
 #: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:5
 msgid "Choose a Working Directory"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:6
-msgid "<b>Working Directory:</b>"
-msgstr ""
+#, fuzzy
+msgid "Working Directory:"
+msgstr "Velg en katalog"
 
 #: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:7
 msgid "_Add"
@@ -1213,7 +1259,7 @@ msgid "_Remove"
 msgstr "Fje_rn"
 
 #: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:9
-msgid "<b>Environment Variables:</b>"
+msgid "Environment Variables:"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/savedsessionsdialog.ui.h:1
@@ -1221,12 +1267,14 @@ msgid "Saved Sessions"
 msgstr ""
 
 #: ../src/persp/dbgperspective/ui/savedsessionsdialog.ui.h:2
-msgid "<b>Choose a Session to Debug</b>"
-msgstr ""
+#, fuzzy
+msgid "Choose a Session to Debug"
+msgstr "Velg program som skal kjøres"
 
 #: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:2
-msgid "<b>Set a Breakpoint:</b>"
-msgstr ""
+#, fuzzy
+msgid "Set a Breakpoint:"
+msgstr "Stoppunkter"
 
 #: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:3
 msgid "Condition:"
@@ -1276,24 +1324,28 @@ msgstr ""
 
 #: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:2
 #, fuzzy
-msgid "<b>Jump to location:</b>"
+msgid "Jump to location:"
 msgstr "<b>Kall en funksjon:</b>"
 
 #: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:10
 msgid "Break at Destination"
 msgstr ""
 
-#: ../src/persp/dbgperspective/ui/varinspectordialog.ui.h:2
-msgid "_Variable Name:"
+#: ../src/persp/dbgperspective/ui/exprinspectordialog.ui.h:2
+msgid "Add to monitor"
 msgstr ""
 
-#: ../src/persp/dbgperspective/ui/varinspectordialog.ui.h:3
+#: ../src/persp/dbgperspective/ui/exprinspectordialog.ui.h:3
+msgid "_Variable Name:"
+msgstr "_Variabelnavn:"
+
+#: ../src/persp/dbgperspective/ui/exprinspectordialog.ui.h:4
 msgid "_Inspect"
-msgstr ""
+msgstr "_Inspiser"
 
 #: ../src/persp/dbgperspective/ui/watchpointdialog.ui.h:1
-msgid "<b>Set a watchpoint:</b>"
-msgstr ""
+msgid "Set a watchpoint:"
+msgstr "Sett et overvåkingspunkt:"
 
 #: ../src/persp/dbgperspective/ui/watchpointdialog.ui.h:2
 msgid "Expression:"
@@ -1301,7 +1353,7 @@ msgstr "Uttrykk:"
 
 #: ../src/persp/dbgperspective/ui/watchpointdialog.ui.h:3
 msgid "Inspect"
-msgstr ""
+msgstr "Inspiser"
 
 #: ../src/persp/dbgperspective/ui/watchpointdialog.ui.h:4
 msgid "Triggers on:"
@@ -1318,7 +1370,7 @@ msgstr "Skriv"
 #: ../src/uicommon/nmv-locate-file-dialog.cc:65
 #, c-format
 msgid "Select Location for %s"
-msgstr ""
+msgstr "Velg lokasjon for %s"
 
 #: ../src/uicommon/nmv-locate-file-dialog.cc:75
 #, c-format
@@ -1330,12 +1382,12 @@ msgstr ""
 #: ../src/uicommon/nmv-source-editor.cc:611
 #, c-format
 msgid "Line: %i, Column: %i"
-msgstr ""
+msgstr "Linje: %i, kolonne: %i"
 
 #: ../src/uicommon/nmv-source-editor.cc:1439
 #, c-format
 msgid "Could not load file %s because its encoding is different from %s"
-msgstr ""
+msgstr "Kunne ikke laste fil %s fordi kodingen er forskjellig fra %s"
 
 #: ../src/uicommon/nmv-terminal.cc:174
 msgid "Copy the selection"
@@ -1355,7 +1407,7 @@ msgstr "_Nullstill"
 
 #: ../src/uicommon/nmv-terminal.cc:188
 msgid "Reset the terminal"
-msgstr ""
+msgstr "Nullstill terminal"
 
 #: ../src/uicommon/nmv-ui-utils.cc:91
 msgid "Do not ask me again"
@@ -1363,7 +1415,7 @@ msgstr "Ikke spør meg igjen"
 
 #: ../src/workbench/nmv-workbench.cc:275
 msgid "Project Website"
-msgstr ""
+msgstr "Nettsted for prosjekt"
 
 #. Translators: change this to your name, separate multiple names with \n
 #: ../src/workbench/nmv-workbench.cc:295
@@ -1372,45 +1424,45 @@ msgstr "Kjartan Maraas <kmaraas@gnome.org>"
 
 #: ../src/workbench/nmv-workbench.cc:673
 msgid "_File"
-msgstr ""
+msgstr "_Fil"
 
 #: ../src/workbench/nmv-workbench.cc:684
 msgid "_Quit"
-msgstr ""
+msgstr "A_vslutt"
 
 #: ../src/workbench/nmv-workbench.cc:685
 msgid "Quit the application"
-msgstr ""
+msgstr "Avslutt programmet"
 
 #: ../src/workbench/nmv-workbench.cc:695
 msgid "_Edit"
-msgstr ""
+msgstr "R_ediger"
 
 #: ../src/workbench/nmv-workbench.cc:706
 msgid "_Help"
-msgstr ""
+msgstr "_Hjelp"
 
 #: ../src/workbench/nmv-workbench.cc:717
 msgid "_About"
-msgstr ""
+msgstr "_Om"
 
 #: ../src/workbench/nmv-workbench.cc:718
 msgid "Display information about this application"
-msgstr ""
+msgstr "Vis informasjon om dette programmet"
 
 #: ../src/workbench/nmv-workbench.cc:728
 msgid "_Contents"
-msgstr ""
+msgstr "_Innhold"
 
 #: ../src/workbench/nmv-workbench.cc:729
 msgid "Display the user manual for this application"
-msgstr ""
+msgstr "Vis brukerhåndbok for dette programmet"
 
 #. end extern C
 #: ../ui/locatefiledialog.ui.h:1
 msgid "Select File Location"
-msgstr ""
+msgstr "Velg fillokasjon"
 
 #: ../ui/locatefiledialog.ui.h:2
-msgid "<b>Locate File</b>"
-msgstr ""
+msgid "Locate File"
+msgstr "Finn fil"
