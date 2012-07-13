@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nemiver master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=nemiver&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-05-17 14:02+0000\n"
-"PO-Revision-Date: 2012-05-17 21:07+0700\n"
+"POT-Creation-Date: 2012-06-18 11:07+0000\n"
+"PO-Revision-Date: 2012-07-13 09:41+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "MIME-Version: 1.0\n"
@@ -36,72 +36,76 @@ msgstr "Nemiver Pengawakutu C/C++"
 msgid "Debug Applications"
 msgstr "Awakutu Aplikasi"
 
-#: ../src/main.cc:77
+#: ../src/main.cc:78
 msgid "Set the environment of the program to debug"
 msgstr "Tata lingkungan program yang akan diawakutu"
 
-#: ../src/main.cc:86
+#: ../src/main.cc:87
 msgid "Attach to a process"
 msgstr "Cantol ke suatu proses"
 
-#: ../src/main.cc:95
+#: ../src/main.cc:96
 msgid "Load a core file"
 msgstr "Muat suatu berkas core"
 
-#: ../src/main.cc:103
+#: ../src/main.cc:104
 msgid "List the saved debugging sessions"
 msgstr "Tampilkan daftar sesi pengawakutuan yang disimpan"
 
-#: ../src/main.cc:111
+#: ../src/main.cc:112
 msgid "Erase the saved debugging sessions"
 msgstr "Hapus sesi pengawakutuan yang disimpan"
 
-#: ../src/main.cc:119
+#: ../src/main.cc:120
 msgid "Debug the program that was of session number N"
 msgstr "Awakutu program pada sesi nomor N"
 
-#: ../src/main.cc:127
+#: ../src/main.cc:128
 msgid "Execute the last session"
 msgstr "Eksekusi sesi terakhir"
 
-#: ../src/main.cc:135
+#: ../src/main.cc:136
 msgid "Enable logging domains DOMAINS"
 msgstr "Fungsikan ranah log DOMAINS"
 
-#: ../src/main.cc:143
+#: ../src/main.cc:144
 msgid "Log the debugger output"
 msgstr "Catat keluaran pengawakutu"
 
-#: ../src/main.cc:151
+#: ../src/main.cc:152
 msgid "Use this terminal as the debugee's terminal"
 msgstr "Gunakan terminal ini sebagai terminal yang diawakutu"
 
-#: ../src/main.cc:160
+#: ../src/main.cc:161
 msgid "Connect to remote target specified by HOST:PORT"
 msgstr "Sambung ke target jauh yang dinyatakan oleh HOST:PORT"
 
-#: ../src/main.cc:169
+#: ../src/main.cc:170
 msgid "Where to look for shared libraries loaded by the inferior. Use in conjunction with --remote"
 msgstr "Kemana mencari pustaka bersama yang dimuat oleh inferior. Gunakan bersamaan dengan --remote"
 
-#: ../src/main.cc:179
+#: ../src/main.cc:180
 msgid "Set the path of the GDB binary to use to debug the inferior"
 msgstr "Tata path biner GDB yang dipakai untuk mengawakutu inferior"
 
-#: ../src/main.cc:188
+#: ../src/main.cc:189
+msgid "Do not set a breakpoint in 'main' and do not run the inferior either"
+msgstr "Jangan tata breakpoint dalam 'main' dan jangan jalankan inferior juga"
+
+#: ../src/main.cc:198
 msgid "Show the version number of Nemiver"
 msgstr "Tampilkan nomor versi Nemiver"
 
-#: ../src/main.cc:254
+#: ../src/main.cc:264
 msgid " [<prog-to-debug> [prog-args]]"
 msgstr " [<prog-to-debug> [prog-args]]"
 
-#: ../src/main.cc:257
+#: ../src/main.cc:267
 #: ../src/workbench/nmv-workbench.cc:263
 msgid "A C/C++ debugger for GNOME"
 msgstr "Pengawakutu C/C++ bagi GNOME"
 
-#: ../src/main.cc:351
+#: ../src/main.cc:361
 msgid ""
 "Please provide a local copy of the binary you intend to debug remotely.\n"
 "Like this:\n"
@@ -109,12 +113,12 @@ msgstr ""
 "Mohon sediakan salinan lokal dari biner yang hendak Anda awakutu secara remote.\n"
 "Seperti ini:\n"
 
-#: ../src/main.cc:356
-#: ../src/main.cc:375
+#: ../src/main.cc:366
+#: ../src/main.cc:385
 msgid "Otherwise, find below the full set of Nemiver options.\n"
 msgstr "Bila tidak, temukan di bawah set lengkap dari opsi Nemiver.\n"
 
-#: ../src/main.cc:370
+#: ../src/main.cc:380
 msgid ""
 "Please provide the path to the binary that generated the core file too.\n"
 "Like this:\n"
@@ -243,199 +247,139 @@ msgid "Function Name"
 msgstr "Nama Fungsi"
 
 #. labels for widget tabs in the status notebook
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:116
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:117
 msgid "Context"
 msgstr "Konteks"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:117
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:118
 msgid "Target Terminal"
 msgstr "Terminal Target"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:118
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:119
 msgid "Breakpoints"
 msgstr "Breakpoint"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:119
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:120
 msgid "Registers"
 msgstr "Register"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:120
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:121
 msgid "Memory"
 msgstr "Memori"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:1667
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:122
+msgid "Expression Monitor"
+msgstr "Pemantau Ekspresi"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:1689
 msgid "Reached end of file"
 msgstr "Mencapai akhir berkas"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:1670
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:1692
 #, c-format
 msgid "Could not find string %s"
 msgstr "Tak dapat temukan string %s"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2114
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2070
 msgid "Change to Standard Breakpoint"
 msgstr "Ubah ke Breakpoint Standar"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2117
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2073
 msgid "Change to Countpoint"
 msgstr "Ubah ke Countpoint"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2119
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2075
 msgid "Remove _Breakpoint"
 msgstr "Hapus _Breakpoint"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2122
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2078
 msgid "Disable Breakpoint"
 msgstr "Matikan Breakpoint"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2124
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2080
 msgid "Enable Breakpoint"
 msgstr "Aktifkan Breakpoint"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2127
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2083
 msgid "Set _Breakpoint"
 msgstr "Tata _Breakpoint"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2129
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2085
 msgid "Set Countpoint"
 msgstr "Tata Countpoint"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2292
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2248
 #, c-format
 msgid "%s (path=\"%s\", pid=%i)"
 msgstr "%s (path=\"%s\", pid=%i)"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2306
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2262
 msgid "Connected to remote target!"
 msgstr "Tersambung ke target remote!"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2450
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2418
 msgid "Program exited"
 msgstr "Program keluar"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2484
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2448
 msgid "The underlying debugger engine process died."
 msgstr "Proses mesin pengawakutu yang melandasi mati."
 
 #. translators: first %s is the signal name, second one is the reason
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2572
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2536
 #, c-format
 msgid "Target received a signal: %s, %s"
 msgstr "Target menerima sinyal: %s, %s"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2587
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2551
 #, c-format
 msgid "An error occurred: %s"
 msgstr "Terjadi galat: %s"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2755
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2714
 #, c-format
-msgid "File %s has been modified. Do want to reload it?"
+msgid "File %s has been modified. Do you want to reload it?"
 msgstr "Berkas %s telah berubah. Apakah Anda hendak memuat ulang?"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3019
-msgid "_Save Session to Disk"
-msgstr "_Simpan Sesi ke Disk"
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3057
+msgid "_Run or Restart"
+msgstr "Jalankan atau Sta_rt Ulang"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3020
-msgid "Save the current debugging session to disk"
-msgstr "Simpan sesi pengawakutuan kini ke disk"
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3058
+msgid "Run or Restart the target"
+msgstr "Jalankan atau start ulang target"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3029
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3070
 msgid "_Detach From the Running Program"
 msgstr "Lepaskan _Dari Program Yang Berjalan"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3030
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3071
 msgid "Disconnect the debugger from the running target without killing it"
 msgstr "Lepaskan pengawakutu dari target yang berjalan tanpa mematikannya"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3044
-msgid "_Restart"
-msgstr "Sta_rt Ulang"
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3086
+msgid "_Save Session to Disk"
+msgstr "_Simpan Sesi ke Disk"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3045
-msgid "Restart the target, killing this process and starting a new one"
-msgstr "Mulai lagi target, mematikan proses ini dan memulai yang baru"
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3087
+msgid "Save the current debugging session to disk"
+msgstr "Simpan sesi pengawakutuan kini ke disk"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3058
-msgid "_Next"
-msgstr "_Next"
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3096
+msgid "Set Breakpoint with Dialog..."
+msgstr "Tata Breakpoint dengan Dialog..."
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3059
-msgid "Execute next line stepping over the next function, if any"
-msgstr "Eksekusi baris selanjutnya melewati fungsi berikutnya, bila ada"
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3068
-msgid "_Step"
-msgstr "_Step"
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3069
-msgid "Execute next line, stepping into the next function, if any"
-msgstr "Eksekusi baris berikutnya, masuk ke dalam fungsi berikutnya, bila ada"
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3078
-msgid "Step _Out"
-msgstr "Step _Out"
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3079
-msgid "Finish the execution of the current function"
-msgstr "Selesaikan eksekusi dari fungsi kini"
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3088
-msgid "Step Into asm"
-msgstr "Step Ke asm"
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3089
-msgid "Step into the next assembly instruction"
-msgstr "Step ke instruksi assembly berikutnya"
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3098
-msgid "Step Over asm"
-msgstr "Step Lewat asm"
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3099
-msgid "Step over the next assembly instruction"
-msgstr "Step sampai melewati instruksi assembly berikutnya"
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3097
+msgid "Set a breakpoint at the current line using a dialog"
+msgstr "Tatak suatu breakpoint pada baris kini memakai suatu dialog"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3108
-msgid "_Continue"
-msgstr "_Lanjutkan"
+msgid "Set Breakpoint..."
+msgstr "Tata Breakpoint..."
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3109
-msgid "Continue program execution until the next breakpoint"
-msgstr "Lanjutkan eksekusi program sampai breakpoint berikutnya"
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3118
-msgid "Run to Cursor"
-msgstr "Jalankan sampai Kursor"
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3119
-msgid "Continue program execution until the currently selected line is reached"
-msgstr "Lanjutkan eksekusi program sampai baris yang sedang dipilih dicapai"
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3129
-msgid "Jump to Cursor"
-msgstr "Lompat ke Kursor"
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3130
-msgid "Jump to the currently selected line"
-msgstr "Lompat ke baris yang sedang dipilih"
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3140
-msgid "Jump and Stop to Cursor"
-msgstr "Lompat dan Stop ke Kursor"
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3141
-msgid "Sets a breakpoint to the currently selected line and jump there"
-msgstr "Tata breakpoint ke baris yang sedang dipilih dan lompat ke sana"
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3153
-msgid "Jump to a Given Location"
-msgstr "Lompat ke Lokasi yang Diberikan"
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3154
-msgid "Select a given code location and jump there"
-msgstr "Pilih lokasi kode yang diberikan dan lompat ke sana"
+msgid "Set a breakpoint at a function or line number"
+msgstr "Tata suatu breakpoint pada suatu fungsi atau nomor baris"
 
 #. Depending on the context we will want this string to be
 #. either "Set Breakpoint", or "Remove Breakpoint". Hence
@@ -444,11 +388,11 @@ msgstr "Pilih lokasi kode yang diberikan dan lompat ke sana"
 #. this initial value is going to be displayed only when
 #. Nemiver is launched with no executable on the command
 #. line.
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3172
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3125
 msgid "Toggle _Breakpoint"
 msgstr "Jungkitkan _Breakpoint"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3173
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3126
 msgid "Set/Unset a breakpoint at the current cursor location"
 msgstr "Tata/hilangkan breakpoint pada lokasi kursor kini"
 
@@ -459,11 +403,11 @@ msgstr "Tata/hilangkan breakpoint pada lokasi kursor kini"
 #. this initial value is going to be displayed only when
 #. Nemiver is launched with no executable on the command
 #. line.
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3190
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3143
 msgid "Enable/Disable Breakpoint"
 msgstr "Aktifkan/Matikan Breakpoint"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3191
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3144
 msgid "Enable or disable the breakpoint that is set at the current cursor location"
 msgstr "Aktifkan atau matikan breakpoint yang ditata pada lokasi kursor kini"
 
@@ -475,253 +419,321 @@ msgstr "Aktifkan atau matikan breakpoint yang ditata pada lokasi kursor kini"
 #. this initial value is going to be displayed only when
 #. Nemiver is launched with no executable on the command
 #. line.
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3211
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3164
 msgid "Toggle _Countpoint"
 msgstr "Jungkitkan _Countpoint"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3212
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3165
 msgid "Set/Unset a countpoint at the current cursor location"
 msgstr "Tata/hilangkan countpoint pada lokasi kursor kini"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3222
-msgid "Set Breakpoint..."
-msgstr "Tata Breakpoint..."
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3223
-msgid "Set a breakpoint at a function or line number"
-msgstr "Tata suatu breakpoint pada suatu fungsi atau nomor baris"
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3232
-msgid "Set Breakpoint with Dialog..."
-msgstr "Tata Breakpoint dengan Dialog..."
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3233
-msgid "Set a breakpoint at the current line using a dialog"
-msgstr "Tatak suatu breakpoint pada baris kini memakai suatu dialog"
-
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3244
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3175
 msgid "Set Watchpoint with Dialog..."
 msgstr "Tata Watchpoint dengan Dialog..."
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3245
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3176
 msgid "Set a watchpoint using a dialog"
 msgstr "Tata suatu watchpoint memakai suatu dialog"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3256
-#: ../src/persp/dbgperspective/ui/varinspectordialog.ui.h:1
-msgid "Inspect a Variable"
-msgstr "Periksa sebuah Variabel"
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3191
+msgid "_Next"
+msgstr "_Next"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3257
-msgid "Inspect a global or local variable"
-msgstr "Periksa suatu variabel global atau lokal"
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3192
+msgid "Execute next line stepping over the next function, if any"
+msgstr "Eksekusi baris selanjutnya melewati fungsi berikutnya, bila ada"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3267
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3201
+msgid "_Step"
+msgstr "_Step"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3202
+msgid "Execute next line, stepping into the next function, if any"
+msgstr "Eksekusi baris berikutnya, masuk ke dalam fungsi berikutnya, bila ada"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3211
+msgid "Step _Out"
+msgstr "Step _Out"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3212
+msgid "Finish the execution of the current function"
+msgstr "Selesaikan eksekusi dari fungsi kini"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3221
+msgid "Step Into asm"
+msgstr "Step Ke asm"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3222
+msgid "Step into the next assembly instruction"
+msgstr "Step ke instruksi assembly berikutnya"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3231
+msgid "Step Over asm"
+msgstr "Step Lewat asm"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3232
+msgid "Step over the next assembly instruction"
+msgstr "Step sampai melewati instruksi assembly berikutnya"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3241
+msgid "_Continue or start"
+msgstr "_Lanjutkan atau mulai"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3242
+msgid "Start or continue program execution until the next breakpoint"
+msgstr "Mulai atau lanjutkan eksekusi program sampai breakpoint berikutnya"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3251
+msgid "Run to Cursor"
+msgstr "Jalankan sampai Kursor"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3252
+msgid "Continue program execution until the currently selected line is reached"
+msgstr "Lanjutkan eksekusi program sampai baris yang sedang dipilih dicapai"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3262
+msgid "Jump to Cursor"
+msgstr "Lompat ke Kursor"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3263
+msgid "Jump to the currently selected line"
+msgstr "Lompat ke baris yang sedang dipilih"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3273
+msgid "Jump and Stop to Cursor"
+msgstr "Lompat dan Stop ke Kursor"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3274
+msgid "Sets a breakpoint to the currently selected line and jump there"
+msgstr "Tata breakpoint ke baris yang sedang dipilih dan lompat ke sana"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3286
+msgid "Jump to a Given Location"
+msgstr "Lompat ke Lokasi yang Diberikan"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3287
+msgid "Select a given code location and jump there"
+msgstr "Pilih lokasi kode yang diberikan dan lompat ke sana"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3298
+#: ../src/persp/dbgperspective/ui/exprinspectordialog.ui.h:1
+msgid "Inspect an Expression"
+msgstr "Periksa suatu Ekspresi"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3299
+msgid "Inspect a global or local expression"
+msgstr "Periksa suatu ekspresi global atau lokal"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3309
 #: ../src/persp/dbgperspective/ui/callfunctiondialog.ui.h:1
 msgid "Call a Function"
 msgstr "Panggil suatu Fungsi"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3268
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3310
 msgid "Call a function in the program being debugged"
 msgstr "Panggil suatu fungsi di dalam program yang sedang diawakutu"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3277
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3319
 msgid "Show Global Variables"
 msgstr "Tampilkan Variabel Global"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3278
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3320
 msgid "Display all global variables"
 msgstr "Tampilkan semua variabel global"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3288
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3330
 msgid "Refresh Locals"
 msgstr "Segarkan Lokal"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3289
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3331
 msgid "Refresh the list of variables local to the current function"
 msgstr "Segarkan daftar variabel yang lokal terhadap fungsi kini"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3298
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3340
 msgid "Show Assembly"
 msgstr "Tampilkan Assembly"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3299
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3341
 msgid "Show the assembly code of the source code being currently debugged, in another tab"
 msgstr "Tampilkan kode assembly dari kode sumber yang sedang diawakutu, dalam tab lain"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3311
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3353
 msgid "Switch to Assembly"
 msgstr "Pindah ke Assembly"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3312
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3354
 msgid "Show the assembly code of the source code being currently debugged"
 msgstr "Tampilkan kode assembly dari kode sumber yang sedang diawakutu"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3324
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3366
 msgid "Switch to Source"
 msgstr "Pindah ke Sumber"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3325
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3367
 msgid "Show the source code being currently debugged"
 msgstr "Tampilkan kode sumber yang sedang diawakutu"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3337
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3379
 msgid "Stop"
 msgstr "Stop"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3338
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3380
 msgid "Stop the debugger"
 msgstr "Hentikan pengawakutu"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3350
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3392
 msgid "_View"
 msgstr "_Tilikan"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3361
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3403
 msgid "Switch to Target Terminal View"
 msgstr "Pindah ke Tilikan Terminal Target"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3372
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3414
 msgid "Switch to Context View"
 msgstr "Pindah ke Tilikan Konteks"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3383
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3425
 msgid "Switch to Breakpoints View"
 msgstr "Pindah ke Tilikan Breakpoint"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3394
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3436
 msgid "Switch to Registers View"
 msgstr "Pindah ke Tilikan Register"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3406
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3448
 msgid "Switch to Memory View"
 msgstr "Pindah ke Tilikan Memori"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3416
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3459
+msgid "Switch to Variables Monitor View"
+msgstr "Pindah ke Tilikan Pemantau Variabel"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3468
 msgid "_Debug"
 msgstr "_Awakutu"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3426
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3478
 msgid "_Open Source File..."
 msgstr "_Buka Berkas Sumber..."
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3427
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3479
 msgid "Open a source file for viewing"
 msgstr "Buka suatu berkas sumber untuk dilihat"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3436
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3488
 msgid "Load _Executable..."
 msgstr "Muat _Executable..."
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3437
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3489
 msgid "Execute a program"
 msgstr "Jalankan program"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3447
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3499
 msgid "_Load Core File..."
 msgstr "Muat Berkas _Core..."
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3448
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3500
 msgid "Load a core file from disk"
 msgstr "Muat berkas core dari disk"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3458
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3510
 msgid "_Attach to Running Program..."
 msgstr "C_antol ke Program yang Sedang Berjalan..."
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3459
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3511
 msgid "Debug a program that's already running"
 msgstr "Awakutu suatu program yang telah mulai berjalan"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3469
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3521
 msgid "_Connect to Remote Target..."
 msgstr "Menyambung ke Target _Remote..."
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3470
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3522
 msgid "Connect to a debugging server to debug a remote target"
 msgstr "Menyambung ke server pengawakutuan untuk mengawakutu target remote"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3481
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3533
 msgid "Resume Sa_ved Session..."
 msgstr "Lanjutkan Sesi yang _Disimpan..."
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3482
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3534
 msgid "Open a previously saved debugging session"
 msgstr "Buka sesi pengawakutuan yang sebelumnya telah disimpan"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3492
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3544
 msgid "_Preferences"
 msgstr "_Preferensi"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3493
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3545
 msgid "Edit the properties of the current session"
 msgstr "Sunting properti dari sesi saat ini"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3507
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3559
 msgid "_Reload Source File"
 msgstr "Muat Ulang Be_rkas Sumber"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3508
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3560
 msgid "Reloads the source file"
 msgstr "Muat ulang berkas sumber"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3517
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3569
 msgid "_Close Source File"
 msgstr "_Tutup Berkas Sumber"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3518
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3570
 msgid "Close the opened file"
 msgstr "Buka berkas yang dibuka"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3527
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3579
 msgid "_Find"
 msgstr "_Cari"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3528
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3580
 msgid "Find a text string in file"
 msgstr "Cari string teks dalam berkas"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3879
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3939
 #, c-format
 msgid "Close %s"
 msgstr "Tutup %s"
 
 #. We cannot restart an inferior running on a remote target at
 #. the moment.
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:5832
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:5897
 msgid "Sorry, it's impossible to restart a remote inferior"
 msgstr "Maaf, tak mungkin memulai ulang inferior remote"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:5950
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6020
 #, c-format
 msgid "Could not find file %s"
 msgstr "Tak bisa temukan berkas %s"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6014
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6156
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6191
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6082
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6224
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6259
 #, c-format
 msgid "Could not load program: %s"
 msgstr "Tak bisa memuat program: %s"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6093
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6153
 msgid "You cannot attach to Nemiver itself"
 msgstr "Tak bisa mencantol ke Nemiver sendiri"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6098
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6166
 msgid "You cannot attach to the underlying debugger engine"
 msgstr "Tak bisa mencantol ke mesin pengawakutu yang melandasi"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6381
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6461
 msgid "Failed to stop the debugger"
 msgstr "Gagal menghentikan pengawakutu"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6620
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6705
 #, c-format
 msgid "Invalid line number: %i"
 msgstr "Nomor baris tak valid: %i"
 
-#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:8219
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:8306
 #, c-format
 msgid "There is a program being currently debugged. Do you really want to exit from the debugger?"
 msgstr "Ada program yang kini sedang diawakutu. Apakah Anda benar-benar hendak keluar dari pengawakutu?"
@@ -779,8 +791,8 @@ msgid "Loading files from target executable..."
 msgstr "Memuat berkas dari executable target..."
 
 #: ../src/persp/dbgperspective/nmv-global-vars-inspector-dialog.cc:301
-#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:545
-#: ../src/persp/dbgperspective/nmv-var-inspector.cc:224
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:547
+#: ../src/persp/dbgperspective/nmv-expr-inspector.cc:233
 #, c-format
 msgid ""
 "Variable type is: \n"
@@ -797,31 +809,31 @@ msgstr "Variabel Lokal"
 msgid "Function Arguments"
 msgstr "Argumen Fungsi"
 
-#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:256
-#: ../src/persp/dbgperspective/nmv-var-inspector.cc:127
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:258
+#: ../src/persp/dbgperspective/nmv-expr-inspector.cc:136
 msgid "_Copy Variable Name"
 msgstr "_Salin Nama Variabel"
 
-#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:257
-#: ../src/persp/dbgperspective/nmv-var-inspector.cc:128
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:259
+#: ../src/persp/dbgperspective/nmv-expr-inspector.cc:137
 msgid "Copy the variable path expression to the clipboard"
 msgstr "Salin ekspresi path variabel ke papan klip"
 
-#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:268
-#: ../src/persp/dbgperspective/nmv-var-inspector.cc:139
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:270
+#: ../src/persp/dbgperspective/nmv-expr-inspector.cc:148
 msgid "_Copy Variable Value"
 msgstr "_Salin Nilai Variabel"
 
-#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:269
-#: ../src/persp/dbgperspective/nmv-var-inspector.cc:140
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:271
+#: ../src/persp/dbgperspective/nmv-expr-inspector.cc:149
 msgid "Copy the variable value to the clipboard"
 msgstr "Salin nilai variabel ke papan klip"
 
-#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:280
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:282
 msgid "Create Watchpoint"
 msgstr "Buat Watchpoint"
 
-#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:281
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:283
 msgid "Create a watchpoint that triggers when the value of the expression changes"
 msgstr "Buat watchpoint yang memicu ketika nilai ekspresi berubah"
 
@@ -913,6 +925,30 @@ msgstr "ID Thread"
 #: ../src/persp/dbgperspective/nmv-vars-treeview.cc:50
 msgid "Variable"
 msgstr "Variabel"
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:128
+msgid "In scope expressions"
+msgstr "Ekspresi dalam skup"
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:133
+msgid "Out of scope expressions"
+msgstr "Ekspresi luar skup"
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:237
+msgid "Remove"
+msgstr "Hapus"
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:238
+msgid "Remove selected expressions from the monitor"
+msgstr "Hapus ekspresi yang dipilih dari pemantau"
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:247
+msgid "New..."
+msgstr "Baru..."
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:248
+msgid "Add a new expression to the monitor"
+msgstr "Tambahkan ekpresi baru ke pemantau"
 
 #: ../src/persp/dbgperspective/ui/callfunctiondialog.ui.h:2
 msgid "Call a function:"
@@ -1278,11 +1314,15 @@ msgstr "Lompat ke lokasi:"
 msgid "Break at Destination"
 msgstr "Break pada Tujuan"
 
-#: ../src/persp/dbgperspective/ui/varinspectordialog.ui.h:2
+#: ../src/persp/dbgperspective/ui/exprinspectordialog.ui.h:2
+msgid "Add to monitor"
+msgstr "Tambah ke pemantau"
+
+#: ../src/persp/dbgperspective/ui/exprinspectordialog.ui.h:3
 msgid "_Variable Name:"
 msgstr "Nama _Variabel:"
 
-#: ../src/persp/dbgperspective/ui/varinspectordialog.ui.h:3
+#: ../src/persp/dbgperspective/ui/exprinspectordialog.ui.h:4
 msgid "_Inspect"
 msgstr "Per_iksa"
 
