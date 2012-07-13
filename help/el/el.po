@@ -1,0 +1,1407 @@
+# Greek translation for nemiver.
+# Copyright (C) 2012 nemiver's COPYRIGHT HOLDER
+# This file is distributed under the same license as the nemiver package.
+# Dimitris Spingos <dmtrs32@gmail.com>, 2012.
+# Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: nemiver master\n"
+"POT-Creation-Date: 2012-07-09 11:14+0000\n"
+"PO-Revision-Date: 2012-07-13 09:43+0300\n"
+"Last-Translator: Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>\n"
+"Language-Team: team@gnome.gr\n"
+"Language: el\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.0\n"
+
+#: C/legal.xml:2(para)
+msgid ""
+"Permission is granted to copy, distribute and/or modify this document under "
+"the terms of the GNU Free Documentation License (GFDL), Version 1.1 or any "
+"later version published by the Free Software Foundation with no Invariant "
+"Sections, no Front-Cover Texts, and no Back-Cover Texts. You can find a copy "
+"of the GFDL at this <ulink type=\"help\" url=\"ghelp:fdl\">link</ulink> or "
+"in the file COPYING-DOCS distributed with this manual."
+msgstr ""
+"Χορηγείται άδεια αντιγραφής, διανομής και/ή τροποποίησης του παρόντος "
+"εγγράφου υπό τους όρους της ελεύθερης άδειας τεκμηρίωσης GNU (GFDL), έκδοσης "
+"1.1 ή οποιασδήποτε μεταγενέστερης έκδοσής της από το ίδρυμα ελεύθερου "
+"λογισμικού, χωρίς αμετάβλητα τμήματα, κείμενα εξωφύλλου και κείμενα "
+"οπισθόφυλλου. Μπορείτε να βρείτε αντίγραφο της GFDL σε αυτόν τον <ulink "
+"type=\"help\" url=\"ghelp:fdl\">σύνδεσμο</ulink> ή στο αρχείο COPYING-DOCS που "
+"διανέμεται με αυτό το εγχειρίδιο."
+
+#: C/legal.xml:12(para)
+msgid ""
+"This manual is part of a collection of GNOME manuals distributed under the "
+"GFDL. If you want to distribute this manual separately from the collection, "
+"you can do so by adding a copy of the license to the manual, as described in "
+"section 6 of the license."
+msgstr ""
+"Αυτό το εγχειρίδιο είναι μέρος μιας συλλογής εγχειριδίων GNOME που "
+"διανέμονται με την GFDL. Εάν θέλετε να διανείμετε αυτό το εγχειρίδιο "
+"ξεχωριστά από τη συλλογή, μπορείτε να το κάνετε προσθέτοντας ένα αντίγραφο "
+"της άδειας στο εγχειρίδιο, όπως περιγράφεται στην ενότητα 6 της άδειας."
+
+#: C/legal.xml:19(para)
+msgid ""
+"Many of the names used by companies to distinguish their products and "
+"services are claimed as trademarks. Where those names appear in any GNOME "
+"documentation, and the members of the GNOME Documentation Project are made "
+"aware of those trademarks, then the names are in capital letters or initial "
+"capital letters."
+msgstr ""
+"Πολλά από τα ονόματα χρησιμοποιούνται από εταιρείες για διάκριση των "
+"προϊόντων τους και υπηρεσιών δηλώνονται ως εμπορικά σήματα. Όπου αυτά τα "
+"ονόματα εμφανίζονται σε οποιοδήποτε τεκμηρίωση GNOME και τα μέλη του σχεδίου "
+"τεκμηρίωσης GNOME γνωρίζουν αυτά τα εμπορικά σήματα, τα ονόματα είναι με "
+"κεφαλαία γράμματα ή αρχικά κεφαλαία γράμματα."
+
+#: C/legal.xml:35(para)
+msgid ""
+"DOCUMENT IS PROVIDED ON AN \"AS IS\" BASIS, WITHOUT WARRANTY OF ANY KIND, "
+"EITHER EXPRESSED OR IMPLIED, INCLUDING, WITHOUT LIMITATION, WARRANTIES THAT "
+"THE DOCUMENT OR MODIFIED VERSION OF THE DOCUMENT IS FREE OF DEFECTS "
+"MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE OR NON-INFRINGING. THE ENTIRE "
+"RISK AS TO THE QUALITY, ACCURACY, AND PERFORMANCE OF THE DOCUMENT OR "
+"MODIFIED VERSION OF THE DOCUMENT IS WITH YOU. SHOULD ANY DOCUMENT OR "
+"MODIFIED VERSION PROVE DEFECTIVE IN ANY RESPECT, YOU (NOT THE INITIAL "
+"WRITER, AUTHOR OR ANY CONTRIBUTOR) ASSUME THE COST OF ANY NECESSARY "
+"SERVICING, REPAIR OR CORRECTION. THIS DISCLAIMER OF WARRANTY CONSTITUTES AN "
+"ESSENTIAL PART OF THIS LICENSE. NO USE OF ANY DOCUMENT OR MODIFIED VERSION "
+"OF THE DOCUMENT IS AUTHORIZED HEREUNDER EXCEPT UNDER THIS DISCLAIMER; AND "
+"UNDER NO CIRCUMSTANCES AND UNDER NO LEGAL THEORY, WHETHER IN TORT (INCLUDING "
+"NEGLIGENCE), CONTRACT, OR OTHERWISE, SHALL THE AUTHOR, INITIAL WRITER, ANY "
+"CONTRIBUTOR, OR ANY DISTRIBUTOR OF THE DOCUMENT OR MODIFIED VERSION OF THE "
+"DOCUMENT, OR ANY SUPPLIER OF ANY OF SUCH PARTIES, BE LIABLE TO ANY PERSON "
+"FOR ANY DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES OF "
+"ANY CHARACTER INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF GOODWILL, "
+"WORK STOPPAGE, COMPUTER FAILURE OR MALFUNCTION, OR ANY AND ALL OTHER DAMAGES "
+"OR LOSSES ARISING OUT OF OR RELATING TO USE OF THE DOCUMENT AND MODIFIED "
+"VERSIONS OF THE DOCUMENT, EVEN IF SUCH PARTY SHALL HAVE BEEN INFORMED OF THE "
+"POSSIBILITY OF SUCH DAMAGES."
+msgstr ""
+"DOCUMENT IS PROVIDED ON AN \"AS IS\" BASIS, WITHOUT WARRANTY OF ANY KIND, "
+"EITHER EXPRESSED OR IMPLIED, INCLUDING, WITHOUT LIMITATION, WARRANTIES THAT "
+"THE DOCUMENT OR MODIFIED VERSION OF THE DOCUMENT IS FREE OF DEFECTS "
+"MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE OR NON-INFRINGING. THE ENTIRE "
+"RISK AS TO THE QUALITY, ACCURACY, AND PERFORMANCE OF THE DOCUMENT OR "
+"MODIFIED VERSION OF THE DOCUMENT IS WITH YOU. SHOULD ANY DOCUMENT OR "
+"MODIFIED VERSION PROVE DEFECTIVE IN ANY RESPECT, YOU (NOT THE INITIAL "
+"WRITER, AUTHOR OR ANY CONTRIBUTOR) ASSUME THE COST OF ANY NECESSARY "
+"SERVICING, REPAIR OR CORRECTION. THIS DISCLAIMER OF WARRANTY CONSTITUTES AN "
+"ESSENTIAL PART OF THIS LICENSE. NO USE OF ANY DOCUMENT OR MODIFIED VERSION "
+"OF THE DOCUMENT IS AUTHORIZED HEREUNDER EXCEPT UNDER THIS DISCLAIMER· AND "
+"UNDER NO CIRCUMSTANCES AND UNDER NO LEGAL THEORY, WHETHER IN TORT (INCLUDING "
+"NEGLIGENCE), CONTRACT, OR OTHERWISE, SHALL THE AUTHOR, INITIAL WRITER, ANY "
+"CONTRIBUTOR, OR ANY DISTRIBUTOR OF THE DOCUMENT OR MODIFIED VERSION OF THE "
+"DOCUMENT, OR ANY SUPPLIER OF ANY OF SUCH PARTIES, BE LIABLE TO ANY PERSON "
+"FOR ANY DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES OF "
+"ANY CHARACTER INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF GOODWILL, "
+"WORK STOPPAGE, COMPUTER FAILURE OR MALFUNCTION, OR ANY AND ALL OTHER DAMAGES "
+"OR LOSSES ARISING OUT OF OR RELATING TO USE OF THE DOCUMENT AND MODIFIED "
+"VERSIONS OF THE DOCUMENT, EVEN IF SUCH PARTY SHALL HAVE BEEN INFORMED OF THE "
+"POSSIBILITY OF SUCH DAMAGES."
+
+#: C/legal.xml:28(para)
+msgid ""
+"DOCUMENT AND MODIFIED VERSIONS OF THE DOCUMENT ARE PROVIDED UNDER THE TERMS "
+"OF THE GNU FREE DOCUMENTATION LICENSE WITH THE FURTHER UNDERSTANDING THAT: "
+"<placeholder-1/>"
+msgstr ""
+"DOCUMENT AND MODIFIED VERSIONS OF THE DOCUMENT ARE PROVIDED UNDER THE TERMS "
+"OF THE GNU FREE DOCUMENTATION LICENSE WITH THE FURTHER UNDERSTANDING THAT: "
+"<placeholder-1/>"
+
+#. When image changes, this message will be marked fuzzy or untranslated for you.
+#. It doesn't matter what you translate it to: it's not used at all.
+#: C/nemiver.xml:180(None)
+msgid ""
+"@@image: 'figures/main-window.png'; md5=216a6e17325ddd6a4e96037d05a39734"
+msgstr ""
+"@@image: 'figures/main-window.png'· md5=216a6e17325ddd6a4e96037d05a39734"
+
+#. When image changes, this message will be marked fuzzy or untranslated for you.
+#. It doesn't matter what you translate it to: it's not used at all.
+#: C/nemiver.xml:329(None)
+msgid ""
+"@@image: 'figures/execute-dialog.png'; md5=450a45378b4021176c8f093be2dedc97"
+msgstr ""
+"@@image: 'figures/execute-dialog.png'· md5=450a45378b4021176c8f093be2dedc97"
+
+#. When image changes, this message will be marked fuzzy or untranslated for you.
+#. It doesn't matter what you translate it to: it's not used at all.
+#: C/nemiver.xml:394(None)
+msgid ""
+"@@image: 'figures/attach-dialog.png'; md5=9940de171b58f92ea810dc4478364976"
+msgstr ""
+"@@image: 'figures/attach-dialog.png'· md5=9940de171b58f92ea810dc4478364976"
+
+#. When image changes, this message will be marked fuzzy or untranslated for you.
+#. It doesn't matter what you translate it to: it's not used at all.
+#: C/nemiver.xml:440(None)
+msgid ""
+"@@image: 'figures/load-core-dialog.png'; md5=2a3dd09883a026826d0a7036991720a4"
+msgstr ""
+"@@image: 'figures/load-core-dialog.png'· "
+"md5=2a3dd09883a026826d0a7036991720a4"
+
+#. When image changes, this message will be marked fuzzy or untranslated for you.
+#. It doesn't matter what you translate it to: it's not used at all.
+#: C/nemiver.xml:471(None)
+msgid ""
+"@@image: 'figures/connect-remote-dialog.png'; "
+"md5=0f47f358e68947aaf1330fb1c1013f72"
+msgstr ""
+"@@image: 'figures/connect-remote-dialog.png'· "
+"md5=0f47f358e68947aaf1330fb1c1013f72"
+
+#. When image changes, this message will be marked fuzzy or untranslated for you.
+#. It doesn't matter what you translate it to: it's not used at all.
+#: C/nemiver.xml:593(None)
+msgid ""
+"@@image: 'figures/variable-inspector.png'; "
+"md5=676c2a7985aa4e41f5a77a85bcfd8a27"
+msgstr ""
+"@@image: 'figures/variable-inspector.png'· "
+"md5=676c2a7985aa4e41f5a77a85bcfd8a27"
+
+#. When image changes, this message will be marked fuzzy or untranslated for you.
+#. It doesn't matter what you translate it to: it's not used at all.
+#: C/nemiver.xml:627(None)
+msgid ""
+"@@image: 'figures/global-variables-dialog.png'; "
+"md5=b3224457732491046fbcea9491df2383"
+msgstr ""
+"@@image: 'figures/global-variables-dialog.png'· "
+"md5=b3224457732491046fbcea9491df2383"
+
+#. When image changes, this message will be marked fuzzy or untranslated for you.
+#. It doesn't matter what you translate it to: it's not used at all.
+#: C/nemiver.xml:667(None)
+msgid ""
+"@@image: 'figures/set-breakpoint-dialog.png'; "
+"md5=86618670e2f62026adeb38ae033ec38d"
+msgstr ""
+"@@image: 'figures/set-breakpoint-dialog.png'· "
+"md5=86618670e2f62026adeb38ae033ec38d"
+
+#. When image changes, this message will be marked fuzzy or untranslated for you.
+#. It doesn't matter what you translate it to: it's not used at all.
+#: C/nemiver.xml:705(None)
+msgid ""
+"@@image: 'figures/enabled-breakpoint.png'; "
+"md5=a51237a0756cdb7a754b24b211e40bbb"
+msgstr ""
+"@@image: 'figures/enabled-breakpoint.png'· "
+"md5=a51237a0756cdb7a754b24b211e40bbb"
+
+#. When image changes, this message will be marked fuzzy or untranslated for you.
+#. It doesn't matter what you translate it to: it's not used at all.
+#: C/nemiver.xml:716(None)
+msgid ""
+"@@image: 'figures/disabled-breakpoint.png'; "
+"md5=b703d696cec0c49810de7f2a85f0ddba"
+msgstr ""
+"@@image: 'figures/disabled-breakpoint.png'· "
+"md5=b703d696cec0c49810de7f2a85f0ddba"
+
+#. When image changes, this message will be marked fuzzy or untranslated for you.
+#. It doesn't matter what you translate it to: it's not used at all.
+#: C/nemiver.xml:739(None)
+msgid ""
+"@@image: 'figures/open-files-target.png'; "
+"md5=715003a703fc7cc112bea9e58a25f627"
+msgstr ""
+"@@image: 'figures/open-files-target.png'· "
+"md5=715003a703fc7cc112bea9e58a25f627"
+
+#. When image changes, this message will be marked fuzzy or untranslated for you.
+#. It doesn't matter what you translate it to: it's not used at all.
+#: C/nemiver.xml:777(None)
+msgid ""
+"@@image: 'figures/registers-view.png'; md5=25b369f4f3f0a42c04ded0f8880435ba"
+msgstr ""
+"@@image: 'figures/registers-view.png'· md5=25b369f4f3f0a42c04ded0f8880435ba"
+
+#. When image changes, this message will be marked fuzzy or untranslated for you.
+#. It doesn't matter what you translate it to: it's not used at all.
+#: C/nemiver.xml:802(None)
+msgid ""
+"@@image: 'figures/memory-view.png'; md5=b2a94da383551b3eaae64ddb93a7128f"
+msgstr ""
+"@@image: 'figures/memory-view.png'· md5=b2a94da383551b3eaae64ddb93a7128f"
+
+#. When image changes, this message will be marked fuzzy or untranslated for you.
+#. It doesn't matter what you translate it to: it's not used at all.
+#: C/nemiver.xml:863(None)
+msgid ""
+"@@image: 'figures/sessions-dialog.png'; md5=d07fd79198e666ca9b21fee3bbb30db4"
+msgstr ""
+"@@image: 'figures/sessions-dialog.png'· md5=d07fd79198e666ca9b21fee3bbb30db4"
+
+#: C/nemiver.xml:24(title)
+msgid "Nemiver Manual"
+msgstr "Εγχειρίδιο Nemiver"
+
+#: C/nemiver.xml:26(year) C/nemiver.xml:76(date)
+msgid "2008"
+msgstr "2008"
+
+#: C/nemiver.xml:27(holder)
+msgid "Jonathon Jongsma"
+msgstr "Jonathon Jongsma"
+
+#: C/nemiver.xml:38(publishername)
+msgid "Nemiver Project"
+msgstr "Έργο Nemiver"
+
+#: C/nemiver.xml:43(firstname)
+msgid "Jonathon"
+msgstr "Jonathon"
+
+#: C/nemiver.xml:44(surname)
+msgid "Jongsma"
+msgstr "Jongsma"
+
+#: C/nemiver.xml:46(orgname)
+msgid "GNOME"
+msgstr "GNOME"
+
+#: C/nemiver.xml:68(revnumber)
+msgid "1.0"
+msgstr "1.0"
+
+#: C/nemiver.xml:69(date)
+msgid "2007"
+msgstr "2007"
+
+#: C/nemiver.xml:71(para)
+msgid "Initial version"
+msgstr "Αρχική έκδοση"
+
+#: C/nemiver.xml:75(revnumber)
+msgid "2.0"
+msgstr "2.0"
+
+#: C/nemiver.xml:78(para)
+msgid "Updated for 0.5.0 Release"
+msgstr "Ενημερωμένη για την έκδοση 0.5.0"
+
+#: C/nemiver.xml:82(releaseinfo)
+msgid "This manual describes version 0.5.0 of Nemiver."
+msgstr "Αυτό το εγχειρίδιο περιγράφει την έκδοση 0.5.0 του Nemiver."
+
+#: C/nemiver.xml:85(title)
+msgid "Feedback"
+msgstr "Ανατροφοδότηση"
+
+#: C/nemiver.xml:86(para)
+msgid ""
+"To report a bug or make a suggestion regarding the <application>Nemiver</"
+"application> application or this manual, see the <ulink url=\"http://www."
+"gnome.org/projects/nemiver/\" type=\"http\">Nemiver Project website</ulink>."
+msgstr ""
+"Για αναφορά σφάλματος ή για προτάσεις όσον αφορά την εφαρμογή "
+"<application>Nemiver</application> ή αυτό το εγχειρίδιο, δείτε την <ulink "
+"url=\"http://www.gnome.org/projects/nemiver/\" type=\"http\">ιστοσελίδα έργου "
+"Nemiver</ulink>."
+
+#: C/nemiver.xml:94(para)
+msgid "Nemiver is a graphical debugger for the GNOME desktop environment."
+msgstr ""
+"Nemiver είναι ένας γραφικός αποσφαλματωτής για το περιβάλλον επιφάνειας "
+"εργασίας GNOME."
+
+#: C/nemiver.xml:100(primary)
+msgid "Nemiver"
+msgstr "Nemiver"
+
+#: C/nemiver.xml:103(primary)
+msgid "debugger"
+msgstr "αποσφαλματωτής"
+
+#: C/nemiver.xml:106(primary)
+msgid "gdb"
+msgstr "gdb"
+
+#: C/nemiver.xml:111(title)
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+#: C/nemiver.xml:112(para)
+msgid ""
+"Nemiver is an ongoing effort to write a standalone graphical debugger that "
+"integrates well in the GNOME desktop environment. It currently features a "
+"backend which uses the well known GNU Debugger gdb to debug C / C++ programs."
+msgstr ""
+"Nemiver είναι μια συνεχιζόμενη προσπάθεια για συγγραφή ενός αυτόνομου "
+"γραφικού αποσφαλματωτή που ενσωματώνεται καλά στο περιβάλλον επιφάνειας "
+"εργασίας GNOME. Χαρακτηρίζει προς το παρόν μια οπισθοφυλακή που χρησιμοποιεί "
+"τον γνωστό αποσφαλματωτή gdb του GNU για αποσφαλμάτωση προγραμμάτων C / "
+"C++."
+
+#: C/nemiver.xml:119(title)
+msgid "Perspectives"
+msgstr "Προοπτικές"
+
+#: C/nemiver.xml:120(para)
+msgid ""
+"Nemiver is designed as a generic graphical <interface>workbench</interface> "
+"and a plugin system that can offer several different perspectives. Currently "
+"the only perspective provided is a debugging perspective, but in the future, "
+"there may be perspectives added for memory debugging with "
+"<application>valgrind</application>, or for profiling tools such as "
+"<application>oprofile</application>."
+msgstr ""
+"Το Nemiver σχεδιάστηκε ως ένας γενικός γραφικός <interface>πάγκος "
+"εργασίας</interface> και ένα πρόσθετο συστήματος που μπορεί να προσφέρει "
+"πολλές διαφορετικές προοπτικές. Προς το παρόν η μόνη παρεχόμενη προοπτική "
+"είναι η προοπτική αποσφαλμάτωσης, αλλά στο μέλλον, ίσως υπάρξουν πρόσθετες "
+"προοπτικές για αποσφαλμάτωση μνήμης με την "
+"<application>valgrind</application>, ή για εργαλεία κατατομής όπως "
+"<application>oprofile</application>."
+
+#: C/nemiver.xml:132(title)
+msgid "Getting Started"
+msgstr "Ξεκίνημα"
+
+#: C/nemiver.xml:133(para)
+msgid ""
+"This section explains how to start Nemiver and gives a basic overview of the "
+"application."
+msgstr ""
+"Αυτή η ενότητα εξηγεί την έναρξη του Nemiver και δίνει μια βασική επισκόπηση "
+"της εφαρμογής."
+
+#: C/nemiver.xml:138(title)
+msgid "Starting Nemiver"
+msgstr "Ξεκινώντας το Nemiver"
+
+#: C/nemiver.xml:139(para)
+msgid "You can start Nemiver in the following ways:"
+msgstr "Μπορείτε να ξεκινήσετε το Nemiver με τους παρακάτω τρόπους:"
+
+#: C/nemiver.xml:144(term)
+msgid "<guimenu>Applications</guimenu> menu"
+msgstr "Μενού <guimenu>εφαρμογές</guimenu>"
+
+#: C/nemiver.xml:146(para)
+msgid ""
+"Choose <menuchoice><guisubmenu>Programming</guisubmenu><guimenuitem>Nemiver "
+"Debugger</guimenuitem></menuchoice>."
+msgstr ""
+"Επιλέξτε <menuchoice><guisubmenu>προγραμματισμός</guisubmenu><guimenuitem>απ"
+"οσφαλματωτής Nemiver</guimenuitem></menuchoice>."
+
+#: C/nemiver.xml:152(term)
+msgid "Command line"
+msgstr "Γραμμή εντολών"
+
+#: C/nemiver.xml:154(para)
+msgid "Type <command>nemiver</command>, then press <keycap>Return</keycap>."
+msgstr ""
+"Πληκτρολογήστε <command>nemiver</command>, έπειτα πατήστε "
+"<keycap>επιστροφή</keycap>."
+
+#: C/nemiver.xml:159(title)
+msgid "Additional Command-line Options"
+msgstr "Πρόσθετες επιλογές γραμμής εντολών"
+
+#: C/nemiver.xml:160(para)
+msgid ""
+"You can find a list of options that can be passed to Nemiver on the command "
+"line by typing <command>nemiver --help-all</command>."
+msgstr ""
+"Μπορείτε να βρείτε μια λίστα επιλογών που μπορεί να περάσει στο Nemiver στη "
+"γραμμή εντολών πληκτρολογώντας <command>nemiver --help-all</command>."
+
+#: C/nemiver.xml:170(title)
+msgid "The Nemiver window"
+msgstr "Το παράθυρο Nemiver"
+
+#: C/nemiver.xml:171(para)
+msgid ""
+"When you start Nemiver, you will see a window that looks very much like the "
+"following:"
+msgstr ""
+"Όταν ξεκινάτε το Nemiver, θα δείτε ένα παράθυρο που μοιάζει πάρα πολύ με το "
+"παρακάτω:"
+
+#: C/nemiver.xml:176(title)
+msgid "Nemiver Window"
+msgstr "Το παράθυρο Nemiver"
+
+#: C/nemiver.xml:183(phrase)
+msgid "Shows Nemiver main window."
+msgstr "Εμφανίζει το κύριο παράθυρο Nemiver."
+
+#: C/nemiver.xml:188(para)
+msgid ""
+"The <application>Nemiver</application> window contains the following "
+"elements:"
+msgstr ""
+"Το παράθυρο <application>Nemiver</application> περιέχει τα επόμενα στοιχεία:"
+
+#: C/nemiver.xml:194(term)
+msgid "Menubar"
+msgstr "Γραμμή μενού"
+
+#: C/nemiver.xml:196(para)
+msgid ""
+"The menus on the menubar contain all of the commands you need to use "
+"<application>Nemiver</application>."
+msgstr ""
+"Τα μενού στη γραμμή μενού περιέχουν όλες τις απαραίτητες εντολές για χρήση "
+"στο <application>Nemiver</application>."
+
+#: C/nemiver.xml:203(term)
+msgid "Toolbar"
+msgstr "Εργαλειοθήκη"
+
+#: C/nemiver.xml:205(para)
+msgid ""
+"The toolbar contains the basic debugging actions that can be used to run or "
+"step through the program being debugged."
+msgstr ""
+"Η εργαλειοθήκη περιέχει τις βασικές ενέργειες αποσφαλμάτωσης που μπορούν να "
+"χρησιμοποιηθούν για εκτέλεση ή περιδιάβαση του αποσφαλματούμενου "
+"προγράμματος."
+
+#: C/nemiver.xml:212(term)
+msgid "Source View Notebook"
+msgstr "Σημειωματάριο προβολής πηγής"
+
+#: C/nemiver.xml:214(para)
+msgid ""
+"When source files are open, this area will display source files of the "
+"program being debugged."
+msgstr ""
+"Όταν τα αρχεία πηγής είναι ανοικτά, αυτή η περιοχή θα εμφανίσει τα αρχεία "
+"πηγής του αποσφαλματούμενου προγράμματος."
+
+#: C/nemiver.xml:221(term)
+msgid "Status Notebook"
+msgstr "Κατάσταση σημειωματαρίου"
+
+#: C/nemiver.xml:223(para)
+msgid ""
+"The Status notebook contains several tabs for displaying information about "
+"the program being debugged. These include the following:"
+msgstr ""
+"Η κατάσταση σημειωματάριου περιέχει πολλές καρτέλες για εμφάνιση πληροφοριών "
+"για το αποσφαλματούμενο πρόγραμμα. Αυτά περιλαμβάνουν τα παρακάτω:"
+
+#: C/nemiver.xml:230(term)
+msgid "Call Stack"
+msgstr "Κλήση στοίβας"
+
+#: C/nemiver.xml:234(para)
+msgid ""
+"Displays the current state of the call stack of the program being debugged."
+msgstr ""
+"Εμφανίζει την τρέχουσα κατάσταση της στοίβας κλήσης του αποσφαλματούμενου "
+"προγράμματος."
+
+#: C/nemiver.xml:241(term)
+msgid "Variables"
+msgstr "Μεταβλητές"
+
+#: C/nemiver.xml:245(para)
+msgid ""
+"Displays a list of all local variables and function arguments, in addition "
+"to their values and types."
+msgstr ""
+"Εμφανίζει μια λίστα όλων των τοπικών μεταβλητών και ορισμάτων συνάρτησης, "
+"πέρα από τις τιμές τους και τους τύπους."
+
+#: C/nemiver.xml:252(term)
+msgid "Target Terminal"
+msgstr "Τερματικός στόχου"
+
+#: C/nemiver.xml:256(para)
+msgid ""
+"If the program being debugged prints any output to the terminal, it will be "
+"displayed in this tab."
+msgstr ""
+"Εάν το αποσφαλματούμενο πρόγραμμα εμφανίζει οποιαδήποτε έξοδο στο τερματικό, "
+"θα εμφανιστεί σε αυτήν την καρτέλα."
+
+#: C/nemiver.xml:263(term)
+msgid "Breakpoints"
+msgstr "Σημεία διακοπής"
+
+#: C/nemiver.xml:267(para)
+msgid ""
+"This tab displays a list of all breakpoints that have been set. You can view "
+"the source code of a particular breakpoint by double-clicking an item in the "
+"list or by right-clicking and selecting <menuchoice><guimenuitem>Go to "
+"Source</guimenuitem></menuchoice> from the menu. In addition, breakpoints "
+"can be deleted, enabled, or disabled in this tab. For more information about "
+"breakpoints, see <xref linkend=\"nemiver-sect-breakpoints\"/>."
+msgstr ""
+"Αυτή η καρτέλα εμφανίζει μια λίστα όλων των σημείων διακοπής που έχουν "
+"οριστεί. Μπορείτε να δείτε τον πηγαίο κώδικα του συγκεκριμένου σημείου "
+"διακοπής με διπλό κλικ ενός στοιχείου στη λίστα ή με δεξί κλικ και επιλογή "
+"<menuchoice><guimenuitem>μετάβαση στην πηγή</guimenuitem></menuchoice> από "
+"το μενού. Επιπλέον, τα σημεία διακοπής μπορούν να διαγραφούν, να "
+"ενεργοποιηθούν ή να απενεργοποιηθούν σε αυτήν την καρτέλα. Για περισσότερες "
+"πληροφορίες σχετικά με τα σημεία διακοπής, δείτε <xref linkend=\"nemiver-"
+"sect-breakpoints\"/>."
+
+#: C/nemiver.xml:280(term) C/nemiver.xml:766(title)
+msgid "Registers"
+msgstr "Καταχωριστές"
+
+#: C/nemiver.xml:284(para)
+msgid ""
+"This tab displays all of the CPU registers and their values. For more "
+"information, see <xref linkend=\"nemiver-sect-registers\"/>."
+msgstr ""
+"Αυτή η καρτέλα εμφανίζει όλους τους καταχωριστές CPU και τις τιμές τους. Για "
+"περισσότερες πληροφορίες, δείτε <xref linkend=\"nemiver-sect-registers\"/>."
+
+#: C/nemiver.xml:291(term) C/nemiver.xml:793(title)
+msgid "Memory"
+msgstr "Μνήμη"
+
+#: C/nemiver.xml:295(para)
+msgid ""
+"This tab displays a view of the current state of a specific memory location. "
+"For more information, see <xref linkend=\"nemiver-sect-memory\"/>."
+msgstr ""
+"Αυτή η καρτέλα εμφανίζει μια προβολή της τρέχουσας κατάστασης μιας "
+"συγκεκριμένης θέσης μνήμης. Για περισσότερες πληροφορίες, δείτε <xref "
+"linkend=\"nemiver-sect-memory\"/>."
+
+#: C/nemiver.xml:307(title)
+msgid "Choosing a Program to Debug"
+msgstr "Επιλογή προγράμματος για αποσφαλμάτωση"
+
+#: C/nemiver.xml:308(para)
+msgid ""
+"There are several ways to begin debugging a program. Nemiver allows you to "
+"load a local executable file, load a core file, attach to a running process, "
+"or connect to a remote debugging server."
+msgstr ""
+"Υπάρχουν πολλοί τρόποι για έναρξη αποσφαλμάτωσης ενός προγράμματος. Το "
+"Nemiver επιτρέπει τη φόρτωση τοπικού εκτελέσιμου αρχείου, την φόρτωση ενός "
+"αρχείου πυρήνα, προσάρτηση σε μια εκτελούμενη διεργασία, ή σύνδεση με έναν "
+"απομακρυσμένο εξυπηρετητή αποσφαλμάτωσης."
+
+#: C/nemiver.xml:313(title)
+msgid "Debugging an Executable Program"
+msgstr "Αποσφαλμάτωση εκτελέσιμου προγράμματος"
+
+#: C/nemiver.xml:315(title) C/nemiver.xml:380(title) C/nemiver.xml:425(title)
+#: C/nemiver.xml:462(title) C/nemiver.xml:852(title)
+msgid "Using the Workbench"
+msgstr "Χρήση του πάγκου εργασίας"
+
+#: C/nemiver.xml:316(para)
+msgid ""
+"To select an executable program to debug, select <menuchoice><guimenu> File "
+"</guimenu><guimenuitem> Execute... </guimenuitem></menuchoice>, which should "
+"display the following dialog:"
+msgstr ""
+"Για επιλογή ενός εκτελέσιμου προγράμματος για αποσφαλμάτωση, επιλέξτε "
+"<menuchoice><guimenu>αρχείο</guimenu><guimenuitem>εκτέλεση... "
+"</guimenuitem></menuchoice>, που θα εμφανίσει τον παρακάτω διάλογο:"
+
+#: C/nemiver.xml:325(title)
+msgid "Execute Dialog"
+msgstr "Εκτέλεση διαλόγου"
+
+#: C/nemiver.xml:332(phrase)
+msgid "Shows dialog for selecting an executable to run"
+msgstr "Εμφανίζει τον διάλογο για επιλογή εκτέλεσης ενός εκτελέσιμου"
+
+#: C/nemiver.xml:337(para)
+msgid ""
+"In this dialog, you can select the program to be debugged, any arguments or "
+"options to be passed to the executable on the command line, the working "
+"directory to run the executable in, and any Environment Variables that "
+"should be set when the executable is being debugged."
+msgstr ""
+"Σε αυτόν τον διάλογο, μπορείτε νε επιλέξετε το αποσφαλματούμενο πρόγραμμα, "
+"οποιαδήποτε ορίσματα ή επιλογές που θα περάσουν στο εκτελέσιμο στη γραμμή "
+"εντολών, τον κατάλογο εργασίας για τρέξιμο του εκτελέσιμου και οποιεσδήποτε "
+"μεταβλητές περιβάλλοντος που πρέπει να οριστούν όταν το εκτελέσιμο "
+"αποσφαλματώνεται."
+
+#: C/nemiver.xml:345(title) C/nemiver.xml:411(title) C/nemiver.xml:450(title)
+#: C/nemiver.xml:485(title)
+msgid "Using the Command Line"
+msgstr "Χρήση της γραμμής εντολών"
+
+#: C/nemiver.xml:346(para)
+msgid ""
+"To start an executable program to debug from the command line, simply "
+"specify the name of the executable. You can either give an absolute path to "
+"the executable, or if it is in the path, you can simply give the basename of "
+"the executable. For example, if <filename>/usr/bin</filename> is in your "
+"path, both of the following are valid:"
+msgstr ""
+"Για έναρξη ενός εκτελέσιμου προγράμματος για αποσφαλμάτωση από τη γραμμή "
+"εντολών, ορίστε απλά το όνομα του εκτελέσιμου. Μπορείτε είτε να δώσετε μια "
+"απόλυτη διαδρομή στο εκτελέσιμο, ή εάν είναι στη διαδρομή, μπορείτε απλά να "
+"δώσετε το όνομα βάσης του εκτελέσιμου. Για παράδειγμα, εάν το "
+"<filename>/usr/bin</filename> είναι στη διαδρομή σας, και τα δυο από τα "
+"παρακάτω είναι έγκυρα:"
+
+#: C/nemiver.xml:357(command)
+msgid "nemiver /usr/bin/progname"
+msgstr "nemiver /usr/bin/progname"
+
+#: C/nemiver.xml:362(command)
+msgid "nemiver progname"
+msgstr "όνομα προγράμματος nemiver"
+
+#: C/nemiver.xml:367(title)
+msgid "Passing Options on the Command Line"
+msgstr "Πέρασμα επιλογών στη γραμμή εντολών"
+
+#: C/nemiver.xml:368(para)
+msgid ""
+"If you would like to pass command line options to the program that you are "
+"debugging, you should enclose them in quotes to prevent Nemiver from "
+"processing them: <command>nemiver \"prognam --arg1 --arg2\"</command>."
+msgstr ""
+"Εάν θέλετε να περάσετε επιλογές στη γραμμή εντολών στο πρόγραμμα που "
+"αποσφαλματώνετε, πρέπει να τις περικλείσετε σε εισαγωγικά για να αποφύγετε "
+"την επεξεργασία τους από το Nemiver: <command>nemiver \"prognam --arg1 "
+"--arg2\"</command>."
+
+#: C/nemiver.xml:378(title)
+msgid "Attaching to a Running Program"
+msgstr "Προσκόλληση σε εκτελούμενο πρόγραμμα"
+
+#: C/nemiver.xml:381(para)
+msgid ""
+"Select the menu item <menuchoice><guimenu> File </guimenu><guimenuitem> "
+"Attach to Running Program... </guimenuitem></menuchoice>, which should "
+"display the following dialog:"
+msgstr ""
+"Επιλογή του στοιχείου μενού "
+"<menuchoice><guimenu>αρχείο</guimenu><guimenuitem>προσάρτηση στο εκτελούμενο "
+"πρόγραμμα...</guimenuitem></menuchoice>, που θα εμφανίσει τον παρακάτω "
+"διάλογο:"
+
+#: C/nemiver.xml:390(title)
+msgid "Attach Dialog"
+msgstr "Προσάρτηση διαλόγου"
+
+#: C/nemiver.xml:397(phrase)
+msgid "Shows dialog for attaching to a running program"
+msgstr "Εμφανίζει τον διάλογο προσάρτησης εκτελούμενου προγράμματος"
+
+#: C/nemiver.xml:402(para)
+msgid ""
+"Select a process from the list and click <guibutton>OK</guibutton> to start "
+"debugging the selected program. There may be a lot of processes listed in "
+"the dialog, so you can filter the list to only ones that that you are "
+"interested in by typing some text into the text entry located just below the "
+"list."
+msgstr ""
+"Επιλέξτε μια διεργασία από τη λίστα και κλικ στο "
+"<guibutton>εντάξει</guibutton> για έναρξη αποσφαλμάτωσης του επιλεγμένου "
+"προγράμματος. Ίσως υπάρχουν πολλές διεργασίες που εμφανίζονται στον διάλογο, "
+"έτσι μπορείτε να φιλτράρετε την λίστα σε εκείνες μόνο που σας ενδιαφέρουν "
+"πληκτρολογώντας κάποιο κείμενο στην καταχώριση κειμένου που τοποθετείται "
+"ακριβώς κάτω από τη λίστα."
+
+#: C/nemiver.xml:412(para)
+msgid ""
+"To attach to a running program from the command line, use the <option>--"
+"attach</option> option. The <option>--attach</option> option accepts either "
+"a pid or a process name. So, for example, to debug the running process "
+"<command>foo</command> which has a pid of 1121, you could either type "
+"<command>nemiver --attach foo</command> or <command>nemiver --attach 1121</"
+"command>."
+msgstr ""
+"Για την προσάρτηση εκτελούμενου προγράμματος από τη γραμμή εντολών, "
+"χρησιμοποιήστε την επιλογή <option>--attach</option>. Η επιλογή "
+"<option>--attach</option> δέχεται είτε ένα pid ή όνομα διεργασίας. Έτσι, για "
+"παράδειγμα, για αποσφαλμάτωση της εκτελούμενης διεργασίας "
+"<command>foo</command> που έχει ένα pid 1121, θα μπορούσατε είτε να "
+"πληκτρολογήσετε <command>nemiver --attach foo</command> ή <command>nemiver "
+"--attach 1121</command>."
+
+#: C/nemiver.xml:423(title)
+msgid "Loading a Core File"
+msgstr "Φόρτωση ενός αρχείου πυρήνα"
+
+#: C/nemiver.xml:426(para)
+msgid ""
+"Select the menu item <menuchoice><guimenu> File </guimenu><guimenuitem> Load "
+"Core File... </guimenuitem></menuchoice> to bring up the following dialog, "
+"which will let you load a core file:"
+msgstr ""
+"Επιλέξτε το στοιχείο μενού "
+"<menuchoice><guimenu>αρχείο</guimenu><guimenuitem>φόρτωση αρχείου "
+"πυρήνα...</guimenuitem></menuchoice> για να παρουσιάσει τον παρακάτω "
+"διάλογο, που επιτρέπει τη φόρτωση ενός αρχείου πυρήνα:"
+
+#: C/nemiver.xml:436(title)
+msgid "Load Core File Dialog"
+msgstr "Φόρτωση διαλόγου αρχείου πυρήνα"
+
+#: C/nemiver.xml:443(phrase)
+msgid "Shows dialog for loading a core file"
+msgstr "Εμφανίζει διάλογο για φόρτωση ενός αρχείου πυρήνα"
+
+#: C/nemiver.xml:451(para)
+msgid "Core files cannot be loaded from the command line."
+msgstr "Τα αρχεία πυρήνα δεν μπορούν να φορτωθούν από τη γραμμή εντολών."
+
+#: C/nemiver.xml:457(title)
+msgid "Remote Debugging"
+msgstr "Απομακρυσμένη αποσφαλμάτωση"
+
+#: C/nemiver.xml:458(para)
+msgid "Nemiver allows you to connect to a remote debugging server."
+msgstr ""
+"Το Nemiver επιτρέπει τη σύνδεση με έναν απομακρυσμένο εξυπηρετητή "
+"αποσφαλμάτωσης."
+
+#: C/nemiver.xml:463(para)
+msgid ""
+"To connect to a remote debugging server, select <menuchoice><guimenu>File</"
+"guimenu><guimenuitem>Connect to Remote Target...</guimenuitem></menuchoice>"
+msgstr ""
+"Για σύνδεση με έναν απομακρυσμένο εξυπηρετητή αποσφαλμάτωσης, επιλέξτε "
+"<menuchoice><guimenu>αρχείο</guimenu><guimenuitem>σύνδεση με απομακρυσμένο "
+"στόχο...</guimenuitem></menuchoice>"
+
+#: C/nemiver.xml:474(phrase)
+msgid "Remote Debugging Dialog"
+msgstr "Απομακρυσμένος διάλογος αποσφαλμάτωσης"
+
+#: C/nemiver.xml:478(para)
+msgid ""
+"Select the executable to load and the location where any shared libraries "
+"are located, and then fill in the details about connecting to the remote "
+"server."
+msgstr ""
+"Επιλογή του εκτελέσιμου για φόρτωση και της τοποθεσίας όπου οποιεσδήποτε "
+"κοινόχρηστες βιβλιοθήκες βρίσκονται και μετά συμπλήρωση των λεπτομερειών για "
+"τη σύνδεση με απομακρυσμένο εξυπηρετητή."
+
+#: C/nemiver.xml:486(para)
+msgid ""
+"Nemiver does not provide a way to connect to a remote server using the "
+"command line"
+msgstr ""
+"Το Nemiver δεν παρέχει τρόπο σύνδεσης με απομακρυσμένο εξυπηρετητή "
+"χρησιμοποιώντας τη γραμμή εντολών"
+
+#: C/nemiver.xml:495(title)
+msgid "Using Nemiver"
+msgstr "Χρήση Nemiver"
+
+#: C/nemiver.xml:496(para)
+msgid "This section describes how to use Nemiver to debug your application."
+msgstr ""
+"Αυτή η ενότητα περιγράφει τη χρήση του Nemiver στην αποσφαλμάτωση της "
+"εφαρμογή σας."
+
+#: C/nemiver.xml:500(title)
+msgid "Basic Debugging Actions"
+msgstr "Βασικές ενέργειες αποσφαλμάτωσης"
+
+#: C/nemiver.xml:501(para)
+msgid ""
+"The basic debugging actions are available on the main toolbar, in the "
+"<guimenu>Debug</guimenu> menu, and as keyboard shortcuts. The most common "
+"actions are listed below:"
+msgstr ""
+"Οι βασικές ενέργειες αποσφαλμάτωσης είναι διαθέσιμες στην κύρια "
+"εργαλειοθήκη, στο μενού <guimenu>αποσφαλμάτωση</guimenu> και ως συντομεύσεις "
+"πληκτρολογίου. Οι πιο κοινές ενέργειες εμφανίζονται παρακάτω:"
+
+#: C/nemiver.xml:508(term)
+msgid "Continue"
+msgstr "Συνέχεια"
+
+#: C/nemiver.xml:510(para)
+msgid ""
+"Starts the program. The program will run until it hits a breakpoint or until "
+"the program ends, unless it is interrupted manually by the user by clicking "
+"<action>Stop</action>. This action can be activated from the keyboard with "
+"<keycap>F5</keycap>."
+msgstr ""
+"Ξεκινά το πρόγραμμα. Το πρόγραμμα θα εκτελείται μέχρι να συναντήσει ένα "
+"σημείο διακοπής ή μέχρι να τελειώσει, εκτός και διακοπεί χειροκίνητα από τον "
+"χρήστη με κλικ στο <action>διακοπή</action>. Αυτή η ενέργεια μπορεί να "
+"ενεργοποιηθεί από το πληκτρολόγιο με <keycap>F5</keycap>."
+
+#: C/nemiver.xml:520(term)
+msgid "Next"
+msgstr "Επόμενο"
+
+#: C/nemiver.xml:522(para)
+msgid ""
+"Executes the next statement, and stops when it reaches the next line in this "
+"file. Some debuggers may call this action \"Step Over\". This action can be "
+"activated from the keyboard with <keycap>F6</keycap>."
+msgstr ""
+"Εκτελεί την επόμενη δήλωση και σταματά όταν φτάσει την επόμενη γραμμή σε "
+"αυτό το αρχείο. Μερικοί αποσφαλματωτές μπορεί να αποκαλούν αυτήν την "
+"ενέργεια \"Step Over (υπερπήδηση)\". Αυτή η ενέργεια μπορεί να ενεργοποιηθεί "
+"από το πληκτρολόγιο με <keycap>F6</keycap>."
+
+#: C/nemiver.xml:531(term)
+msgid "Step"
+msgstr "Βήμα"
+
+#: C/nemiver.xml:533(para)
+msgid ""
+"Executes the next statement, stepping into the function if possible. Some "
+"debuggers may call this action \"Step In\". This action can be activated "
+"from the keyboard with <keycap>F7</keycap>."
+msgstr ""
+"Εκτελεί την επόμενη δήλωση και μπαίνει στη συνάρτηση εάν είναι δυνατό. "
+"Μερικοί αποσφαλματωτές μπορεί να αποκαλούν αυτήν την ενέργεια \"Step In "
+"(είσοδο)\". Αυτή η ενέργεια μπορεί να ενεργοποιηθεί από το πληκτρολόγιο με "
+"<keycap>F7</keycap>."
+
+#: C/nemiver.xml:541(term)
+msgid "Step Out"
+msgstr "Έξοδος"
+
+#: C/nemiver.xml:543(para)
+msgid ""
+"Finishes execution of the current function and stops when it returns to the "
+"calling function. This action can be activated from the keyboard with "
+"<keycombo><keycap>Shift</keycap><keycap>F7</keycap></keycombo>."
+msgstr ""
+"Τελειώνει την εκτέλεση της τρέχουσας συνάρτησης και σταματά όταν επιστρέφει "
+"στην καλούσα συνάρτηση. Αυτή η ενέργεια μπορεί να ενεργοποιηθεί από το "
+"πληκτρολόγιο με "
+"<keycombo><keycap>Shift</keycap><keycap>F7</keycap></keycombo>."
+
+#: C/nemiver.xml:552(term)
+msgid "Restart"
+msgstr "Επανεκκίνηση"
+
+#: C/nemiver.xml:554(para)
+msgid ""
+"Reloads the current executable and starts execution from the beginning. This "
+"action can be activated from the keyboard with <keycombo><keycap>Shift</"
+"keycap><keycap>F5</keycap></keycombo>."
+msgstr ""
+"Ξαναφορτώνει το τρέχον εκτελέσιμο και ξεκινά την εκτέλεση από την έναρξη. "
+"Αυτή η ενέργεια μπορεί να ενεργοποιηθεί από το πληκτρολόγιο με "
+"<keycombo><keycap>Shift</keycap><keycap>F5</keycap></keycombo>."
+
+#: C/nemiver.xml:562(term)
+msgid "Stop"
+msgstr "Διακοπή"
+
+#: C/nemiver.xml:564(para)
+msgid ""
+"Manually interrupt execution of the program. This action is only available "
+"when the debugger is running the executable (e.g. after a user has clicked "
+"<action>Continue</action>). This action can be activated from the keyboard "
+"with <keycap>F9</keycap>."
+msgstr ""
+"Χειροκίνητη διακοπή εκτέλεσης του προγράμματος. Αυτή η ενέργεια είναι "
+"διαθέσιμη μόνο όταν ο αποσφαλματωτής τρέχει το εκτελέσιμο (π.χ. μετά από "
+"κλικ του χρήστη στο <action>συνέχεια</action>). Αυτή η ενέργεια μπορεί να "
+"ενεργοποιηθεί από το πληκτρολόγιο με <keycap>F9</keycap>."
+
+#: C/nemiver.xml:573(para)
+msgid ""
+"By default, after loading an executable, Nemiver creates a breakpoint at "
+"<function>main()</function>, so when execution reaches <function>main()</"
+"function>, it will stop and wait for input. You can then step through the "
+"program, examine variables (see <xref linkend=\"nemiver-sect-inspecting-"
+"variables\"/>), or set additional breakpoints (see <xref linkend=\"nemiver-"
+"sect-breakpoints\"/>)."
+msgstr ""
+"Από προεπιλογή, μετά τη φόρτωση ενός εκτελέσιμου, το Nemiver δημιουργεί ένα "
+"σημείο διακοπής στη <function>main()</function>, έτσι όταν η εκτέλεση φτάσει "
+"στη <function>main()</function>, θα σταματήσει και θα περιμένει για είσοδο. "
+"Μπορείτε έπειτα να περιδιαβείτε το πρόγραμμα, να εξετάσετε τις μεταβλητές "
+"(δείτε <xref linkend=\"nemiver-sect-inspecting-variables\"/>), ή να ορίσετε "
+"πρόσθετα σημεία διακοπής (δείτε <xref linkend=\"nemiver-sect-breakpoints\"/>)."
+
+#: C/nemiver.xml:582(title)
+msgid "Inspecting Variables"
+msgstr "Επιθεώρηση μεταβλητών"
+
+#: C/nemiver.xml:583(para)
+msgid ""
+"Nemiver displays a list of all local variables in the <interface>Variables</"
+"interface> tab of the <interface>Status Notebook</interface>. If you'd like "
+"to examine a different variable (or even an arbitrary expression), you can "
+"use the <interface>Variable Inspector</interface>. To bring up the "
+"<interface>Variable Inspector</interface>, select "
+"<menuchoice><guimenu>Debug</guimenu><guimenuitem>Inspect a Variable</"
+"guimenuitem></menuchoice>. When the variable inspector comes up, you'll see "
+"a window that looks similar to the following:"
+msgstr ""
+"Το Nemiver εμφανίζει μια λίστα όλων των τοπικών μεταβλητών στην καρτέλα "
+"<interface>μεταβλητές</interface> της <interface>κατάσταση "
+"σημειωματάριου</interface>. Εάν θέλατε να εξετάσετε μια διαφορετική "
+"μεταβλητή (ή ακόμα μια ελεύθερη έκφραση), μπορείτε να χρησιμοποιήσετε τον "
+"<interface>επιθεωρητή μεταβλητής</interface>. Για να εμφανίσετε τον "
+"<interface>επιθεωρητή μεταβλητής</interface>, επιλέξτε "
+"<menuchoice><guimenu>αποσφαλμάτωση</guimenu><guimenuitem>επιθεώρηση "
+"μεταβλητής</guimenuitem></menuchoice>. Όταν ο επιθεωρητής μεταβλητής "
+"εμφανιστεί, θα δείτε ένα παράθυρο που μοιάζει με το παρακάτω:"
+
+#: C/nemiver.xml:596(phrase)
+msgid "Variable Inspector Dialog"
+msgstr "Διάλογος επιθεωρητή μεταβλητής"
+
+#: C/nemiver.xml:600(para)
+msgid ""
+"You can type any variable name or a simple expression (such as <literal>pFoo-"
+"&gt;bar</literal>) into the input box, and if the variable is valid and in "
+"scope, it will be display details about that expression."
+msgstr ""
+"Μπορείτε να πληκτρολογήσετε οποιοδήποτε όνομα μεταβλητής; ή μια απλή έκφραση "
+"(όπως <literal>pFoo-&gt;bar</literal>) στο πλαίσιο εισόδου και εάν η "
+"μεταβλητή είναι έγκυρη και σε εμβέλεια, θα εμφανίσει λεπτομέρειες για την "
+"έκφραση."
+
+#: C/nemiver.xml:605(para)
+msgid ""
+"Alternately, if you select the name of a variable in the <interface>source "
+"editor</interface>, and then launch the <interface>Variable Inspector</"
+"interface>, it will attempt to display information about the selected "
+"variable name."
+msgstr ""
+"Εναλλακτικά, εάν επιλέξετε το όνομα της μεταβλητής στον "
+"<interface>επεξεργαστή πηγής</interface> και έπειτα εκκινήσετε τον "
+"<interface>επιθεωρητή μεταβλητής</interface>, θα προσπαθήσει να εμφανίσει "
+"πληροφορίες για το επιλεγμένο όνομα μεταβλητής."
+
+#: C/nemiver.xml:612(title)
+msgid "Keyboard Shortcut"
+msgstr "Συντόμευση πληκτρολογίου"
+
+#: C/nemiver.xml:613(para)
+msgid ""
+"You can also start the <interface>Variable Inspector</interface> by pressing "
+"<keycap>F12</keycap>."
+msgstr ""
+"Μπορείτε επίσης να ξεκινήσετε τον <interface>επιθεωρητή "
+"μεταβλητής</interface> πατώντας <keycap>F12</keycap>."
+
+#: C/nemiver.xml:618(para)
+msgid ""
+"Nemiver will also let you display a list of all global variables in an "
+"application in a separate dialog. To display the <interface>Global "
+"Variables</interface> dialog, select <menuchoice><guimenu>Debug</"
+"guimenu><guimenuitem>Show Global Variables</guimenuitem></menuchoice> or "
+"press <keycombo><keycap>Ctrl</keycap><keycap>G</keycap></keycombo>."
+msgstr ""
+"Το Nemiver επιτρέπει επίσης την εμφάνιση μιας λίστας όλων των γενικών "
+"μεταβλητών σε μια εφαρμογή σε ξεχωριστό διάλογο. Για εμφάνιση του διαλόγου "
+"<interface>γενικές μεταβλητές</interface>, επιλέξτε "
+"<menuchoice><guimenu>αποσφαλμάτωση</guimenu><guimenuitem>εμφάνιση γενικών "
+"μεταβλητών</guimenuitem></menuchoice> ή πατήστε "
+"<keycombo><keycap>Ctrl</keycap><keycap>G</keycap></keycombo>."
+
+#: C/nemiver.xml:630(phrase)
+msgid "Global Variables Dialog"
+msgstr "Διάλογος γενικών μεταβλητών"
+
+#: C/nemiver.xml:635(para)
+msgid ""
+"For some programs (especially C++ programs), listing all of the global "
+"variables may take a very long time."
+msgstr ""
+"Για μερικά προγράμματα (ειδικά προγράμματα C++), που εμφανίζουν όλες τις "
+"γενικές μεταβλητές ίσως πάρει πάρα πολύ χρόνο."
+
+#: C/nemiver.xml:642(title)
+msgid "Setting Breakpoints"
+msgstr "Ορισμός σημείων διακοπής"
+
+#: C/nemiver.xml:643(para)
+msgid ""
+"There are several different ways to set breakpoints in Nemiver. Nemiver "
+"automatically sets a breakpoint at <function>main()</function> when you "
+"first begin debugging a new executable. If you want to set additional "
+"breakpoints you can do one of the following:"
+msgstr ""
+"Υπάρχουν πολλοί διαφορετικοί τρόποι να ορίσετε σημεία διακοπής στο Nemiver. "
+"Το Nemiver αυτόματα ορίζει ένα σημείο διακοπής στη "
+"<function>main()</function> όταν πρωτοξεκινάτε την αποσφαλμάτωση ενός νέου "
+"εκτελέσιμου. Εάν θέλετε να ορίσετε πρόσθετα σημεία διακοπής μπορείτε να "
+"κάνετε ένα από τα παρακάτω:"
+
+#: C/nemiver.xml:651(para)
+msgid ""
+"Click in the margin next to the line where you want the breakpoint to be set"
+msgstr ""
+"Κλικ στο περιθώριο δίπλα στη γραμμή όπου θέλετε να οριστεί το σημείο "
+"διακοπής"
+
+#: C/nemiver.xml:655(para)
+msgid ""
+"Place your cursor on a line where you want the breakpoint to be set and set "
+"the breakpoint by either selecting <menuchoice><guimenu>Debug</"
+"guimenu><guimenuitem>Toggle Breakpoint at Cursor</guimenuitem></menuchoice>, "
+"or by pressing <keycap>F8</keycap>"
+msgstr ""
+"Τοποθετήστε τον δρομέα σας σε μια γραμμή όπου θέλετε το σημείο διακοπής να "
+"οριστεί και ορίστε το σημείο διακοπής είτε επιλέγοντας "
+"<menuchoice><guimenu>αποσφαλμάτωση</guimenu><guimenuitem>εναλλαγή σημείου "
+"διακοπής στον δρομέα</guimenuitem></menuchoice>, ή πατώντας "
+"<keycap>F8</keycap>"
+
+#: C/nemiver.xml:660(para)
+msgid ""
+"Set a breakpoint at a specific function name or at a specific location in a "
+"file by selecting <menuchoice><guimenu>Debug</guimenu><guimenuitem>Set "
+"Breakpoint...</guimenuitem></menuchoice> or by pressing "
+"<keycombo><keycap>Ctrl</keycap><keycap>B</keycap></keycombo>. This will "
+"bring up a dialog that looks like the following:"
+msgstr ""
+"Ορίστε ένα σημείο διακοπής σε ένα συγκεκριμένο όνομα συνάρτησης ή σε μια "
+"συγκεκριμένη θέση σε ένα αρχείο επιλέγοντας "
+"<menuchoice><guimenu>αποσφαλμάτωση</guimenu><guimenuitem>ορισμός σημείου "
+"διακοπής...</guimenuitem></menuchoice> ή πατώντας "
+"<keycombo><keycap>Ctrl</keycap><keycap>B</keycap></keycombo>. Αυτό θα "
+"εμφανίσει έναν διάλογο που φαίνεται σαν τον παρακάτω:"
+
+#: C/nemiver.xml:670(phrase)
+msgid "Set Breakpoint Dialog"
+msgstr "Διάλογος ορισμού σημείου διακοπής"
+
+#: C/nemiver.xml:674(para)
+msgid ""
+"You can specify a breakpoint at a particular location in a file, or by "
+"function name. If there are more than one function with the same name, "
+"Nemiver will display a list of all matching functions and ask you to pick "
+"the one you want."
+msgstr ""
+"Μπορείτε να ορίσετε ένα σημείο διακοπής σε μια συγκεκριμένη θέση σε ένα "
+"αρχείο, ή με όνομα συνάρτησης. Εάν υπάρχουν περισσότερες από μία συναρτήσεις "
+"με το ίδιο όνομα, το Nemiver θα εμφανίσει μια λίστα όλων των συναρτήσεων "
+"που συμφωνούν και θα σας ζητήσει να επιλέξετε την επιθυμητή συνάρτηση."
+
+#: C/nemiver.xml:683(title)
+msgid "Disabled Breakpoints"
+msgstr "Απενεργοποιημένα σημεία διακοπής"
+
+#: C/nemiver.xml:684(para)
+msgid ""
+"Breakpoints can be either enabled or disabled. The debugger will stop "
+"execution whenever it reaches an enabled breakpoint but will not be affected "
+"by any breakpoints in the disabled state. This allows you to temporarily "
+"remove a breakpoint without actually deleting it."
+msgstr ""
+"Τα σημεία διακοπής μπορεί να είναι είτε ενεργά είτε ανενεργά. Ο "
+"αποσφαλματωτής θα σταματήσει την εκτέλεση όποτε φτάσει ένα ενεργό σημείο "
+"διακοπής, αλλά δεν θα επηρεαστεί από οποιοδήποτε σημεία διακοπής σε ανενεργή "
+"κατάσταση. Αυτό επιτρέπει την προσωρινή αφαίρεση σημείου διακοπής χωρίς "
+"στην πραγματικότητα να διαγράφεται."
+
+#: C/nemiver.xml:690(para)
+msgid ""
+"To disable or enable a breakpoint, click the checkbox next to the breakpoint "
+"number you want to enable or disable in the <interface>Breakpoints</"
+"interface> tab of the <interface>Status Notebook</interface>. Alternately, "
+"you can press <keycombo><keycap>Shift</keycap><keycap>F8</keycap></keycombo> "
+"to enable or disable a breakpoint that is set on the line that the cursor is "
+"currently on."
+msgstr ""
+"Για απενεργοποίηση ή ενεργοποίηση σημείου διακοπής, κλικ στο πλαίσιο ελέγχου "
+"δίπλα στον επιθυμητό αριθμό του σημείου διακοπής για ενεργοποίηση ή "
+"απενεργοποίηση στην καρτέλα <interface>σημεία διακοπής</interface> της "
+"<interface>κατάστασης σημειωματαρίου</interface>. Εναλλακτικά, μπορείτε να "
+"πατήσετε <keycombo><keycap>Shift</keycap><keycap>F8</keycap></keycombo> για "
+"ενεργοποίηση ή απενεργοποίηση σημείου διακοπής που ορίστηκε στη γραμμή που ο "
+"δρομέας είναι προς το παρόν ενεργός."
+
+#: C/nemiver.xml:698(para)
+msgid ""
+"The following figures show the difference between enabled and disabled "
+"breakpoints in the source editor."
+msgstr ""
+"Οι παρακάτω εικόνες εμφανίζουν τη διαφορά μεταξύ ενεργών και ανενεργών "
+"σημείων διακοπής στον επεξεργαστή πηγής."
+
+#: C/nemiver.xml:708(phrase)
+msgid "Illustration of an enabled breakpoint"
+msgstr "Παράδειγμα ενεργού σημείου διακοπής"
+
+#: C/nemiver.xml:710(para)
+msgid "Enabled Breakpoint"
+msgstr "Ενεργό σημείο διακοπής"
+
+#: C/nemiver.xml:719(phrase)
+msgid "Illustration of a disabled breakpoint"
+msgstr "Παράδειγμα ανενεργού σημείου διακοπής"
+
+#: C/nemiver.xml:721(para)
+msgid "Disabled Breakpoint"
+msgstr "Ανενεργό σημείο διακοπής"
+
+#: C/nemiver.xml:726(title)
+msgid "Opening Source Files"
+msgstr "Άνοιγμα πηγαίων αρχείων"
+
+#: C/nemiver.xml:727(para)
+msgid ""
+"Sometimes you don't know exactly the function name or line number where you "
+"want a breakpoint to be set, so you must open a source file to figure it "
+"out. You could just open arbitrary files from the filesystem, but Nemiver "
+"can also provide a list of source files that were used to build the "
+"executable and allow you to select from this list. When you select "
+"<menuchoice><guimenu>File</guimenu><guimenuitem>Open Source File...</"
+"guimenuitem></menuchoice>, the following window should be displayed:"
+msgstr ""
+"Μερικές φορές δεν ξέρετε ακριβώς το όνομα της συνάρτησης ή τον αριθμό της "
+"γραμμής όπου θέλετε ένα σημείο διακοπής να οριστεί, έτσι πρέπει να ανοίξετε "
+"ένα πηγαίο αρχείο για το καταλάβετε. Θα μπορούσατε να ανοίξετε απλά τυχαία "
+"αρχεία από το σύστημα αρχείων, αλλά το Nemiver μπορεί να δώσει επίσης μια "
+"λίστα αρχείων πηγών που χρησιμοποιήθηκε για την κατασκευή του εκτελέσιμου "
+"και να σας επιτρέψει να επιλέξετε από αυτή τη λίστα. Όταν επιλέγετε "
+"<menuchoice><guimenu>αρχείο</guimenu><guimenuitem>άνοιγμα αρχείου "
+"πηγής...</guimenuitem></menuchoice>, το παρακάτω παράθυρο θα εμφανιστεί:"
+
+#: C/nemiver.xml:742(phrase)
+msgid "Shows dialog for opening source files"
+msgstr "Εμφανίζει τον διάλογο για άνοιγμα πηγαίων αρχείων"
+
+#: C/nemiver.xml:746(para)
+msgid ""
+"To select an arbitrary file from the filesystem, choose the <guilabel>Select "
+"from Filesystem</guilabel> option. To select from a list of files that "
+"produced the executable, choose <guilabel>Select from Target Executable</"
+"guilabel>."
+msgstr ""
+"Για επιλογή τυχαίου αρχείου από το σύστημα αρχείων, διαλέξτε την επιλογή "
+"<guilabel>επιλογή από σύστημα αρχείων</guilabel>. Για επιλογή από μια λίστα "
+"αρχείων που παρήγαγαν το εκτελέσιμο, επιλέξτε <guilabel>επιλογή από "
+"εκτελέσιμο στόχο</guilabel>."
+
+#: C/nemiver.xml:753(title)
+msgid "Determining Source Files for Dynamically Loaded Modules"
+msgstr "Προσδιορισμός των πηγαίων αρχείων για δυναμικά φορτωμένα αρθρώματα"
+
+#: C/nemiver.xml:754(para)
+msgid ""
+"If the target executable loads modules at runtime (e.g. using "
+"<function>dlopen()</function>), Nemiver will not be able to determine which "
+"files were used to build these modules until they are actually loaded."
+msgstr ""
+"Εάν ο εκτελέσιμος στόχος φορτώνει αρθρώματα στον χρόνο εκτέλεσης (π.χ. "
+"χρησιμοποιώντας <function>dlopen()</function>), το Nemiver δεν θα μπορεί να "
+"προσδιορίσει ποια αρχεία χρησιμοποιήθηκαν για δόμηση αυτών των αρθρωμάτων "
+"μέχρι να φορτωθούν στην πραγματικότητα."
+
+#: C/nemiver.xml:764(title)
+msgid "Advanced Debugging"
+msgstr "Προχωρημένη αποσφαλμάτωση"
+
+#: C/nemiver.xml:767(para)
+msgid ""
+"The register editing widget is located in the <interface>Registers</"
+"interface> tab of the <interface>Status Notebook</interface>. Alternately, "
+"you can press <keycombo><keycap>Alt</keycap><keycap>F5</keycap></keycombo> "
+"to jump directly to the correct tab."
+msgstr ""
+"Το γραφικό συστατικό επεξεργασίας καταχωριστή τοποθετείται στην καρτέλα "
+"<interface>καταχωριστές</interface> της <interface>κατάστασης "
+"σημειωματαρίου</interface>. Εναλλακτικά, μπορείτε να πατήσετε "
+"<keycombo><keycap>Alt</keycap><keycap>F5</keycap></keycombo> για άμεση "
+"μετάβαση στην σωστή καρτέλα."
+
+#: C/nemiver.xml:780(phrase)
+msgid "The Register Editing Widget"
+msgstr "Το γραφικό συστατικό επεξεργασίας καταχωριστή"
+
+#: C/nemiver.xml:784(para)
+msgid ""
+"This widget shows the current values of all of the CPU registers. You can "
+"edit the register values by clicking in the <interface>Value</interface> "
+"column and entering a new value. If the value for the register changed since "
+"the last time the debugger stopped, it will be highlighted in red."
+msgstr ""
+"Αυτό το γραφικό συστατικό εμφανίζει τις τρέχουσες τιμές όλων των "
+"καταχωριστών CPU. Μπορείτε να επεξεργαστείτε τις τιμές με κλικ στη στήλη "
+"<interface>τιμή</interface> και εισαγωγή μιας νέας τιμής. Εάν η τιμή για τον "
+"καταχωριστή άλλαξε από την τελευταία φορά που σταμάτησε ο αποσφαλματωτής, "
+"θα τονιστεί με κόκκινο."
+
+#: C/nemiver.xml:794(para)
+msgid ""
+"The memory widget allows you to view a section of memory directly. This "
+"enables you to get a lower-level view of what's happening while your program "
+"is running."
+msgstr ""
+"Το γραφικό συστατικό μνήμης επιτρέπει την προβολή μιας ενότητας άμεσης "
+"μνήμης. Αυτό ενεργοποιεί τη λήψη μιας προβολής χαμηλότερου επιπέδου του τι "
+"συμβαίνει ενώ το πρόγραμμά σας τρέχει."
+
+#: C/nemiver.xml:805(phrase)
+msgid "The Memory Editing Widget"
+msgstr "Το γραφικό συστατικό επεξεργασίας μνήμης"
+
+#: C/nemiver.xml:809(para)
+msgid ""
+"To display a segment of memory in the memory view widget, enter a memory "
+"address in the <interface>Address</interface> field. If the address is valid "
+"for the program being debugged, the memory view will display the memory "
+"values starting at the specified address. Memory values can be displayed in "
+"byte format, word format (2 bytes), or long word format (4 bytes) by "
+"choosing an option from the <interface>Group By</interface> drop-down menu. "
+"The memory values will automatically be updated as you step through the "
+"program."
+msgstr ""
+"Για εμφάνιση τμήματος μνήμης στο γραφικό συστατικό προβολής μνήμης, εισάγετε "
+"μια διεύθυνση μνήμης στο πεδίο <interface>διεύθυνση</interface>. Εάν η "
+"διεύθυνση είναι έγκυρη για το αποσφαλματούμενο πρόγραμμα, η προβολή μνήμης "
+"θα εμφανίσει τις τιμές μνήμης ξεκινώντας από την συγκεκριμένη διεύθυνση. Οι "
+"τιμές μνήμης μπορούν να εμφανιστούν σε μορφή ψηφιολέξης, σε μορφή λέξης (2 "
+"ψηφιολέξεις), ή μορφή μεγάλης λέξης (4 ψηφιολέξεις) διαλέγοντας μια επιλογή "
+"από το πτυσσόμενο μενού <interface>ομαδοποίηση κατά</interface>. Οι τιμές "
+"μνήμης θα ενημερωθούν αυτόματα καθώς διασχίζετε το πρόγραμμα."
+
+#: C/nemiver.xml:820(para)
+msgid ""
+"In addition to viewing the memory values, you can also use the memory widget "
+"to modify memory values. You can edit either the hex byte representation "
+"(the left-hand section of the memory widget), or the ASCII representation "
+"(the right-hand section of the memory widget). All changes will be applied "
+"immediately."
+msgstr ""
+"Πέρα από την προβολή τιμών μνήμης, μπορείτε επίσης να χρησιμοποιήσετε το "
+"γραφικό συστατικό μνήμης για τροποποίηση των τιμών μνήμης. Μπορείτε να "
+"επεξεργαστείτε είτε την δεκαεξαδική αναπαράσταση ψηφιολέξης (η αριστερή "
+"ενότητα του γραφικού συστατικού μνήμης), ή η αναπαράσταση ASCII (η δεξιά "
+"ενότητα του γραφικού συστατικού μνήμης). Όλες οι αλλαγές θα εφαρμοστούν "
+"αμέσως."
+
+#: C/nemiver.xml:831(title)
+msgid "Session Save and Restore"
+msgstr "Αποθήκευση συνόδου και επαναφορά"
+
+#: C/nemiver.xml:832(para)
+msgid ""
+"Nemiver can save your debugging sessions for you so that you can resume them "
+"at a later time. This includes saving information such as which executable "
+"is being debugged, what environment variables are set, what command-line "
+"options are passed to the executable, which files are open, and which "
+"breakpoints are set so that you can get back to where you left off last time "
+"as quickly as possible."
+msgstr ""
+"Το Nemiver μπορεί να αποθηκεύσει τις συνόδους αποσφαλμάτωσης για σας έτσι "
+"ώστε να μπορείτε να τις συνεχίσετε αργότερα. Αυτό περιλαμβάνει αποθήκευση "
+"πληροφοριών όπως ποιο εκτελέσιμο αποσφαλματώνεται, τι μεταβλητές "
+"περιβάλλοντος ορίζονται, ποιες επιλογές γραμμής εντολών περνούν στο "
+"εκτελέσιμο, ποια αρχεία είναι ανοικτά και ποια σημεία διακοπής ορίζονται "
+"έτσι ώστε να μπορείτε να πάρετε πίσω όπου τα αφήσατε την τελευταία φορά όσο "
+"το δυνατό πιο γρήγορα."
+
+#: C/nemiver.xml:841(title)
+msgid "Saving Sessions"
+msgstr "Αποθηκευμένες συνόδων"
+
+#: C/nemiver.xml:842(para)
+msgid ""
+"Nemiver will save your session automatically on exit, so you don't even have "
+"to worry about it. However, if you want to explicitly save the session "
+"before closing Nemiver, you can do so by selecting "
+"<menuchoice><guimenu>File</guimenu><guimenuitem>Save Session To Disk</"
+"guimenuitem></menuchoice>."
+msgstr ""
+"Το Nemiver θα αποθηκεύσει τη σύνοδο σας αυτόματα στην έξοδο, έτσι δεν "
+"χρειάζεται να ανησυχείτε για αυτό. Όμως, εάν θέλετε να αποθηκεύσετε ρητά τη "
+"σύνοδο πριν το κλείσιμο του Nemiver, μπορείτε να το κάνετε επιλέγοντας "
+"<menuchoice><guimenu>αρχείο</guimenu><guimenuitem>αποθήκευση συνόδου στον "
+"δίσκο</guimenuitem></menuchoice>."
+
+#: C/nemiver.xml:850(title)
+msgid "Resuming Saved Sessions"
+msgstr "Συνέχιση αποθηκευμένων συνόδων"
+
+#: C/nemiver.xml:853(para)
+msgid ""
+"Select <menuchoice><guimenu>File</guimenu><guimenuitem>Resume Saved "
+"Session...</guimenuitem></menuchoice> and select a session from the list."
+msgstr ""
+"Επιλέξτε <menuchoice><guimenu>αρχείο</guimenu><guimenuitem>συνέχιση "
+"αποθηκευμένης συνόδου...</guimenuitem></menuchoice> και επιλέξτε μια σύνοδο "
+"από τη λίστα."
+
+#: C/nemiver.xml:859(title)
+msgid "Session Dialog"
+msgstr "Διάλογος συνόδου"
+
+#: C/nemiver.xml:866(phrase)
+msgid "Shows dialog for resuming a saved session"
+msgstr "Εμφανίζει τον διάλογο για συνέχιση αποθηκευμένης συνόδου"
+
+#: C/nemiver.xml:873(title)
+msgid "From the Command Line"
+msgstr "Από τη γραμμή εντολών"
+
+#: C/nemiver.xml:874(para)
+msgid ""
+"If you know the session ID of the session you want to run, you can start "
+"that debugging session from the command line. For example, if you want to "
+"run session number 3, you can do so with the following command: "
+"<command>nemiver --session 3</command>."
+msgstr ""
+"Εάν ξέρετε την ταυτότητα της επιθυμητής συνόδου προς εκτέλεση, μπορείτε να "
+"ξεκινήσετε αυτήν την σύνοδο αποσφαλμάτωσης από τη γραμμή εντολών. Για "
+"παράδειγμα, εάν θέλετε να τρέξετε την σύνοδο με αριθμό 3, μπορείτε να το "
+"κάνετε με την επόμενη εντολή: <command>nemiver --session 3</command>."
+
+#: C/nemiver.xml:886(title)
+msgid "About Nemiver"
+msgstr "Περί του Nemiver"
+
+#: C/nemiver.xml:887(para)
+msgid ""
+"<application>Nemiver</application> was written by Dodji Seketeli and "
+"Jonathon Jongsma, with contributions from many others. To find more "
+"information about Nemiver, please visit the <ulink url=\"http://www.gnome."
+"org/projects/nemiver/\" type=\"http\">Nemiver project website</ulink>."
+msgstr ""
+"Η <application>Nemiver</application> γράφτηκε από τους Dodji Seketeli και "
+"Jonathon Jongsma, με συνεισφορές από πολλούς άλλους. Για περισσότερες "
+"πληροφορίες σχετικά με το Nemiver, παρακαλώ επισκεφτείτε την <ulink "
+"url=\"http://www.gnome.org/projects/nemiver/\" type=\"http\">ιστοσελίδα του "
+"έργου</ulink>."
+
+#: C/nemiver.xml:891(para)
+msgid ""
+"To report a bug or make a suggestion regarding this application or this "
+"manual, see the Feedback section of the <ulink url=\"ghelp:user-guide?"
+"feedback-bugs\" type=\"help\">GNOME User Guide</ulink>."
+msgstr ""
+"Για αναφορά σφάλματος ή υποβολή πρότασης σχετικά με αυτή την εφαρμογή ή αυτό "
+"το εγχειρίδιο, δείτε την ενότητα ανατροφοδότησης του <ulink url=\"ghelp"
+":user-guide?feedback-bugs\" type=\"help\">οδηγού χρήστη GNOME</ulink>."
+
+#: C/nemiver.xml:896(para)
+msgid ""
+"This program is distributed under the terms of the GNU General Public "
+"license as published by the Free Software Foundation; either version 2 of "
+"the License, or (at your option) any later version. A copy of this license "
+"can be found at this <ulink url=\"ghelp:gpl\" type=\"help\">link</ulink>, or "
+"in the file COPYING included with the source code of this program."
+msgstr ""
+"Αυτό το πρόγραμμα διανέμεται με τους όρους της γενικής δημόσιας άδειας GNU "
+"όπως δημοσιεύτηκε από το ίδρυμα ελεύθερου λογισμικού· είτε έκδοση 2 της "
+"άδειας, ή (προαιρετικά) οποιαδήποτε μεταγενέστερη έκδοση. Αντίγραφο αυτής "
+"της άδειας μπορεί να βρεθεί στον <ulink url=\"ghelp:gpl\" "
+"type=\"help\">σύνδεσμο</ulink>, ή στο αρχείο COPYING που περιλαμβάνεται στον "
+"πηγαίο κώδικα αυτού του προγράμματος."
+
+#. Put one translator per line, in the form of NAME <EMAIL>, YEAR1, YEAR2
+#: C/nemiver.xml:0(None)
+msgid "translator-credits"
+msgstr "Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>"
