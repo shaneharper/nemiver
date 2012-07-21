@@ -1,0 +1,1479 @@
+# Serbian translation of nemiver.
+# Courtesy of Prevod.org team (http://prevod.org/) -- 2012.
+# This file is distributed under the same license as the nemiver package.
+# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: nemiver\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=nemiver&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-07-13 07:37+0000\n"
+"PO-Revision-Date: 2012-07-21 11:36+0200\n"
+"Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
+"Language-Team: Serbian <gnom@prevod.org>\n"
+"Language: sr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : "
+"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+
+#: ../data/nemiver.desktop.in.h:1 ../ui/workbench.ui.h:1
+msgid "Nemiver"
+msgstr "Немивер"
+
+#: ../data/nemiver.desktop.in.h:2
+msgid "C/C++ Debugger"
+msgstr "Ц/Ц++ исправљач грешака"
+
+#: ../data/nemiver.desktop.in.h:3
+msgid "Nemiver C/C++ Debugger"
+msgstr "Немивер Ц/Ц++ исправљач грешака"
+
+#: ../data/nemiver.desktop.in.h:4
+msgid "Debug Applications"
+msgstr "Програми за исправљање грешака"
+
+#: ../src/main.cc:78
+msgid "Set the environment of the program to debug"
+msgstr "Подешава окружење програма за исправљање грешака"
+
+#: ../src/main.cc:87
+msgid "Attach to a process"
+msgstr "Прикачиње процесу"
+
+#: ../src/main.cc:96
+msgid "Load a core file"
+msgstr "Учитава кључну датотеку"
+
+#: ../src/main.cc:104
+msgid "List the saved debugging sessions"
+msgstr "Наводи сачуване сесије исправљања грешака"
+
+#: ../src/main.cc:112
+msgid "Erase the saved debugging sessions"
+msgstr "Брише сачуване сесије исправљања грешака"
+
+#: ../src/main.cc:120
+msgid "Debug the program that was of session number N"
+msgstr "Исправља грешке програма који беше сесије број Н"
+
+#: ../src/main.cc:128
+msgid "Execute the last session"
+msgstr "Извршава последњу сесију"
+
+#: ../src/main.cc:136
+msgid "Enable logging domains DOMAINS"
+msgstr "Укључује записивање домена ДОМЕНИ"
+
+#: ../src/main.cc:144
+msgid "Log the debugger output"
+msgstr "Записује испис исправљача грешака"
+
+#: ../src/main.cc:152
+msgid "Use this terminal as the debugee's terminal"
+msgstr "Користи овај терминал као терминал за уклањање грешака"
+
+#: ../src/main.cc:161
+msgid "Connect to remote target specified by HOST:PORT"
+msgstr "Повезује се на удаљену мету наведену са ДОМАЋИН:ПОРТ"
+
+#: ../src/main.cc:170
+msgid ""
+"Where to look for shared libraries loaded by the inferior. Use in "
+"conjunction with --remote"
+msgstr ""
+"Где ће да потражи дељене библиотеке које је учитао потчињени. Користи се у "
+"садејству са „--remote“"
+
+#: ../src/main.cc:180
+msgid "Set the path of the GDB binary to use to debug the inferior"
+msgstr "Поставља путању извршног ГДБ-а за коришћење за прочишћавање потчињеног"
+
+#: ../src/main.cc:189
+msgid "Do not set a breakpoint in 'main' and do not run the inferior either"
+msgstr "Не поставаља тачку прекида у „main“ и не покреће потчињеног"
+
+#: ../src/main.cc:198
+msgid "Show the version number of Nemiver"
+msgstr "Приказује број издања Немивера"
+
+#: ../src/main.cc:264
+msgid " [<prog-to-debug> [prog-args]]"
+msgstr " [<програм-за-прочишћавање> [аргументи-програма]]"
+
+#: ../src/main.cc:267 ../src/workbench/nmv-workbench.cc:263
+msgid "A C/C++ debugger for GNOME"
+msgstr "Ц/Ц++ прочишћавач за Гном"
+
+#: ../src/main.cc:361
+msgid ""
+"Please provide a local copy of the binary you intend to debug remotely.\n"
+"Like this:\n"
+msgstr ""
+"Обезбедите месни примерак извршног кога намеравате да прочистите удаљено.\n"
+"Као ово:\n"
+
+#: ../src/main.cc:366 ../src/main.cc:385
+msgid "Otherwise, find below the full set of Nemiver options.\n"
+msgstr "У супротном, нађите доле читав скуп Немирових могућности.\n"
+
+#: ../src/main.cc:380
+msgid ""
+"Please provide the path to the binary that generated the core file too.\n"
+"Like this:\n"
+msgstr ""
+"Обезбедите такође путању до извршног који је створио кључну датотеку.\n"
+"Као ово:\n"
+
+#. create the columns of the tree view
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:148
+#: ../src/persp/dbgperspective/nmv-registers-view.cc:100
+#: ../src/persp/dbgperspective/nmv-saved-sessions-dialog.cc:101
+msgid "ID"
+msgstr "ИБ"
+
+#. create the columns of the tree view
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:149
+#: ../src/persp/dbgperspective/nmv-file-list.cc:108
+msgid "File Name"
+msgstr "Назив датотеке"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:150
+msgid "Line"
+msgstr "Ред"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:151
+#: ../src/persp/dbgperspective/nmv-call-stack.cc:602
+msgid "Function"
+msgstr "Функција"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:152
+#: ../src/persp/dbgperspective/nmv-call-stack.cc:605
+msgid "Address"
+msgstr "Адреса"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:153
+msgid "Condition"
+msgstr "Услов"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:155
+msgid "Toggle countpoint"
+msgstr "Тачка бројања окидача"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:157
+#: ../src/persp/dbgperspective/nmv-vars-treeview.cc:70
+msgid "Type"
+msgstr "Врста"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:158
+msgid "Hits"
+msgstr "Пакета"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:159
+msgid "Expression"
+msgstr "Израз"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:162
+msgid "Ignore count"
+msgstr "Занемари број"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:348
+msgid "breakpoint"
+msgstr "тачка прекида"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:352
+msgid "watchpoint"
+msgstr "тачка надзора"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:355
+msgid "countpoint"
+msgstr "тачка бројања"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:358
+msgid "unknown"
+msgstr "непознато"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:418
+msgid "_Delete"
+msgstr "_Обриши"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:419
+msgid "Remove this breakpoint"
+msgstr "Уклоните ову тачку прекида"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:428
+msgid "_Go to Source"
+msgstr "_Иди на извор"
+
+#: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:429
+msgid "Find this breakpoint in the source editor"
+msgstr "Нађите ову тачку прекида у уређивачу извора"
+
+#: ../src/persp/dbgperspective/nmv-call-stack.cc:177
+#: ../src/uicommon/nmv-terminal.cc:173
+msgid "_Copy"
+msgstr "_Умножи"
+
+#: ../src/persp/dbgperspective/nmv-call-stack.cc:178
+msgid "Copy the call stack to the clipboard"
+msgstr "Умножите позивни стек међу исечке"
+
+#: ../src/persp/dbgperspective/nmv-call-stack.cc:601
+msgid "Frame"
+msgstr "Оквир"
+
+#: ../src/persp/dbgperspective/nmv-call-stack.cc:603
+msgid "Arguments"
+msgstr "Аргументи"
+
+#: ../src/persp/dbgperspective/nmv-call-stack.cc:604
+#: ../src/persp/dbgperspective/nmv-choose-overloads-dialog.cc:112
+msgid "Location"
+msgstr "Место"
+
+#: ../src/persp/dbgperspective/nmv-call-stack.cc:606
+msgid "Binary"
+msgstr "Бинарни"
+
+#: ../src/persp/dbgperspective/nmv-call-stack.cc:762
+#, c-format
+msgid "(Click here to see the next %d row of the call stack"
+msgid_plural "(Click here to see the next %d rows of the call stack)"
+msgstr[0] "(Кликните овде да видите следећи %d ред позивног стека)"
+msgstr[1] "(Кликните овде да видите следећа %d реда позивног стека)"
+msgstr[2] "(Кликните овде да видите следећих %d редова позивног стека)"
+msgstr[3] "(Кликните овде да видите следећи један ред позивног стека)"
+
+#: ../src/persp/dbgperspective/nmv-choose-overloads-dialog.cc:110
+msgid "Function Name"
+msgstr "Назив функције"
+
+#. labels for widget tabs in the status notebook
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:117
+msgid "Context"
+msgstr "Контекст"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:118
+msgid "Target Terminal"
+msgstr "Циљни терминал"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:119
+msgid "Breakpoints"
+msgstr "Тачке прекида"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:120
+msgid "Registers"
+msgstr "Регистри"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:121
+msgid "Memory"
+msgstr "Меморија"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:122
+msgid "Expression Monitor"
+msgstr "Праћење израза"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:1689
+msgid "Reached end of file"
+msgstr "Достигнут је крај датотеке"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:1692
+#, c-format
+msgid "Could not find string %s"
+msgstr "Не могу да нађем ниску %s"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2070
+msgid "Change to Standard Breakpoint"
+msgstr "Пребаците на уобичајену тачку прекида"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2073
+msgid "Change to Countpoint"
+msgstr "Пребаци на тачку бројања"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2075
+msgid "Remove _Breakpoint"
+msgstr "Уклони _тачку прекида"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2078
+msgid "Disable Breakpoint"
+msgstr "Искључи тачку прекида"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2080
+msgid "Enable Breakpoint"
+msgstr "Укључи тачку прекида"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2083
+msgid "Set _Breakpoint"
+msgstr "_Подеси тачку прекида"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2085
+msgid "Set Countpoint"
+msgstr "Подеси тачку бројања"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2248
+#, c-format
+msgid "%s (path=\"%s\", pid=%i)"
+msgstr "%s (путања=„%s“, пиб=%i)"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2262
+msgid "Connected to remote target!"
+msgstr "Повезани сте на удаљену мету!"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2418
+msgid "Program exited"
+msgstr "Програм је затворен"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2448
+msgid "The underlying debugger engine process died."
+msgstr "Основни процес мотора прочишћавача је мртав."
+
+#. translators: first %s is the signal name, second one is the reason
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2536
+#, c-format
+msgid "Target received a signal: %s, %s"
+msgstr "Мета је примила сигнал: %s, %s"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2551
+#, c-format
+msgid "An error occurred: %s"
+msgstr "Дошло је до грешке: %s"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2714
+#, c-format
+msgid "File %s has been modified. Do you want to reload it?"
+msgstr "Датотека „%s“ је измењена. Да ли желите да је учитате поново?"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3057
+msgid "_Run or Restart"
+msgstr "_Изврши или поново покрени"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3058
+msgid "Run or Restart the target"
+msgstr "Извршите или поново покрените мету"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3070
+msgid "_Detach From the Running Program"
+msgstr "_Откачи од радног програма"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3071
+msgid "Disconnect the debugger from the running target without killing it"
+msgstr ""
+"Прекините везу програма за уклањање грешака са радне мете а да га не убијете"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3086
+msgid "_Save Session to Disk"
+msgstr "_Сачувај сесију на диск"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3087
+msgid "Save the current debugging session to disk"
+msgstr "Сачувајте текућу сесију уклањања грешака на диск"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3096
+msgid "Set Breakpoint with Dialog..."
+msgstr "Подеси тачку прекида са прозорчетом..."
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3097
+msgid "Set a breakpoint at the current line using a dialog"
+msgstr "Поставите тачку прекида на текући ред користећи прозорче"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3108
+msgid "Set Breakpoint..."
+msgstr "Подеси тачку прекида..."
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3109
+msgid "Set a breakpoint at a function or line number"
+msgstr "Поставите тачку прекида на функцију или број реда"
+
+#. Depending on the context we will want this string to be
+#. either "Set Breakpoint", or "Remove Breakpoint". Hence
+#. this string is updated by
+#. DBGPerspective::update_toggle_menu_text when needed. So
+#. this initial value is going to be displayed only when
+#. Nemiver is launched with no executable on the command
+#. line.
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3125
+msgid "Toggle _Breakpoint"
+msgstr "Пребаци _тачку прекида"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3126
+msgid "Set/Unset a breakpoint at the current cursor location"
+msgstr "Поставите/уклоните тачку прекида на тренутном месту курсора"
+
+#. Depending on the context we will want this string to be
+#. either "Enable Breakpoint", or "Disable
+#. Breakpoint". Hence this string is updated by
+#. DBGPerspective::update_toggle_menu_text when needed. So
+#. this initial value is going to be displayed only when
+#. Nemiver is launched with no executable on the command
+#. line.
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3143
+msgid "Enable/Disable Breakpoint"
+msgstr "Укључи/искључи тачку прекида"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3144
+msgid ""
+"Enable or disable the breakpoint that is set at the current cursor location"
+msgstr ""
+"Укључите или искључите тачку прекида која је постављена на тренутно место "
+"курсора"
+
+#. Depending on the context we will want this string to be
+#. either "Set Countpoint", or "Change to Countpoint", or
+#. "Change to Standard Breakpoint". Hence
+#. this string is updated by
+#. DBGPerspective::update_toggle_menu_text when needed. So
+#. this initial value is going to be displayed only when
+#. Nemiver is launched with no executable on the command
+#. line.
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3164
+msgid "Toggle _Countpoint"
+msgstr "Пребаци тачку _бројања"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3165
+msgid "Set/Unset a countpoint at the current cursor location"
+msgstr "Поставите/уклоните тачку бројања на тренутном месту курсора"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3175
+msgid "Set Watchpoint with Dialog..."
+msgstr "Подеси тачку надзора са прозорчетом..."
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3176
+msgid "Set a watchpoint using a dialog"
+msgstr "Подесите тачку надзора користећи прозорче"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3191
+msgid "_Next"
+msgstr "_Следеће"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3192
+msgid "Execute next line stepping over the next function, if any"
+msgstr "Извршите следећи ред прекорачивши преко следеће функције, ако је има"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3201
+msgid "_Step"
+msgstr "_Уђи"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3202
+msgid "Execute next line, stepping into the next function, if any"
+msgstr "Извршите следећи ред, закорачивши у следећу функцију, ако је има"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3211
+msgid "Step _Out"
+msgstr "_Изађи"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3212
+msgid "Finish the execution of the current function"
+msgstr "Завршите извршавање текуће функције"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3221
+msgid "Step Into asm"
+msgstr "Уђи у састављач"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3222
+msgid "Step into the next assembly instruction"
+msgstr "Уђите у следећу инструкцију састављача"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3231
+msgid "Step Over asm"
+msgstr "Пређи преко састављача"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3232
+msgid "Step over the next assembly instruction"
+msgstr "Пређите на следећу инструкцију састављача"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3241
+msgid "_Continue or start"
+msgstr "_Настави или почни"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3242
+msgid "Start or continue program execution until the next breakpoint"
+msgstr ""
+"Покрените или наставите извршавање програма све до следеће тачке прекида"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3251
+msgid "Run to Cursor"
+msgstr "Изврши до курсора"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3252
+msgid "Continue program execution until the currently selected line is reached"
+msgstr ""
+"Наставите извршавање програма све док се не стигне до тренутно изабраног "
+"реда"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3262
+msgid "Jump to Cursor"
+msgstr "Иди до курсора"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3263
+msgid "Jump to the currently selected line"
+msgstr "Пређите на тренутно изабрани ред"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3273
+msgid "Jump and Stop to Cursor"
+msgstr "Иди до курсора и стани"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3274
+msgid "Sets a breakpoint to the currently selected line and jump there"
+msgstr "Подесите тачку прекида на тренутно изабрани ред и скокните тамо"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3286
+msgid "Jump to a Given Location"
+msgstr "Иди на дато место"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3287
+msgid "Select a given code location and jump there"
+msgstr "Изаберите дато место у коду и идите тамо"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3298
+#: ../src/persp/dbgperspective/ui/exprinspectordialog.ui.h:1
+msgid "Inspect an Expression"
+msgstr "Провери израз"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3299
+msgid "Inspect a global or local expression"
+msgstr "Проверите општи или месни израз"
+
+#
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3309
+#: ../src/persp/dbgperspective/ui/callfunctiondialog.ui.h:1
+msgid "Call a Function"
+msgstr "Позови функцију"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3310
+msgid "Call a function in the program being debugged"
+msgstr "Позовите функцију у програму који се прочишћава"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3319
+msgid "Show Global Variables"
+msgstr "Прикажи опште променљиве"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3320
+msgid "Display all global variables"
+msgstr "Прикажите све опште променљиве"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3330
+msgid "Refresh Locals"
+msgstr "Освежи месне"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3331
+msgid "Refresh the list of variables local to the current function"
+msgstr "Освежите списак места променљиве на текућу функцију"
+
+#  Translators: Menu item Verb/Connect/Couple/Assemble
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3340
+msgid "Show Assembly"
+msgstr "Прикажи састављач"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3341
+msgid ""
+"Show the assembly code of the source code being currently debugged, in "
+"another tab"
+msgstr ""
+"Прикажите код састављача изворног кода који се тренутно прочишћава, у другом "
+"језичку"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3353
+msgid "Switch to Assembly"
+msgstr "Пребаци на састављач"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3354
+msgid "Show the assembly code of the source code being currently debugged"
+msgstr "Прикажите код састављача изворног кода који се тренутно прочишћава"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3366
+msgid "Switch to Source"
+msgstr "Пређи на извор"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3367
+msgid "Show the source code being currently debugged"
+msgstr "Прикажите изворни код који се тренутно прочишћава"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3379
+msgid "Stop"
+msgstr "Заустави"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3380
+msgid "Stop the debugger"
+msgstr "Зауставите исправљача грешака"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3392
+msgid "_View"
+msgstr "_Преглед"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3403
+msgid "Switch to Target Terminal View"
+msgstr "Пређи на преглед циљног терминала"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3414
+msgid "Switch to Context View"
+msgstr "Пређи на преглед садржаја"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3425
+msgid "Switch to Breakpoints View"
+msgstr "Пређи на преглед тачака прекида"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3436
+msgid "Switch to Registers View"
+msgstr "Пређи на преглед бележника"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3448
+msgid "Switch to Memory View"
+msgstr "Пређи на преглед меморије"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3459
+msgid "Switch to Variables Monitor View"
+msgstr "Пређи на преглед праћења променљивих"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3468
+msgid "_Debug"
+msgstr "_Уклони грешке"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3478
+msgid "_Open Source File..."
+msgstr "_Отвори датотеку извора..."
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3479
+msgid "Open a source file for viewing"
+msgstr "Отворите изворну датотеку за преглед"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3488
+msgid "Load _Executable..."
+msgstr "Учитај _извршну..."
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3489
+msgid "Execute a program"
+msgstr "Извршите програм"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3499
+msgid "_Load Core File..."
+msgstr "Учитај _кључну датотеку..."
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3500
+msgid "Load a core file from disk"
+msgstr "Учитајте кључну датотеку са диска"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3510
+msgid "_Attach to Running Program..."
+msgstr "_Прикачи на радни програм..."
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3511
+msgid "Debug a program that's already running"
+msgstr "Прочистите програм који је већ покренут"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3521
+msgid "_Connect to Remote Target..."
+msgstr "Повежи се на _удаљену мету..."
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3522
+msgid "Connect to a debugging server to debug a remote target"
+msgstr "Повежите се на сервер за уклањање грешака да прочистите удаљену мету"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3533
+msgid "Resume Sa_ved Session..."
+msgstr "Поврати _сачувану сесију..."
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3534
+msgid "Open a previously saved debugging session"
+msgstr "Отворите претходно сачувану сесију прочишћавања"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3544
+msgid "_Preferences"
+msgstr "_Поставке"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3545
+msgid "Edit the properties of the current session"
+msgstr "Уредите својства текуће сесије"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3559
+msgid "_Reload Source File"
+msgstr "Поново _учитај изворну датотеку"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3560
+msgid "Reloads the source file"
+msgstr "Поново учитајте изворну датотеку"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3569
+msgid "_Close Source File"
+msgstr "_Затвори изворну датотеку"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3570
+msgid "Close the opened file"
+msgstr "Затворите отворену датотеку"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3579
+msgid "_Find"
+msgstr "_Нађи"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3580
+msgid "Find a text string in file"
+msgstr "Пронађите текстуалну ниску у датотеци"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3939
+#, c-format
+msgid "Close %s"
+msgstr "Затвори %s"
+
+#. We cannot restart an inferior running on a remote target at
+#. the moment.
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:5897
+msgid "Sorry, it's impossible to restart a remote inferior"
+msgstr "Извините, није могуће поновно покретање удаљеног потчињеног"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6020
+#, c-format
+msgid "Could not find file %s"
+msgstr "Немогу да нађем датотеку „%s“"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6084
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6226
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6261
+#, c-format
+msgid "Could not load program: %s"
+msgstr "Не могу да учитам програм: %s"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6155
+msgid "You cannot attach to Nemiver itself"
+msgstr "Не можете да прикачите самом Немиверу"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6168
+msgid "You cannot attach to the underlying debugger engine"
+msgstr "Не можете да прикачите на мотор основног прочишћавача"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6463
+msgid "Failed to stop the debugger"
+msgstr "Нисам успео да зауставим програм"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6707
+#, c-format
+msgid "Invalid line number: %i"
+msgstr "Неисправан број реда: %i"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:8318
+#, c-format
+msgid ""
+"There is a program being currently debugged. Do you really want to exit from "
+"the debugger?"
+msgstr ""
+"Тренутно се ради на уклањању грешака у једном програму. Да ли заиста желите "
+"да зауставите исправљача грешака?"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective-default-layout.cc:138
+msgid "Default Layout"
+msgstr "Основни распоред"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective-default-layout.cc:145
+msgid "Nemiver's default layout"
+msgstr "Немиревов основни распоред"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective-dynamic-layout.cc:132
+msgid "Source Code"
+msgstr "Изворни кôд"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective-dynamic-layout.cc:195
+msgid "Dynamic Layout"
+msgstr "Динамички распоред"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective-dynamic-layout.cc:202
+msgid "A layout which can be modified"
+msgstr "Распоред који може бити измењен"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective-two-pane-layout.cc:179
+msgid "Two Status Pane"
+msgstr "Две површи стања"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective-two-pane-layout.cc:186
+msgid "A layout with two status pane"
+msgstr "Распоред са две површи стања"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective-wide-layout.cc:135
+msgid "Wide Layout"
+msgstr "Широки распоред"
+
+#: ../src/persp/dbgperspective/nmv-dbg-perspective-wide-layout.cc:142
+msgid "A layout for very large monitors"
+msgstr "Распоред за врло широке мониторе"
+
+#: ../src/persp/dbgperspective/nmv-file-list.cc:128
+msgid "Expand _Selected"
+msgstr "Рађири _изабрано"
+
+#: ../src/persp/dbgperspective/nmv-file-list.cc:134
+msgid "Expand _All"
+msgstr "Рашири _све"
+
+#: ../src/persp/dbgperspective/nmv-file-list.cc:144
+msgid "_Collapse"
+msgstr "_Скупи"
+
+#: ../src/persp/dbgperspective/nmv-file-list.cc:427
+msgid "Loading files from target executable..."
+msgstr "Учитавам датотеке из циљних извршних..."
+
+#: ../src/persp/dbgperspective/nmv-global-vars-inspector-dialog.cc:301
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:547
+#: ../src/persp/dbgperspective/nmv-expr-inspector.cc:233
+#, c-format
+msgid ""
+"Variable type is: \n"
+" %s"
+msgstr ""
+"Врста променљиве је: \n"
+" %s"
+
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:124
+msgid "Local Variables"
+msgstr "Локалне променљиве"
+
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:132
+msgid "Function Arguments"
+msgstr "Аргументи функције"
+
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:258
+#: ../src/persp/dbgperspective/nmv-expr-inspector.cc:136
+msgid "_Copy Variable Name"
+msgstr "_Умножи назив променљиве"
+
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:259
+#: ../src/persp/dbgperspective/nmv-expr-inspector.cc:137
+msgid "Copy the variable path expression to the clipboard"
+msgstr "Умножите израз путање променљиве међу исечке"
+
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:270
+#: ../src/persp/dbgperspective/nmv-expr-inspector.cc:148
+msgid "_Copy Variable Value"
+msgstr "_Умножи вредност променљиве"
+
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:271
+#: ../src/persp/dbgperspective/nmv-expr-inspector.cc:149
+msgid "Copy the variable value to the clipboard"
+msgstr "Умножите вредност променљиве међу исечке"
+
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:282
+msgid "Create Watchpoint"
+msgstr "Направи тачку надзора"
+
+#: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:283
+msgid ""
+"Create a watchpoint that triggers when the value of the expression changes"
+msgstr "Направите тачку надзора која ће окидати када се вредност израза измени"
+
+#: ../src/persp/dbgperspective/nmv-memory-view.cc:49
+msgid "Byte"
+msgstr "Бајт"
+
+#: ../src/persp/dbgperspective/nmv-memory-view.cc:52
+msgid "Word"
+msgstr "Реч"
+
+#: ../src/persp/dbgperspective/nmv-memory-view.cc:55
+msgid "Long Word"
+msgstr "Дуга реч"
+
+#: ../src/persp/dbgperspective/nmv-memory-view.cc:98
+#: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:9
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:8
+#: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:9
+msgid "Address:"
+msgstr "Адреса:"
+
+#: ../src/persp/dbgperspective/nmv-memory-view.cc:100
+msgid "Show"
+msgstr "Прикажи"
+
+#: ../src/persp/dbgperspective/nmv-memory-view.cc:103
+msgid "Group By:"
+msgstr "Групиши према:"
+
+#: ../src/persp/dbgperspective/nmv-preferences-dialog.cc:149
+#: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:5
+msgid "Choose a Directory"
+msgstr "Изаберите директоријум"
+
+#: ../src/persp/dbgperspective/nmv-preferences-dialog.cc:259
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:18
+msgid "Source Directories"
+msgstr "Директоријуми извора"
+
+#: ../src/persp/dbgperspective/nmv-proc-list-dialog.cc:132
+msgid "User Name"
+msgstr "Корисничко име"
+
+#: ../src/persp/dbgperspective/nmv-proc-list-dialog.cc:139
+msgid "Proc Args"
+msgstr "Аргументи процеса"
+
+#: ../src/persp/dbgperspective/nmv-registers-view.cc:101
+#: ../src/persp/dbgperspective/nmv-run-program-dialog.cc:99
+msgid "Name"
+msgstr "Назив"
+
+#: ../src/persp/dbgperspective/nmv-registers-view.cc:102
+#: ../src/persp/dbgperspective/nmv-run-program-dialog.cc:102
+#: ../src/persp/dbgperspective/nmv-vars-treeview.cc:59
+msgid "Value"
+msgstr "Вредност"
+
+#: ../src/persp/dbgperspective/nmv-saved-sessions-dialog.cc:71
+msgid "Session"
+msgstr "Сесија"
+
+#: ../src/persp/dbgperspective/nmv-set-breakpoint-dialog.cc:117
+msgid "Throw Exception"
+msgstr "Одбаци изузетак"
+
+#: ../src/persp/dbgperspective/nmv-set-breakpoint-dialog.cc:121
+msgid "Catch Exception"
+msgstr "Ухвати изузетак"
+
+#: ../src/persp/dbgperspective/nmv-set-breakpoint-dialog.cc:125
+msgid "Fork System Call"
+msgstr "Системски позив исцепка"
+
+#: ../src/persp/dbgperspective/nmv-set-breakpoint-dialog.cc:129
+msgid "Vfork System Call"
+msgstr "Системски позив Висцепка"
+
+#: ../src/persp/dbgperspective/nmv-set-breakpoint-dialog.cc:133
+msgid "Exec System Call"
+msgstr "Системски позив извршног"
+
+#: ../src/persp/dbgperspective/nmv-thread-list.cc:184
+msgid "Thread ID"
+msgstr "ИБ нити"
+
+#. create the columns of the tree view
+#: ../src/persp/dbgperspective/nmv-vars-treeview.cc:50
+msgid "Variable"
+msgstr "Променљива"
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:128
+msgid "In scope expressions"
+msgstr "У изразима домета"
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:133
+msgid "Out of scope expressions"
+msgstr "Ван израза домета"
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:237
+msgid "Remove"
+msgstr "Уклони"
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:238
+msgid "Remove selected expressions from the monitor"
+msgstr "Уклоните изабране изразе са монитора"
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:247
+msgid "New..."
+msgstr "Ново..."
+
+#: ../src/persp/dbgperspective/nmv-expr-monitor.cc:248
+msgid "Add a new expression to the monitor"
+msgstr "Додајте нови израз на монитор"
+
+#: ../src/persp/dbgperspective/ui/callfunctiondialog.ui.h:2
+msgid "Call a function:"
+msgstr "Позови функцију:"
+
+#: ../src/persp/dbgperspective/ui/chooseoverloadsdialog.ui.h:1
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:1
+msgid "Set Breakpoint"
+msgstr "Подеси тачку прекида"
+
+#: ../src/persp/dbgperspective/ui/chooseoverloadsdialog.ui.h:2
+msgid "Choose Overloaded Function"
+msgstr "Изаберите функцију преоптерећења"
+
+#: ../src/persp/dbgperspective/ui/chooseoverloadsdialog.ui.h:3
+msgid ""
+"Multiple functions match the specified name. Please choose one from the list "
+"below."
+msgstr ""
+"Вишеструке функције одговарају наведеним називима. Изаберите једну са списка "
+"испод."
+
+#: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:1
+msgid "Find Text"
+msgstr "Нађи текст"
+
+#: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:2
+msgid "_Search:"
+msgstr "_Потражи:"
+
+#: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:3
+msgid "Match Options:"
+msgstr "Могућности поклапања:"
+
+#: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:4
+msgid "Match c_ase"
+msgstr "Упореди _величину слова"
+
+#: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:5
+msgid "Match _entire word only"
+msgstr "Упореди само _целе речи"
+
+#: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:6
+msgid "Cycling Options:"
+msgstr "Могућности понављања:"
+
+#: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:7
+msgid "_Wrap around"
+msgstr "Преламај _около"
+
+#: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:8
+msgid "Search _backwards"
+msgstr "Тражи _уназад"
+
+#: ../src/persp/dbgperspective/ui/globalvarsinspector.ui.h:1
+msgid "Global Variables"
+msgstr "Опште променљиве"
+
+#: ../src/persp/dbgperspective/ui/loadcoredialog.ui.h:1
+msgid "Choose a Core File to Debug"
+msgstr "Изаберите кључну датотеку за прочишћавање"
+
+#: ../src/persp/dbgperspective/ui/loadcoredialog.ui.h:2
+msgid "Select a Core File"
+msgstr "Изаберите кључну датотеку"
+
+#: ../src/persp/dbgperspective/ui/loadcoredialog.ui.h:3
+msgid "Core File:"
+msgstr "Кључна датотека:"
+
+#: ../src/persp/dbgperspective/ui/loadcoredialog.ui.h:4
+msgid "Select the executable that created the core file"
+msgstr "Изаберите извршног који је створио кључну датотеку"
+
+#: ../src/persp/dbgperspective/ui/loadcoredialog.ui.h:5
+msgid "Executable:"
+msgstr "Извршни:"
+
+#: ../src/persp/dbgperspective/ui/openfiledialog.ui.h:1
+msgid "Open Source Files"
+msgstr "Отворите изворне датотеке"
+
+#: ../src/persp/dbgperspective/ui/openfiledialog.ui.h:2
+msgid "Select from _Target Executable"
+msgstr "Изабери из _циљног извршног"
+
+#: ../src/persp/dbgperspective/ui/openfiledialog.ui.h:3
+msgid "Select from _File System"
+msgstr "Изабери из _система датотека"
+
+#: ../src/persp/dbgperspective/ui/openfiledialog.ui.h:4
+msgid "Choose Source Files to Open"
+msgstr "Изаберите датотеке извора за отварање"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:1
+msgid "Preferences"
+msgstr "Поставке"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:2
+msgid "Use system monospace font"
+msgstr "Користи системски словни лик утврђене ширине"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:3
+msgid "Custom Font:"
+msgstr "Произвољни словни лик:"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:4
+msgid "Editor Font"
+msgstr "Словни лик уређивача"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:5
+msgid "Visual Style"
+msgstr "Видни стил"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:6
+msgid "Display line numbers"
+msgstr "Прикажи бројеве редова"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:7
+msgid "Line Numbers"
+msgstr "Бројеви редова"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:8
+msgid "Use launch terminal"
+msgstr "Користи терминал покретања"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:9
+msgid "Terminal"
+msgstr "Терминал"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:10
+msgid "When a source file is changed:"
+msgstr "Када се измени изворна датотека:"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:11
+msgid "Reload the file"
+msgstr "Поново учитај датотеку"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:12
+msgid "Do not reload the file"
+msgstr "Немој поново учитавати датотеку"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:13
+msgid "Ask each time"
+msgstr "Питај сваки пут"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:14
+msgid "File Monitoring"
+msgstr "Пражење датотеке"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:15
+msgid "Enable syntax highlighting"
+msgstr "Укључите истицање синтаксе"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:16
+msgid "Syntax Highlighting"
+msgstr "Истицање синтаксе"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:17
+msgid "Editor"
+msgstr "Уређивач"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:19
+msgid "Pure assembly"
+msgstr "Чисти састављач"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:20
+msgid "Mixed source and assembly"
+msgstr "Мешани извор и састављач"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:21
+msgid "Assembly style"
+msgstr "Стил састављача"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:22
+msgid "Assembly flavor"
+msgstr "Укус састављача"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:23
+#: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:3
+msgid "Choose a File"
+msgstr "Изаберите датотеку"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:24
+msgid "Path to the GDB binary used"
+msgstr "Путања до коришћеног ГДБ бинарног"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:25
+msgid "GDB Binary"
+msgstr "ГДБ бинарни"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:26
+msgid "Number of instructions to disassemble by default"
+msgstr "Број упутстава за растављање по основи"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:27
+msgid "Instructions"
+msgstr "Упутства"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:28
+msgid "Enable pretty printing (requires debugger restart)"
+msgstr "Укључи прилично исписивање (захтева поновно покретање пречишћавача)"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:29
+msgid "GDB Pretty Printing"
+msgstr "ГДБ прилично исписивање"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:30
+msgid "Follow parent"
+msgstr "Прати родитеља"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:31
+msgid "Follow child"
+msgstr "Прати пород"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:32
+msgid "GDB Follow Fork Mode"
+msgstr "ГДБ режим праћења исцепка"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:33
+msgid "Debugger"
+msgstr "Исправљач грешака"
+
+#: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:34
+msgid "Layout"
+msgstr "Распоред"
+
+#: ../src/persp/dbgperspective/ui/proclistdialog.ui.h:1
+msgid "Attach to a Running Program"
+msgstr "Прикачите на радни програм"
+
+#: ../src/persp/dbgperspective/ui/proclistdialog.ui.h:2
+msgid "Choose a Process to Debug"
+msgstr "Изаберите процес за прочишћавање"
+
+#: ../src/persp/dbgperspective/ui/proclistdialog.ui.h:3
+msgid "_Filter list:"
+msgstr "Филтрирај _списак:"
+
+#: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:1
+msgid "Connect to Remote Target"
+msgstr "Повежите се на удаљену мету"
+
+#: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:2
+msgid "Executable to Load"
+msgstr "Извршни за учитавање"
+
+#: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:4
+msgid "Shared Libraries Location"
+msgstr "Место дељених библиотека"
+
+#: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:6
+msgid "Remote Debugging Server"
+msgstr "Сервер удаљеног прочишћавања"
+
+#: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:7
+msgid "TCP/IP Connection"
+msgstr "ТЦП/ИП веза"
+
+#: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:8
+msgid "Port:"
+msgstr "Порт:"
+
+#: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:10
+msgid "Serial Line Connection"
+msgstr "Повезивање серијском везом"
+
+#: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:1
+msgid "Choose a Program to Execute"
+msgstr "Изаберите програм за извршавање"
+
+#: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:2
+msgid "Choose an Executable"
+msgstr "Изаберите извршни"
+
+#: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:3
+msgid "Program:"
+msgstr "Програм:"
+
+#: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:4
+msgid "Arguments:"
+msgstr "Аргументи:"
+
+#: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:5
+msgid "Choose a Working Directory"
+msgstr "Изаберите радни директоријум"
+
+#: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:6
+msgid "Working Directory:"
+msgstr "Радни директоријум:"
+
+#: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:7
+msgid "_Add"
+msgstr "_Додај"
+
+#: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:8
+msgid "_Remove"
+msgstr "_Уклони"
+
+#: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:9
+msgid "Environment Variables:"
+msgstr "Променљиве окружења:"
+
+#: ../src/persp/dbgperspective/ui/savedsessionsdialog.ui.h:1
+msgid "Saved Sessions"
+msgstr "Сачуване сесије"
+
+#: ../src/persp/dbgperspective/ui/savedsessionsdialog.ui.h:2
+msgid "Choose a Session to Debug"
+msgstr "Изаберите сесију за прочишћавање"
+
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:2
+msgid "Set a Breakpoint:"
+msgstr "Подеси тачку прекида:"
+
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:3
+msgid "Condition:"
+msgstr "Услов:"
+
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:4
+msgid "_Event:"
+msgstr "_Догађај:"
+
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:5
+#: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:5
+msgid "_Binary Location:"
+msgstr "Место _бинарног:"
+
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:6
+#: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:4
+msgid "_Source Location:"
+msgstr "Место _извора:"
+
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:7
+#: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:3
+msgid "F_unction Name:"
+msgstr "Назив _функције:"
+
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:9
+#: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:7
+msgid "File name:"
+msgstr "Назив датотеке:"
+
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:10
+#: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:6
+msgid "Function:"
+msgstr "Функција:"
+
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:11
+#: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:8
+msgid "Line:"
+msgstr "Ред:"
+
+#: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:12
+msgid "Set as Countpoint"
+msgstr "Подесите као тачку бројања"
+
+#: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:1
+msgid "Set Location to Jump To"
+msgstr "На које место да оде"
+
+#: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:2
+msgid "Jump to location:"
+msgstr "Иди на место:"
+
+#: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:10
+msgid "Break at Destination"
+msgstr "Прекини на одредишту"
+
+#: ../src/persp/dbgperspective/ui/exprinspectordialog.ui.h:2
+msgid "Add to monitor"
+msgstr "Додај на монитор"
+
+#: ../src/persp/dbgperspective/ui/exprinspectordialog.ui.h:3
+msgid "_Variable Name:"
+msgstr "Назив _вредности:"
+
+#: ../src/persp/dbgperspective/ui/exprinspectordialog.ui.h:4
+msgid "_Inspect"
+msgstr "_Надгледај"
+
+#: ../src/persp/dbgperspective/ui/watchpointdialog.ui.h:1
+msgid "Set a watchpoint:"
+msgstr "Подеси тачку прекида:"
+
+#: ../src/persp/dbgperspective/ui/watchpointdialog.ui.h:2
+msgid "Expression:"
+msgstr "Израз:"
+
+#: ../src/persp/dbgperspective/ui/watchpointdialog.ui.h:3
+msgid "Inspect"
+msgstr "Надгледај"
+
+#: ../src/persp/dbgperspective/ui/watchpointdialog.ui.h:4
+msgid "Triggers on:"
+msgstr "Окини при:"
+
+#: ../src/persp/dbgperspective/ui/watchpointdialog.ui.h:5
+msgid "Read"
+msgstr "Читај"
+
+#: ../src/persp/dbgperspective/ui/watchpointdialog.ui.h:6
+msgid "Write"
+msgstr "Пиши"
+
+#: ../src/uicommon/nmv-locate-file-dialog.cc:65
+#, c-format
+msgid "Select Location for %s"
+msgstr "Изаберите место за %s"
+
+#: ../src/uicommon/nmv-locate-file-dialog.cc:75
+#, c-format
+msgid ""
+"Cannot find file '%s'.\n"
+"Please specify the location of this file:"
+msgstr ""
+"Не могу да пронађем датотеку „%s“.\n"
+"Наведите место ове датотеке:"
+
+#: ../src/uicommon/nmv-source-editor.cc:611
+#, c-format
+msgid "Line: %i, Column: %i"
+msgstr "Ред: %i, стубац: %i"
+
+#: ../src/uicommon/nmv-source-editor.cc:1439
+#, c-format
+msgid "Could not load file %s because its encoding is different from %s"
+msgstr ""
+"Не могу да учитам датотеку „%s“ зато што је њено кодирање другачије од %s"
+
+#: ../src/uicommon/nmv-terminal.cc:174
+msgid "Copy the selection"
+msgstr "Умножите изабрано"
+
+#: ../src/uicommon/nmv-terminal.cc:180
+msgid "_Paste"
+msgstr "_Убаци"
+
+#: ../src/uicommon/nmv-terminal.cc:181
+msgid "Paste the clipboard"
+msgstr "Убаците садржај исечака"
+
+#: ../src/uicommon/nmv-terminal.cc:187
+msgid "_Reset"
+msgstr "_Поново постави"
+
+#: ../src/uicommon/nmv-terminal.cc:188
+msgid "Reset the terminal"
+msgstr "Поново поставите терминал"
+
+#: ../src/uicommon/nmv-ui-utils.cc:91
+msgid "Do not ask me again"
+msgstr "Не питај ме поново"
+
+#: ../src/workbench/nmv-workbench.cc:275
+msgid "Project Website"
+msgstr "Веб сајт пројекта"
+
+#. Translators: change this to your name, separate multiple names with \n
+#: ../src/workbench/nmv-workbench.cc:295
+msgid "translator-credits"
+msgstr "  Мирослав Николић <mirosavnikoic@rocketmailcom>"
+
+#: ../src/workbench/nmv-workbench.cc:673
+msgid "_File"
+msgstr "_Датотека"
+
+#: ../src/workbench/nmv-workbench.cc:684
+msgid "_Quit"
+msgstr "_Изађи"
+
+#: ../src/workbench/nmv-workbench.cc:685
+msgid "Quit the application"
+msgstr "Изађите из програма"
+
+#: ../src/workbench/nmv-workbench.cc:695
+msgid "_Edit"
+msgstr "_Уређивање"
+
+#: ../src/workbench/nmv-workbench.cc:706
+msgid "_Help"
+msgstr "По_моћ"
+
+#: ../src/workbench/nmv-workbench.cc:717
+msgid "_About"
+msgstr "_О програму"
+
+#: ../src/workbench/nmv-workbench.cc:718
+msgid "Display information about this application"
+msgstr "Прикажите податке о овом програму"
+
+#: ../src/workbench/nmv-workbench.cc:728
+msgid "_Contents"
+msgstr "_Садржај"
+
+#: ../src/workbench/nmv-workbench.cc:729
+msgid "Display the user manual for this application"
+msgstr "Прикажите корисничку помоћ за овај програм"
+
+#. end extern C
+#: ../ui/locatefiledialog.ui.h:1
+msgid "Select File Location"
+msgstr "Изаберите место датотеке"
+
+#: ../ui/locatefiledialog.ui.h:2
+msgid "Locate File"
+msgstr "Нађи датотеку"
