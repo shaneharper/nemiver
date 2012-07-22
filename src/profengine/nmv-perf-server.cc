@@ -26,24 +26,31 @@
 #include "common/nmv-namespace.h"
 #include "common/nmv-safe-ptr.h"
 #include "common/nmv-exception.h"
+#include "common/nmv-ustring.h"
+#include "common/nmv-proc-utils.h"
 
 #include <glibmm.h>
 #include <giomm.h>
 #include <glib/gi18n.h>
-
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <stdio.h>
 #include <iostream>
 
 using nemiver::common::SafePtr;
+using nemiver::common::FreeUnref;
+using nemiver::common::DefaultRef;
+using nemiver::common::UString;
 
 NEMIVER_BEGIN_NAMESPACE (nemiver)
 
 static const char *const NMV_BUS_NAME = "org.gnome.nemiver.profiler";
 static const char *const NMV_DBUS_PROFILER_SERVER_INTROSPECTION_DATA =
     "<node>"
-    "  <interface name='org.gnome.nemiver.profilers'>"
+    "  <interface name='org.gnome.nemiver.profiler'>"
     "    <method name='AttachToPID'>"
     "        <arg type='i' name='pid' direction='in' />"
-    "        <arg type='u' name='cookie' direction='in' />"
+//    "        <arg type='u' name='cookie' direction='in' />"
     "        <arg type='as' name='arguments' direction='in' />"
     "        <arg type='s' name='data_filepath' direction='out' />"
     "    </method>"
@@ -71,15 +78,54 @@ struct PerfServer::Priv {
     Glib::RefPtr<Gio::DBus::NodeInfo> introspection_data;
     Gio::DBus::InterfaceVTable interface_vtable;
 
+    int perf_pid;
+    int master_pty_fd;
+    int perf_stdout_fd;
+    int perf_stderr_fd;
+
     Priv () :
 //        subject (polkit_system_bus_name_new ("org.gnome.nemiver")),
         bus_id (0),
         registration_id (0),
         introspection_data (0),
         interface_vtable
-            (sigc::mem_fun (*this, &PerfServer::Priv::on_new_request))
+            (sigc::mem_fun (*this, &PerfServer::Priv::on_new_request)),
+        perf_pid (0),
+        master_pty_fd (0),
+        perf_stdout_fd (0),
+        perf_stderr_fd (0)
     {
         init ();
+    }
+
+    bool
+    on_wait_for_record_to_exit (const Glib::RefPtr<Gio::DBus::MethodInvocation>
+                                    &a_invocation,
+                                Glib::ustring a_report_filepath)
+    {
+        int status = 0;
+        pid_t pid = waitpid (perf_pid, &status, WNOHANG);
+        bool is_terminated = WIFEXITED (status) || WIFSIGNALED (status);
+
+        if (pid == perf_pid && is_terminated) {
+            g_spawn_close_pid (perf_pid);
+            perf_pid = 0;
+            master_pty_fd = 0;
+            perf_stdout_fd = 0;
+            perf_stderr_fd = 0;
+
+            Glib::Variant<Glib::ustring> perf_data =
+                Glib::Variant<Glib::ustring>::create (a_report_filepath);
+
+            Glib::VariantContainerBase response =
+                Glib::VariantContainerBase::create_tuple (perf_data);
+
+            a_invocation->return_value (response);
+
+            return false;
+        }
+
+        return true;
     }
 
     void
@@ -96,12 +142,57 @@ struct PerfServer::Priv {
 
         THROW_IF_FAIL (a_invocation);
 
-        if(a_request_name == "AttachToPID")
-        {
+        if(a_request_name == "AttachToPID") {
             Glib::Variant<int> pid_param;
+            Glib::Variant<std::vector<Glib::ustring> > options_param;
             a_parameters.get_child (pid_param);
+            a_parameters.get_child (options_param, 1);
 
-            std::cout << "PID: " << pid_param.get () << std::endl;
+            int pid = pid_param.get ();
+            std::vector<Glib::ustring> options (options_param.get ());
+            for (std::vector<Glib::ustring>::iterator iter = options.begin ();
+                 iter != options.end ();
+                 ++iter) {
+                if (*iter != "--output") {
+                    continue;
+                }
+
+                Gio::DBus::Error error
+                    (Gio::DBus::Error::INVALID_ARGS,
+                     _("--output parameter is "
+                       "forbidden for security reasons"));
+                a_invocation->return_error (error);
+            }
+
+            SafePtr<char, DefaultRef, FreeUnref> filepath (tempnam(0, 0));
+            THROW_IF_FAIL (filepath);
+
+            std::vector<UString> argv;
+            argv.push_back ("perf");
+            argv.push_back ("record");
+            argv.push_back ("--pid");
+            argv.push_back (UString::compose ("%1", pid));
+            argv.push_back ("--output");
+            argv.push_back (filepath.get ());
+            argv.insert (argv.end (), options.begin (), options.end ());
+
+            bool is_launched =
+                common::launch_program (argv,
+                                        perf_pid,
+                                        master_pty_fd,
+                                        perf_stdout_fd,
+                                        perf_stderr_fd);
+
+            THROW_IF_FAIL (is_launched);
+
+            Glib::RefPtr<Glib::MainContext> context =
+                Glib::MainContext::get_default ();
+            context->signal_idle ().connect
+                (sigc::bind<const Glib::RefPtr<Gio::DBus::MethodInvocation>, Glib::ustring>
+                        (sigc::mem_fun (*this,
+                         &PerfServer::Priv::on_wait_for_record_to_exit),
+                 a_invocation,
+                 filepath.get ()));
         }
         else
         {
@@ -122,13 +213,13 @@ struct PerfServer::Priv {
         bus_id = Gio::DBus::own_name
             (Gio::DBus::BUS_TYPE_SESSION,
              NMV_BUS_NAME,
-             sigc::mem_fun(*this, &PerfServer::Priv::on_bus_acquired),
-             sigc::mem_fun(*this, &PerfServer::Priv::on_name_acquired),
-             sigc::mem_fun(*this, &PerfServer::Priv::on_name_lost));
+             sigc::mem_fun (*this, &PerfServer::Priv::on_bus_acquired),
+             sigc::mem_fun (*this, &PerfServer::Priv::on_name_acquired),
+             sigc::mem_fun (*this, &PerfServer::Priv::on_name_lost));
     }
 
     void
-    on_bus_acquired(const Glib::RefPtr<Gio::DBus::Connection> &a_connection,
+    on_bus_acquired (const Glib::RefPtr<Gio::DBus::Connection> &a_connection,
                     const Glib::ustring&)
     {
         NEMIVER_TRY;
@@ -136,7 +227,7 @@ struct PerfServer::Priv {
         THROW_IF_FAIL (a_connection);
         registration_id = a_connection->register_object
             ("/org/gnome/nemiver/profiler",
-             introspection_data->lookup_interface(),
+             introspection_data->lookup_interface (),
              interface_vtable);
 
         NEMIVER_CATCH_NOX;

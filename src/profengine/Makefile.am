@@ -28,6 +28,7 @@ publicheadersdir=$(NEMIVER_INCLUDE_DIR)/dynmods
 
 libperfmod_la_LDFLAGS=-module -avoid-version -Wl,--as-needed
 libperfmod_la_LIBADD=libperfengine.la @NEMIVERCOMMON_LIBS@ \
+@NEMIVERPROFPERSP_LIBS@ \
 $(abs_top_builddir)/src/common/libnemivercommon.la
 
 

@@ -34,6 +34,8 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <cstdio>
+#include <giomm.h>
+#include <glibmm.h>
 
 NEMIVER_BEGIN_NAMESPACE (nemiver)
 
@@ -62,6 +64,9 @@ struct PerfEngine::Priv {
     sigc::signal<void, const UString&> record_done_signal;
     sigc::signal<void, const UString&, const UString&> symbol_annotated_signal;
 
+    Glib::RefPtr<Gio::DBus::Connection> server_connection;
+    Glib::RefPtr<Gio::DBus::Proxy> proxy;
+
     Priv () :
         conf_manager (0),
         perf_pid (0),
@@ -69,8 +74,25 @@ struct PerfEngine::Priv {
         perf_stdout_fd (0),
         perf_stderr_fd (0),
         perf_stdout_channel (0),
-        call_graph (0)
+        call_graph (0),
+        server_connection (0),
+        proxy (0)
     {
+        init ();
+    }
+
+    void
+    init ()
+    {
+        server_connection =
+            Gio::DBus::Connection::get_sync (Gio::DBus::BUS_TYPE_SESSION);
+        THROW_IF_FAIL (server_connection);
+
+        proxy = Gio::DBus::Proxy::create_sync (server_connection,
+                                               "org.gnome.nemiver.profiler",
+                                               "/org/gnome/nemiver/profiler",
+                                               "org.gnome.nemiver.profiler");
+        THROW_IF_FAIL (proxy);
     }
 
     IConfMgr&
@@ -318,6 +340,22 @@ struct PerfEngine::Priv {
         return false;
     }
 
+    void
+    on_detached_from_process (Glib::RefPtr<Gio::AsyncResult> &a_result)
+    {
+        NEMIVER_TRY;
+
+        THROW_IF_FAIL (proxy);
+        Glib::VariantContainerBase result = proxy->call_finish (a_result);
+
+        Glib::Variant<Glib::ustring> record;
+        result.get_child (record);
+
+        record_done_signal.emit (record.get ());
+
+        NEMIVER_CATCH_NOX;
+    }
+
     ~Priv ()
     {
         LOG_D ("delete", "destructor-domain");
@@ -345,11 +383,33 @@ PerfEngine::do_init (IConfMgrSafePtr a_conf_mgr)
 void
 PerfEngine::attach_to_pid (int a_pid)
 {
-    std::vector<UString> argv;
+    THROW_IF_FAIL (m_priv);
+    THROW_IF_FAIL (m_priv->proxy);
+
+    std::vector<Glib::ustring> options;
+
+    Glib::Variant<int> pid_param = Glib::Variant<int>::create (a_pid);
+    Glib::Variant<std::vector<Glib::ustring> > options_param =
+        Glib::Variant<std::vector<Glib::ustring> >::create (options);
+
+    std::vector<Glib::VariantBase> parameters;
+    parameters.push_back (pid_param);
+    parameters.push_back (options_param);
+
+    Glib::VariantContainerBase parameters_variant =
+        Glib::VariantContainerBase::create_tuple (parameters);
+
+    m_priv->proxy->call
+        ("AttachToPID",
+         sigc::mem_fun (*m_priv, &PerfEngine::Priv::on_detached_from_process),
+         parameters_variant);
+
+/*    std::vector<UString> argv;
     argv.push_back ("--pid");
     argv.push_back (UString::compose ("%1", a_pid));
 
     record (argv);
+*/
 }
 
 void
@@ -470,6 +530,8 @@ PerfEngine::stop_recording ()
 void
 PerfEngine::report (const UString &a_data_file)
 {
+    THROW_IF_FAIL (Glib::file_test (a_data_file, Glib::FILE_TEST_EXISTS));
+
     std::vector<UString> argv;
     argv.push_back ("perf");
     argv.push_back ("report");
