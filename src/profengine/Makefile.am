@@ -34,5 +34,18 @@ $(abs_top_builddir)/src/common/libnemivercommon.la
 config_DATA=perfengine.conf
 configdir=@NEMIVER_SYSTEM_CONFIG_DIR@
 
-INCLUDES=@NEMIVERCOMMON_CFLAGS@ -DENABLE_NLS=1 -DDATADIR=\"${datadir}\" \
+bin_PROGRAMS=nmvperfserver
+nmvperfserver_SOURCES= $(h)/nmv-perf-server.cc
+nmvperfserver=@NEMIVER_MODULES_DIR@
+nmvperfserver_LDADD=@NEMIVERPROFPERSP_LIBS@ \
+$(abs_top_builddir)/src/common/libnemivercommon.la
+
+#service_DATA=org.gnome.nemiver.profiler.service.in
+#servicedir=
+
+#policy_DATA=org.gnome.nemiver.profiler.policy.in
+#policydir=
+
+INCLUDES=@NEMIVERCOMMON_CFLAGS@ @NEMIVERPROFPERSP_CFLAGS@ \
+-DENABLE_NLS=1 -DDATADIR=\"${datadir}\" \
 -I$(top_srcdir)/src -I$(top_srcdir)/src/confmgr
