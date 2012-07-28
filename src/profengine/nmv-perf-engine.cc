@@ -64,6 +64,7 @@ struct PerfEngine::Priv {
     sigc::signal<void, const UString&> record_done_signal;
     sigc::signal<void, const UString&, const UString&> symbol_annotated_signal;
 
+    bool is_using_prof_server;
     Glib::RefPtr<Gio::DBus::Connection> server_connection;
     Glib::RefPtr<Gio::DBus::Proxy> proxy;
 
@@ -75,6 +76,7 @@ struct PerfEngine::Priv {
         perf_stderr_fd (0),
         perf_stdout_channel (0),
         call_graph (0),
+        is_using_prof_server (false),
         server_connection (0),
         proxy (0)
     {
@@ -85,7 +87,7 @@ struct PerfEngine::Priv {
     init ()
     {
         server_connection =
-            Gio::DBus::Connection::get_sync (Gio::DBus::BUS_TYPE_SESSION);
+            Gio::DBus::Connection::get_sync (Gio::DBus::BUS_TYPE_SYSTEM);
         THROW_IF_FAIL (server_connection);
 
         proxy = Gio::DBus::Proxy::create_sync (server_connection,
@@ -389,16 +391,21 @@ PerfEngine::attach_to_pid (int a_pid)
     std::vector<Glib::ustring> options;
 
     Glib::Variant<int> pid_param = Glib::Variant<int>::create (a_pid);
+    Glib::Variant<int> uid_param = Glib::Variant<int>::create (getuid ());
+    Glib::Variant<int> gid_param = Glib::Variant<int>::create (a_pid);
     Glib::Variant<std::vector<Glib::ustring> > options_param =
         Glib::Variant<std::vector<Glib::ustring> >::create (options);
 
     std::vector<Glib::VariantBase> parameters;
     parameters.push_back (pid_param);
+    parameters.push_back (uid_param);
+    parameters.push_back (gid_param);
     parameters.push_back (options_param);
 
     Glib::VariantContainerBase parameters_variant =
         Glib::VariantContainerBase::create_tuple (parameters);
 
+    m_priv->is_using_prof_server = true;
     m_priv->proxy->call
         ("AttachToPID",
          sigc::mem_fun (*m_priv, &PerfEngine::Priv::on_detached_from_process),
@@ -495,6 +502,7 @@ PerfEngine::record (const std::vector<UString> &a_argv)
     argv.push_back (m_priv->record_filepath);
     argv.insert (argv.end (), a_argv.begin (), a_argv.end ());
 
+    m_priv->is_using_prof_server = false;
     bool is_launched = common::launch_program (argv,
                                                m_priv->perf_pid,
                                                m_priv->master_pty_fd,
@@ -523,8 +531,13 @@ void
 PerfEngine::stop_recording ()
 {
     THROW_IF_FAIL (m_priv);
-    THROW_IF_FAIL (m_priv->perf_pid);
-    kill(m_priv->perf_pid, SIGINT);
+
+    if (m_priv->is_using_prof_server) {
+        m_priv->proxy->call_sync ("DetachFromProcess");
+    } else {
+        THROW_IF_FAIL (m_priv->perf_pid);
+        kill (m_priv->perf_pid, SIGINT);
+    }
 }
 
 void
@@ -541,7 +554,7 @@ PerfEngine::report (const UString &a_data_file)
 
     THROW_IF_FAIL (m_priv);
     m_priv->record_filepath = a_data_file;
-
+    m_priv->is_using_prof_server = false;
     bool is_launched = common::launch_program (argv,
                                                m_priv->perf_pid,
                                                m_priv->master_pty_fd,
@@ -580,6 +593,7 @@ PerfEngine::annotate_symbol (const UString &a_symbol_name)
     argv.push_back (m_priv->record_filepath);
     argv.push_back (a_symbol_name);
 
+    m_priv->is_using_prof_server = false;
     bool is_launched = common::launch_program (argv,
                                                m_priv->perf_pid,
                                                m_priv->master_pty_fd,

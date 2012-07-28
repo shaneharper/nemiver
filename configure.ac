@@ -417,11 +417,12 @@ if test x$exec_prefix = xNONE ; then
         exec_prefix=$prefix ;
 fi
 NEMIVER_LIBDIR=`eval echo $libdir`
+NEMIVER_BINDIR=`eval echo $bindir`
 
 AC_SUBST(NEMIVER_INCLUDE_DIR)
 AC_SUBST(NEMIVER_LIB_DIR_NAME)
 AC_SUBST(NEMIVER_LIBDIR)
-
+AC_SUBST(NEMIVER_BINDIR)
 
 if test x$ENABLE_GCC_SYMBOLS_VISIBILITY = xyes && test x$host_cpu != xx86_64 ; then
     AC_DEFINE(HAS_GCC_VISIBILITY_SUPPORT,1,[gcc visibility support])
@@ -491,6 +492,8 @@ src/Makefile
   src/dbgengine/varlistwalker.conf
   src/profengine/Makefile
   src/profengine/perfengine.conf
+  src/profengine/org.gnome.nemiver.profiler.service
+  src/profengine/org.gnome.nemiver.profiler.conf
   src/confmgr/Makefile
   src/confmgr/gconfmgr.conf
   src/confmgr/gsettingsmgr.conf

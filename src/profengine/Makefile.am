@@ -41,11 +41,11 @@ nmvperfserver=@NEMIVER_MODULES_DIR@
 nmvperfserver_LDADD=@NEMIVERPROFPERSP_LIBS@ \
 $(abs_top_builddir)/src/common/libnemivercommon.la
 
-#service_DATA=org.gnome.nemiver.profiler.service.in
-#servicedir=
+service_DATA=org.gnome.nemiver.profiler.service
+servicedir=$(datadir)/dbus-1/system-services
 
-#policy_DATA=org.gnome.nemiver.profiler.policy.in
-#policydir=
+bus_DATA=org.gnome.nemiver.profiler.conf.in
+busdir=/etc/dbus-1/system.d/
 
 INCLUDES=@NEMIVERCOMMON_CFLAGS@ @NEMIVERPROFPERSP_CFLAGS@ \
 -DENABLE_NLS=1 -DDATADIR=\"${datadir}\" \

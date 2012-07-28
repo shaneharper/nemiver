@@ -50,9 +50,13 @@ static const char *const NMV_DBUS_PROFILER_SERVER_INTROSPECTION_DATA =
     "  <interface name='org.gnome.nemiver.profiler'>"
     "    <method name='AttachToPID'>"
     "        <arg type='i' name='pid' direction='in' />"
+    "        <arg type='i' name='uid' direction='in' />"
+    "        <arg type='i' name='gid' direction='in' />"
 //    "        <arg type='u' name='cookie' direction='in' />"
     "        <arg type='as' name='arguments' direction='in' />"
     "        <arg type='s' name='data_filepath' direction='out' />"
+    "    </method>"
+    "    <method name='DetachFromProcess'>"
     "    </method>"
     "  </interface>"
     "</node>";
@@ -84,7 +88,7 @@ struct PerfServer::Priv {
     int perf_stderr_fd;
 
     Priv () :
-//        subject (polkit_system_bus_name_new ("org.gnome.nemiver")),
+//        subject (polkit_system_bus_name_new ("org.gnome.Nemiver")),
         bus_id (0),
         registration_id (0),
         introspection_data (0),
@@ -99,8 +103,9 @@ struct PerfServer::Priv {
     }
 
     bool
-    on_wait_for_record_to_exit (const Glib::RefPtr<Gio::DBus::MethodInvocation>
-                                    &a_invocation,
+    on_wait_for_record_to_exit (int a_uid, int a_gid,
+                                Glib::RefPtr<Gio::DBus::MethodInvocation>
+                                    a_invocation,
                                 Glib::ustring a_report_filepath)
     {
         int status = 0;
@@ -114,13 +119,21 @@ struct PerfServer::Priv {
             perf_stdout_fd = 0;
             perf_stderr_fd = 0;
 
+            NEMIVER_TRY;
+
             Glib::Variant<Glib::ustring> perf_data =
                 Glib::Variant<Glib::ustring>::create (a_report_filepath);
 
             Glib::VariantContainerBase response =
                 Glib::VariantContainerBase::create_tuple (perf_data);
 
+            chown (a_report_filepath.c_str (), a_uid, a_gid);
+
+            std::cout << "Saving report to " << a_report_filepath << std::endl;
+
             a_invocation->return_value (response);
+
+            NEMIVER_CATCH_NOX;
 
             return false;
         }
@@ -129,7 +142,7 @@ struct PerfServer::Priv {
     }
 
     void
-    on_new_request (const Glib::RefPtr<Gio::DBus::Connection>&,
+    on_new_request (const Glib::RefPtr<Gio::DBus::Connection> &a_connection,
                     const Glib::ustring&,
                     const Glib::ustring&,
                     const Glib::ustring&,
@@ -140,15 +153,22 @@ struct PerfServer::Priv {
     {
         NEMIVER_TRY;
 
+        THROW_IF_FAIL (a_connection);
         THROW_IF_FAIL (a_invocation);
 
         if(a_request_name == "AttachToPID") {
             Glib::Variant<int> pid_param;
+            Glib::Variant<int> uid_param;
+            Glib::Variant<int> gid_param;
             Glib::Variant<std::vector<Glib::ustring> > options_param;
             a_parameters.get_child (pid_param);
-            a_parameters.get_child (options_param, 1);
+            a_parameters.get_child (uid_param, 1);
+            a_parameters.get_child (gid_param, 2);
+            a_parameters.get_child (options_param, 3);
 
             int pid = pid_param.get ();
+            int uid = uid_param.get ();
+            int gid = gid_param.get ();
             std::vector<Glib::ustring> options (options_param.get ());
             for (std::vector<Glib::ustring>::iterator iter = options.begin ();
                  iter != options.end ();
@@ -176,6 +196,8 @@ struct PerfServer::Priv {
             argv.push_back (filepath.get ());
             argv.insert (argv.end (), options.begin (), options.end ());
 
+            std::cout << "Launching perf with pid: " << pid << std::endl;
+
             bool is_launched =
                 common::launch_program (argv,
                                         perf_pid,
@@ -185,14 +207,25 @@ struct PerfServer::Priv {
 
             THROW_IF_FAIL (is_launched);
 
+            std::cout << "Perf started" << std::endl;
+
             Glib::RefPtr<Glib::MainContext> context =
                 Glib::MainContext::get_default ();
             context->signal_idle ().connect
-                (sigc::bind<const Glib::RefPtr<Gio::DBus::MethodInvocation>, Glib::ustring>
+                (sigc::bind<int, int,
+                            Glib::RefPtr<Gio::DBus::MethodInvocation>,
+                            Glib::ustring>
                         (sigc::mem_fun (*this,
                          &PerfServer::Priv::on_wait_for_record_to_exit),
+                 uid, gid,
                  a_invocation,
                  filepath.get ()));
+        }
+        else if (a_request_name == "DetachFromProcess") {
+            kill (perf_pid, SIGINT);
+
+            Glib::VariantContainerBase response;
+            a_invocation->return_value (response);
         }
         else
         {
@@ -211,7 +244,7 @@ struct PerfServer::Priv {
             (NMV_DBUS_PROFILER_SERVER_INTROSPECTION_DATA);
 
         bus_id = Gio::DBus::own_name
-            (Gio::DBus::BUS_TYPE_SESSION,
+            (Gio::DBus::BUS_TYPE_SYSTEM,
              NMV_BUS_NAME,
              sigc::mem_fun (*this, &PerfServer::Priv::on_bus_acquired),
              sigc::mem_fun (*this, &PerfServer::Priv::on_name_acquired),

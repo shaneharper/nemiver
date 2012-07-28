@@ -631,6 +631,9 @@ ProfPerspective::attach_to_process (unsigned a_pid)
 
     THROW_IF_FAIL (throbber);
     throbber->start ();
+
+    THROW_IF_FAIL (recording_action_group);
+    recording_action_group->set_sensitive (true);
 }
 
 void
