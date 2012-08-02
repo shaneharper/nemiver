@@ -1405,7 +1405,7 @@ msgstr "ヘルプ(_H)"
 
 #: ../src/workbench/nmv-workbench.cc:717
 msgid "_About"
-msgstr "情報(_A)"
+msgstr "このアプリケーションについて(_A)"
 
 #: ../src/workbench/nmv-workbench.cc:718
 msgid "Display information about this application"
