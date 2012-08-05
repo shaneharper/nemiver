@@ -31,6 +31,7 @@
 #include "nmv-spinner-tool-item.h"
 #include "nmv-run-program-dialog.h"
 #include "nmv-i-profiler.h"
+#include "nmv-confmgr-record-options.h"
 #include "common/nmv-safe-ptr-utils.h"
 #include "common/nmv-str-utils.h"
 #include "common/nmv-proc-mgr.h"
@@ -578,7 +579,11 @@ ProfPerspective::run_executable (const UString &a_program_name,
     THROW_IF_FAIL (!a_program_name.empty ());
     THROW_IF_FAIL (profiler ());
 
-    profiler ()->record (a_program_name, argv);
+    IConfMgrSafePtr confmgr = get_workbench ().get_configuration_manager ();
+    THROW_IF_FAIL (confmgr);
+
+    ConfMgrRecordOptions options (*confmgr);
+    profiler ()->record (a_program_name, argv, options);
 
     THROW_IF_FAIL (throbber);
     throbber->start ();

@@ -25,7 +25,6 @@
 
 #include "nmv-perf-engine.h"
 #include "nmv-call-graph-node.h"
-#include "nmv-conf-keys.h"
 #include "common/nmv-proc-utils.h"
 #include "common/nmv-str-utils.h"
 #include <istream>
@@ -65,6 +64,7 @@ struct PerfEngine::Priv {
     sigc::signal<void, const UString&, const UString&> symbol_annotated_signal;
 
     bool is_using_prof_server;
+    unsigned request_id;
     Glib::RefPtr<Gio::DBus::Connection> server_connection;
     Glib::RefPtr<Gio::DBus::Proxy> proxy;
 
@@ -393,108 +393,67 @@ PerfEngine::attach_to_pid (int a_pid)
     Glib::Variant<int> pid_param = Glib::Variant<int>::create (a_pid);
     Glib::Variant<int> uid_param = Glib::Variant<int>::create (getuid ());
     Glib::Variant<int> gid_param = Glib::Variant<int>::create (a_pid);
-    Glib::Variant<std::vector<Glib::ustring> > options_param =
-        Glib::Variant<std::vector<Glib::ustring> >::create (options);
 
     std::vector<Glib::VariantBase> parameters;
     parameters.push_back (pid_param);
     parameters.push_back (uid_param);
     parameters.push_back (gid_param);
-    parameters.push_back (options_param);
 
     Glib::VariantContainerBase parameters_variant =
         Glib::VariantContainerBase::create_tuple (parameters);
+    Glib::VariantContainerBase response;
 
     m_priv->is_using_prof_server = true;
+    response = m_priv->proxy->call_sync ("AttachToPID", parameters_variant);
+
+    Glib::Variant<unsigned> request_id_param;
+    response.get_child (request_id_param);
+    m_priv->request_id = request_id_param.get ();
+
+    parameters.clear ();
+    parameters.push_back (request_id_param);
+    parameters_variant = Glib::VariantContainerBase::create_tuple (parameters);
     m_priv->proxy->call
-        ("AttachToPID",
+        ("RecordDoneSignal",
          sigc::mem_fun (*m_priv, &PerfEngine::Priv::on_detached_from_process),
          parameters_variant);
-
-/*    std::vector<UString> argv;
-    argv.push_back ("--pid");
-    argv.push_back (UString::compose ("%1", a_pid));
-
-    record (argv);
-*/
 }
 
 void
-PerfEngine::record (const std::vector<UString> &a_argv)
+PerfEngine::record (const std::vector<UString> &a_argv,
+                    const RecordOptions &a_options)
 {
     SafePtr<char, DefaultRef, FreeUnref> tmp_filepath (tempnam(0, 0));
     THROW_IF_FAIL (tmp_filepath);
 
     THROW_IF_FAIL (m_priv);
     m_priv->record_filepath = tmp_filepath.get ();
-    bool do_callgraph_recording = true;
-    bool do_collect_without_buffering = false;
-    bool do_collect_raw_sample_records = false;
-    bool do_system_wide_collection = false;
-    bool do_sample_addresses = false;
-    bool do_sample_timestamps = false;
-
-    if (!m_priv->conf_mgr ().get_key_value (CONF_KEY_DO_CALLGRAPH_RECORDING,
-                                    do_callgraph_recording)) {
-        LOG_ERROR ("failed to get gconf key "
-                   << CONF_KEY_DO_CALLGRAPH_RECORDING);
-    }
-
-    if (!m_priv->conf_mgr ().get_key_value (CONF_KEY_COLLECT_WITHOUT_BUFFERING,
-                                    do_collect_without_buffering)) {
-        LOG_ERROR ("failed to get gconf key "
-                   << CONF_KEY_COLLECT_WITHOUT_BUFFERING);
-    }
-
-    if (!m_priv->conf_mgr ().get_key_value (CONF_KEY_COLLECT_RAW_SAMPLE_RECORDS,
-                                    do_collect_raw_sample_records)) {
-        LOG_ERROR ("failed to get gconf key "
-                   << CONF_KEY_COLLECT_RAW_SAMPLE_RECORDS);
-    }
-
-    if (!m_priv->conf_mgr ().get_key_value (CONF_KEY_SYSTEM_WIDE_COLLECTION,
-                                    do_system_wide_collection)) {
-        LOG_ERROR ("failed to get gconf key "
-                   << CONF_KEY_SYSTEM_WIDE_COLLECTION);
-    }
-
-    if (!m_priv->conf_mgr ().get_key_value (CONF_KEY_SAMPLE_ADDRESSES,
-                                    do_sample_addresses)) {
-        LOG_ERROR ("failed to get gconf key "
-                   << CONF_KEY_SAMPLE_ADDRESSES);
-    }
-
-    if (!m_priv->conf_mgr ().get_key_value (CONF_KEY_SAMPLE_TIMESTAMPS,
-                                    do_sample_timestamps)) {
-        LOG_ERROR ("failed to get gconf key "
-                   << CONF_KEY_SAMPLE_TIMESTAMPS);
-    }
 
     std::vector<UString> argv;
     argv.push_back ("perf");
     argv.push_back ("record");
 
-    if (do_callgraph_recording) {
+    if (a_options.do_callgraph_recording ()) {
         argv.push_back ("--call-graph");
     }
 
-    if (do_collect_without_buffering) {
+    if (a_options.do_collect_without_buffering ()) {
         argv.push_back ("--no-delay");
     }
 
-    if (do_collect_raw_sample_records) {
+    if (a_options.do_collect_raw_sample_records ()) {
         argv.push_back ("--raw-samples");
     }
 
-    if (do_system_wide_collection) {
+    if (a_options.do_system_wide_collection ()) {
         argv.push_back ("--all-cpus");
     }
 
-    if (do_sample_addresses) {
+    if (a_options.do_sample_addresses ()) {
         argv.push_back ("--data");
     }
 
-    if (do_sample_timestamps) {
+    if (a_options.do_sample_timestamps ()) {
         argv.push_back ("--timestamp");
     }
 
@@ -517,14 +476,15 @@ PerfEngine::record (const std::vector<UString> &a_argv)
 
 void
 PerfEngine::record (const UString &a_program_path,
-                    const std::vector<UString> &a_argv)
+                    const std::vector<UString> &a_argv,
+                    const RecordOptions &a_options)
 {
     std::vector<UString> argv;
     argv.push_back ("--");
     argv.push_back (a_program_path);
     argv.insert (argv.end (), a_argv.begin (), a_argv.end ());
 
-    record (argv);
+    record (argv, a_options);
 }
 
 void

@@ -28,6 +28,8 @@
 #include "common/nmv-exception.h"
 #include "common/nmv-ustring.h"
 #include "common/nmv-proc-utils.h"
+#include "nmv-record-options.h"
+#include "nmv-perf-engine.h"
 
 #include <glibmm.h>
 #include <giomm.h>
@@ -53,13 +55,67 @@ static const char *const NMV_DBUS_PROFILER_SERVER_INTROSPECTION_DATA =
     "        <arg type='i' name='uid' direction='in' />"
     "        <arg type='i' name='gid' direction='in' />"
 //    "        <arg type='u' name='cookie' direction='in' />"
-    "        <arg type='as' name='arguments' direction='in' />"
-    "        <arg type='s' name='data_filepath' direction='out' />"
+    "        <arg type='i' name='request_id' direction='out' />"
     "    </method>"
     "    <method name='DetachFromProcess'>"
+    "        <arg type='i' name='request_id' direction='in' />"
+    "    </method>"
+    "    <method name='RecordDoneSignal'>"
+    "        <arg type='i' name='request_id' direction='in' />"
+    "        <arg type='s' name='report_filepath' direction='out' />"
     "    </method>"
     "  </interface>"
     "</node>";
+
+class PerfRecordOptions : public RecordOptions {
+    bool callgraph_recording;
+    bool collect_without_buffering;
+    bool collect_raw_sample_records;
+    bool system_wide_collection;
+    bool sample_addresses;
+    bool sample_timestamps;
+
+public:
+    PerfRecordOptions () :
+        callgraph_recording (true),
+        collect_without_buffering (false),
+        collect_raw_sample_records (false),
+        system_wide_collection (false),
+        sample_addresses (false),
+        sample_timestamps (false)
+    {
+    }
+
+    bool do_callgraph_recording () const
+    {
+        return callgraph_recording;
+    }
+
+    bool do_collect_without_buffering () const
+    {
+        return collect_without_buffering;
+    }
+
+    bool do_collect_raw_sample_records () const
+    {
+        return collect_raw_sample_records;
+    }
+
+    bool do_system_wide_collection () const
+    {
+        return system_wide_collection;
+    }
+
+    bool do_sample_addresses () const
+    {
+        return sample_addresses;
+    }
+
+    bool do_sample_timestamps () const
+    {
+        return sample_timestamps;
+    }
+}; // end namespace PerfRecordOptions
 
 class PerfServer {
 
@@ -75,17 +131,27 @@ public:
     ~PerfServer ();
 }; // end namespace PerfServer
 
+struct RequestInfo {
+    int gid;
+    int uid;
+    SafePtr<PerfEngine> profiler;
+    Glib::RefPtr<Gio::DBus::MethodInvocation> invocation;
+
+    RequestInfo () :
+        profiler (new PerfEngine (0)),
+        invocation (0)
+    {
+    }
+};
+
 struct PerfServer::Priv {
 //    PolkitSubject *subject;
-    unsigned int bus_id;
-    unsigned int registration_id;
+    unsigned bus_id;
+    unsigned registration_id;
     Glib::RefPtr<Gio::DBus::NodeInfo> introspection_data;
     Gio::DBus::InterfaceVTable interface_vtable;
-
-    int perf_pid;
-    int master_pty_fd;
-    int perf_stdout_fd;
-    int perf_stderr_fd;
+    std::map<int, RequestInfo> request_map;
+    unsigned next_request_id;
 
     Priv () :
 //        subject (polkit_system_bus_name_new ("org.gnome.Nemiver")),
@@ -94,51 +160,9 @@ struct PerfServer::Priv {
         introspection_data (0),
         interface_vtable
             (sigc::mem_fun (*this, &PerfServer::Priv::on_new_request)),
-        perf_pid (0),
-        master_pty_fd (0),
-        perf_stdout_fd (0),
-        perf_stderr_fd (0)
+        next_request_id (0)
     {
         init ();
-    }
-
-    bool
-    on_wait_for_record_to_exit (int a_uid, int a_gid,
-                                Glib::RefPtr<Gio::DBus::MethodInvocation>
-                                    a_invocation,
-                                Glib::ustring a_report_filepath)
-    {
-        int status = 0;
-        pid_t pid = waitpid (perf_pid, &status, WNOHANG);
-        bool is_terminated = WIFEXITED (status) || WIFSIGNALED (status);
-
-        if (pid == perf_pid && is_terminated) {
-            g_spawn_close_pid (perf_pid);
-            perf_pid = 0;
-            master_pty_fd = 0;
-            perf_stdout_fd = 0;
-            perf_stderr_fd = 0;
-
-            NEMIVER_TRY;
-
-            Glib::Variant<Glib::ustring> perf_data =
-                Glib::Variant<Glib::ustring>::create (a_report_filepath);
-
-            Glib::VariantContainerBase response =
-                Glib::VariantContainerBase::create_tuple (perf_data);
-
-            chown (a_report_filepath.c_str (), a_uid, a_gid);
-
-            std::cout << "Saving report to " << a_report_filepath << std::endl;
-
-            a_invocation->return_value (response);
-
-            NEMIVER_CATCH_NOX;
-
-            return false;
-        }
-
-        return true;
     }
 
     void
@@ -160,69 +184,56 @@ struct PerfServer::Priv {
             Glib::Variant<int> pid_param;
             Glib::Variant<int> uid_param;
             Glib::Variant<int> gid_param;
-            Glib::Variant<std::vector<Glib::ustring> > options_param;
             a_parameters.get_child (pid_param);
             a_parameters.get_child (uid_param, 1);
             a_parameters.get_child (gid_param, 2);
-            a_parameters.get_child (options_param, 3);
+
+            RequestInfo request;
 
             int pid = pid_param.get ();
-            int uid = uid_param.get ();
-            int gid = gid_param.get ();
-            std::vector<Glib::ustring> options (options_param.get ());
-            for (std::vector<Glib::ustring>::iterator iter = options.begin ();
-                 iter != options.end ();
-                 ++iter) {
-                if (*iter != "--output") {
-                    continue;
-                }
+            request.uid = uid_param.get ();
+            request.gid = gid_param.get ();
 
-                Gio::DBus::Error error
-                    (Gio::DBus::Error::INVALID_ARGS,
-                     _("--output parameter is "
-                       "forbidden for security reasons"));
-                a_invocation->return_error (error);
-            }
-
-            SafePtr<char, DefaultRef, FreeUnref> filepath (tempnam(0, 0));
-            THROW_IF_FAIL (filepath);
+            THROW_IF_FAIL (!request_map.count (pid));
 
             std::vector<UString> argv;
-            argv.push_back ("perf");
-            argv.push_back ("record");
             argv.push_back ("--pid");
             argv.push_back (UString::compose ("%1", pid));
-            argv.push_back ("--output");
-            argv.push_back (filepath.get ());
-            argv.insert (argv.end (), options.begin (), options.end ());
 
-            std::cout << "Launching perf with pid: " << pid << std::endl;
+            request_map[pid] = request;
+            PerfRecordOptions options;
 
-            bool is_launched =
-                common::launch_program (argv,
-                                        perf_pid,
-                                        master_pty_fd,
-                                        perf_stdout_fd,
-                                        perf_stderr_fd);
+            THROW_IF_FAIL (request.profiler);
+            request.profiler->record (argv, options);
 
-            THROW_IF_FAIL (is_launched);
+            Glib::Variant<unsigned> perf_data =
+                Glib::Variant<unsigned>::create (next_request_id++);
 
-            std::cout << "Perf started" << std::endl;
+            Glib::VariantContainerBase response;
+            response = Glib::VariantContainerBase::create_tuple (perf_data);
+            a_invocation->return_value (response);
+        }
+        else if (a_request_name == "RecordDoneSignal") {
+            Glib::Variant<unsigned> request_param;
+            a_parameters.get_child (request_param);
 
-            Glib::RefPtr<Glib::MainContext> context =
-                Glib::MainContext::get_default ();
-            context->signal_idle ().connect
-                (sigc::bind<int, int,
-                            Glib::RefPtr<Gio::DBus::MethodInvocation>,
-                            Glib::ustring>
-                        (sigc::mem_fun (*this,
-                         &PerfServer::Priv::on_wait_for_record_to_exit),
-                 uid, gid,
-                 a_invocation,
-                 filepath.get ()));
+            unsigned request_id = request_param.get ();
+            THROW_IF_FAIL (request_map.count (request_id));
+            request_map[request_id].invocation = a_invocation;
+            request_map[request_id].profiler->record_done_signal ().connect
+                (sigc::bind<unsigned> (sigc::mem_fun
+                    (*this, &PerfServer::Priv::on_record_done_signal),
+                     request_id));
         }
         else if (a_request_name == "DetachFromProcess") {
-            kill (perf_pid, SIGINT);
+            Glib::Variant<unsigned> request_param;
+            a_parameters.get_child (request_param);
+
+            unsigned request_id = request_param.get ();
+            THROW_IF_FAIL (request_map.count (request_id));
+
+            THROW_IF_FAIL (request_map[request_id].profiler);
+            request_map[request_id].profiler->stop_recording ();
 
             Glib::VariantContainerBase response;
             a_invocation->return_value (response);
@@ -235,6 +246,28 @@ struct PerfServer::Priv {
         }
 
         NEMIVER_CATCH_NOX
+    }
+
+    void
+    on_record_done_signal (const UString &a_report, unsigned a_request_id)
+    {
+        NEMIVER_TRY;
+
+        THROW_IF_FAIL (request_map.count (a_request_id));
+
+        Glib::Variant<Glib::ustring> perf_data =
+            Glib::Variant<Glib::ustring>::create (a_report);
+
+        Glib::VariantContainerBase response =
+            Glib::VariantContainerBase::create_tuple (perf_data);
+
+        chown (a_report.c_str (),
+               request_map[a_request_id].uid,
+               request_map[a_request_id].gid);
+
+        request_map[a_request_id].invocation->return_value (response);
+
+        NEMIVER_CATCH_NOX;
     }
 
     void
@@ -253,7 +286,7 @@ struct PerfServer::Priv {
 
     void
     on_bus_acquired (const Glib::RefPtr<Gio::DBus::Connection> &a_connection,
-                    const Glib::ustring&)
+                     const Glib::ustring&)
     {
         NEMIVER_TRY;
 

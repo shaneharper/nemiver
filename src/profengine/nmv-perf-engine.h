@@ -44,9 +44,11 @@ public:
 
     void report (const UString &a_data_file);
     void attach_to_pid (int a_pid);
-    void record (const std::vector<UString> &a_argv);
+    void record (const std::vector<UString> &a_argv,
+                 const RecordOptions &a_options);
     void record (const UString &a_program_path,
-                 const std::vector<UString> &a_argv);
+                 const std::vector<UString> &a_argv,
+                 const RecordOptions &a_options);
     void stop_recording ();
     void annotate_symbol (const UString &a_symbol_name);
 

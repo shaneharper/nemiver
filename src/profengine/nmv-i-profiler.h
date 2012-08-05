@@ -32,6 +32,7 @@
 #include "nmv-i-conf-mgr.h"
 #include "nmv-i-profiler.h"
 #include "nmv-call-graph-node.h"
+#include "nmv-record-options.h"
 
 using nemiver::common::SafePtr;
 using nemiver::common::DynamicModule;
@@ -79,7 +80,8 @@ public:
     virtual void report (const UString &a_data_file) = 0;
 
     virtual void record (const UString &a_program_path,
-                         const std::vector<UString> &a_argv) = 0;
+                         const std::vector<UString> &a_argv,
+                         const RecordOptions &a_options) = 0;
 
     virtual void stop_recording () = 0;
 
