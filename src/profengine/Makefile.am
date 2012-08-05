@@ -45,7 +45,7 @@ configdir=@NEMIVER_SYSTEM_CONFIG_DIR@
 bin_PROGRAMS=nmvperfserver
 nmvperfserver_SOURCES=$(h)/nmv-perf-server.cc
 nmvperfserver=@NEMIVER_MODULES_DIR@
-nmvperfserver_LDADD=@NEMIVERPROFPERSP_LIBS@ \
+nmvperfserver_LDADD=@NEMIVERPROFPERSP_LIBS@ @NEMIVERPERFSERVER_LIBS@ \
 $(abs_top_builddir)/src/common/libnemivercommon.la libperfcommon.la
 
 service_DATA=org.gnome.nemiver.profiler.service
@@ -55,5 +55,6 @@ bus_DATA=org.gnome.nemiver.profiler.conf.in
 busdir=/etc/dbus-1/system.d/
 
 INCLUDES=@NEMIVERCOMMON_CFLAGS@ @NEMIVERPROFPERSP_CFLAGS@ \
+@NEMIVERPERFSERVER_CFLAGS@ \
 -DENABLE_NLS=1 -DDATADIR=\"${datadir}\" \
 -I$(top_srcdir)/src -I$(top_srcdir)/src/confmgr

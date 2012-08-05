@@ -31,6 +31,7 @@
 #include "nmv-record-options.h"
 #include "nmv-perf-engine.h"
 
+#include <polkit/polkit.h>
 #include <glibmm.h>
 #include <giomm.h>
 #include <glib/gi18n.h>
@@ -180,6 +181,20 @@ struct PerfServer::Priv {
 
         THROW_IF_FAIL (a_connection);
         THROW_IF_FAIL (a_invocation);
+
+        Glib::ustring bus_name = a_invocation->get_sender ();
+
+        PolkitAuthorizationResult *result =
+            polkit_authority_check_authorization_sync
+                (polkit_authority_get_sync (NULL, NULL),
+                 polkit_system_bus_name_new (bus_name.c_str ()),
+                 "org.gnome.nemiver.profile-app",
+                 NULL,
+                 POLKIT_CHECK_AUTHORIZATION_FLAGS_ALLOW_USER_INTERACTION,
+                 NULL,
+                 NULL);
+        THROW_IF_FAIL (result);
+        THROW_IF_FAIL (polkit_authorization_result_get_is_authorized(result));
 
         if(a_request_name == "AttachToPID") {
             Glib::Variant<int> pid_param;
