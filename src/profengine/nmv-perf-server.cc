@@ -55,13 +55,13 @@ static const char *const NMV_DBUS_PROFILER_SERVER_INTROSPECTION_DATA =
     "        <arg type='i' name='uid' direction='in' />"
     "        <arg type='i' name='gid' direction='in' />"
 //    "        <arg type='u' name='cookie' direction='in' />"
-    "        <arg type='i' name='request_id' direction='out' />"
+    "        <arg type='u' name='request_id' direction='out' />"
     "    </method>"
     "    <method name='DetachFromProcess'>"
-    "        <arg type='i' name='request_id' direction='in' />"
+    "        <arg type='u' name='request_id' direction='in' />"
     "    </method>"
     "    <method name='RecordDoneSignal'>"
-    "        <arg type='i' name='request_id' direction='in' />"
+    "        <arg type='u' name='request_id' direction='in' />"
     "        <arg type='s' name='report_filepath' direction='out' />"
     "    </method>"
     "  </interface>"
@@ -134,11 +134,12 @@ public:
 struct RequestInfo {
     int gid;
     int uid;
-    SafePtr<PerfEngine> profiler;
+    SafePtr<PerfEngine, ObjectRef, ObjectUnref> profiler;
     Glib::RefPtr<Gio::DBus::MethodInvocation> invocation;
 
     RequestInfo () :
-        profiler (new PerfEngine (0)),
+        profiler (nemiver::load_iface_and_confmgr<PerfEngine> ("perfengine",
+                                                               "IProfiler")),
         invocation (0)
     {
     }
@@ -200,7 +201,7 @@ struct PerfServer::Priv {
             argv.push_back ("--pid");
             argv.push_back (UString::compose ("%1", pid));
 
-            request_map[pid] = request;
+            request_map[next_request_id] = request;
             PerfRecordOptions options;
 
             THROW_IF_FAIL (request.profiler);

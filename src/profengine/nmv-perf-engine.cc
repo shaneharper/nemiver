@@ -493,7 +493,16 @@ PerfEngine::stop_recording ()
     THROW_IF_FAIL (m_priv);
 
     if (m_priv->is_using_prof_server) {
-        m_priv->proxy->call_sync ("DetachFromProcess");
+        Glib::Variant<unsigned> request_param =
+            Glib::Variant<unsigned>::create (m_priv->request_id);
+
+        std::vector<Glib::VariantBase> parameters;
+        parameters.push_back (request_param);
+
+        Glib::VariantContainerBase parameters_variant =
+            Glib::VariantContainerBase::create_tuple (parameters);
+
+        m_priv->proxy->call_sync ("DetachFromProcess", parameters_variant);
     } else {
         THROW_IF_FAIL (m_priv->perf_pid);
         kill (m_priv->perf_pid, SIGINT);
