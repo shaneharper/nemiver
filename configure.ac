@@ -505,6 +505,7 @@ src/Makefile
   src/profengine/perfengine.conf
   src/profengine/org.gnome.nemiver.profiler.service
   src/profengine/org.gnome.nemiver.profiler.conf
+  src/profengine/org.gnome.nemiver.profiler.policy
   src/confmgr/Makefile
   src/confmgr/gconfmgr.conf
   src/confmgr/gsettingsmgr.conf

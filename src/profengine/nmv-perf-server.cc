@@ -188,7 +188,7 @@ struct PerfServer::Priv {
             polkit_authority_check_authorization_sync
                 (polkit_authority_get_sync (NULL, NULL),
                  polkit_system_bus_name_new (bus_name.c_str ()),
-                 "org.gnome.nemiver.profile-app",
+                 "org.gnome.nemiver.profiler.profile-running-process",
                  NULL,
                  POLKIT_CHECK_AUTHORIZATION_FLAGS_ALLOW_USER_INTERACTION,
                  NULL,

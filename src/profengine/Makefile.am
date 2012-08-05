@@ -48,10 +48,13 @@ nmvperfserver=@NEMIVER_MODULES_DIR@
 nmvperfserver_LDADD=@NEMIVERPROFPERSP_LIBS@ @NEMIVERPERFSERVER_LIBS@ \
 $(abs_top_builddir)/src/common/libnemivercommon.la libperfcommon.la
 
+policy_DATA=org.gnome.nemiver.profiler.policy
+policydir=$(datadir)/polkit-1/actions/
+
 service_DATA=org.gnome.nemiver.profiler.service
 servicedir=$(datadir)/dbus-1/system-services
 
-bus_DATA=org.gnome.nemiver.profiler.conf.in
+bus_DATA=org.gnome.nemiver.profiler.conf
 busdir=/etc/dbus-1/system.d/
 
 INCLUDES=@NEMIVERCOMMON_CFLAGS@ @NEMIVERPROFPERSP_CFLAGS@ \
