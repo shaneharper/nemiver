@@ -129,7 +129,7 @@ dnl a list of enablexxx options
 dnl ***************************
 
 AC_ARG_ENABLE(idebuggeronly,
-              AS_HELP_STRING([--enable-idebugger-only=yes|no],
+              AS_HELP_STRING([--enable-idebuggeronly=yes|no],
                              [compile the idebuger iface only (default is no)]),
               ENABLE_IDEBUGGER_ONLY=$enableval,
               ENABLE_IDEBUGGER_ONLY=no)
@@ -137,6 +137,7 @@ if test x$ENABLE_IDEBUGGER_ONLY = xyes ; then
     ENABLE_DBGENGINE=yes
     ENABLE_WORKBENCH=no
 fi
+AM_CONDITIONAL(ENABLE_IDEBUGGER_ONLY, test x$ENABLE_IDEBUGGER_ONLY = xyes)
 
 AC_ARG_ENABLE(autotests,
               AS_HELP_STRING([--enable-autotests=yes|no],
@@ -164,19 +165,25 @@ AC_ARG_ENABLE(workbench,
                              [enable the graphical dbg workbench (default is yes)]),
               ENABLE_WORKBENCH=$enableval,
               ENABLE_WORKBENCH=yes)
+
+# If ENABLE_IDEBUGGER_ONLY was previously set to yes, then honour it.
+if test x$ENABLE_IDEBUGGER_ONLY = xyes; then
+   ENABLE_WORKBENCH=no;
+fi
+
 if test x$ENABLE_WORKBENCH = xyes ; then
     AC_DEFINE([WITH_WORKBENCH], 1, [compile the workbench])
 else
     ENABLE_WORKBENCH=no
 fi
-
+AM_CONDITIONAL(ENABLE_WORKBENCH, test x$ENABLE_WORKBENCH = xyes)
 
 AC_ARG_ENABLE(memoryview,
               AS_HELP_STRING([--enable-memoryview=yes|no],
                              [enable the memory view hex editor (default is yes)]),
               ENABLE_MEMORYVIEW=$enableval,
               [PKG_CHECK_EXISTS([gtkhex-3 >= $GTKHEX_VERSION], [ENABLE_MEMORYVIEW=yes], [ENABLE_MEMORYVIEW=no])])
-if test x$ENABLE_MEMORYVIEW = xyes ; then
+if test x$ENABLE_MEMORYVIEW = xyes -a x$ENABLE_WORKBENCH = xyes; then
     AC_DEFINE([WITH_MEMORYVIEW], 1, [compile the the memory view widget])
 else
     ENABLE_MEMORYVIEW=no
@@ -189,7 +196,7 @@ AC_ARG_ENABLE(dynamiclayout,
                              [enable the dynamic layout (default is yes)]),
               ENABLE_DYNAMICLAYOUT=$enableval,
               [PKG_CHECK_EXISTS([gdlmm-3.0 >= $LIBGDLMM_VERSION], [ENABLE_DYNAMICLAYOUT=yes], [ENABLE_DYNAMICLAYOUT=no])])
-if test x$ENABLE_DYNAMICLAYOUT = xyes ; then
+if test x$ENABLE_DYNAMICLAYOUT = xyes -a x$ENABLE_WORKBENCH = xyes ; then
     AC_DEFINE([WITH_DYNAMICLAYOUT], 1, [compile the dynamic layout])
 else
     ENABLE_DYNAMICLAYOUT=no

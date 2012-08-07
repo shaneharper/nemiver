@@ -1,6 +1,19 @@
-SUBDIRS=common dbdimpl langs dbgengine confmgr uicommon workbench persp
+WORKBENCH_STUFF=uicommon workbench persp
+NON_WORKBENCH_STUFF= common dbdimpl langs dbgengine confmgr
+
+if ENABLE_WORKBENCH
+
+SUBDIRS=$(NON_WORKBENCH_STUFF) $(WORKBENCH_STUFF)
+
+else
+
+SUBDIRS=$(NON_WORKBENCH_STUFF)
+
+endif
 
 h=$(abs_srcdir)
+
+if ENABLE_WORKBENCH
 
 bin_PROGRAMS=nemiver
 nemiver_SOURCES=$(h)/main.cc
@@ -8,6 +21,8 @@ nemiver_LDADD= \
 @NEMIVER_LIBS@  \
 $(abs_top_builddir)/src/common/libnemivercommon.la \
 $(abs_top_builddir)/src/uicommon/libnemiveruicommon.la
+
+endif
 
 INCLUDES=\
 -DNEMIVERLOCALEDIR=\"$(nemiverlocaledir)\" \
