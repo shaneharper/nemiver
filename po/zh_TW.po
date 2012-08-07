@@ -2,21 +2,22 @@
 # Copyright (C) 2012 nemiver's COPYRIGHT HOLDER
 # This file is distributed under the same license as the nemiver package.
 # Cheng-Chia Tseng <pswo10680@gmail.com>, 2012.
-#
+# Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: nemiver master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=nemiver&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-07-07 17:04+0000\n"
-"PO-Revision-Date: 2012-07-07 18:51+0800\n"
-"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
-"Language-Team: Chinese (Taiwan) <chinese-l10n@googlegroups.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-07 13:43+0800\n"
+"PO-Revision-Date: 2012-08-07 10:49+0800\n"
+"Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
+"Language-Team: Chinese (traditional) <zh-l10n@lists.linux.org.tw>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Virtaal 0.7.1\n"
+"X-Project-Style: gnome\n"
 
 #: ../data/nemiver.desktop.in.h:1 ../ui/workbench.ui.h:1
 msgid "Nemiver"
@@ -40,44 +41,43 @@ msgstr "設定程式的環境來除錯"
 
 #: ../src/main.cc:87
 msgid "Attach to a process"
-msgstr ""
+msgstr "附加到程序"
 
 #: ../src/main.cc:96
 msgid "Load a core file"
 msgstr "載入核心檔案"
 
 #: ../src/main.cc:104
-#, fuzzy
 msgid "List the saved debugging sessions"
-msgstr "列出儲存的除錯"
+msgstr "列出儲存的除錯作業階段"
 
 #: ../src/main.cc:112
 msgid "Erase the saved debugging sessions"
-msgstr ""
+msgstr "清除儲存的除錯作業階段"
 
 #: ../src/main.cc:120
 msgid "Debug the program that was of session number N"
-msgstr ""
+msgstr "除錯作業階段編號為 N 的程式"
 
 #: ../src/main.cc:128
 msgid "Execute the last session"
-msgstr ""
+msgstr "執行上次的作業階段"
 
 #: ../src/main.cc:136
 msgid "Enable logging domains DOMAINS"
-msgstr ""
+msgstr "啟用記錄網域 DOMAINS"
 
 #: ../src/main.cc:144
 msgid "Log the debugger output"
-msgstr ""
+msgstr "記錄除錯器的輸出"
 
 #: ../src/main.cc:152
 msgid "Use this terminal as the debugee's terminal"
-msgstr ""
+msgstr "使用這個終端機作為除錯器的終端機"
 
 #: ../src/main.cc:161
 msgid "Connect to remote target specified by HOST:PORT"
-msgstr ""
+msgstr "連線到以 HOST:PORT 指定的遠端目標"
 
 #: ../src/main.cc:170
 msgid ""
@@ -95,31 +95,35 @@ msgstr ""
 
 #: ../src/main.cc:198
 msgid "Show the version number of Nemiver"
-msgstr ""
+msgstr "顯示 Nemiver 的版本號碼"
 
 #: ../src/main.cc:264
 msgid " [<prog-to-debug> [prog-args]]"
-msgstr ""
+msgstr " [<prog-to-debug> [prog-args]]"
 
 #: ../src/main.cc:267 ../src/workbench/nmv-workbench.cc:263
 msgid "A C/C++ debugger for GNOME"
-msgstr ""
+msgstr "GNOME 的 C/C++ 除錯器"
 
 #: ../src/main.cc:361
 msgid ""
 "Please provide a local copy of the binary you intend to debug remotely.\n"
 "Like this:\n"
 msgstr ""
+"請提供您想要遠端除錯的二元檔的本地端複本。\n"
+"就像這樣：\n"
 
 #: ../src/main.cc:366 ../src/main.cc:385
 msgid "Otherwise, find below the full set of Nemiver options.\n"
-msgstr ""
+msgstr "否則，請找出下列 Nemiver 選項的完整合\n"
 
 #: ../src/main.cc:380
 msgid ""
 "Please provide the path to the binary that generated the core file too.\n"
 "Like this:\n"
 msgstr ""
+"請提供產生的核心檔案的二元檔路徑。\n"
+"就像這樣：\n"
 
 #. create the columns of the tree view
 #: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:148
@@ -149,14 +153,12 @@ msgid "Address"
 msgstr "位址"
 
 #: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:153
-#, fuzzy
 msgid "Condition"
 msgstr "條件"
 
 #: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:155
-#, fuzzy
 msgid "Toggle countpoint"
-msgstr "切換"
+msgstr "切換計數點"
 
 #: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:157
 #: ../src/persp/dbgperspective/nmv-vars-treeview.cc:70
@@ -165,16 +167,15 @@ msgstr "類型"
 
 #: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:158
 msgid "Hits"
-msgstr ""
+msgstr "命中數"
 
 #: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:159
 msgid "Expression"
 msgstr "表述式"
 
 #: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:162
-#, fuzzy
 msgid "Ignore count"
-msgstr "忽略"
+msgstr "忽略計數"
 
 #: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:348
 msgid "breakpoint"
@@ -185,9 +186,8 @@ msgid "watchpoint"
 msgstr "監看點"
 
 #: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:355
-#, fuzzy
 msgid "countpoint"
-msgstr "點"
+msgstr "計數點"
 
 #: ../src/persp/dbgperspective/nmv-breakpoints-view.cc:358
 msgid "unknown"
@@ -220,7 +220,7 @@ msgstr "複製呼叫堆疊至剪貼簿"
 
 #: ../src/persp/dbgperspective/nmv-call-stack.cc:601
 msgid "Frame"
-msgstr ""
+msgstr "框架"
 
 #: ../src/persp/dbgperspective/nmv-call-stack.cc:603
 msgid "Arguments"
@@ -239,8 +239,7 @@ msgstr "二進位"
 #, c-format
 msgid "(Click here to see the next %d row of the call stack"
 msgid_plural "(Click here to see the next %d rows of the call stack)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(按一下這裡查看呼叫堆疊的下 %d 列)"
 
 #: ../src/persp/dbgperspective/nmv-choose-overloads-dialog.cc:110
 msgid "Function Name"
@@ -260,7 +259,6 @@ msgid "Breakpoints"
 msgstr "中斷點"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:120
-#, fuzzy
 msgid "Registers"
 msgstr "註冊器"
 
@@ -269,9 +267,8 @@ msgid "Memory"
 msgstr "記憶體"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:122
-#, fuzzy
 msgid "Expression Monitor"
-msgstr "表述式監視器"
+msgstr "表示式監視器"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:1689
 msgid "Reached end of file"
@@ -280,15 +277,15 @@ msgstr "已達檔案結尾"
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:1692
 #, c-format
 msgid "Could not find string %s"
-msgstr ""
+msgstr "找不到字串 %s"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2070
 msgid "Change to Standard Breakpoint"
-msgstr ""
+msgstr "改變為標準的中斷點"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2073
 msgid "Change to Countpoint"
-msgstr ""
+msgstr "改變為計數點"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2075
 msgid "Remove _Breakpoint"
@@ -308,12 +305,12 @@ msgstr "設定中斷點(_B)"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2085
 msgid "Set Countpoint"
-msgstr ""
+msgstr "設定計數點"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2248
 #, c-format
 msgid "%s (path=\"%s\", pid=%i)"
-msgstr ""
+msgstr "%s (路徑=\"%s\", pid=%i)"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2262
 msgid "Connected to remote target!"
@@ -325,23 +322,23 @@ msgstr "程式已離開"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2448
 msgid "The underlying debugger engine process died."
-msgstr ""
+msgstr "底層的除錯器引擎程序沒有回應。"
 
 #. translators: first %s is the signal name, second one is the reason
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2536
 #, c-format
 msgid "Target received a signal: %s, %s"
-msgstr ""
+msgstr "目標接收到的信號： %s，%s"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2551
 #, c-format
 msgid "An error occurred: %s"
-msgstr ""
+msgstr "發生錯誤：%s"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:2714
 #, c-format
 msgid "File %s has been modified. Do you want to reload it?"
-msgstr ""
+msgstr "檔案 %s在已被修改。您要重新載入它嗎？"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3057
 msgid "_Run or Restart"
@@ -353,35 +350,35 @@ msgstr "執行或重新啟動目標"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3070
 msgid "_Detach From the Running Program"
-msgstr ""
+msgstr "從正在執行的程式分離(_D)"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3071
 msgid "Disconnect the debugger from the running target without killing it"
-msgstr ""
+msgstr "將除錯器自執行中的目標斷線而不終止它"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3086
 msgid "_Save Session to Disk"
-msgstr ""
+msgstr "儲存作業階段到磁碟(_S)"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3087
 msgid "Save the current debugging session to disk"
-msgstr ""
+msgstr "將現有的除錯作業階段儲存到磁碟"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3096
 msgid "Set Breakpoint with Dialog..."
-msgstr ""
+msgstr "以對話盒設定中斷點…"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3097
 msgid "Set a breakpoint at the current line using a dialog"
-msgstr ""
+msgstr "使用對話盒在目前的列設定中斷點"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3108
 msgid "Set Breakpoint..."
-msgstr ""
+msgstr "設定中斷點…"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3109
 msgid "Set a breakpoint at a function or line number"
-msgstr ""
+msgstr "在某函式或列號設定中斷點"
 
 #. Depending on the context we will want this string to be
 #. either "Set Breakpoint", or "Remove Breakpoint". Hence
@@ -392,11 +389,11 @@ msgstr ""
 #. line.
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3125
 msgid "Toggle _Breakpoint"
-msgstr ""
+msgstr "切換中斷點狀況(_B)"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3126
 msgid "Set/Unset a breakpoint at the current cursor location"
-msgstr ""
+msgstr "在目前的游標位置設定/取消中斷點"
 
 #. Depending on the context we will want this string to be
 #. either "Enable Breakpoint", or "Disable
@@ -407,12 +404,12 @@ msgstr ""
 #. line.
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3143
 msgid "Enable/Disable Breakpoint"
-msgstr ""
+msgstr "啟用/停用中斷點"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3144
 msgid ""
 "Enable or disable the breakpoint that is set at the current cursor location"
-msgstr ""
+msgstr "啟用或停用在目前游標位置設定的中斷點"
 
 #. Depending on the context we will want this string to be
 #. either "Set Countpoint", or "Change to Countpoint", or
@@ -424,27 +421,27 @@ msgstr ""
 #. line.
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3164
 msgid "Toggle _Countpoint"
-msgstr ""
+msgstr "切換計數點狀況(_C)"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3165
 msgid "Set/Unset a countpoint at the current cursor location"
-msgstr ""
+msgstr "在目前的游標位置設定/取消計數點"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3175
 msgid "Set Watchpoint with Dialog..."
-msgstr ""
+msgstr "以對話盒設定監看點…"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3176
 msgid "Set a watchpoint using a dialog"
-msgstr ""
+msgstr "使用對話盒設定監看點"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3191
 msgid "_Next"
-msgstr ""
+msgstr "下一個(_N)"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3192
 msgid "Execute next line stepping over the next function, if any"
-msgstr ""
+msgstr "執行下一列，步進下個函式，如果有的話"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3201
 msgid "_Step"
@@ -464,19 +461,19 @@ msgstr "完成目前函式的執行"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3221
 msgid "Step Into asm"
-msgstr ""
+msgstr "步入 asm"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3222
 msgid "Step into the next assembly instruction"
-msgstr ""
+msgstr "步入下一個組合語言指令集"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3231
 msgid "Step Over asm"
-msgstr ""
+msgstr "跳過 asm"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3232
 msgid "Step over the next assembly instruction"
-msgstr ""
+msgstr "跳過下一個組合語言指令集"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3241
 msgid "_Continue or start"
@@ -496,87 +493,87 @@ msgstr "繼續程式執行直到游標目前選取的那列"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3262
 msgid "Jump to Cursor"
-msgstr ""
+msgstr "跳到游標處"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3263
 msgid "Jump to the currently selected line"
-msgstr ""
+msgstr "跳到目前選取的列"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3273
 msgid "Jump and Stop to Cursor"
-msgstr ""
+msgstr "跳到並停在游標所在處"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3274
 msgid "Sets a breakpoint to the currently selected line and jump there"
-msgstr ""
+msgstr "在目前選取的列設定中斷點並跳到那裡"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3286
 msgid "Jump to a Given Location"
-msgstr ""
+msgstr "跳到指定位置"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3287
 msgid "Select a given code location and jump there"
-msgstr ""
+msgstr "選擇指定的原始碼位置並跳到那裡"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3298
 #: ../src/persp/dbgperspective/ui/exprinspectordialog.ui.h:1
 msgid "Inspect an Expression"
-msgstr ""
+msgstr "檢查正規表示式"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3299
 msgid "Inspect a global or local expression"
-msgstr ""
+msgstr "檢查全域或本地表示式"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3309
 #: ../src/persp/dbgperspective/ui/callfunctiondialog.ui.h:1
 msgid "Call a Function"
-msgstr ""
+msgstr "呼叫函式"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3310
 msgid "Call a function in the program being debugged"
-msgstr ""
+msgstr "在要除錯的程式中呼叫函式"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3319
 msgid "Show Global Variables"
-msgstr ""
+msgstr "顯示全域變數"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3320
 msgid "Display all global variables"
-msgstr ""
+msgstr "顯示所有全域變數"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3330
 msgid "Refresh Locals"
-msgstr ""
+msgstr "重新整理本地"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3331
 msgid "Refresh the list of variables local to the current function"
-msgstr ""
+msgstr "重新整理目前函式的本地變數清單"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3340
 msgid "Show Assembly"
-msgstr ""
+msgstr "顯示組合語言"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3341
 msgid ""
 "Show the assembly code of the source code being currently debugged, in "
 "another tab"
-msgstr ""
+msgstr "顯示目前要除錯原始碼的組合語言碼，於另一個分頁"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3353
 msgid "Switch to Assembly"
-msgstr ""
+msgstr "切換到組合語言"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3354
 msgid "Show the assembly code of the source code being currently debugged"
-msgstr ""
+msgstr "顯示目前要除錯原始碼的組合語言碼"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3366
 msgid "Switch to Source"
-msgstr ""
+msgstr "切換到原始碼"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3367
 msgid "Show the source code being currently debugged"
-msgstr ""
+msgstr "顯示目前要除錯的原始碼"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3379
 msgid "Stop"
@@ -603,18 +600,16 @@ msgid "Switch to Breakpoints View"
 msgstr "切換至中斷點檢視畫面"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3436
-#, fuzzy
 msgid "Switch to Registers View"
-msgstr "切換至註冊器檢視畫面"
+msgstr "切換至註冊表檢視畫面"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3448
 msgid "Switch to Memory View"
 msgstr "切換至記憶體檢視畫面"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3459
-#, fuzzy
 msgid "Switch to Variables Monitor View"
-msgstr "切換至變數監視器檢視畫面"
+msgstr "切換到變數監視器檢視畫面"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3468
 msgid "_Debug"
@@ -638,15 +633,15 @@ msgstr "執行程式"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3499
 msgid "_Load Core File..."
-msgstr ""
+msgstr "載入核心檔案(_L)…"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3500
 msgid "Load a core file from disk"
-msgstr ""
+msgstr "從磁碟載入核心檔案"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3510
 msgid "_Attach to Running Program..."
-msgstr ""
+msgstr "附加到執行中的程式(_A)…"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3511
 msgid "Debug a program that's already running"
@@ -658,22 +653,21 @@ msgstr "連接至遠端目標(_C)..."
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3522
 msgid "Connect to a debugging server to debug a remote target"
-msgstr ""
+msgstr "連線到除錯伺服器以除錯遠端目標"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3533
 msgid "Resume Sa_ved Session..."
-msgstr ""
+msgstr "繼續已儲存的作業階段(_V)…"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3534
 msgid "Open a previously saved debugging session"
-msgstr ""
+msgstr "開啟先前已儲存的除錯作業階段"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3544
 msgid "_Preferences"
 msgstr "偏好設定(_P)"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:3545
-#, fuzzy
 msgid "Edit the properties of the current session"
 msgstr "編輯目前的屬性"
 
@@ -709,45 +703,44 @@ msgstr "關閉 %s"
 #. We cannot restart an inferior running on a remote target at
 #. the moment.
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:5897
-#, fuzzy
 msgid "Sorry, it's impossible to restart a remote inferior"
 msgstr "很抱歉，無法重新啟動遠端 inferior"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6020
 #, c-format
 msgid "Could not find file %s"
-msgstr ""
+msgstr "找不到檔案 %s"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6084
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6226
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6261
 #, c-format
 msgid "Could not load program: %s"
-msgstr ""
+msgstr "無法載入程式：%s"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6155
 msgid "You cannot attach to Nemiver itself"
-msgstr ""
+msgstr "您無法附加 Nemiver 到它自己身上"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6168
 msgid "You cannot attach to the underlying debugger engine"
-msgstr ""
+msgstr "您不能附加到底層的除錯誤擎"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6463
 msgid "Failed to stop the debugger"
-msgstr ""
+msgstr "無法停止除錯器"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:6707
 #, c-format
 msgid "Invalid line number: %i"
-msgstr ""
+msgstr "無效的列號：%i"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective.cc:8318
 #, c-format
 msgid ""
 "There is a program being currently debugged. Do you really want to exit from "
 "the debugger?"
-msgstr ""
+msgstr "目前有程式在除錯中。確定要離開除錯器嗎？"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective-default-layout.cc:138
 msgid "Default Layout"
@@ -782,25 +775,24 @@ msgid "Wide Layout"
 msgstr "寬配置"
 
 #: ../src/persp/dbgperspective/nmv-dbg-perspective-wide-layout.cc:142
-#, fuzzy
 msgid "A layout for very large monitors"
 msgstr "為超大螢幕設計的配置"
 
 #: ../src/persp/dbgperspective/nmv-file-list.cc:128
 msgid "Expand _Selected"
-msgstr ""
+msgstr "展開選取的(_S)"
 
 #: ../src/persp/dbgperspective/nmv-file-list.cc:134
 msgid "Expand _All"
-msgstr ""
+msgstr "全部展開(_A)"
 
 #: ../src/persp/dbgperspective/nmv-file-list.cc:144
 msgid "_Collapse"
-msgstr ""
+msgstr "收摺(_C)"
 
 #: ../src/persp/dbgperspective/nmv-file-list.cc:427
 msgid "Loading files from target executable..."
-msgstr ""
+msgstr "從目標可執行檔載入檔案…"
 
 #: ../src/persp/dbgperspective/nmv-global-vars-inspector-dialog.cc:301
 #: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:547
@@ -810,6 +802,8 @@ msgid ""
 "Variable type is: \n"
 " %s"
 msgstr ""
+"變數類型是： \n"
+" %s"
 
 #: ../src/persp/dbgperspective/nmv-local-vars-inspector.cc:124
 msgid "Local Variables"
@@ -854,11 +848,11 @@ msgstr "位元組"
 
 #: ../src/persp/dbgperspective/nmv-memory-view.cc:52
 msgid "Word"
-msgstr ""
+msgstr "字詞"
 
 #: ../src/persp/dbgperspective/nmv-memory-view.cc:55
 msgid "Long Word"
-msgstr ""
+msgstr "長字詞"
 
 #: ../src/persp/dbgperspective/nmv-memory-view.cc:98
 #: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:9
@@ -873,7 +867,7 @@ msgstr "顯示"
 
 #: ../src/persp/dbgperspective/nmv-memory-view.cc:103
 msgid "Group By:"
-msgstr ""
+msgstr "群組依："
 
 #: ../src/persp/dbgperspective/nmv-preferences-dialog.cc:149
 #: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:5
@@ -891,7 +885,7 @@ msgstr "使用者名稱"
 
 #: ../src/persp/dbgperspective/nmv-proc-list-dialog.cc:139
 msgid "Proc Args"
-msgstr ""
+msgstr "Proc Args"
 
 #: ../src/persp/dbgperspective/nmv-registers-view.cc:101
 #: ../src/persp/dbgperspective/nmv-run-program-dialog.cc:99
@@ -906,31 +900,34 @@ msgstr "值"
 
 #: ../src/persp/dbgperspective/nmv-saved-sessions-dialog.cc:71
 msgid "Session"
-msgstr ""
+msgstr "作業階段"
 
 #: ../src/persp/dbgperspective/nmv-set-breakpoint-dialog.cc:117
 msgid "Throw Exception"
-msgstr ""
+msgstr "丟出例外"
 
 #: ../src/persp/dbgperspective/nmv-set-breakpoint-dialog.cc:121
 msgid "Catch Exception"
-msgstr ""
+msgstr "捕捉例外"
 
 #: ../src/persp/dbgperspective/nmv-set-breakpoint-dialog.cc:125
+#, fuzzy
 msgid "Fork System Call"
-msgstr ""
+msgstr "系統函式參數錯誤"
 
 #: ../src/persp/dbgperspective/nmv-set-breakpoint-dialog.cc:129
+#, fuzzy
 msgid "Vfork System Call"
-msgstr ""
+msgstr "系統函式參數錯誤"
 
 #: ../src/persp/dbgperspective/nmv-set-breakpoint-dialog.cc:133
+#, fuzzy
 msgid "Exec System Call"
-msgstr ""
+msgstr "系統函式參數錯誤"
 
 #: ../src/persp/dbgperspective/nmv-thread-list.cc:184
 msgid "Thread ID"
-msgstr ""
+msgstr "執行緒 ID"
 
 #. create the columns of the tree view
 #: ../src/persp/dbgperspective/nmv-vars-treeview.cc:50
@@ -939,11 +936,11 @@ msgstr "變數"
 
 #: ../src/persp/dbgperspective/nmv-expr-monitor.cc:128
 msgid "In scope expressions"
-msgstr ""
+msgstr "在範圍表示式中"
 
 #: ../src/persp/dbgperspective/nmv-expr-monitor.cc:133
 msgid "Out of scope expressions"
-msgstr ""
+msgstr "在範圍表示式外"
 
 #: ../src/persp/dbgperspective/nmv-expr-monitor.cc:237
 msgid "Remove"
@@ -951,19 +948,17 @@ msgstr "移除"
 
 #: ../src/persp/dbgperspective/nmv-expr-monitor.cc:238
 msgid "Remove selected expressions from the monitor"
-msgstr ""
+msgstr "從監視器中移除選取的表示式"
 
 #: ../src/persp/dbgperspective/nmv-expr-monitor.cc:247
 msgid "New..."
 msgstr "新增..."
 
 #: ../src/persp/dbgperspective/nmv-expr-monitor.cc:248
-#, fuzzy
 msgid "Add a new expression to the monitor"
-msgstr "加入新的表述式至監視器"
+msgstr "將新的表示式加入監視器"
 
 #: ../src/persp/dbgperspective/ui/callfunctiondialog.ui.h:2
-#, fuzzy
 msgid "Call a function:"
 msgstr "呼叫函式："
 
@@ -973,12 +968,10 @@ msgid "Set Breakpoint"
 msgstr "設定中斷點"
 
 #: ../src/persp/dbgperspective/ui/chooseoverloadsdialog.ui.h:2
-#, fuzzy
 msgid "Choose Overloaded Function"
-msgstr "選擇過載函式"
+msgstr "選擇過載的函式"
 
 #: ../src/persp/dbgperspective/ui/chooseoverloadsdialog.ui.h:3
-#, fuzzy
 msgid ""
 "Multiple functions match the specified name. Please choose one from the list "
 "below."
@@ -1010,7 +1003,7 @@ msgstr "循環選項："
 
 #: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:7
 msgid "_Wrap around"
-msgstr ""
+msgstr "回開頭處再開始(_W)"
 
 #: ../src/persp/dbgperspective/ui/findtextdialog.ui.h:8
 msgid "Search _backwards"
@@ -1022,19 +1015,19 @@ msgstr "全域變數"
 
 #: ../src/persp/dbgperspective/ui/loadcoredialog.ui.h:1
 msgid "Choose a Core File to Debug"
-msgstr ""
+msgstr "選擇要除錯的核心檔案"
 
 #: ../src/persp/dbgperspective/ui/loadcoredialog.ui.h:2
 msgid "Select a Core File"
-msgstr ""
+msgstr "選擇核心檔案"
 
 #: ../src/persp/dbgperspective/ui/loadcoredialog.ui.h:3
 msgid "Core File:"
-msgstr ""
+msgstr "核心檔案："
 
 #: ../src/persp/dbgperspective/ui/loadcoredialog.ui.h:4
 msgid "Select the executable that created the core file"
-msgstr ""
+msgstr "選擇用來建立核心檔案的可執行檔"
 
 #: ../src/persp/dbgperspective/ui/loadcoredialog.ui.h:5
 msgid "Executable:"
@@ -1094,90 +1087,88 @@ msgstr "終端機"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:10
 msgid "When a source file is changed:"
-msgstr ""
+msgstr "當來源檔案變更時："
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:11
 msgid "Reload the file"
-msgstr ""
+msgstr "重新載入檔案"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:12
 msgid "Do not reload the file"
-msgstr ""
+msgstr "不要重新載入檔案"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:13
 msgid "Ask each time"
-msgstr ""
+msgstr "每次都詢問"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:14
 msgid "File Monitoring"
-msgstr ""
+msgstr "同步監控"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:15
 msgid "Enable syntax highlighting"
-msgstr ""
+msgstr "啟用語法突顯"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:16
 msgid "Syntax Highlighting"
-msgstr ""
+msgstr "語法突顯"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:17
 msgid "Editor"
 msgstr "編輯器"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:19
-#, fuzzy
 msgid "Pure assembly"
 msgstr "純組譯"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:20
 msgid "Mixed source and assembly"
-msgstr ""
+msgstr "混合原始檔與組譯"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:21
 msgid "Assembly style"
-msgstr ""
+msgstr "組譯樣式"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:22
 msgid "Assembly flavor"
-msgstr ""
+msgstr "組譯偏好"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:23
 #: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:3
 msgid "Choose a File"
-msgstr ""
+msgstr "選擇檔案"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:24
 msgid "Path to the GDB binary used"
-msgstr ""
+msgstr "GDB 二元檔的路徑"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:25
 msgid "GDB Binary"
 msgstr "GDB 二進位"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:26
-#, fuzzy
 msgid "Number of instructions to disassemble by default"
-msgstr "預設要的數目"
+msgstr "預設要反組譯的指令數"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:27
 msgid "Instructions"
-msgstr ""
+msgstr "指令"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:28
 msgid "Enable pretty printing (requires debugger restart)"
-msgstr ""
+msgstr "啟用 pretty printing (需要重新啟動除錯器)"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:29
 msgid "GDB Pretty Printing"
-msgstr ""
+msgstr "GDB Pretty Printing"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:30
 msgid "Follow parent"
-msgstr ""
+msgstr "跟隨母元件"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:31
 msgid "Follow child"
-msgstr ""
+msgstr "跟隨子元件"
 
 #: ../src/persp/dbgperspective/ui/preferencesdialog.ui.h:32
 msgid "GDB Follow Fork Mode"
@@ -1193,31 +1184,31 @@ msgstr "配置"
 
 #: ../src/persp/dbgperspective/ui/proclistdialog.ui.h:1
 msgid "Attach to a Running Program"
-msgstr ""
+msgstr "附加到執行中的程式"
 
 #: ../src/persp/dbgperspective/ui/proclistdialog.ui.h:2
 msgid "Choose a Process to Debug"
-msgstr ""
+msgstr "選擇要除錯的程序"
 
 #: ../src/persp/dbgperspective/ui/proclistdialog.ui.h:3
 msgid "_Filter list:"
-msgstr ""
+msgstr "過濾器清單(_F):"
 
 #: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:1
 msgid "Connect to Remote Target"
-msgstr ""
+msgstr "連接到遠端目標"
 
 #: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:2
 msgid "Executable to Load"
-msgstr ""
+msgstr "要載入的可執行檔"
 
 #: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:4
 msgid "Shared Libraries Location"
-msgstr ""
+msgstr "分享程式庫位置"
 
 #: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:6
 msgid "Remote Debugging Server"
-msgstr ""
+msgstr "遠端除錯伺服器"
 
 #: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:7
 msgid "TCP/IP Connection"
@@ -1229,15 +1220,15 @@ msgstr "連接埠："
 
 #: ../src/persp/dbgperspective/ui/remotetargetdialog.ui.h:10
 msgid "Serial Line Connection"
-msgstr ""
+msgstr "序列埠連線"
 
 #: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:1
 msgid "Choose a Program to Execute"
-msgstr ""
+msgstr "選擇要執行的程式"
 
 #: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:2
 msgid "Choose an Executable"
-msgstr ""
+msgstr "選擇一個可執行檔"
 
 #: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:3
 msgid "Program:"
@@ -1249,11 +1240,11 @@ msgstr "引數："
 
 #: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:5
 msgid "Choose a Working Directory"
-msgstr ""
+msgstr "選擇一個工作目錄"
 
 #: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:6
 msgid "Working Directory:"
-msgstr ""
+msgstr "工作目錄："
 
 #: ../src/persp/dbgperspective/ui/runprogramdialog.ui.h:7
 msgid "_Add"
@@ -1268,21 +1259,18 @@ msgid "Environment Variables:"
 msgstr "環境變數："
 
 #: ../src/persp/dbgperspective/ui/savedsessionsdialog.ui.h:1
-#, fuzzy
 msgid "Saved Sessions"
-msgstr "儲存的"
+msgstr "儲存作業階段"
 
 #: ../src/persp/dbgperspective/ui/savedsessionsdialog.ui.h:2
-#, fuzzy
 msgid "Choose a Session to Debug"
-msgstr "選擇要除錯的"
+msgstr "選擇要除錯的作業階段"
 
 #: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:2
 msgid "Set a Breakpoint:"
 msgstr "設定中斷點："
 
 #: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:3
-#, fuzzy
 msgid "Condition:"
 msgstr "條件："
 
@@ -1321,37 +1309,32 @@ msgid "Line:"
 msgstr "列："
 
 #: ../src/persp/dbgperspective/ui/setbreakpointdialog.ui.h:12
-#, fuzzy
 msgid "Set as Countpoint"
-msgstr "設定點"
+msgstr "設定為計數點"
 
 #: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:1
-#, fuzzy
 msgid "Set Location to Jump To"
-msgstr "設定要跳過去的位置"
+msgstr "設定要跳至位置"
 
 #: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:2
-#, fuzzy
 msgid "Jump to location:"
-msgstr "跳去位置："
+msgstr "跳到位置："
 
 #: ../src/persp/dbgperspective/ui/setjumptodialog.ui.h:10
 msgid "Break at Destination"
 msgstr "於目的地中斷"
 
 #: ../src/persp/dbgperspective/ui/exprinspectordialog.ui.h:2
-#, fuzzy
 msgid "Add to monitor"
-msgstr "加入監視器"
+msgstr "加入至監視器"
 
 #: ../src/persp/dbgperspective/ui/exprinspectordialog.ui.h:3
 msgid "_Variable Name:"
 msgstr "變數名稱(_V)："
 
 #: ../src/persp/dbgperspective/ui/exprinspectordialog.ui.h:4
-#, fuzzy
 msgid "_Inspect"
-msgstr "審閱(_I)"
+msgstr "檢查(_I)"
 
 #: ../src/persp/dbgperspective/ui/watchpointdialog.ui.h:1
 msgid "Set a watchpoint:"
@@ -1362,12 +1345,10 @@ msgid "Expression:"
 msgstr "表述式："
 
 #: ../src/persp/dbgperspective/ui/watchpointdialog.ui.h:3
-#, fuzzy
 msgid "Inspect"
-msgstr "審閱"
+msgstr "檢查"
 
 #: ../src/persp/dbgperspective/ui/watchpointdialog.ui.h:4
-#, fuzzy
 msgid "Triggers on:"
 msgstr "觸發於："
 
