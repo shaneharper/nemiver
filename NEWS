@@ -1,3 +1,74 @@
+0.9.3 Release
+=============
+
+Andika Triwidada:
+      Added Indonesian translation
+
+Antoine Jacoutot:
+      don't hardcode path to false.
+      build: unbreak on OpenBSD by including iostream
+      Terminal portability fixes for BSDs
+
+Aurimas Černius:
+      Added Lithuanian translation
+
+Bruno Brouard:
+      Updated French translation
+
+Chao-Hsiung Liao:
+      Updated Traditional Chinese translation(Hong Kong and Taiwan)
+
+Cheng-Chia Tseng:
+      Updated Traditional Chinese translation(Hong Kong and Taiwan)
+
+Daniel Mustieles:
+      Updated Spanish translation
+
+Dimitris Spingos:
+      Added Greek translation
+
+Dodji Seketeli:
+      542503 - Initial support for monitoring expressions
+      665274 - Support --just-load command line
+      680934 - Fix --enable-debuggeronly
+      Various code cleanups
+
+Dustin Polke:
+      Fix XML validation.
+
+Fabien Parent:
+      Code cleanups
+
+Fran Diéguez:
+      Updated Galician translations
+
+Jiro Matsuzawa:
+      Update Japanese translation
+
+Joe Hansen:
+      Updated Danish translation
+
+Kjartan Maraas:
+      Updated Norwegian bokmål translation
+
+Matej Urbančič:
+      Updated Slovenian translation
+
+Piotr Drąg:
+      Added Polish translation
+      Spell check translatable strings
+      Fix typos in translatable strings
+      Remove markup from translatable strings
+
+Seong-ho Cho:
+      Add Korean translation
+
+Tom Hughes:
+      Save and restore tty attributes
+
+Мирослав Николић:
+      Added Serbian translation
+
 0.9.2 Release
 =============
 
