@@ -608,6 +608,9 @@ ProfPerspective::stop_recording ()
 {
     THROW_IF_FAIL (profiler ());
     profiler ()->stop_recording ();
+
+    THROW_IF_FAIL (recording_action_group);
+    recording_action_group->set_sensitive (false);
 }
 
 void
