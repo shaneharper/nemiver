@@ -59,7 +59,7 @@ tag-release-only:
 	git tag -m "$(PACKAGE_NAME) release $(VERSION)" \
 	"$(PACKAGE_NAME)-$(VERSION)" $(RELEASED_BRANCH)
 
-release-upload: tag-release $(tar_xz_file) release-upload-only
+release-upload: dist tag-release $(tar_xz_file) release-upload-only
 release-upload-only:
 	scp $(tar_xz_file) $(RELEASE_UPLOAD_HOST):$(RELEASE_UPLOAD_BASE)/
 
