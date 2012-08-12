@@ -665,8 +665,13 @@ ProfPerspective::attach_to_process ()
 void
 ProfPerspective::attach_to_process (unsigned a_pid)
 {
+    IConfMgrSafePtr confmgr = get_workbench ().get_configuration_manager ();
+    THROW_IF_FAIL (confmgr);
+
+    ConfMgrRecordOptions options (*confmgr);
+
     THROW_IF_FAIL (profiler ());
-    profiler ()->attach_to_pid (a_pid);
+    profiler ()->attach_to_pid (a_pid, options);
 
     THROW_IF_FAIL (throbber);
     throbber->start ();

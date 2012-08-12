@@ -52,11 +52,21 @@ static const char *const NMV_DBUS_PROFILER_SERVER_INTROSPECTION_DATA =
     "<node>"
     "  <interface name='org.gnome.nemiver.profiler'>"
     "    <method name='ProfileSystem'>"
+    "        <arg type='b' name='callgraph_recording' direction='in' />"
+    "        <arg type='b' name='collect_without_buffering' direction='in' />"
+    "        <arg type='b' name='collect_raw_sample_records' direction='in' />"
+    "        <arg type='b' name='sample_addresses' direction='in' />"
+    "        <arg type='b' name='sample_timestamps' direction='in' />"
     "        <arg type='i' name='uid' direction='in' />"
     "        <arg type='i' name='gid' direction='in' />"
     "        <arg type='u' name='request_id' direction='out' />"
     "    </method>"
     "    <method name='AttachToPID'>"
+    "        <arg type='b' name='callgraph_recording' direction='in' />"
+    "        <arg type='b' name='collect_without_buffering' direction='in' />"
+    "        <arg type='b' name='collect_raw_sample_records' direction='in' />"
+    "        <arg type='b' name='sample_addresses' direction='in' />"
+    "        <arg type='b' name='sample_timestamps' direction='in' />"
     "        <arg type='i' name='pid' direction='in' />"
     "        <arg type='i' name='uid' direction='in' />"
     "        <arg type='i' name='gid' direction='in' />"
@@ -76,47 +86,62 @@ class PerfRecordOptions : public RecordOptions {
     bool callgraph_recording;
     bool collect_without_buffering;
     bool collect_raw_sample_records;
-    bool system_wide_collection;
     bool sample_addresses;
     bool sample_timestamps;
 
 public:
-    PerfRecordOptions () :
+    PerfRecordOptions (const Glib::VariantContainerBase &a_parameters) :
         callgraph_recording (true),
         collect_without_buffering (false),
         collect_raw_sample_records (false),
-        system_wide_collection (false),
         sample_addresses (false),
         sample_timestamps (false)
     {
+        init (a_parameters);
     }
 
-    bool do_callgraph_recording () const
+    void
+    init (const Glib::VariantContainerBase &a_parameters)
+    {
+        Glib::Variant<bool> callgraph_recording_param;
+        Glib::Variant<bool> collect_without_buffering_param;
+        Glib::Variant<bool> collect_raw_sample_records_param;
+        Glib::Variant<bool> sample_addresses_param;
+        Glib::Variant<bool> sample_timestamps_param;
+
+        a_parameters.get_child (callgraph_recording_param, 0);
+        a_parameters.get_child (collect_without_buffering_param, 1);
+        a_parameters.get_child (collect_raw_sample_records_param, 2);
+        a_parameters.get_child (sample_addresses_param, 3);
+        a_parameters.get_child (sample_timestamps_param, 4);
+    }
+
+    bool
+    do_callgraph_recording () const
     {
         return callgraph_recording;
     }
 
-    bool do_collect_without_buffering () const
+    bool
+    do_collect_without_buffering () const
     {
         return collect_without_buffering;
     }
 
-    bool do_collect_raw_sample_records () const
+    bool
+    do_collect_raw_sample_records () const
     {
         return collect_raw_sample_records;
     }
 
-    bool do_system_wide_collection () const
-    {
-        return system_wide_collection;
-    }
-
-    bool do_sample_addresses () const
+    bool
+    do_sample_addresses () const
     {
         return sample_addresses;
     }
 
-    bool do_sample_timestamps () const
+    bool
+    do_sample_timestamps () const
     {
         return sample_timestamps;
     }
@@ -203,8 +228,8 @@ struct PerfServer::Priv {
         if(a_request_name == "ProfileSystem") {
             Glib::Variant<int> uid_param;
             Glib::Variant<int> gid_param;
-            a_parameters.get_child (uid_param, 0);
-            a_parameters.get_child (gid_param, 1);
+            a_parameters.get_child (uid_param, 5);
+            a_parameters.get_child (gid_param, 6);
 
             RequestInfo request;
             request.uid = uid_param.get ();
@@ -218,7 +243,7 @@ struct PerfServer::Priv {
             std::vector<UString> argv;
             argv.push_back ("--all-cpus");
 
-            PerfRecordOptions options;
+            PerfRecordOptions options (a_parameters);
             request.profiler->record (argv, options);
 
             Glib::Variant<unsigned> perf_data =
@@ -232,8 +257,8 @@ struct PerfServer::Priv {
             Glib::Variant<int> uid_param;
             Glib::Variant<int> gid_param;
             a_parameters.get_child (pid_param);
-            a_parameters.get_child (uid_param, 1);
-            a_parameters.get_child (gid_param, 2);
+            a_parameters.get_child (uid_param, 5);
+            a_parameters.get_child (gid_param, 6);
 
             RequestInfo request;
 
@@ -248,7 +273,7 @@ struct PerfServer::Priv {
             argv.push_back (UString::compose ("%1", pid));
 
             request_map[next_request_id] = request;
-            PerfRecordOptions options;
+            PerfRecordOptions options (a_parameters);
 
             THROW_IF_FAIL (request.profiler);
             request.profiler->record (argv, options);

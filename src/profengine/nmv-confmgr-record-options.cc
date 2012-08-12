@@ -31,6 +31,7 @@ NEMIVER_BEGIN_NAMESPACE (nemiver)
 
 struct ConfMgrRecordOptions::Priv {
     IConfMgr &conf_mgr;
+    std::vector<Glib::VariantBase> parameters;
 
     Priv (IConfMgr &a_confmgr) :
         conf_mgr (a_confmgr)
@@ -50,6 +51,8 @@ ConfMgrRecordOptions::~ConfMgrRecordOptions ()
 bool
 ConfMgrRecordOptions::do_callgraph_recording () const
 {
+    THROW_IF_FAIL (m_priv);
+
     bool callgraph_recording = false;
     if (!m_priv->conf_mgr.get_key_value (CONF_KEY_DO_CALLGRAPH_RECORDING,
                                          callgraph_recording)) {
@@ -62,6 +65,8 @@ ConfMgrRecordOptions::do_callgraph_recording () const
 bool
 ConfMgrRecordOptions::do_collect_without_buffering () const
 {
+    THROW_IF_FAIL (m_priv);
+
     bool collect_without_buffering = false;
     if (!m_priv->conf_mgr.get_key_value (CONF_KEY_COLLECT_WITHOUT_BUFFERING,
                                          collect_without_buffering)) {
@@ -74,6 +79,8 @@ ConfMgrRecordOptions::do_collect_without_buffering () const
 bool
 ConfMgrRecordOptions::do_collect_raw_sample_records () const
 {
+    THROW_IF_FAIL (m_priv);
+
     bool collect_raw_sample_records = false;
     if (!m_priv->conf_mgr.get_key_value (CONF_KEY_COLLECT_RAW_SAMPLE_RECORDS,
                                          collect_raw_sample_records)) {
@@ -86,6 +93,8 @@ ConfMgrRecordOptions::do_collect_raw_sample_records () const
 bool
 ConfMgrRecordOptions::do_sample_addresses () const
 {
+    THROW_IF_FAIL (m_priv);
+
     bool sample_addresses = false;
     if (!m_priv->conf_mgr.get_key_value (CONF_KEY_SAMPLE_ADDRESSES,
                                          sample_addresses)) {
@@ -98,6 +107,8 @@ ConfMgrRecordOptions::do_sample_addresses () const
 bool
 ConfMgrRecordOptions::do_sample_timestamps () const
 {
+    THROW_IF_FAIL (m_priv);
+
     bool sample_timestamps = false;
     if (!m_priv->conf_mgr.get_key_value (CONF_KEY_SAMPLE_TIMESTAMPS,
                                          sample_timestamps)) {

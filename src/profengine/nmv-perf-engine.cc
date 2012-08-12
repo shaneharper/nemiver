@@ -104,6 +104,31 @@ struct PerfEngine::Priv {
         return *conf_manager;
     }
 
+    void
+    fill_vector_with_dbus_request_options
+        (const RecordOptions &a_options,
+         std::vector<Glib::VariantBase> &a_parameters)
+    {
+        Glib::Variant<bool> callgraph_recording =
+            Glib::Variant<bool>::create (a_options.do_callgraph_recording ());
+        Glib::Variant<bool> collect_without_buffering =
+            Glib::Variant<bool>::create
+                (a_options.do_collect_without_buffering ());
+        Glib::Variant<bool> collect_raw_sample_records =
+            Glib::Variant<bool>::create
+                (a_options.do_collect_raw_sample_records ());
+        Glib::Variant<bool> sample_addresses =
+            Glib::Variant<bool>::create (a_options.do_sample_addresses ());
+        Glib::Variant<bool> sample_timestamps =
+            Glib::Variant<bool>::create (a_options.do_sample_timestamps ());
+
+        a_parameters.push_back (callgraph_recording);
+        a_parameters.push_back (collect_without_buffering);
+        a_parameters.push_back (collect_raw_sample_records);
+        a_parameters.push_back (sample_addresses);
+        a_parameters.push_back (sample_timestamps);
+    }
+
     bool
     on_wait_for_record_to_exit ()
     {
@@ -383,18 +408,17 @@ PerfEngine::do_init (IConfMgrSafePtr a_conf_mgr)
 }
 
 void
-PerfEngine::attach_to_pid (int a_pid)
+PerfEngine::attach_to_pid (int a_pid, const RecordOptions &a_options)
 {
     THROW_IF_FAIL (m_priv);
     THROW_IF_FAIL (m_priv->proxy);
-
-    std::vector<Glib::ustring> options;
 
     Glib::Variant<int> pid_param = Glib::Variant<int>::create (a_pid);
     Glib::Variant<int> uid_param = Glib::Variant<int>::create (getuid ());
     Glib::Variant<int> gid_param = Glib::Variant<int>::create (getgid ());
 
     std::vector<Glib::VariantBase> parameters;
+    m_priv->fill_vector_with_dbus_request_options (a_options, parameters);
     parameters.push_back (pid_param);
     parameters.push_back (uid_param);
     parameters.push_back (gid_param);
@@ -471,17 +495,16 @@ PerfEngine::record (const std::vector<UString> &a_argv,
 }
 
 void
-PerfEngine::system_wide_record (const RecordOptions &/*a_options*/)
+PerfEngine::system_wide_record (const RecordOptions &a_options)
 {
     THROW_IF_FAIL (m_priv);
     THROW_IF_FAIL (m_priv->proxy);
-
-    std::vector<Glib::ustring> options;
 
     Glib::Variant<int> uid_param = Glib::Variant<int>::create (getuid ());
     Glib::Variant<int> gid_param = Glib::Variant<int>::create (getgid ());
 
     std::vector<Glib::VariantBase> parameters;
+    m_priv->fill_vector_with_dbus_request_options (a_options, parameters);
     parameters.push_back (uid_param);
     parameters.push_back (gid_param);
 

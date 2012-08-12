@@ -43,7 +43,7 @@ public:
     virtual ~PerfEngine ();
 
     void report (const UString &a_data_file);
-    void attach_to_pid (int a_pid);
+    void attach_to_pid (int a_pid, const RecordOptions &a_options);
     void record (const std::vector<UString> &a_argv,
                  const RecordOptions &a_options);
     void record (const UString &a_program_path,

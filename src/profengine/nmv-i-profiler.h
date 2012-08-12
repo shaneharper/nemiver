@@ -75,7 +75,7 @@ public:
         symbol_annotated_signal () const = 0;
     /// @}
 
-    virtual void attach_to_pid (int a_pid) = 0;
+    virtual void attach_to_pid (int a_pid, const RecordOptions &a_options) = 0;
 
     virtual void report (const UString &a_data_file) = 0;
 
