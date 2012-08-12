@@ -1,3 +1,652 @@
+2012-08-08 14:18:28 -0400  Dodji Seketeli <dodji@seketeli.org>
+
+	Update NEWS file for 0.9.3
+	* NEWS: update for 0.9.3
+
+2012-08-07 04:12:54 -0400  Dodji Seketeli <dodji@seketeli.org>
+
+	Update INSTALL file
+	* INSTALL: Update copyright, HP-UX related and CONFIG_SHELL
+	related stuff.
+
+2012-08-07 04:02:24 -0400  Dodji Seketeli <dodji@seketeli.org>
+
+	Fix --enable-debuggeronly
+	* configure.ac: Fix help string of --enable-idebuggeronly.  Call
+	AM_CONDITIONAL on ENABLE_IDEBUGGER_ONLY.  If
+	--enable-idebuggeronly is switched on, no workbench stuff can be
+	enabled with --enable-workbench.  Call AM_CONDITIONAL on
+	ENABLE_WORKBENCH.
+	* src/Makefile.am: If ENABLE_WORKBENCH is not set, do not build
+	workbench stuff under src.
+
+2012-08-07  Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>
+
+	Updated Traditional Chinese translation(Hong Kong and Taiwan)
+
+2012-08-02  Jiro Matsuzawa <jmatsuzawa@gnome.org>
+
+	[l10n] Update Japanese translation
+	Modify the About label
+
+2012-07-29  Seong-ho Cho <darkcircle.0426@gmail.com>
+
+	Add Korean translation
+
+2012-07-21  Мирослав Николић <miroslavnikolic@rocketmail.com>
+
+	Added Serbian translation
+
+2012-07-13  Dimitris Spingos <dmtrs32@gmail.com>
+
+	Updated help/Makefile.am
+
+2012-07-13  Dimitris Spingos <dmtrs32@gmail.com>
+
+	Updated Greek translation-help
+
+2012-07-13  Andika Triwidada <andika@gmail.com>
+
+	Updated Indonesian translation
+
+2012-07-10  Kjartan Maraas <kmaraas@gnome.org>
+
+	Updated Norwegian bokmål translation
+
+2012-07-09  Cheng-Chia Tseng <pswo10680@gmail.com>
+
+	Updated Traditional Chinese translation(Hong Kong and Taiwan)
+
+2012-06-23  Tom Hughes <tom@compton.nu>
+
+	Save and restore tty attributes
+	* src/dbgengine/nmv-i-debugger.h (IDebugger::load_program): Take
+	additional slave_tty_fd and uses_launch_tty parameters.
+	* src/dbgengine/nmv-gdb-engine.h (GDBEngine::load_program):
+	Likewise.
+	* src/dbgengine/nmv-gdb-engine.cc
+	(GDBengine::Priv::{uses_launch_tty, tt_attributes, tty_path,
+	tty_fd): New members.
+	(GDBEngine::Priv::Priv): Initialize the new members above.
+	(GDBEngine::Priv::{get_tty_attributes,set_tty_attributes}): New
+	functions.
+	(GDBEngine::Priv::issue_command): When issuing a "re-run" command
+	make sure to re-set the tty attribute to their initial state.
+	(GDBEngine::load_program): In compliance with the above change on
+	the interface of this function, Take additional slave_tty_fd and
+	uses_launch_tty parameters.  Call new m_priv->get_tty_attributes before
+	really launching GDB.  Adjust call from load_program overload.
+	Update comment.
+	(GDBEngine::exit_engine): Call new m_priv->set_tty_attributes
+	after debugger exited.  Add comment.
+	* src/uicommon/nmv-terminal.h (Terminal::slave_ptr): Declare ...
+	* src/uicommon/nmv-terminal.cc (Terminal::slave_pty): ... new
+	function.
+	* src/persp/dbgperspective/nmv-dbg-perspective.cc
+	(DBGPerspective::execute_program): Adjust call to the
+	IDebugger::load_program.
+	(DBGPerspective::on_shutdown_signal): Re-indent comment.
+	(DBGPerspective::get_terminal_name): Add comment.
+	Signed-off-by: Dodji Seketeli <dodji@seketeli.org>
+
+2012-06-25  Piotr Drąg <piotrdrag@gmail.com>
+
+	Revert "Added Greek translation"
+	This reverts commit 39cdb74c198f32910880c4535edeb835892e2096.
+	Probably committed by mistake.
+
+2012-06-25  Dimitris Spingos <dmtrs32@gmail.com>
+
+	Added Greek translation
+
+2012-06-25  Dimitris Spingos <dmtrs32@gmail.com>
+
+	Added Greek translation
+
+2012-06-24  Fran Diéguez <fran.dieguez@mabishu.com>
+
+	Updated Galician translations
+
+2012-06-24  Aurimas Černius <aurisc4@gmail.com>
+
+	Added Lithuanian translation
+
+2012-06-21  Antoine Jacoutot <ajacoutot@gnome.org>
+
+	Terminal portability fixes for BSDs
+	* src/uicommon/nmv-terminal.cc (Terminal::Priv::init_pty):
+	Don't call useless grantpt and unlockpt.
+	(Terminal::slave_pts_name): use POSIX call ttyname in lieu of
+	the non-portable ptsname.
+
+2012-06-19  Daniel Mustieles <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2012-06-18  Daniel Mustieles <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2012-06-17  Dodji Seketeli <dodji@seketeli.org>
+
+	665274 - Support --just-load command line
+	* src/dbgengine/nmv-i-debugger.h (enum IDebugger::State): Add
+	comments.  Add a new INFERIOR_LOADED enumerator.
+	(IDebugger::state_to_string): Re-indent.  Add support for new
+	INFERIOR_LOADED enumerator of IDebugger::State.
+	(IDebugger::is_running): New entry point.
+	* src/dbgengine/nmv-gdb-engine.h (GDBEngine::is_running): New
+	entry point.
+	* src/dbgengine/nmv-gdb-engine.cc (GDBEngine::Priv::is_running):
+	New member.
+	(GDBEngine::Priv::on_running_signal): New signal handler ...
+	(GDBEngine::Priv::Priv): ... connected to the running_signal event.
+	(GDBEngine::Priv::set_tty_path):  Take a new command name parm.
+	Use it when emitting the underlying command.
+	(GDBEngine::Priv::on_stopped_signal): Set
+	GDBEngine::Priv::is_running to false when the debugger exits.
+	Style cleanup.
+	(GDBEngine::OnCommandDoneHandler::do_handle): Fix state management
+	logic.  Include the new IDebugger::INFERIOR_LOADED state for when
+	the inferior is loaded but not yet run.
+	(GDBEngine::load_program): Use a proper command name for
+	underlying commands issued.  Update the "attached_to_target"
+	property.
+	(GDBEngine::attach_to_target): Adjust call to m_priv->set_tty_path.
+	(GDBEngine::is_running): New definition.
+	* src/persp/dbgperspective/nmv-dbg-perspective.h
+	(DBGPerspective::execute_program): Add a parameter for
+	'break_in_main_run'.
+	(DBGPerspective::debugger_ready_signal): Remove.
+	* src/persp/dbgperspective/nmv-dbg-perspective.cc
+	(DBGPerspective::on_debugger_ready_signal): Removed.
+	(DBGPerspective::update_action_group_sensitivity)
+	(DBGPerspective::run_real): New functions.
+	(DBGPerspective::attached_to_target): Take a IDebugger::State in
+	parameter.
+	(DBGPerspective::Priv::inferior_loaded_action_group): Renamed
+	target_connected_action_group into this.
+	(DBGPerspective::Priv::detach_action_group): New action
+	group.
+	(DBGPerspective::Priv::attached_to_target_signal): Remove.
+	(DBGPerspective::on_debugger_not_started_signal)
+	(DBGPerspective::debugger_not_started_signal): Remove.
+	(DBGPerspective::on_attached_to_target_signal): Take the debugger
+	state in parameter.  Call the new update_action_group_sensitivity.
+	(DBGPerspective::on_debugger_inferior_re_run_signal): Don't emit
+	attach_to_target_signal anymore.
+	(DBGPerspective::on_debugger_detached_from_target_signal): Rename
+	target_connected_action_group in to inferior_loaded_action_group.
+	(DBGPerspective::on_program_finished_signal): Don't emit
+	attached_to_target_signal.  Call update_action_group_sensitivity.
+	(DBGPerspective::on_debugger_state_changed_signal): Call
+	update_action_group_sensitivity.
+	(DBGPerspective::init_actions): Renamed
+	s_target_connected_action_entries into
+	s_inferior_loaded_action_entries.  Added new action group
+	s_detach_action_entries.  Re-arranged groups containing actions.
+	(DBGPerspective::restart_inferior)
+	(DBGPerspective::restart_local_inferior): Add logging.
+	(DBGPerspective::execute_program): Take a flag to break in main
+	and run.
+	(DBGPerspective::attach_to_program): Cleanup logic.
+	(DBGPerspective::run):  Use the new run_real function.
+	(DBGPerspective::do_continue): Start the inferior if it not yet
+	started.
+	(DBGPerspective::attached_to_target_signal):  Take an instance of
+	IDebugger::State as the event parameter.
+	* src/persp/dbgperspective/menus/menus.xml: Re-organized some menu
+	items.
+	* src/main.cc: Add a new --just-load option to just load the
+	inferior without trying to set a breakpoint in main and run.
+	(process_gui_options):  Adjust call to
+	DBGPerspective::execute_program.
+
+2012-06-18  Dodji Seketeli <dodji@seketeli.org>
+
+	Misc style cleanup
+	* src/persp/dbgperspective/nmv-dbg-perspective.cc
+	(DBGPerspective::on_sv_markers_region_clicked_signal)
+	(DBGPerspective::on_button_pressed_in_source_view_signal)
+	(DBGPerspective::on_motion_notify_event_signal)
+	(DBGPerspective::on_leave_notify_event_signal)
+	(DBGPerspective::on_mouse_immobile_timer_signal)
+	(DBGPerspective::on_insertion_changed_signal): Trivial style
+	fixes.
+
+2012-06-17  Piotr Drąg <piotrdrag@gmail.com>
+
+	Remove space before an ellipsis in a string
+
+2012-06-15  Fabien Parent <parent.f@gmail.com>
+
+	Fix wrong values returned
+	* src/persp/dbgperspective/nmv-dbg-perspective.cc
+	(DBGPerspective::open_file_real)
+	(DBGPerspective::get_breakpoint): Fix wrong values returned
+
+2012-06-02  Dodji Seketeli <dodji@seketeli.org>
+
+	542503 - Initial support for monitoring expressions
+	* src/dbgengine/nmv-i-debugger.h (Variable::id)
+	(Variable::is_morally_root): New methods.
+	* src/persp/dbgperspective/ui/exprinspectordialog.ui: Add a new
+	"add to monitor" button.
+	* src/persp/dbgperspective/nmv-expr-monitor.{cc,h}: New file.
+	* src/persp/dbgperspective/menus/exprmonitorpopup.xml: New
+	description file for the contextual menu.
+	* src/persp/dbgperspective/Makefile.am: Add
+	nmv-expr-monitor.{h,cc} and exprmonitorpopup.xml to the build
+	system.
+	* po/POTFILES.in: Add src/persp/dbgperspective/nmv-expr-monitor.cc
+	to the list of translatable source files.
+	* src/persp/dbgperspective/nmv-expr-inspector-dialog.h: Add
+	comments.
+	(ExprInspectorDialog::FunctionalityFlags): New enum.
+	(ExprInspectorDialog::functionality_mask): New accessors.
+	* src/persp/dbgperspective/nmv-expr-inspector-dialog.cc
+	(ExprInspectorDialog::Priv::{add_to_monitor_button,expr_monitor_requested,
+	fun_mask}): New members.
+	(ExprInspectorDialog::Priv::Priv): Initialize new fun_mask member.
+	(ExprInspectorDialog::Priv::on_do_monitor_button_clicked)
+	(ExprInspectorDialog::Priv::functionality_mask): New functions.
+	(ExprInspectorDialog::Priv::build_dialog): Initialize the
+	add_to_monitor button.
+	(ExprInspectorDialog::Priv::on_var_name_changed_signal): Inspect
+	button is now controlled by FUNCTIONALITY_EXPR_INSPECTOR flag.
+	(ExprInspectorDialog::Priv::on_variable_inspected):  Add to monitor
+	button is now controlled by FUNCTIONALITY_EXPR_MONITOR_PICKER
+	flag.
+	(ExprInspectorDialog::expr_monitoring_requested)
+	(ExprInspectorDialog::functionality_mask): New functions.
+	(ExprInspectorDialog::Priv::on_var_name_changed_signal): Do not
+	enable/disable the "add to monitor" button based on the presence
+	of an expression/name in the "variable name" entry field.
+	(ExprInspectorDialog::Priv::on_variable_inspected): Enable the "add
+	to monitor" button only when the expression has been inspected.
+	(ExprInspectorDialog::Priv::on_variable_inspector_cleared): Disable
+	the "add to monitor" button when the inspector has been cleared.
+	* src/persp/dbgperspective/menus/menus.xml: Add a menu item to
+	activate the new variable monitor.
+	* src/persp/dbgperspective/nmv-dbg-perspective-default-layout.cc
+	(DBGPerspectiveDefaultLayout::append_view): Style cleanup.
+	* src/persp/dbgperspective/nmv-variables-utils.h
+	(unlink_a_variable_row): New function.
+	* src/persp/dbgperspective/nmv-variables-utils.cc
+	(update_a_variable_node, ): Add (better) logging.
+	(find_a_variable): Likewise.  Remove dead code.
+	(unlink_a_variable_row): Add logging.  Add const to last
+	argument.
+	(update_a_variable): Add logging.  Style cleanup.
+	(set_a_variable): Remove dead code. Style cleanup.
+	(unlink_a_variable_row): New function.
+	(visualize_a_variable): Style cleanup.
+	* src/persp/dbgperspective/nmv-dbg-perspective.h (enum
+	ViewsIndex::VARS_MONITOR_VIEW_INDEX): New enumerator.
+	* src/persp/dbgperspective/nmv-dbg-perspective.cc
+	(DBGPerspective::{on_expr_monitoring_requested,get_vars_monitor_view}):
+	New functions.
+	(DBGPerspective::Priv::vars_monitor): New
+	member.
+	(DBGPerspective::{on_expr_monitoring_requested,
+	on_activate_vars_monitor_view, get_vars_monitor_view}): New
+	functions.
+	(DBGPerspective::on_going_to_run_target_signal)
+	(DBGPerspective::clear_status_notebook): Take a boolean saying if
+	we are re-starting the current program or not.  Re-init the
+	variable monitor.  Make the former use the latter.
+	(DBGPerspective::going_to_run_target_signal): Take a boolean
+	saying if we are re-starting the current program or not.
+	(DBGPerspective::detach_from_program): Adjust call to clear to
+	clear_status_notebook.
+	(DBGPerspective::restart_local_inferior): Adjust call to
+	DBGPerspective::going_to_run_target_signal.
+	(DBGPerspective::execute_program): Remove useless call to
+	clear_status_notebook.  Adjust call to
+	DBGPerspective::going_to_run_target_signal.
+	(DBGPerspective::init_actions): Define a new action
+	to activate the variable monitor view.
+	(DBGPerspective::add_views_to_layout): Append the variable
+	monitor view.
+	(DBGPerspective:::inspect_expression): On the
+	event of requesting the monitoring of a variable, hook the new
+	function DBGPerspective::{on_expr_monitoring_requested.
+
+2012-06-15  Piotr Drąg <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
+2012-06-15  Dodji Seketeli <dodji@seketeli.org>
+
+	Rename "Variable Inspector" into "Expression Inspector"
+	* src/persp/dbgperspective/nmv-expr-inspector-dialog.cc: Renamed
+	src/persp/dbgperspective/nmv-var-inspector-dialog.cc into this,
+	and renamed most references to "variable monitor" to "expression
+	monitor.
+	* src/persp/dbgperspective/nmv-expr-inspector-dialog.h: Renamed
+	src/persp/dbgperspective/nmv-var-inspector-dialog.h into this and
+	and renamed most references to "variable monitor" to "expression
+	monitor..
+	* src/persp/dbgperspective/nmv-expr-inspector.cc: Renamed
+	src/persp/dbgperspective/nmv-var-inspector.cc in to this and
+	renamed most references to "variable monitor" to "expression
+	monitor.
+	* src/persp/dbgperspective/nmv-expr-inspector.h: Renamed
+	src/persp/dbgperspective/nmv-var-inspector.h into this and renamed
+	most references to "variable monitor" to "expression monitor.
+	* po/POTFILES.in: Adjust.
+	* src/persp/dbgperspective/Makefile.am: Likewise.
+	* src/persp/dbgperspective/menus/menus.xml: Likewise.
+	* src/persp/dbgperspective/nmv-dbg-perspective.cc: Likewise.
+
+2012-06-10  Dodji Seketeli <dodji@seketeli.org>
+
+	Add a new IDebugger::re_run entry point
+	* src/dbgengine/nmv-i-debugger.h
+	(IDebugger::inferior_re_run_signal, IDebugger::re_run): New entry
+	points.
+	* src/dbgengine/nmv-gdb-engine.h
+	(GDBEngine::inferior_re_run_signal, GDBEngine::re_run): New
+	functions.
+	* src/dbgengine/nmv-gdb-engine.cc
+	(GDBEngine::Priv::inferior_re_run_signal): New member.
+	(OnRunningHandler::do_handle): Handle new "re-run" command.
+	(GDBEngine::inferior_re_run_signal, GDBEngine::re_run): New
+	function.
+	* src/persp/dbgperspective/nmv-dbg-perspective.cc
+	(DBGPerspective::on_debugger_inferior_re_run_signal): New
+	function.
+	(DBGPerspective::restart_local_inferior): Use the new
+	IDebugger::re_run function.
+
+2012-06-10  Dodji Seketeli <dodji@seketeli.org>
+
+	Minor Style cleanup
+	* src/dbgengine/nmv-i-debugger.h
+	(IDebugger::Variable::operator==): Space fixup.
+
+2012-06-03  Bruno Brouard <annoa.b@gmail.com>
+
+	Updated French translation
+
+2012-06-02  Dodji Seketeli <dodji@seketeli.org>
+
+	Added comments to some IDebugger methods
+	* src/dbgengine/nmv-i-debugger.h
+	(IDebugger::changed_variables_signal)
+	(IDebugger::list_changed_variables)
+	(IDebugger::list_changed_variables): Added comments
+
+2012-06-02  Dodji Seketeli <dodji@seketeli.org>
+
+	Reorganize vars logging & log more variables stuff
+	* src/dbgengine/nmv-debugger-utils.cc (dump_variable_value): Move
+	the core overload of this to nmv-debugger-utils.h, transform it
+	into a template.  Change all overloads to take a const
+	IDebugger::Variable& instead of a pointer to variable.  Adjust
+	them as necessary.
+	* src/dbgengine/nmv-debugger-utils.h (dump_variable_value): Move
+	the core overload in here, transform it into a template with a
+	generic output stream.
+	(operator<<): New streaming operator for IDebugger::Variable over
+	generic streams.
+	* src/dbgengine/nmv-i-debugger.h (IDebugger::Variable):  Make the
+	constructor be explicit to avoid unexpected conversion during
+	stream operations.
+	* src/persp/dbgperspective/nmv-local-vars-inspector.cc
+	(LocalVarsInspector::Priv::on_visited_variable_signal):  Adjust
+	use of dump_variable_value.
+	* src/persp/dbgperspective/nmv-var-inspector.cc
+	(VarInspector::Priv::on_visited_variable_signal): Likewise.
+	* src/persp/dbgperspective/nmv-variables-utils.cc
+	(update_a_variable_node): Log the name and content of the variable
+	we have changed.
+
+2012-03-26  Dodji Seketeli <dodji@seketeli.org>
+
+	Fix style and comments
+	* src/dbgengine/nmv-gdb-engine.cc
+	(OnListChangedVariableHandler::do_handle): Fix comments and add
+	some newlines.
+
+2012-06-01  Piotr Drąg <piotrdrag@gmail.com>
+
+	Added Polish translation
+
+2012-05-31  Daniel Mustieles <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2012-03-26  Dodji Seketeli <dodji@seketeli.org>
+
+	Update sub-variables of the one we are looking at
+	* src/dbgengine/nmv-dbg-common.cc (VarChange::apply_to_variable):
+	Don't forget to apply changes to the sub-variables of the one we
+	are looking at.
+
+2012-05-28  Dodji Seketeli <dodji@seketeli.org>
+
+	Arrange for VarInspectorDialog et al. to be initialized with IDebugger&
+	* src/dbgengine/nmv-i-var-list-walker.h
+	(IVarListWalker::initialize): Take a naked IDebugger pointer.
+	* src/dbgengine/nmv-var-list-walker.cc
+	(VarListWalker::initialize): Likewise.
+	(VarListWalker::m_debugger): Turn this into a naked pointer.
+	(VarListWalker::VarListWalker): Initialize the naked m_debugger
+	pointer.
+	* nmv-i-var-walker.h (IVarWalker::connect): Likewise.
+	(IVarWalker::get_debugger): Return a naked IDebugger pointer.
+	* src/dbgengine/nmv-var-walker.cc (VarWalker::m_debugger): Turn
+	this into a naked pointer.
+	(VarWalker::VarWalker): Initialize it.
+	(VarWalker::connect): Take a naked IDebugger pointer and adjust to
+	the change.
+	(VarWalker::get_debugger): Return a naked pointer.
+	* src/dbgengine/nmv-varobj-walker.cc (VarobjWalker::m_debugger):
+	Turn this into a naked pointer.
+	(VarobjWalker::VarobjWalker): Initialize it.
+	(VarobjWalker::connect): Take a naked IDebugger pointer.
+	* src/persp/dbgperspective/nmv-dbg-perspective.cc
+	(DBGPerspective::get_popup_var_inspector)
+	(DBGPerspective::set_watchpoint_using_dialog): Adjust use of
+	VarInspector constructor to using a reference to IDebugger,
+	instead of a safe ptr.
+	(GlobalVarsInspectorDialog::Priv::create_variable_walker_list):
+	Adjust call to IVarListWalker::initialize.
+	* src/persp/dbgperspective/nmv-local-vars-inspector.cc
+	(LocalVarsInspector::Priv::on_variable_value_copy_to_clipboard_action):
+	Likewise.
+	* src/persp/dbgperspective/nmv-var-inspector-dialog.h
+	(VarInspectorDialog::VarInspectorDialog): Remove redundant root
+	path parameter.
+	* src/persp/dbgperspective/nmv-var-inspector-dialog.cc
+	(VarInspectorDialog::Priv::debugger): Turn this into a reference
+	to IDebugger, instead of using a safe ptr.
+	(LocalVarsInspector::Priv::Priv): Update to pass IDebugger by
+	reference.
+	(VarInspectorDialog::VarInspectorDialog): Remove root path parm,
+	as it can be gotten from the perspective parameter.  Adjust Dialog
+	initializer.
+	* src/persp/dbgperspective/nmv-var-inspector.h
+	(VarInspector::VarInspector): Take a reference to IDebugger,
+	instead of the safe ptr.
+	* src/persp/dbgperspective/nmv-var-inspector.cc
+	(VarInspector::Priv::debugger):  Turn this into a reference,
+	instead of using a safe ptr.
+	(VarInspector::Priv::set_variable)
+	(VarInspector::Priv::create_variable)
+	(VarInspector::Priv::on_tree_view_selection_changed_signal)
+	(VarInspector::Priv::on_tree_view_row_expanded_signal)
+	(VarInspector::Priv::on_cell_edited_signal)
+	(VarInspector::Priv::on_variable_value_copy_to_clipboard_action):
+	Adjust use of debugger.
+	* src/persp/dbgperspective/nmv-watchpoint-dialog.cc
+	(WatchpointDialog::Priv::debugger): Turn this into a reference on
+	IDebugger, instead of a safe ptr.
+	(WatchpointDialog::Priv::Priv)
+	(WatchpointDialog::WatchpointDialog): Adjust.
+	* src/persp/dbgperspective/nmv-dbg-perspective.cc
+	(DBGPerspective::inspect_variable): Adjust use of
+	VarInspectorDialog.
+	* src/common/nmv-plugin.h (Plugin::plugin_path): Make this public.
+	* tests/test-var-walker.cc (create_var_list_walker):  Adjust.
+	* tests/test-varobj-walker.cc: Likewise.
+
+2012-05-28  Dodji Seketeli <dodji@seketeli.org>
+
+	Add VarInspectorDialog::inspector getter
+	* src/persp/dbgperspective/nmv-var-inspector-dialog.h
+	(VarInspectorDialog::inspector): Declare new getter.
+	* src/persp/dbgperspective/nmv-var-inspector-dialog.cc
+	(VarInspectorDialog::inspector): New getter
+
+2012-05-28  Dodji Seketeli <dodji@seketeli.org>
+
+	Allow opt-in points when inspecting a variable
+	* src/persp/dbgperspective/nmv-var-inspector-dialog.h
+	(VarInspectorDialog::inspect_variable): Declare new overload.
+	* src/persp/dbgperspective/nmv-var-inspector.h
+	(VarInspector::inspect_variable): New overload.
+	(VarInspector::{var_inspected_signal, cleared_signal}): New methods.
+	* src/persp/dbgperspective/nmv-var-inspector-dialog.cc
+	(VarInspectorDialog::Priv::do_inspect_variable): Cleanup.
+	(VarInspectorDialog::Priv::inspect_variable)
+	(VarInspectorDialog::inspect_variable): New overload that takes a
+	slot called upon inspection of the expression.  Re-write the
+	former overload in terms of the new one.
+	(VarInspectorDialog::Priv::on_variable_inspected): New default
+	callback invoked upon expression inspection.
+	(VarInspectorDialog::Priv::on_variable_inspector_cleared): New default
+	callback invoked upon expression inspection.
+	(VarInspectorDialog::Priv::build_dialog): Add comment.  Connect
+	the new on_variable_inspector_cleared callback to the
+	cleared_signal of the inspector.
+	* src/persp/dbgperspective/nmv-var-inspector.cc
+	(no_op_void_variable_slot): New no-op slot.
+	(VarInspector::Priv::{var_inspected_signal,cleared_signal}) New
+	members.
+	(VarInspector::Priv::create_variable): New overload that takes a
+	slot called upon creation of the expression.  Re-write the former
+	overload in terms of the new one.
+	(VarInspector::Priv::on_variable_created_signal): Take a slot to
+	call upon the creation of the variable.
+	(VarInspector::inspect_variable): New overload that takes a slot
+	called upon creation of the expression.  Re-write the former
+	overload in terms of the new one.
+	(VarInspector::var_inspected_signal)
+	(VarInspector::cleared_signal): New signal getters.
+
+2012-05-28  Dodji Seketeli <dodji@seketeli.org>
+
+	Style cleanup
+	* src/persp/dbgperspective/nmv-local-vars-inspector.cc
+	(LocalVarsInspector::Priv::init_graphical_signals): Add comment.
+	* src/persp/dbgperspective/nmv-var-inspector-dialog.cc
+	(VarInspectorDialog::inspect_variable): Remove useless assert.
+
+2012-05-23  Matej Urbančič <mateju@svn.gnome.org>
+
+	Updated Slovenian translation
+
+2012-05-19  Fran Diéguez <fran.dieguez@mabishu.com>
+
+	Updated Galician translations
+
+2012-05-18  Daniel Mustieles <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2012-05-18  Piotr Drąg <piotrdrag@gmail.com>
+
+	Fixed typo
+	Reported by Andika Triwidada.
+
+2012-05-17  Andika Triwidada <andika@gmail.com>
+
+	[l10n] really added Indonesian translation
+
+2012-05-17  Andika Triwidada <andika@gmail.com>
+
+	[l10n] Added Indonesian translation
+
+2012-05-17  Daniel Mustieles <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2012-05-16  Piotr Drąg <piotrdrag@gmail.com>
+
+	Remove markup from translatable strings
+
+2012-05-15  Kjartan Maraas <kmaraas@gnome.org>
+
+	Updated Norwegian bokmål translation
+
+2012-05-09  Fran Diéguez <fran.dieguez@mabishu.com>
+
+	Updated Galician translations
+
+2012-05-08  Daniel Mustieles <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2012-05-07  Piotr Drąg <piotrdrag@gmail.com>
+
+	Fix three more typos in translatable strings
+
+2012-05-07  Piotr Drąg <piotrdrag@gmail.com>
+
+	Spell check translatable strings
+	Also mark for translation three forgotten strings in nmv-terminal.cc.
+
+2012-05-03  Bruno Brouard <annoa.b@gmail.com>
+
+	Updated French translation
+
+2012-05-02  Bruno Brouard <annoa.b@gmail.com>
+
+	Updated French translation
+
+2012-04-25  Joe Hansen <joedalton2@yahoo.dk>
+
+	Updated Danish translation
+
+2012-04-19  Dustin Polke <DuPol@gmx.de>
+
+	Fix XML validation.
+	This fixes the following validation failures:
+	./de/nemiver.xml:82: element releaseinfo: validity error : Element
+	application is not declared in releaseinfo list of possible children
+	./fr/nemiver.xml:38: element publishername: validity error : Element
+	application is not declared in publishername list of possible children
+	./fr/nemiver.xml:82: element releaseinfo: validity error : Element
+	application is not declared in releaseinfo list of possible children
+
+2012-04-12  Antoine Jacoutot <ajacoutot@gnome.org>
+
+	build: unbreak on OpenBSD by including iostream
+	Add proper includes for std:cerr and std:cout.
+
+2012-04-12  Antoine Jacoutot <ajacoutot@gnome.org>
+
+	don't hardcode path to false(1).
+	On some platforms, false is under /usr/bin, not /bin.
+
+2012-03-27  Dodji Seketeli <dodji@seketeli.org>
+
+	En route towards 0.9.3
+	* configure.ac: Bump version to 0.9.3
+
+2012-03-27  Dodji Seketeli <dodji@seketeli.org>
+
+	Update release text
+	* Makefile.am: Fix release text nits
+
+2012-03-27  Dodji Seketeli <dodji@seketeli.org>
+
+	Preparing 0.9.2 Release
+	* ChangeLog:  Automatically update this.
+	* NEWS: Update this for 0.9.2
+
 2012-03-19  Fabien Parent <parent.f@gmail.com>
 
 	672409 - activate correct views in static layouts
@@ -8938,6 +9587,7 @@
 
 2008-06-24  Luca Bruno <lucab@debian.org>
 
+	commit bc9f19ed88245361768b7a197e59c3459a75dff4
 	* New upstream version 0.5.4
 
 2008-06-22  Dodji Seketeli <dodji@src.gnome.org>
@@ -9085,10 +9735,12 @@
 
 2008-05-26  Luca Bruno <lucab@debian.org>
 
+	commit e4601b290648f215b8ef415811bba547076733cf
 	* New upstream version 0.5.3
 
 2008-05-26  Luca Bruno <lucab@debian.org>
 
+	commit 8cef8c4745908abe5b652b912ddb10119ae8424e
 	* .desktop patch removed, accepted upstream
 
 2008-05-25  Dodji Seketeli <dodji@src.gnome.org>
@@ -9184,6 +9836,7 @@
 
 2008-04-18  Luca Bruno <lucab@debian.org>
 
+	commit a40d3b7dd1ddca0105ec37422d7dcf70303c75b6
 	* New upstream release 0.5.2, using libgtksourceviewmm 2.0 - http://bugs.debian.org/474344
 
 2008-04-12  Dodji Seketeli <dodji@src.gnome.org>
@@ -9298,6 +9951,7 @@
 
 2008-03-29  Luca Bruno <lucab@debian.org>
 
+	commit 75a16240787e48c622cf867ab0e68626a33968f4
 	* New upstream version 0.5.1
 
 2008-03-24  Dodji Seketeli <dodji@src.gnome.org>
@@ -9330,6 +9984,7 @@
 
 2008-03-17  Luca Bruno <lucab@debian.org>
 
+	commit f2603d21ef7e9b6a064fcf3078c7fc64039713e5
 	* New upstream version 0.5.0
 
 2008-03-17  Jonathon Jongsma <jjongsma@src.gnome.org>
@@ -9382,10 +10037,12 @@
 
 2008-03-06  Luca Bruno <lucab@debian.org>
 
+	commit 303a0b19782d00b6f0d2b4baaa00f218a01311f8
 	* Bumped versioned build-dep on debhelper due to dh_icons
 
 2008-03-06  Luca Bruno <lucab@debian.org>
 
+	commit 11a8c7446c1d77e2bfd889a9e2f3ffdf6c6cc107
 	* Remove spurious scroolkeeper database - http://bugs.debian.org/469431
 
 2008-02-24  Jonathon Jongsma <jjongsma@src.gnome.org>
@@ -9796,6 +10453,7 @@
 
 2008-01-16  Luca Bruno <lucab@debian.org>
 
+	commit 3eb5aac020273bc1f4f667db8537d59be7ac406c
 	* Minor fixes for scrollkeeper, gconf and icons
 
 2008-01-15  Jonathon Jongsma <jjongsma@src.gnome.org>
@@ -9807,6 +10465,7 @@
 
 2008-01-14  Luca Bruno <lucab@debian.org>
 
+	commit ae071e0ee7c4ee80cb0b99f117306580060d3a03
 	* Really symlinking for the package content :)
 
 2008-01-14  Jonathon Jongsma <jjongsma@src.gnome.org>
@@ -9866,6 +10525,7 @@
 
 2008-01-11  Luca Bruno <lucab@debian.org>
 
+	commit 508bf233c49202febb3af35ea037a4119ad4833b
 	* Symbolic link for missing sv/legal.xml
 
 2008-01-10  Jonathon Jongsma <jjongsma@src.gnome.org>
@@ -9909,10 +10569,12 @@
 
 2008-01-09  Luca Bruno <lucab@debian.org>
 
+	commit 10ee66979167a5e03a0ac5898a2ed718f08c5339
 	* Enable and register scrollkeeper entry - Close http://bugs.debian.org/457522
 
 2008-01-09  Luca Bruno <lucab@debian.org>
 
+	commit 69ca9a0009ef7136824f17e53ccb81e7f7ca2907
 	* Added manpage nemiver(1)
 
 2008-01-03  Jonathon Jongsma <jjongsma@src.gnome.org>
@@ -10121,22 +10783,27 @@
 
 2007-12-12  Luca Bruno <lucab@debian.org>
 
+	commit d9693f92a9e8923dda19a328d650998fd757b884
 	* Not really sure about it, but leaving scrollkeeper there for now
 
 2007-12-10  Luca Bruno <lucab@debian.org>
 
+	commit 5c23313736e6df7447894afb4a2e741f246cb369
 	* Various minor fixes
 
 2007-12-10  Luca Bruno <lucab@debian.org>
 
+	commit 4cd7bff01d5768ffd037720cedcb312620702058
 	* Minor fix in series
 
 2007-12-10  Luca Bruno <lucab@debian.org>
 
+	commit e24c8d964730957b9c2d23694c8dad4f63d069df
 	* Desktop file conforming to 1.0 specification
 
 2007-12-10  Luca Bruno <lucab@debian.org>
 
+	commit e5666b167590687f832c60166c374a09241b2ed9
 	*  Shipping libnemivercommon as a private lib (patch from SVN r539-542)
 
 2007-12-09  Dodji Seketeli <dodji@src.gnome.org>
@@ -10217,6 +10884,7 @@
 
 2007-12-05  Luca Bruno <luca.br@uno.it>
 
+	commit ab98a35dd9e63f13213c051f15cba926708c61d9
 	* Manpage missing right now, will be written soon
 
 2007-11-29  Claude Paroz <claude@2xlibre.net>
@@ -10226,22 +10894,27 @@
 
 2007-11-29  Luca Bruno <luca.br@uno.it>
 
+	commit 3f1a4c5a821213df2407d643ff0735c85f73170a
 	* Minor copyright fixes
 
 2007-11-29  Luca Bruno <luca.br@uno.it>
 
+	commit 227e46488ff93c537f7d7961794344a7d7d8fbad
 	* Making lintian happy about distclean
 
 2007-11-29  Luca Bruno <luca.br@uno.it>
 
+	commit e133a795834858a6169ee71656d5c07e45a5135e
 	* Long description added
 
 2007-11-27  Luca Bruno <luca.br@uno.it>
 
+	commit 5b320a5ab2f84f1c70c27382218fa7fa6373cdf9
 	* Build-depends filled up and ready to build
 
 2007-11-26  Luca Bruno <luca.br@uno.it>
 
+	commit 0be9720375ed2297988bb937e7b44527b71c96a0
 	* Added a proper menu section
 
 2007-11-26  Dodji Seketeli <dodji@src.gnome.org>
@@ -10342,14 +11015,17 @@
 
 2007-11-24  Luca Bruno <luca.br@uno.it>
 
+	commit acf0464be58ef33bf30096c346b99305f42be7be
 	* Patch from SVN (r513) to fix a misnamed glade file
 
 2007-11-24  Luca Bruno <luca.br@uno.it>
 
+	commit f6bc803cef9b1fa66f57bac7cf7c3238bb85b277
 	* Better handling of gconf schemas and lib stuff
 
 2007-11-24  Luca Bruno <luca.br@uno.it>
 
+	commit 67852abd448f57a72963f6393e954516764eabc9
 	* Added xpm icon for debian menu file
 
 2007-11-24  Dodji Seketeli <dodji@src.gnome.org>
@@ -10362,6 +11038,7 @@
 
 2007-11-24  Luca Bruno <luca.br@uno.it>
 
+	commit 0d5cbe1383292e8316a80f6a3ae4a690474efad7
 	* Non-fatal distclean
 
 2007-11-23  Dodji Seketeli <dodji@src.gnome.org>
@@ -10415,6 +11092,7 @@
 
 2007-11-19  Luca Bruno <luca.br@uno.it>
 
+	commit a30a8268915fad78745149bb02d21d582856c564
 	* Added debian/watch for nemiver
 
 2007-11-18  Dodji Seketeli <dodji@src.gnome.org>
@@ -10467,18 +11145,22 @@
 
 2007-11-18  Luca Bruno <luca.br@uno.it>
 
+	commit 3c571226a8ad4b26d7db58496b4abbc4a784a2b2
 	* Patch from SVN to reflect a libgtop API change
 
 2007-11-18  Luca Bruno <luca.br@uno.it>
 
+	commit db6b67c6050ee0484da7b8b2acf22b487bfabcdc
 	* debian/copyright rewritten in a machine-interpretable format
 
 2007-11-18  Luca Bruno <luca.br@uno.it>
 
+	commit d9094a81ad86b9e03b58a26f8378d4618fc2e629
 	* First rough skeleton
 
 2007-11-18  Luca Bruno <luca.br@uno.it>
 
+	commit 38f71b27e6dc08090ba4e338ec90adb771c29f86
 	* Start packaging nemiver
 
 2007-11-18  Dodji Seketeli <dodji@src.gnome.org>
