@@ -46,7 +46,6 @@ public:
     virtual bool do_callgraph_recording () const = 0;
     virtual bool do_collect_without_buffering () const = 0;
     virtual bool do_collect_raw_sample_records () const = 0;
-    virtual bool do_system_wide_collection () const = 0;
     virtual bool do_sample_addresses () const = 0;
     virtual bool do_sample_timestamps () const = 0;
 }; // end namespace RecordOptions

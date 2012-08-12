@@ -67,7 +67,6 @@ extern const char* CONF_KEY_DBG_PERSPECTIVE_LAYOUT;
 extern const char* CONF_KEY_DO_CALLGRAPH_RECORDING;
 extern const char* CONF_KEY_COLLECT_WITHOUT_BUFFERING;
 extern const char* CONF_KEY_COLLECT_RAW_SAMPLE_RECORDS;
-extern const char* CONF_KEY_SYSTEM_WIDE_COLLECTION;
 extern const char* CONF_KEY_SAMPLE_ADDRESSES;
 extern const char* CONF_KEY_SAMPLE_TIMESTAMPS;
 

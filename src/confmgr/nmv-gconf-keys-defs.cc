@@ -99,8 +99,6 @@ const char* CONF_KEY_COLLECT_WITHOUT_BUFFERING =
                 "/apps/nemiver/profperspective/collect-without-buffering";
 const char* CONF_KEY_COLLECT_RAW_SAMPLE_RECORDS =
                 "/apps/nemiver/profperspective/collect-raw-sample-records";
-const char* CONF_KEY_SYSTEM_WIDE_COLLECTION =
-                "/apps/nemiver/profperspective/system-wide-collection";
 const char* CONF_KEY_SAMPLE_ADDRESSES =
                 "/apps/nemiver/profperspective/sample-addresses";
 const char* CONF_KEY_SAMPLE_TIMESTAMPS =

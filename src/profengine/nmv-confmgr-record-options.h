@@ -48,7 +48,6 @@ public:
     bool do_callgraph_recording () const;
     bool do_collect_without_buffering () const;
     bool do_collect_raw_sample_records () const;
-    bool do_system_wide_collection () const;
     bool do_sample_addresses () const;
     bool do_sample_timestamps () const;
 }; // end namespace ConfMgrRecordOptions

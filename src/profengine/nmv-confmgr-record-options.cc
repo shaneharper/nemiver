@@ -84,18 +84,6 @@ ConfMgrRecordOptions::do_collect_raw_sample_records () const
 }
 
 bool
-ConfMgrRecordOptions::do_system_wide_collection () const
-{
-    bool system_wide_collection = false;
-    if (!m_priv->conf_mgr.get_key_value (CONF_KEY_SYSTEM_WIDE_COLLECTION,
-                                         system_wide_collection)) {
-        LOG_ERROR ("failed to get gconf key "
-                   << CONF_KEY_SYSTEM_WIDE_COLLECTION);
-    }
-    return system_wide_collection;
-}
-
-bool
 ConfMgrRecordOptions::do_sample_addresses () const
 {
     bool sample_addresses = false;

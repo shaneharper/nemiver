@@ -110,6 +110,7 @@ public:
     void init_body ();
     void load_report_file ();
     void load_report_file (const UString &a_report_file);
+    void system_wide_record ();
     void run_executable ();
     void run_executable (const UString &a_program_name,
                          const UString &a_arguments);
@@ -121,6 +122,7 @@ public:
     void attach_to_process (unsigned a_pid);
     IProcMgr* process_manager ();
 
+    void on_system_wide_record_action ();
     void on_preferences_action ();
     void on_attach_to_process_action ();
     void on_stop_recording_action ();
@@ -488,6 +490,17 @@ ProfPerspective::init_actions ()
             false
         },
         {
+            "SystemWideRecordAction",
+            nil_stock_id,
+            _("Profile system..."),
+            _("Profile the whole system..."),
+            sigc::mem_fun (*this,
+                           &ProfPerspective::on_system_wide_record_action),
+            ui_utils::ActionEntry::DEFAULT,
+            "",
+            false
+        },
+        {
             "ProfilerPreferencesAction",
             Gtk::Stock::PREFERENCES,
             _("Pr_eferences"),
@@ -614,6 +627,24 @@ ProfPerspective::stop_recording ()
 }
 
 void
+ProfPerspective::system_wide_record ()
+{
+    THROW_IF_FAIL (profiler ());
+
+    IConfMgrSafePtr confmgr = get_workbench ().get_configuration_manager ();
+    THROW_IF_FAIL (confmgr);
+
+    ConfMgrRecordOptions options (*confmgr);
+    profiler ()->system_wide_record (options);
+
+    THROW_IF_FAIL (throbber);
+    throbber->start ();
+
+    THROW_IF_FAIL (recording_action_group);
+    recording_action_group->set_sensitive (true);
+}
+
+void
 ProfPerspective::attach_to_process ()
 {
     IProcMgr *process_mgr = process_manager ();
@@ -674,6 +705,16 @@ ProfPerspective::annotate_symbol (const UString &a_symbol_name)
         THROW_IF_FAIL (throbber);
         throbber->start ();
     }
+}
+
+void
+ProfPerspective::on_system_wide_record_action ()
+{
+    NEMIVER_TRY;
+
+    system_wide_record ();
+
+    NEMIVER_CATCH;
 }
 
 void

@@ -9,6 +9,8 @@
                       name="LoadReportMenuItem"/>
             <menuitem action="AttachToProcessAction"
                       name="AttachToProcessItem"/>
+            <menuitem action="SystemWideRecordAction"
+                      name="SystemWideRecordItem"/>
         </placeholder>
     </menu>
     <menu action="EditMenuAction" name="EditMenu">

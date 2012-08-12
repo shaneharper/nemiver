@@ -40,7 +40,6 @@ class ProfPreferencesDialog::Priv {
     Gtk::CheckButton *callgraph_checkbutton;
     Gtk::CheckButton *no_buffering_checkbutton;
     Gtk::CheckButton *raw_sample_checkbutton;
-    Gtk::CheckButton *system_wide_collection_checkbutton;
     Gtk::CheckButton *sample_addresses_checkbutton;
     Gtk::CheckButton *sample_timestamps_checkbutton;
 
@@ -53,7 +52,6 @@ public:
         callgraph_checkbutton (0),
         no_buffering_checkbutton (0),
         raw_sample_checkbutton (0),
-        system_wide_collection_checkbutton (0),
         sample_addresses_checkbutton (0),
         sample_timestamps_checkbutton (0)
     {
@@ -76,12 +74,6 @@ public:
     on_raw_sample_toggled_signal ()
     {
         update_raw_sample_key ();
-    }
-
-    void
-    on_system_wide_collection_toggled_signal ()
-    {
-        update_system_wide_collection_key ();
     }
 
     void
@@ -127,14 +119,6 @@ public:
         raw_sample_checkbutton->signal_toggled ().connect (sigc::mem_fun
             (*this,
              &ProfPreferencesDialog::Priv::on_raw_sample_toggled_signal));
-
-        system_wide_collection_checkbutton =
-            ui_utils::get_widget_from_gtkbuilder<Gtk::CheckButton>
-                (gtkbuilder, "systemcollctioncheckbutton");
-        THROW_IF_FAIL (system_wide_collection_checkbutton);
-        system_wide_collection_checkbutton->signal_toggled ().connect
-            (sigc::mem_fun (*this, &ProfPreferencesDialog::Priv
-                                ::on_system_wide_collection_toggled_signal));
 
         sample_timestamps_checkbutton =
             ui_utils::get_widget_from_gtkbuilder<Gtk::CheckButton>
@@ -189,14 +173,6 @@ public:
     }
 
     void
-    update_system_wide_collection_key ()
-    {
-        THROW_IF_FAIL (system_wide_collection_checkbutton);
-        bool is_on = system_wide_collection_checkbutton->get_active ();
-        conf_manager ().set_key_value (CONF_KEY_SYSTEM_WIDE_COLLECTION, is_on);
-    }
-
-    void
     update_sample_addresses_key ()
     {
         THROW_IF_FAIL (sample_addresses_checkbutton);
@@ -218,7 +194,6 @@ public:
         THROW_IF_FAIL (callgraph_checkbutton);
         THROW_IF_FAIL (no_buffering_checkbutton);
         THROW_IF_FAIL (raw_sample_checkbutton);
-        THROW_IF_FAIL (system_wide_collection_checkbutton);
         THROW_IF_FAIL (sample_addresses_checkbutton);
         THROW_IF_FAIL (sample_timestamps_checkbutton);
 
@@ -245,15 +220,6 @@ public:
                        << CONF_KEY_COLLECT_RAW_SAMPLE_RECORDS);
         }
         raw_sample_checkbutton->set_active (do_collect_raw_sample_records);
-
-        bool do_system_wide_collection = false;
-        if (!conf_manager ().get_key_value (CONF_KEY_SYSTEM_WIDE_COLLECTION,
-                                            do_system_wide_collection)) {
-            LOG_ERROR ("failed to get gconf key "
-                       << CONF_KEY_SYSTEM_WIDE_COLLECTION);
-        }
-        system_wide_collection_checkbutton->set_active
-            (do_system_wide_collection);
 
         bool do_sample_addresses = false;
         if (!conf_manager ().get_key_value (CONF_KEY_SAMPLE_ADDRESSES,

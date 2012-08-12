@@ -51,11 +51,15 @@ static const char *const NMV_BUS_NAME = "org.gnome.nemiver.profiler";
 static const char *const NMV_DBUS_PROFILER_SERVER_INTROSPECTION_DATA =
     "<node>"
     "  <interface name='org.gnome.nemiver.profiler'>"
+    "    <method name='ProfileSystem'>"
+    "        <arg type='i' name='uid' direction='in' />"
+    "        <arg type='i' name='gid' direction='in' />"
+    "        <arg type='u' name='request_id' direction='out' />"
+    "    </method>"
     "    <method name='AttachToPID'>"
     "        <arg type='i' name='pid' direction='in' />"
     "        <arg type='i' name='uid' direction='in' />"
     "        <arg type='i' name='gid' direction='in' />"
-//    "        <arg type='u' name='cookie' direction='in' />"
     "        <arg type='u' name='request_id' direction='out' />"
     "    </method>"
     "    <method name='DetachFromProcess'>"
@@ -196,7 +200,34 @@ struct PerfServer::Priv {
         THROW_IF_FAIL (result);
         THROW_IF_FAIL (polkit_authorization_result_get_is_authorized(result));
 
-        if(a_request_name == "AttachToPID") {
+        if(a_request_name == "ProfileSystem") {
+            Glib::Variant<int> uid_param;
+            Glib::Variant<int> gid_param;
+            a_parameters.get_child (uid_param, 0);
+            a_parameters.get_child (gid_param, 1);
+
+            RequestInfo request;
+            request.uid = uid_param.get ();
+            request.gid = gid_param.get ();
+
+            THROW_IF_FAIL (!request_map.count (next_request_id));
+            request_map[next_request_id] = request;
+
+            THROW_IF_FAIL (request.profiler);
+
+            std::vector<UString> argv;
+            argv.push_back ("--all-cpus");
+
+            PerfRecordOptions options;
+            request.profiler->record (argv, options);
+
+            Glib::Variant<unsigned> perf_data =
+                Glib::Variant<unsigned>::create (next_request_id++);
+
+            Glib::VariantContainerBase response;
+            response = Glib::VariantContainerBase::create_tuple (perf_data);
+            a_invocation->return_value (response);
+        } else if(a_request_name == "AttachToPID") {
             Glib::Variant<int> pid_param;
             Glib::Variant<int> uid_param;
             Glib::Variant<int> gid_param;
@@ -210,7 +241,7 @@ struct PerfServer::Priv {
             request.uid = uid_param.get ();
             request.gid = gid_param.get ();
 
-            THROW_IF_FAIL (!request_map.count (pid));
+            THROW_IF_FAIL (!request_map.count (next_request_id));
 
             std::vector<UString> argv;
             argv.push_back ("--pid");

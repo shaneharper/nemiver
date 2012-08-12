@@ -49,6 +49,7 @@ public:
     void record (const UString &a_program_path,
                  const std::vector<UString> &a_argv,
                  const RecordOptions &a_options);
+    void system_wide_record (const RecordOptions &a_options);
     void stop_recording ();
     void annotate_symbol (const UString &a_symbol_name);
 

@@ -392,7 +392,7 @@ PerfEngine::attach_to_pid (int a_pid)
 
     Glib::Variant<int> pid_param = Glib::Variant<int>::create (a_pid);
     Glib::Variant<int> uid_param = Glib::Variant<int>::create (getuid ());
-    Glib::Variant<int> gid_param = Glib::Variant<int>::create (a_pid);
+    Glib::Variant<int> gid_param = Glib::Variant<int>::create (getgid ());
 
     std::vector<Glib::VariantBase> parameters;
     parameters.push_back (pid_param);
@@ -445,10 +445,6 @@ PerfEngine::record (const std::vector<UString> &a_argv,
         argv.push_back ("--raw-samples");
     }
 
-    if (a_options.do_system_wide_collection ()) {
-        argv.push_back ("--all-cpus");
-    }
-
     if (a_options.do_sample_addresses ()) {
         argv.push_back ("--data");
     }
@@ -472,6 +468,41 @@ PerfEngine::record (const std::vector<UString> &a_argv,
     Glib::RefPtr<Glib::MainContext> context = Glib::MainContext::get_default ();
     context->signal_idle ().connect (sigc::mem_fun
         (m_priv.get (), &PerfEngine::Priv::on_wait_for_record_to_exit));
+}
+
+void
+PerfEngine::system_wide_record (const RecordOptions &/*a_options*/)
+{
+    THROW_IF_FAIL (m_priv);
+    THROW_IF_FAIL (m_priv->proxy);
+
+    std::vector<Glib::ustring> options;
+
+    Glib::Variant<int> uid_param = Glib::Variant<int>::create (getuid ());
+    Glib::Variant<int> gid_param = Glib::Variant<int>::create (getgid ());
+
+    std::vector<Glib::VariantBase> parameters;
+    parameters.push_back (uid_param);
+    parameters.push_back (gid_param);
+
+    Glib::VariantContainerBase parameters_variant =
+        Glib::VariantContainerBase::create_tuple (parameters);
+    Glib::VariantContainerBase response;
+
+    m_priv->is_using_prof_server = true;
+    response = m_priv->proxy->call_sync ("ProfileSystem", parameters_variant);
+
+    Glib::Variant<unsigned> request_id_param;
+    response.get_child (request_id_param);
+    m_priv->request_id = request_id_param.get ();
+
+    parameters.clear ();
+    parameters.push_back (request_id_param);
+    parameters_variant = Glib::VariantContainerBase::create_tuple (parameters);
+    m_priv->proxy->call
+        ("RecordDoneSignal",
+         sigc::mem_fun (*m_priv, &PerfEngine::Priv::on_detached_from_process),
+         parameters_variant);
 }
 
 void
