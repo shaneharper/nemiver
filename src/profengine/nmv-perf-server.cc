@@ -44,6 +44,7 @@ using nemiver::common::SafePtr;
 using nemiver::common::FreeUnref;
 using nemiver::common::DefaultRef;
 using nemiver::common::UString;
+using nemiver::common::Exception;
 
 NEMIVER_BEGIN_NAMESPACE (nemiver)
 
@@ -206,118 +207,128 @@ struct PerfServer::Priv {
                     const Glib::RefPtr<Gio::DBus::MethodInvocation>
                         &a_invocation)
     {
-        NEMIVER_TRY;
+        try {
 
-        THROW_IF_FAIL (a_connection);
-        THROW_IF_FAIL (a_invocation);
+            THROW_IF_FAIL (a_connection);
+            THROW_IF_FAIL (a_invocation);
 
-        Glib::ustring bus_name = a_invocation->get_sender ();
+            Glib::ustring bus_name = a_invocation->get_sender ();
 
-        PolkitAuthorizationResult *result =
-            polkit_authority_check_authorization_sync
-                (polkit_authority_get_sync (NULL, NULL),
-                 polkit_system_bus_name_new (bus_name.c_str ()),
-                 "org.gnome.nemiver.profiler.profile-running-process",
-                 NULL,
-                 POLKIT_CHECK_AUTHORIZATION_FLAGS_ALLOW_USER_INTERACTION,
-                 NULL,
-                 NULL);
-        THROW_IF_FAIL (result);
-        THROW_IF_FAIL (polkit_authorization_result_get_is_authorized(result));
+            PolkitAuthorizationResult *result =
+                polkit_authority_check_authorization_sync
+                    (polkit_authority_get_sync (NULL, NULL),
+                     polkit_system_bus_name_new (bus_name.c_str ()),
+                     "org.gnome.nemiver.profiler.profile-running-process",
+                     NULL,
+                     POLKIT_CHECK_AUTHORIZATION_FLAGS_ALLOW_USER_INTERACTION,
+                     NULL,
+                     NULL);
+            THROW_IF_FAIL (result);
+            THROW_IF_FAIL
+                (polkit_authorization_result_get_is_authorized (result));
 
-        if(a_request_name == "ProfileSystem") {
-            Glib::Variant<int> uid_param;
-            Glib::Variant<int> gid_param;
-            a_parameters.get_child (uid_param, 5);
-            a_parameters.get_child (gid_param, 6);
+            if(a_request_name == "ProfileSystem") {
+                Glib::Variant<int> uid_param;
+                Glib::Variant<int> gid_param;
+                a_parameters.get_child (uid_param, 5);
+                a_parameters.get_child (gid_param, 6);
 
-            RequestInfo request;
-            request.uid = uid_param.get ();
-            request.gid = gid_param.get ();
+                RequestInfo request;
+                request.uid = uid_param.get ();
+                request.gid = gid_param.get ();
 
-            THROW_IF_FAIL (!request_map.count (next_request_id));
-            request_map[next_request_id] = request;
+                THROW_IF_FAIL (!request_map.count (next_request_id));
+                request_map[next_request_id] = request;
 
-            THROW_IF_FAIL (request.profiler);
+                THROW_IF_FAIL (request.profiler);
 
-            std::vector<UString> argv;
-            argv.push_back ("--all-cpus");
+                std::vector<UString> argv;
+                argv.push_back ("--all-cpus");
 
-            PerfRecordOptions options (a_parameters);
-            request.profiler->record (argv, options);
+                PerfRecordOptions options (a_parameters);
+                request.profiler->record (argv, options);
 
-            Glib::Variant<unsigned> perf_data =
-                Glib::Variant<unsigned>::create (next_request_id++);
+                Glib::Variant<unsigned> perf_data =
+                    Glib::Variant<unsigned>::create (next_request_id++);
 
-            Glib::VariantContainerBase response;
-            response = Glib::VariantContainerBase::create_tuple (perf_data);
-            a_invocation->return_value (response);
-        } else if(a_request_name == "AttachToPID") {
-            Glib::Variant<int> pid_param;
-            Glib::Variant<int> uid_param;
-            Glib::Variant<int> gid_param;
-            a_parameters.get_child (pid_param);
-            a_parameters.get_child (uid_param, 5);
-            a_parameters.get_child (gid_param, 6);
+                Glib::VariantContainerBase response;
+                response = Glib::VariantContainerBase::create_tuple (perf_data);
+                a_invocation->return_value (response);
+            } else if(a_request_name == "AttachToPID") {
+                Glib::Variant<int> pid_param;
+                Glib::Variant<int> uid_param;
+                Glib::Variant<int> gid_param;
+                a_parameters.get_child (pid_param);
+                a_parameters.get_child (uid_param, 5);
+                a_parameters.get_child (gid_param, 6);
 
-            RequestInfo request;
+                RequestInfo request;
 
-            int pid = pid_param.get ();
-            request.uid = uid_param.get ();
-            request.gid = gid_param.get ();
+                int pid = pid_param.get ();
+                request.uid = uid_param.get ();
+                request.gid = gid_param.get ();
 
-            THROW_IF_FAIL (!request_map.count (next_request_id));
+                THROW_IF_FAIL (!request_map.count (next_request_id));
 
-            std::vector<UString> argv;
-            argv.push_back ("--pid");
-            argv.push_back (UString::compose ("%1", pid));
+                std::vector<UString> argv;
+                argv.push_back ("--pid");
+                argv.push_back (UString::compose ("%1", pid));
 
-            request_map[next_request_id] = request;
-            PerfRecordOptions options (a_parameters);
+                request_map[next_request_id] = request;
+                PerfRecordOptions options (a_parameters);
 
-            THROW_IF_FAIL (request.profiler);
-            request.profiler->record (argv, options);
+                THROW_IF_FAIL (request.profiler);
+                request.profiler->record (argv, options);
 
-            Glib::Variant<unsigned> perf_data =
-                Glib::Variant<unsigned>::create (next_request_id++);
+                Glib::Variant<unsigned> perf_data =
+                    Glib::Variant<unsigned>::create (next_request_id++);
 
-            Glib::VariantContainerBase response;
-            response = Glib::VariantContainerBase::create_tuple (perf_data);
-            a_invocation->return_value (response);
-        }
-        else if (a_request_name == "RecordDoneSignal") {
-            Glib::Variant<unsigned> request_param;
-            a_parameters.get_child (request_param);
+                Glib::VariantContainerBase response;
+                response = Glib::VariantContainerBase::create_tuple (perf_data);
+                a_invocation->return_value (response);
+            }
+            else if (a_request_name == "RecordDoneSignal") {
+                Glib::Variant<unsigned> request_param;
+                a_parameters.get_child (request_param);
 
-            unsigned request_id = request_param.get ();
-            THROW_IF_FAIL (request_map.count (request_id));
-            request_map[request_id].invocation = a_invocation;
-            request_map[request_id].profiler->record_done_signal ().connect
-                (sigc::bind<unsigned> (sigc::mem_fun
-                    (*this, &PerfServer::Priv::on_record_done_signal),
-                     request_id));
-        }
-        else if (a_request_name == "DetachFromProcess") {
-            Glib::Variant<unsigned> request_param;
-            a_parameters.get_child (request_param);
+                unsigned request_id = request_param.get ();
+                THROW_IF_FAIL (request_map.count (request_id));
+                request_map[request_id].invocation = a_invocation;
+                request_map[request_id].profiler->record_done_signal ().connect
+                    (sigc::bind<unsigned> (sigc::mem_fun
+                        (*this, &PerfServer::Priv::on_record_done_signal),
+                         request_id));
+            }
+            else if (a_request_name == "DetachFromProcess") {
+                Glib::Variant<unsigned> request_param;
+                a_parameters.get_child (request_param);
 
-            unsigned request_id = request_param.get ();
-            THROW_IF_FAIL (request_map.count (request_id));
+                unsigned request_id = request_param.get ();
+                THROW_IF_FAIL (request_map.count (request_id));
 
-            THROW_IF_FAIL (request_map[request_id].profiler);
-            request_map[request_id].profiler->stop_recording ();
+                THROW_IF_FAIL (request_map[request_id].profiler);
+                request_map[request_id].profiler->stop_recording ();
 
-            Glib::VariantContainerBase response;
-            a_invocation->return_value (response);
-        }
-        else
-        {
+                Glib::VariantContainerBase response;
+                a_invocation->return_value (response);
+            }
+            else
+            {
+                THROW (_("Invalid request"));
+            }
+        } catch (const Exception &ex) {
+            Gio::DBus::Error error (Gio::DBus::Error::FAILED, ex.what ());
+            a_invocation->return_error (error);
+        } catch (const Glib::Exception &ex) {
             Gio::DBus::Error error
-                (Gio::DBus::Error::UNKNOWN_METHOD, _("Invalid request"));
+                (Gio::DBus::Error::FAILED, ex.what ());
+            a_invocation->return_error (error);
+        } catch (...) {
+            Gio::DBus::Error error
+                (Gio::DBus::Error::FAILED,
+                 _("An unknown error occured while processing your request"));
             a_invocation->return_error (error);
         }
-
-        NEMIVER_CATCH_NOX
     }
 
     void
