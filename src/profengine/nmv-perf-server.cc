@@ -213,25 +213,25 @@ struct PerfServer::Priv {
             THROW_IF_FAIL (a_invocation);
 
             Glib::ustring bus_name = a_invocation->get_sender ();
-
-            PolkitAuthorizationResult *result =
-                polkit_authority_check_authorization_sync
-                    (polkit_authority_get_sync (NULL, NULL),
-                     polkit_system_bus_name_new (bus_name.c_str ()),
-                     "org.gnome.nemiver.profiler.profile-running-process",
-                     NULL,
-                     POLKIT_CHECK_AUTHORIZATION_FLAGS_ALLOW_USER_INTERACTION,
-                     NULL,
-                     NULL);
-            THROW_IF_FAIL (result);
-            THROW_IF_FAIL
-                (polkit_authorization_result_get_is_authorized (result));
+            PolkitAuthorizationResult *result = 0;
 
             if(a_request_name == "ProfileSystem") {
                 Glib::Variant<int> uid_param;
                 Glib::Variant<int> gid_param;
                 a_parameters.get_child (uid_param, 5);
                 a_parameters.get_child (gid_param, 6);
+
+                result = polkit_authority_check_authorization_sync
+                    (polkit_authority_get_sync (0, 0),
+                     polkit_system_bus_name_new (bus_name.c_str ()),
+                     "org.gnome.nemiver.profiler.profile-system",
+                     0,
+                     POLKIT_CHECK_AUTHORIZATION_FLAGS_ALLOW_USER_INTERACTION,
+                     0,
+                     0);
+                THROW_IF_FAIL (result);
+                THROW_IF_FAIL
+                    (polkit_authorization_result_get_is_authorized (result));
 
                 RequestInfo request;
                 request.uid = uid_param.get ();
@@ -261,6 +261,18 @@ struct PerfServer::Priv {
                 a_parameters.get_child (pid_param);
                 a_parameters.get_child (uid_param, 5);
                 a_parameters.get_child (gid_param, 6);
+
+                result = polkit_authority_check_authorization_sync
+                    (polkit_authority_get_sync (0, 0),
+                     polkit_system_bus_name_new (bus_name.c_str ()),
+                     "org.gnome.nemiver.profiler.profile-running-process",
+                     0,
+                     POLKIT_CHECK_AUTHORIZATION_FLAGS_ALLOW_USER_INTERACTION,
+                     0,
+                     0);
+                THROW_IF_FAIL (result);
+                THROW_IF_FAIL
+                    (polkit_authorization_result_get_is_authorized (result));
 
                 RequestInfo request;
 
