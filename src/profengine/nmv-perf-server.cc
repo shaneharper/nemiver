@@ -258,9 +258,9 @@ struct PerfServer::Priv {
                 Glib::Variant<int> pid_param;
                 Glib::Variant<int> uid_param;
                 Glib::Variant<int> gid_param;
-                a_parameters.get_child (pid_param);
-                a_parameters.get_child (uid_param, 5);
-                a_parameters.get_child (gid_param, 6);
+                a_parameters.get_child (pid_param, 5);
+                a_parameters.get_child (uid_param, 6);
+                a_parameters.get_child (gid_param, 7);
 
                 result = polkit_authority_check_authorization_sync
                     (polkit_authority_get_sync (0, 0),
