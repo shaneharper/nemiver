@@ -79,6 +79,8 @@ public:
 
     virtual void report (const UString &a_data_file) = 0;
 
+    virtual const UString& report_filepath () const = 0;
+
     virtual void system_wide_record (const RecordOptions &a_options) = 0;
 
     virtual void record (const UString &a_program_path,

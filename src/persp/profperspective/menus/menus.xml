@@ -11,6 +11,9 @@
                       name="AttachToProcessItem"/>
             <menuitem action="SystemWideRecordAction"
                       name="SystemWideRecordItem"/>
+            <separator />
+            <menuitem action="SaveReportAsAction"
+                      name="SaveReportAsItem"/>
         </placeholder>
     </menu>
     <menu action="EditMenuAction" name="EditMenu">

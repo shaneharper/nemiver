@@ -407,6 +407,13 @@ PerfEngine::do_init (IConfMgrSafePtr a_conf_mgr)
     m_priv->conf_manager = a_conf_mgr;
 }
 
+const UString&
+PerfEngine::report_filepath () const
+{
+    THROW_IF_FAIL (m_priv);
+    return m_priv->record_filepath;
+}
+
 void
 PerfEngine::attach_to_pid (int a_pid, const RecordOptions &a_options)
 {

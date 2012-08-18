@@ -39,6 +39,7 @@
 #include "uicommon/nmv-proc-list-dialog.h"
 
 #include <list>
+#include <cerrno>
 #include <glib/gi18n.h>
 #include <gtkmm/widget.h>
 
@@ -77,6 +78,7 @@ class ProfPerspective : public IProfPerspective {
 
     std::map<UString, int> symbol_to_pagenum_map;
     Glib::RefPtr<Gtk::ActionGroup> default_action_group;
+    Glib::RefPtr<Gtk::ActionGroup> record_action_group;
     Glib::RefPtr<Gtk::ActionGroup> recording_action_group;
     Gtk::Notebook body;
     IWorkbench *workbench;
@@ -122,6 +124,7 @@ public:
     void attach_to_process (unsigned a_pid);
     IProcMgr* process_manager ();
 
+    void on_save_as_action ();
     void on_system_wide_record_action ();
     void on_preferences_action ();
     void on_attach_to_process_action ();
@@ -447,6 +450,7 @@ ProfPerspective::on_record_done_signal (const UString &a_report_path)
     profiler ()->report (a_report_path);
 
     recording_action_group->set_sensitive (false);
+    record_action_group->set_sensitive (true);
 
     NEMIVER_CATCH
 }
@@ -512,6 +516,19 @@ ProfPerspective::init_actions ()
         }
     };
 
+    static ui_utils::ActionEntry s_record_action_entries [] = {
+        {
+            "SaveReportAsAction",
+            Gtk::Stock::SAVE_AS,
+            _("Save As..."),
+            _("Save the report"),
+            sigc::mem_fun (*this, &ProfPerspective::on_save_as_action),
+            ui_utils::ActionEntry::DEFAULT,
+            "",
+            false
+        }
+    };
+
     static ui_utils::ActionEntry s_recording_action_entries [] = {
         {
             "StopProfilingMenuItemAction",
@@ -529,6 +546,10 @@ ProfPerspective::init_actions ()
         Gtk::ActionGroup::create ("profiler-default-action-group");
     default_action_group->set_sensitive (true);
 
+    record_action_group =
+        Gtk::ActionGroup::create ("profiler-record-action-group");
+    record_action_group->set_sensitive (false);
+
     recording_action_group =
         Gtk::ActionGroup::create ("profiler-recording-action-group");
     recording_action_group->set_sensitive (false);
@@ -536,11 +557,17 @@ ProfPerspective::init_actions ()
     int num_default_actions =
         sizeof (s_default_action_entries) / sizeof (ui_utils::ActionEntry);
 
+    int num_record_actions =
+        sizeof (s_record_action_entries) / sizeof (ui_utils::ActionEntry);
+
     int num_recording_actions =
         sizeof (s_recording_action_entries) / sizeof (ui_utils::ActionEntry);
 
     ui_utils::add_action_entries_to_action_group
         (s_default_action_entries, num_default_actions, default_action_group);
+
+    ui_utils::add_action_entries_to_action_group
+        (s_record_action_entries, num_record_actions, record_action_group);
 
     ui_utils::add_action_entries_to_action_group (s_recording_action_entries,
                                                   num_recording_actions,
@@ -549,6 +576,7 @@ ProfPerspective::init_actions ()
     Glib::RefPtr<Gtk::UIManager> uimanager = get_workbench ().get_ui_manager ();
     THROW_IF_FAIL (uimanager);
     uimanager->insert_action_group (default_action_group);
+    uimanager->insert_action_group (record_action_group);
     uimanager->insert_action_group (recording_action_group);
 }
 
@@ -748,6 +776,33 @@ ProfPerspective::on_load_report_file_action ()
     NEMIVER_TRY;
 
     load_report_file ();
+
+    NEMIVER_CATCH;
+}
+
+void
+ProfPerspective::on_save_as_action ()
+{
+    NEMIVER_TRY;
+
+    Gtk::FileChooserDialog dialog ("Save Report As...",
+                                   Gtk::FILE_CHOOSER_ACTION_SAVE);
+    dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+    dialog.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_OK);
+
+    if (dialog.run()) {
+
+        Glib::RefPtr<Gio::File> dest =
+            Gio::File::create_for_path (dialog.get_filename());
+        THROW_IF_FAIL (dest);
+
+        THROW_IF_FAIL (profiler ());
+        Glib::RefPtr<Gio::File> src =
+            Gio::File::create_for_path (profiler ()->report_filepath ());
+        THROW_IF_FAIL (src);
+
+        src->copy (dest, Gio::FILE_COPY_OVERWRITE);
+    }
 
     NEMIVER_CATCH;
 }

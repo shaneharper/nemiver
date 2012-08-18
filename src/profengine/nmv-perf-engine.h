@@ -52,6 +52,7 @@ public:
     void system_wide_record (const RecordOptions &a_options);
     void stop_recording ();
     void annotate_symbol (const UString &a_symbol_name);
+    const UString& report_filepath () const;
 
     void do_init (IConfMgrSafePtr a_conf_mgr);
 
