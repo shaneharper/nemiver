@@ -724,11 +724,12 @@ Workbench::init_actions ()
 
     m_priv->default_action_group =
         Gtk::ActionGroup::create ("workbench-default-action-group");
-    int num_default_actions =
-         sizeof (s_default_action_entries)/sizeof (ui_utils::ActionEntry);
-    ui_utils::add_action_entries_to_action_group (s_default_action_entries,
-                                                  num_default_actions,
-                                                  m_priv->default_action_group);
+
+       ui_utils::add_action_entries_to_action_group
+           (s_default_action_entries,
+            G_N_ELEMENTS (s_default_action_entries);
+            m_priv->default_action_group);
+
     get_ui_manager ()->insert_action_group (m_priv->default_action_group);
 }
 

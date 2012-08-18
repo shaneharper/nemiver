@@ -3613,65 +3613,41 @@ DBGPerspective::init_actions ()
                 Gtk::ActionGroup::create ("opened-file-action-group");
     m_priv->opened_file_action_group->set_sensitive (false);
 
-    int num_actions =
-        sizeof (s_detach_action_entries) / sizeof (ui_utils::ActionEntry);
+
     ui_utils::add_action_entries_to_action_group
         (s_detach_action_entries,
-         num_actions,
+         G_N_ELEMENTS (s_detach_action_entries),
          m_priv->detach_action_group);
 
-    num_actions =
-     sizeof (s_inferior_loaded_action_entries)
-             /
-             sizeof (ui_utils::ActionEntry);
+
     ui_utils::add_action_entries_to_action_group
                         (s_inferior_loaded_action_entries,
-                         num_actions,
+                         G_N_ELEMENTS (s_inferior_loaded_action_entries),
                          m_priv->inferior_loaded_action_group);
 
-    num_actions =
-     sizeof (s_target_not_started_action_entries)
-                 /
-             sizeof (ui_utils::ActionEntry);
     ui_utils::add_action_entries_to_action_group
                         (s_target_not_started_action_entries,
-                         num_actions,
+                         G_N_ELEMENTS (s_target_not_started_action_entries),
                          m_priv->target_not_started_action_group);
-
-    num_actions =
-         sizeof (s_debugger_ready_action_entries)
-             /
-         sizeof (ui_utils::ActionEntry);
 
     ui_utils::add_action_entries_to_action_group
                         (s_debugger_ready_action_entries,
-                         num_actions,
+                         G_N_ELEMENTS (s_debugger_ready_action_entries),
                          m_priv->debugger_ready_action_group);
-
-    num_actions =
-         sizeof (s_debugger_busy_action_entries)
-             /
-         sizeof (ui_utils::ActionEntry);
 
     ui_utils::add_action_entries_to_action_group
                         (s_debugger_busy_action_entries,
-                         num_actions,
+                         G_N_ELEMENTS (s_debugger_busy_action_entries),
                          m_priv->debugger_busy_action_group);
-
-    num_actions =
-         sizeof (s_default_action_entries)/sizeof (ui_utils::ActionEntry);
 
     ui_utils::add_action_entries_to_action_group
                         (s_default_action_entries,
-                         num_actions,
+                         G_N_ELEMENTS (s_default_action_entries),
                          m_priv->default_action_group);
-
-    num_actions =
-        sizeof (s_file_opened_action_entries)/sizeof (ui_utils::ActionEntry);
 
     ui_utils::add_action_entries_to_action_group
                         (s_file_opened_action_entries,
-                         num_actions,
+                         G_N_ELEMENTS (s_file_opened_action_entries),
                          m_priv->opened_file_action_group);
 
     workbench ().get_ui_manager ()->insert_action_group
