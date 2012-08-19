@@ -76,6 +76,7 @@ class ProfPerspective : public IProfPerspective {
     SafePtr<SpinnerToolItem> throbber;
     SafePtr<Gtk::HBox> toolbar;
 
+    std::list<Gtk::UIManager::ui_merge_id> merge_ids;
     std::map<UString, int> symbol_to_pagenum_map;
     Glib::RefPtr<Gtk::ActionGroup> default_action_group;
     Glib::RefPtr<Gtk::ActionGroup> record_action_group;
@@ -96,13 +97,12 @@ public:
                           int a_argc,
                           char **a_argv);
     bool process_gui_options (int a_argc, char **a_argv);
-    const UString& name () const;
     void do_init (IWorkbench *a_workbench);
     const UString& get_perspective_identifier ();
     void get_toolbars (std::list<Gtk::Widget*> &a_tbs);
     Gtk::Widget* get_body ();
     IWorkbench& get_workbench ();
-    std::list<Gtk::UIManager::ui_merge_id> edit_workbench_menu ();
+    const std::list<Gtk::UIManager::ui_merge_id>& edit_workbench_menu ();
     Gtk::Widget* load_menu (const UString &a_filename,
                             const UString &a_widget_name);
     bool agree_to_shutdown ();
@@ -228,13 +228,6 @@ ProfPerspective::profiler ()
 
     THROW_IF_FAIL (prof);
     return prof;
-}
-
-const UString&
-ProfPerspective::name () const
-{
-    static const UString &s_name = "Profiler";
-    return s_name;
 }
 
 void
@@ -580,7 +573,7 @@ ProfPerspective::init_actions ()
     uimanager->insert_action_group (recording_action_group);
 }
 
-std::list<Gtk::UIManager::ui_merge_id>
+const std::list<Gtk::UIManager::ui_merge_id>&
 ProfPerspective::edit_workbench_menu ()
 {
     std::string relative_path = Glib::build_filename ("menus", "menus.xml");
@@ -593,7 +586,7 @@ ProfPerspective::edit_workbench_menu ()
     Gtk::UIManager::ui_merge_id menubar_merge_id =
         uimanager->add_ui_from_file (Glib::filename_to_utf8 (absolute_path));
 
-    std::list<Gtk::UIManager::ui_merge_id> merge_ids;
+    merge_ids.clear ();
     merge_ids.push_back (menubar_merge_id);
     return merge_ids;
 }

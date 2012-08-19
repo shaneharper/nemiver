@@ -1,5 +1,5 @@
 <plugindescriptor autoactivate="yes" candeactivate="no">
-    <name>profperspective</name>
+    <name>profiler</name>
     <version>0.0.1</version>
     <entrypoint>
         <modulename>profperspective</modulename>
