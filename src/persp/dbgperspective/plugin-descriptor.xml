@@ -1,5 +1,5 @@
 <plugindescriptor autoactivate="yes" candeactivate="no">
-    <name>dbgperspective</name>
+    <name>debugger</name>
     <version>0.0.1</version>
     <entrypoint>
         <modulename>dbgperspective</modulename>

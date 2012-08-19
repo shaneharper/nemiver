@@ -640,7 +640,7 @@ public:
 
     IWorkbench& get_workbench ();
 
-    std::list<Gtk::UIManager::ui_merge_id> edit_workbench_menu ();
+    const std::list<Gtk::UIManager::ui_merge_id>& edit_workbench_menu ();
 
     SourceEditor* create_source_editor (Glib::RefPtr<Gsv::Buffer> &a_source_buf,
                                         bool a_asm_view,
@@ -1022,6 +1022,7 @@ struct DBGPerspective::Priv {
     Glib::RefPtr<Gtk::ActionGroup> debugger_busy_action_group;
     Glib::RefPtr<Gtk::UIManager> ui_manager;
     Glib::RefPtr<Gtk::IconFactory> icon_factory;
+    std::list<Gtk::UIManager::ui_merge_id> merge_ids;
     Gtk::UIManager::ui_merge_id memoryview_merge_id;
     Gtk::UIManager::ui_merge_id menubar_merge_id;
     Gtk::UIManager::ui_merge_id toolbar_merge_id;
@@ -5381,16 +5382,18 @@ DBGPerspective::get_workbench ()
     return workbench ();
 }
 
-std::list<Gtk::UIManager::ui_merge_id>
+const std::list<Gtk::UIManager::ui_merge_id>&
 DBGPerspective::edit_workbench_menu ()
 {
     CHECK_P_INIT;
 
     add_perspective_menu_entries ();
-    std::list<Gtk::UIManager::ui_merge_id> merge_ids;
-    merge_ids.push_back (m_priv->menubar_merge_id);
-    merge_ids.push_back (m_priv->memoryview_merge_id);
-    return merge_ids;
+    m_priv->merge_ids.clear ();
+    m_priv->merge_ids.push_back (m_priv->menubar_merge_id);
+    m_priv->merge_ids.push_back (m_priv->memoryview_merge_id);
+    m_priv->merge_ids.push_back (m_priv->toolbar_merge_id);
+    m_priv->merge_ids.push_back (m_priv->contextual_menu_merge_id);
+    return m_priv->merge_ids;
 }
 
 SourceEditor*
@@ -5496,13 +5499,6 @@ DBGPerspective::option_group () const
 {
     THROW_IF_FAIL (m_priv);
     return m_priv->option_group;
-}
-
-const UString&
-DBGPerspective::name () const
-{
-    static const UString s_name (_("Debugger"));
-    return s_name;
 }
 
 bool

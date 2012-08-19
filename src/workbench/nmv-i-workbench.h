@@ -109,7 +109,7 @@ public:
 
     /// \brief initialization function
     /// \param a_main the main loop created by the application.
-    virtual void do_init (Gtk::Main &a_main) = 0;
+    virtual bool do_init (Gtk::Main &a_main, int a_argc, char **a_argv) = 0;
 
     virtual void shut_down () = 0;
 
@@ -137,14 +137,12 @@ public:
     /// \return the Gtk::UIManager of the workbench
     virtual Glib::RefPtr<Gtk::UIManager>& get_ui_manager () = 0;
 
-    virtual std::list<IPerspectiveSafePtr> perspectives () const = 0;
+    virtual const std::list<IPerspectiveSafePtr>& perspectives () const = 0;
 
     /// \return the perspective that which name matches a_name
     virtual IPerspectiveSafePtr get_perspective (const UString &a_name) = 0;
 
     virtual void select_perspective (IPerspectiveSafePtr &a_perspective) = 0;
-
-    virtual void load_perspectives () = 0;
 
     /// set the configuration manager used by this interface
     virtual void do_init (IConfMgrSafePtr &) = 0;

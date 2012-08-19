@@ -50,6 +50,91 @@ using namespace nemiver::common;
 
 NEMIVER_BEGIN_NAMESPACE (nemiver)
 
+static gchar *gv_log_domains = 0;
+static bool gv_show_version = false;
+static gchar *gv_tool = (gchar*) "debugger";
+static bool gv_show_tool_list = false;
+
+static GOptionEntry entries[] =
+{
+    {
+        "tool",
+        0,
+        0,
+        G_OPTION_ARG_STRING,
+        &gv_tool,
+        _("Use the nemiver tool named <name>"),
+        "<name>; use --list-tools to get the possibilities"
+    },
+    {
+        "list-tools",
+        0,
+        0,
+        G_OPTION_ARG_NONE,
+        &gv_show_tool_list,
+        _("Show the list of tool available"),
+        0
+    },
+    { "log-domains",
+      0,
+      0,
+      G_OPTION_ARG_STRING,
+      &gv_log_domains,
+      _("Enable logging domains DOMAINS"),
+      "<DOMAINS>"
+    },
+    { 
+        "version",
+        0,
+        0,
+        G_OPTION_ARG_NONE,
+        &gv_show_version,
+        _("Show the version number of Nemiver"),
+        0
+    },
+    {0, 0, 0, (GOptionArg) 0, 0, 0, 0}
+};
+
+struct GOptionContextUnref {
+    void operator () (GOptionContext *a_opt)
+    {
+        if (a_opt) {
+            g_option_context_free (a_opt);
+        }
+    }
+};//end struct GOptionContextUnref
+
+struct GOptionGroupUnref {
+    void operator () (GOptionGroup *a_group)
+    {
+        if (a_group) {
+            g_option_group_free (a_group);
+        }
+    }
+};//end struct GOptionGroupUnref
+
+struct GOptionContextRef {
+    void operator () (GOptionContext *a_opt)
+    {
+        if (a_opt) {}
+    }
+};//end struct GOptionContextRef
+
+struct GOptionGroupRef {
+    void operator () (GOptionGroup *a_group)
+    {
+        if (a_group) {}
+    }
+};//end struct GOptionGroupRef
+
+typedef SafePtr<GOptionContext,
+                GOptionContextRef,
+                GOptionContextUnref> GOptionContextSafePtr;
+
+typedef SafePtr<GOptionGroup,
+                GOptionGroupRef,
+                GOptionGroupUnref> GOptionGroupSafePtr;
+
 class WorkbenchStaticInit {
     WorkbenchStaticInit ()
     {
@@ -106,9 +191,10 @@ private:
     bool remove_perspective_body (IPerspectiveSafePtr &a_perspective);
     void remove_all_perspective_bodies ();
     void disconnect_all_perspective_signals ();
-
+    bool process_non_gui_options ();
     void save_window_geometry ();
-
+    bool parse_command_line (int &a_argc, char** a_argv);
+    GOptionContext* init_option_context ();
 
     void do_init ()
     {
@@ -121,7 +207,7 @@ public:
     Workbench (DynamicModule *a_dynmod);
     virtual ~Workbench ();
     void load_perspectives ();
-    void do_init (Gtk::Main &a_main);
+    bool do_init (Gtk::Main &a_main, int a_argc, char **a_argv);
     void do_init (IConfMgrSafePtr &);
     void select_perspective (IPerspectiveSafePtr &a_perspective);
     void shut_down ();
@@ -133,7 +219,7 @@ public:
     void set_title_extension (const UString &a_str);
     Glib::RefPtr<Gtk::UIManager>& get_ui_manager () ;
     IPerspectiveSafePtr get_perspective (const UString &a_name);
-    std::list<IPerspectiveSafePtr> perspectives () const;
+    const std::list<IPerspectiveSafePtr>& perspectives () const;
     void set_configuration_manager (IConfMgrSafePtr &);
     IConfMgrSafePtr get_configuration_manager () ;
     Glib::RefPtr<Glib::MainContext> get_main_context () ;
@@ -213,7 +299,8 @@ Workbench::on_perspective_changed ()
     for (iter = m_priv->perspectives.begin ();
          iter != m_priv->perspectives.end ();
          ++iter) {
-        if ((*iter)->name () == name) {
+        THROW_IF_FAIL ((*iter)->descriptor ());
+        if ((*iter)->descriptor ()->name () == name) {
             select_perspective (*iter);
             return;
         }
@@ -429,15 +516,182 @@ Workbench::load_perspectives ()
     NEMIVER_CATCH;
 }
 
+GOptionContext*
+Workbench::init_option_context ()
+{
+    GOptionContextSafePtr context;
+    context.reset (g_option_context_new
+                                (_(" [<prog-to-debug> [prog-args]]")));
+#if GLIB_CHECK_VERSION (2, 12, 0)
+    g_option_context_set_summary (context.get (),
+                                  _("A C/C++ debugger for GNOME"));
+#endif
+    g_option_context_set_help_enabled (context.get (), true);
+    g_option_context_add_main_entries (context.get (),
+                                       entries,
+                                       GETTEXT_PACKAGE);
+    g_option_context_set_ignore_unknown_options (context.get (), false);
+    GOptionGroupSafePtr gtk_option_group (gtk_get_option_group (FALSE));
+    THROW_IF_FAIL (gtk_option_group);
+    g_option_context_add_group (context.get (),
+                                gtk_option_group.release ());
+
+    std::list<IPerspectiveSafePtr>::const_iterator perspective;
+    const std::list<IPerspectiveSafePtr> &perps = perspectives ();
+    for (perspective = perps.begin ();
+         perspective != perps.end ();
+         ++perspective) {
+        if (*perspective && (*perspective)->option_group ()) {
+            g_option_context_add_group
+                (context.get (), (*perspective)->option_group ());
+        }
+    }
+
+    return context.release ();
+}
+
+/// Parse the command line and edits it
+/// to make it contain the command line of the inferior program.
+/// If an error happens (e.g, the user provided the wrong command
+/// lines) then display an usage help message and return
+/// false. Otherwise, return true.
+/// \param a_arg the argument count. This is the length of a_argv.
+///  This is going to be edited. After edit, only the number of
+///  arguments of the inferior will be put in this variable.
+/// \param a_argv the string of arguments passed to Nemiver. This is
+/// going to be edited so that only the arguments passed to the
+/// inferior will be left in this.
+/// \return true upon successful completion, false otherwise. If the
+bool
+Workbench::parse_command_line (int &a_argc, char** a_argv)
+{
+    GOptionContextSafePtr context (init_option_context ());
+    THROW_IF_FAIL (context);
+
+    if (a_argc == 1) {
+        // We have no inferior program so edit the command like accordingly.
+        a_argc = 0;
+        a_argv[0] = 0;
+        return true;
+    }
+
+    // Split the command line in two parts. One part is made of the
+    // options for Nemiver itself, and the other part is the options
+    // relevant to the inferior.
+    int i;
+    std::vector<UString> args;
+    for (i = 1; i < a_argc; ++i)
+        if (a_argv[i][0] != '-')
+            break;
+
+    // Now parse only the part of the command line that is related
+    // to Nemiver and not to the inferior.
+    // Once parsed, make a_argv and a_argv contain the command line
+    // of the inferior.
+    char **nmv_argv, **inf_argv;
+    int nmv_argc = a_argc;
+    int inf_argc = 0;
+
+    if (i < a_argc) {
+        nmv_argc = i;
+        inf_argc = a_argc - i;
+    }
+    nmv_argv = a_argv;
+    inf_argv = a_argv + i;
+    GError *error = 0;
+    if (g_option_context_parse (context.get (),
+                                &nmv_argc,
+                                &nmv_argv,
+                                &error) != TRUE) {
+        NEMIVER_TRY;
+        if (error)
+            cerr << "error: "<< error->message << std::endl;
+        NEMIVER_CATCH;
+        g_error_free (error);
+
+        GCharSafePtr help_message;
+        help_message.reset (g_option_context_get_help (context.get (),
+                                                       true, 0));
+        cerr << help_message.get () << std::endl;
+        return false;
+    }
+
+    IPerspectiveSafePtr perspective = get_perspective (gv_tool);
+    if (!perspective) {
+        std::cerr << "Invalid tool name: " << gv_tool << std::endl;
+        return false;
+    }
+
+    if (!perspective->process_options  (context.get (), inf_argc, inf_argv)) {
+        return false;
+    }
+
+    if (a_argv != inf_argv) {
+        memmove (a_argv, inf_argv, inf_argc * sizeof (char*));
+        a_argc = inf_argc;
+    }
+
+    return true;
+}
+
+// Return true if Nemiver should keep going after the non gui options
+// have been processed.
+bool
+Workbench::process_non_gui_options ()
+{
+    if (gv_show_version) {
+        std::cout << PACKAGE_VERSION << endl;
+        return false;
+    }
+
+    if (gv_show_tool_list) {
+        const std::list<IPerspectiveSafePtr> &persp = perspectives ();
+        std::list<IPerspectiveSafePtr>::const_iterator perspective;
+        std::cout << "Tools available: \n";
+
+        for (perspective = persp.begin ();
+             perspective != persp.end ();
+             ++perspective) {
+            THROW_IF_FAIL (*perspective);
+            THROW_IF_FAIL ((*perspective)->descriptor ());
+            std::cout << "\t- " << (*perspective)->descriptor ()->name ()
+                      << std::endl;
+        }
+
+        return false;
+    }
+
+    if (gv_log_domains) {
+        UString log_domains (gv_log_domains);
+        vector<UString> domains = log_domains.split (" ");
+        for (vector<UString>::const_iterator iter = domains.begin ();
+             iter != domains.end ();
+             ++iter) {
+            LOG_STREAM.enable_domain (*iter);
+        }
+    }
+
+    return true;
+}
+
 /// Initialize the workbench by doing all the graphical plumbling
 /// needed to setup the perspectives held by this workbench.  Calling
 /// this function is mandatory prior to using the workbench.
 ///
 /// \param a_main the Gtk main object the workbench is going to use.
-void
-Workbench::do_init (Gtk::Main &a_main)
+bool
+Workbench::do_init (Gtk::Main &a_main, int a_argc, char **a_argv)
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+    load_perspectives ();
+
+    if (!parse_command_line (a_argc, a_argv))
+        return false;
+
+    if (!process_non_gui_options ()) {
+        return false;
+    }
 
     m_priv->main = &a_main;
 
@@ -501,10 +755,25 @@ Workbench::do_init (Gtk::Main &a_main)
         if (!m_priv->perspectives.empty ()) {
             perspective = *m_priv->perspectives.begin ();
             THROW_IF_FAIL (perspective);
+            THROW_IF_FAIL (perspective->descriptor ());
             m_priv->persp_selector_combobox->set_active_text
-                (perspective->name ());
+                (perspective->descriptor ()->name ());
         }
+
+        perspective = get_perspective (gv_tool);
+        if (!perspective) {
+            std::cerr << "Invalid tool name: " << gv_tool << std::endl;
+            return false;
+        }
+
+        if (!perspective->process_gui_options  (a_argc, a_argv)) {
+            return false;
+        }
+
+        select_perspective (perspective);
     NEMIVER_CATCH
+
+    return true;
 }
 
 void
@@ -572,7 +841,7 @@ Workbench::get_ui_manager ()
     return m_priv->ui_manager;
 }
 
-std::list<IPerspectiveSafePtr>
+const std::list<IPerspectiveSafePtr>&
 Workbench::perspectives () const
 {
     THROW_IF_FAIL (m_priv);
@@ -884,9 +1153,10 @@ Workbench::add_perspective_to_perspective_selector
     THROW_IF_FAIL (m_priv);
     THROW_IF_FAIL (a_perspective);
     THROW_IF_FAIL (m_priv->persp_selector_combobox);
+    THROW_IF_FAIL (a_perspective->descriptor ());
 
     m_priv->persp_selector_combobox->append
-        (a_perspective->name ());
+        (a_perspective->descriptor ()->name ());
 }
 
 void
@@ -1008,6 +1278,7 @@ Workbench::select_perspective (IPerspectiveSafePtr &a_perspective)
     THROW_IF_FAIL (m_priv->toolbar_container);
     THROW_IF_FAIL (m_priv->bodies_container);
     THROW_IF_FAIL (a_perspective);
+    THROW_IF_FAIL (a_perspective->descriptor ());
 
     map<IPerspective*, int>::const_iterator iter, nil;
     int toolbar_index=0, body_index=0;
@@ -1038,9 +1309,9 @@ Workbench::select_perspective (IPerspectiveSafePtr &a_perspective)
     m_priv->bodies_container->set_current_page (body_index);
 
     UString name = m_priv->persp_selector_combobox->get_active_text ();
-    if (a_perspective->name () != name) {
+    if (a_perspective->descriptor ()->name () != name) {
         m_priv->persp_selector_combobox->set_active_text
-            (a_perspective->name ());
+            (a_perspective->descriptor ()->name ());
     }
 }
 

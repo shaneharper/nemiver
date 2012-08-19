@@ -73,8 +73,6 @@ public:
 
     virtual GOptionGroup* option_group () const = 0;
 
-    virtual const UString& name () const = 0;
-
     /// initialize the perspective within the context of
     /// of the workbench that loads it.
     /// \param a_workbench, the workbench that loaded the
@@ -102,7 +100,8 @@ public:
     /// This method is only called once, during the
     /// perspective's initialisation time,
     /// by the workbench.
-    virtual std::list<Gtk::UIManager::ui_merge_id> edit_workbench_menu () = 0;
+    virtual const std::list<Gtk::UIManager::ui_merge_id>&
+        edit_workbench_menu () = 0;
 
     /// \brief load a menu file
     /// \param a_filename the file name of the menu file.
