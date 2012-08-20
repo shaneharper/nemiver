@@ -5391,8 +5391,6 @@ DBGPerspective::edit_workbench_menu ()
     m_priv->merge_ids.clear ();
     m_priv->merge_ids.push_back (m_priv->menubar_merge_id);
     m_priv->merge_ids.push_back (m_priv->memoryview_merge_id);
-    m_priv->merge_ids.push_back (m_priv->toolbar_merge_id);
-    m_priv->merge_ids.push_back (m_priv->contextual_menu_merge_id);
     return m_priv->merge_ids;
 }
 
