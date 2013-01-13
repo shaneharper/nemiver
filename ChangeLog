@@ -1,3 +1,313 @@
+2013-01-13  Dodji Seketeli <dodji@seketeli.org>
+
+	Update NEWS file for 0.9.4
+
+2013-01-13  Dodji Seketeli <dodji@seketeli.org>
+
+	689575 - Freeze when local variable values are refreshed
+	* src/dbgengine/nmv-gdb-engine.cc
+	(OnListChangedVariableHandler::do_handle): Avoid quadratic
+	updating of the changed sub-variables of a given variable by
+	giving VarChange::apply_to_variable a last argument that is always
+	an empty list.
+
+2013-01-13  Dodji Seketeli <dodji@seketeli.org>
+
+	Misc white space cleanups
+	* src/dbgengine/nmv-gdb-engine.cc
+	(OnListChangedVariableHandler::do_handle): Some obvious white
+	space nitpicking.
+
+2013-01-13  Matej Urbančič <mateju@svn.gnome.org>
+
+	Updated Slovenian translation
+
+2013-01-05  Daniel Mustieles <daniel.mustieles@gmail.com>
+
+	Added search keywords to .desktop file
+	* data/nemiver.desktop.in: Added keywords
+	gdb;disassembler;debugger;c;c++ for search.
+
+2013-01-13  lainme <lainme993@gmail.com>
+
+	update Simplified Chinese (zh_CN) translation
+
+2012-12-06  Dodji Seketeli <dodji@seketeli.org>
+
+	Ensure workbench body is shown
+	* src/workbench/nmv-workbench.cc (Workbench::add_perspective_body)
+	(Workbench::on_perspective_layout_changed_signal): Ensure that
+	widgets added to the perspective body Notebook are shown.
+
+2012-12-06  Dodji Seketeli <dodji@seketeli.org>
+
+	Indentation fixes in nmv-workbench.cc
+	* src/workbench/nmv-workbench.cc (Workbench::init_builder)
+	(Workbench::init_toolbar, init_body): Fix indentation.
+
+2012-12-04  Dodji Seketeli <dodji@seketeli.org>
+
+	670439 - Nemiver doesn't handle well multi-threaded apps
+	* src/dbgengine/nmv-dbg-common.h
+	(OutOfBandRecord::m_thread_selected): New attribute.
+	(OutOfBandRecord::thread_selected): New accessor.
+	(OutOfBandRecord::clear): Clear the new m_thread_selected
+	attribute.
+	* src/dbgengine/nmv-gdbmi-parser.cc
+	(GDBMIParser::parse_out_of_band_record): Make the thread as
+	selected when we get an async 'thread-selected' output.
+	(OnThreadSelectedHandler::can_handle): Use the new
+	OutOfBandRecord::thread_selected to detect that we have an out of
+	band record (async) that says a new thread has been selected and
+	thus notify the world that we have a new 'current thread id' that
+	is set.
+	* tests/test-threads.cc: New test file, using the existing
+	threads.cc as a program to debug and inspect.
+	* tests/Makefile.am: Integrate test-threads.cc into the build
+	system.
+	* threads.cc (thread_func): Don't output messages.  Add a tid
+	variable so that the test-threads.cc can inspect it.
+
+2012-12-04  Dodji Seketeli <dodji@seketeli.org>
+
+	White space cleanup
+	* src/dbgengine/nmv-gdbmi-parser.cc
+	(GDBMIParser::skip_output_record): Fix white space.
+
+2012-12-04  Dodji Seketeli <dodji@seketeli.org>
+
+	Cleanup parsing code
+	* src/dbgengine/nmv-gdbmi-parser.cc
+	(GDBMIParser::parse_output_record): Remove useless and potentially
+	harmful code.
+
+2012-12-02  Dodji Seketeli <dodji@seketeli.org>
+
+	684046 - nemiver.desktop conformance fix
+	* data/nemiver.desktop.in: Add a GTK value in the Categories key.
+
+2012-12-02  Richard Stanislavský <kenny.vv@gmail.com>
+
+	Added Slovak translation
+
+2012-12-02  Dodji Seketeli <dodji@seketeli.org>
+
+	689458 - Crash when copying variable value
+	* src/dbgengine/nmv-debugger-utils.h (dump_variable_value): Make
+	the variable parameter const, as in the definition.
+
+2012-12-01  Dodji Seketeli <dodji@seketeli.org>
+
+	Fix French translation markup
+	* help/fr/fr.po (C/index.docbook:99(article/indexterm)): Fix markup.
+
+2012-11-30  Dodji Seketeli <dodji@seketeli.org>
+
+	689338 - Sometimes current frame is wrongly set
+	* src/persp/dbgperspective/nmv-call-stack.cc
+	(CallStack::Priv::set_current_frame): Properly update the
+	CallStack::Priv::cur_frame_index member variable.  That way, when
+	the CallStack::frame_selected_signal is emitted (in
+	on_command_done_signal), the frame index that is advertised is
+	going to be correct.  Note that the advertised index is not yet
+	used, but still.  This change makes the code correct.
+	(CallStack::Priv::clear_frame_list): Block the execution of the
+	on_selection_changed callback slot upon clearing of the list
+	store.  That way, we ensure that no weird row gets randomly
+	selected.
+	(CallStack::Priv::on_selection_changed_signal):  Don't try to act
+	on an empty list store.
+
+2012-11-11  Gheyret Kenji <gheyret@gmail.com>
+
+	Uyghur translation added.
+
+2012-10-23  Wolfgang Stoeggl <c72578@yahoo.de>
+
+	Updated German translation
+
+2012-10-22  Kjartan Maraas <kmaraas@gnome.org>
+
+	Updated Norwegian bokmål translation
+
+2012-10-02  Marek Černocký <marek@manet.cz>
+
+	Updated Czech translation
+
+2012-09-27  OKANO Takayoshi <kano@na.rim.or.jp>
+
+	[l10n] Updated Japanese translation
+
+2012-09-25  Rūdolfs Mazurs <rudolfsm@src.gnome.org>
+
+	Added Latvian translation
+
+2012-09-23  Alexandre Franke <alexandre.franke@gmail.com>
+
+	Update French translation
+
+2012-09-22  Carles Ferrando <carles.ferrando@gmail.com>
+
+	[l10n]Added Catalan (Valencian) translation
+
+2012-09-22  Gil Forcada <gforcada@gnome.org>
+
+	[l10n] Updated Catalan translation
+
+2012-09-22  Seong-ho Cho <darkcircle.0426@gmail.com>
+
+	Updated Korean translation
+
+2012-09-20  Mario Blättermann <mario.blaettermann@gmail.com>
+
+	[l10n] Updated German translation
+
+2012-09-18  Gabor Kelemen <kelemeng@gnome.hu>
+
+	Added Hungarian translation
+
+2012-09-18  Gabor Kelemen <kelemeng@gnome.hu>
+
+	Added hu to LINGUAS
+
+2012-09-17  Rajesh Ranjan <rranjan@redhat.com>
+
+	hindi update
+
+2012-09-16  Ask H. Larsen <asklarsen@gmail.com>
+
+	Updated Danish translation
+
+2012-09-16  Daniel Mustieles <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2012-09-15  Duarte Loreto <happyguy_pt@hotmail.com>
+
+	Updated Portuguese translation
+
+2012-09-11 08:53:19 -0300  Gabriel Speckhahn <gabspeck@gmail.com>
+
+	Updated Brazilian Portuguese translation
+
+2012-09-09  Mario Blättermann <mario.blaettermann@gmail.com>
+
+	[l10n] Updated German doc translation
+
+2012-09-06  Matej Urbančič <mateju@svn.gnome.org>
+
+	Updated Slovenian translation
+
+2012-09-04  Piotr Drąg <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
+2012-09-04  Alexandre Franke <alexandre.franke@gmail.com>
+
+	Update French translation
+
+2012-09-04  Bruce Cowan <bruce@bcowan.me.uk>
+
+	Updated British English translation
+
+2012-09-03  Dimitris Spingos <dmtrs32@gmail.com>
+
+	Updated Greek translation help
+
+2012-08-28  Kjartan Maraas <kmaraas@gnome.org>
+
+	Updated Norwegian bokmål translation
+
+2012-08-27  Cheng-Chia Tseng <pswo10680@gmail.com>
+
+	Updated Traditional Chinese translation(Hong Kong and Taiwan)
+
+2012-08-27  Yuri Myasoedov <omerta13@yandex.ru>
+
+	Updated Russian translation
+
+2012-08-26  Dodji Seketeli <dodji@seketeli.org>
+
+	Fix a compilation error, oops.
+	* src/workbench/nmv-workbench.cc (Workbench::init_actions): Fix
+	typo.
+
+2012-08-18  Dodji Seketeli <dodji@seketeli.org>
+
+	Simplify actions creation by using G_N_ELEMENTS
+	* src/persp/dbgperspective/nmv-dbg-perspective.cc
+	(DBGPerspective::init_actions): Use G_N_ELEMENTS.  Remove
+	num_actions and their uses.
+	* src/workbench/nmv-workbench.cc (Workbench::init_actions):
+	Likewise.
+
+2012-08-22  Piotr Drąg <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
+2012-08-20  Daniel Mustieles <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2012-08-18  Dodji Seketeli <dodji@seketeli.org>
+
+	Fix help browser launching
+	* src/common/nmv-env.cc (build_path_to_help_file): Remove definition.
+	* src/common/nmv-env.h (build_path_to_help_file): Remove
+	declaration.
+	* src/workbench/nmv-workbench.cc
+	(Workbench::on_contents_menu_item_action): Use gtk_show_uri
+	instead of the previously convoluted env::build_path_to_help_file.
+	* tests/Makefile.am: Don't run untestenv that was testing
+	env:build_path_to_help_file.
+	* tests/test-env.cc (test_build_path_to_help_file): Remove.
+	(init_unit_test_suite): Comment the juice out of this, waiting for
+	more env tests to come.
+
+2012-08-13  Javier Jardón <jjardon@gnome.org>
+
+	Use new documentation infrastructure
+	* Makefile.am:  Don't reference gnome-doc-utils.make.
+	* configure.ac: Don't use GNOME_DOC_INIT.  Use YELP_HELP_INIT.
+	* help/C/index.docbook: Rename help/C/nemiver.xml into this.
+	* help/Makefile.am: Update to drop the gnome-doc-utils variables
+	and use the yelp variables instead.
+	* help/nemiver.omf.in: Drop this.
+
+2012-08-17  Dodji Seketeli <dodji@seketeli.org>
+
+	Fix well form-ness of gl.po
+	* help/gl/gl.po: Fix escaping of quotes.
+
+2012-08-17  Fran Diéguez <fran.dieguez@mabishu.com>
+
+	Updated Galician translations
+
+2012-08-13  Takeshi AIHANA <takeshi.aihana@gmail.com>
+
+	Updated Japanese translation.
+
+2012-08-12 14:12:32 -0400  Dodji Seketeli <dodji@seketeli.org>
+
+	Fix make release target
+	* Makefile.am: Don't forget to make the dist target as part of the
+	release.
+
+2012-08-12 14:11:32 -0400  Dodji Seketeli <dodji@seketeli.org>
+
+	Add a README.release.txt file
+	* README.release.txt: New file.  Describes how to do a release.
+
+2012-08-12 09:34:52 -0400  Dodji Seketeli <dodji@seketeli.org>
+
+	Bump version number to 0.9.4
+	* configure.ac: Bump version number to 0.9.4
+
+2012-08-12 09:04:35 -0400  Dodji Seketeli <dodji@seketeli.org>
+
+	Update ChangeLog
+	* ChangeLog: Automatically update by running make update-changelog
+
 2012-08-08 14:18:28 -0400  Dodji Seketeli <dodji@seketeli.org>
 
 	Update NEWS file for 0.9.3
