@@ -1,3 +1,107 @@
+0.9.4 Release
+=============
+
+Alexandre Franke:
+      Update French translation
+
+Ask H. Larsen:
+      Updated Danish translation
+
+Bruce Cowan:
+      Updated British English translation
+
+Carles Ferrando:
+      Added Catalan (Valencian) translation
+
+Cheng-Chia Tseng:
+      Updated Traditional Chinese translation(Hong Kong and Taiwan)
+
+Daniel Mustieles:
+      Updated Spanish translation
+      Added search keywords to .desktop file
+
+Dimitris Spingos:
+      Updated Greek translation help
+
+Dodji Seketeli:
+      689338 - Sometimes current frame is wrongly set
+      689458 - Crash when copying variable value
+      684046 - nemiver.desktop conformance fix
+      670439 - Nemiver doesn't handle well multi-threaded apps
+      689575 - Freeze when local variable values are refreshed
+      Fix well form-ness of gl.po
+      Fix help browser launching
+      Fix French translation markup
+      Ensure workbench body is shown
+      Added a README.release.txt file
+      Various code cleanups
+
+Duarte Loreto:
+      Updated Portuguese translation
+
+Fran Diéguez:
+      Updated Galician translations
+
+Gabor Kelemen:
+      Added hu to LINGUAS
+      Added Hungarian translation
+
+Gabriel Speckhahn:
+      Updated Brazilian Portuguese translation
+
+Gheyret Kenji:
+      Uyghur translation added.
+
+Gil Forcada:
+      Updated Catalan translation
+
+Javier Jardón:
+      Use new documentation infrastructure
+
+Kjartan Maraas:
+      Updated Norwegian bokmål translation
+
+Marek Černocký:
+      Updated Czech translation
+
+Mario Blättermann:
+      Updated German doc translation
+      Updated German translation
+
+Matej Urbančič:
+      Updated Slovenian translation
+
+OKANO Takayoshi:
+      Updated Japanese translation
+
+Piotr Drąg:
+      Updated Polish translation
+
+Rajesh Ranjan:
+      hindi update
+
+Richard Stanislavský:
+      Added Slovak translation
+
+Rūdolfs Mazurs:
+      Added Latvian translation
+
+Seong-ho Cho:
+      Updated Korean translation
+
+Takeshi AIHANA:
+      Updated Japanese translation.
+
+Wolfgang Stoeggl:
+      Updated German translation
+
+Yuri Myasoedov:
+      Updated Russian translation
+
+lainme:
+      update Simplified Chinese (zh_CN) translation
+
+
 0.9.3 Release
 =============
 
