@@ -1,0 +1,23 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="guide"
+      id="index">
+
+    <title><media type="image" src="figures/nemiver.png"></media>Nemiver</title>
+
+    <info>
+    	<desc>The GNOME debugger</desc>
+    </info>
+
+    <section id="introduction" style="2column">
+        <title>Introduction</title>
+    </section>
+
+    <section id="overview" style="2column">
+        <title>Using Nemiver</title>
+    </section>
+
+    <section id="support" style="2column">
+        <title>Getting Support</title>
+    </section>
+
+</page>

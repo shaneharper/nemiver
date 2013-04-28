@@ -1,0 +1,24 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="debug-running-program">
+
+      <info>
+		<link type="guide" xref="index#overview"/>
+      </info>
+
+    <title>Debug a running program</title>
+
+	<section id="interface">
+		<title>From <app>Nemiver</app> interface</title>
+
+		<p>To debug a program which is currently running, choose <guiseq><gui>File</gui>, <gui>Attach to Running Program…</gui></guiseq>, then select the program you want to debug in the list, and choose <gui>OK</gui>. You can narrow the list of programs by entering part of the target program you look for.</p>
+	</section>
+
+	<section id="command-line">
+		<title>From command-line</title>
+		<p>From a terminal, you can start directly a debugging session, type 
+		<cmd>nemiver --attach</cmd><var>program_name</var> where <var>program_name</var> is the program you want to debug. <var>program_name</var> can also be the Process ID of the program.</p>
+	</section>
+
+	<info>Add a note about search path</info>
+</page>

@@ -1,0 +1,14 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="interface">
+  <info>
+    <link type="guide" xref="index#introduction"/>
+    <revision version="0.1" date="2013-04-28" status="stub"/>
+    <desc></desc>
+  </info>
+
+  <title>Interface</title>
+
+  <p><media type="image" mime="image/png" src="figures/main-interface.png">The Main Interface</media></p>
+
+</page>
