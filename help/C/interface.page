@@ -9,6 +9,10 @@
 
   <title>Interface</title>
 
-  <p><media type="image" mime="image/png" src="figures/main-interface.png">The Main Interface</media></p>
+  <figure>
+	<title>The Main Interface</title>
+	<desc>The main interface of Nemiver, with the menu on top, below the source code view, and at the bottom the toolbox.</desc>
+	<media type="image" mime="image/png" src="figures/main-interface.png"></media>
+  </figure>
 
 </page>
