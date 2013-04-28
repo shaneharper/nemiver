@@ -20,5 +20,4 @@
 		<cmd>nemiver --attach</cmd><var>program_name</var> where <var>program_name</var> is the program you want to debug. <var>program_name</var> can also be the Process ID of the program.</p>
 	</section>
 
-	<info>Add a note about search path</info>
 </page>

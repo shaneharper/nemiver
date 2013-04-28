@@ -4,10 +4,6 @@
 
     <title><media type="image" src="figures/nemiver.png"></media>Nemiver</title>
 
-    <info>
-    	<desc>The GNOME debugger</desc>
-    </info>
-
     <section id="introduction" style="2column">
         <title>Introduction</title>
     </section>
