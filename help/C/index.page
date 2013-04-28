@@ -2,7 +2,15 @@
       type="guide"
       id="index">
 
+	<info>
+		<title type="link">Nemiver</title>
+		<title type="text">Nemiver</title>
+
+		<include href="legal.xml" xmlns="http://www.w3.org/2001/XInclude" />
+	</info>
+
     <title><media type="image" src="figures/nemiver.png"></media>Nemiver</title>
+    <p><app>Nemiver</app>, the graphical debugger</p>
 
     <section id="introduction" style="2column">
         <title>Introduction</title>
