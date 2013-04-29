@@ -2,12 +2,12 @@
       type="guide"
       id="index">
 
-	<info>
-		<title type="link">Nemiver</title>
-		<title type="text">Nemiver</title>
+    <info>
+        <title type="link">Nemiver</title>
+        <title type="text">Nemiver</title>
 
-		<include href="legal.xml" xmlns="http://www.w3.org/2001/XInclude" />
-	</info>
+        <include href="legal.xml" xmlns="http://www.w3.org/2001/XInclude" />
+    </info>
 
     <title><media type="image" src="figures/nemiver.png"></media>Nemiver</title>
     <p><app>Nemiver</app>, the graphical debugger</p>
@@ -18,6 +18,11 @@
 
     <section id="overview" style="2column">
         <title>Using Nemiver</title>
+    </section>
+
+    <section id="session" style="2column">
+        <title>Working with sessions</title>
+        <p>Sessions help to save and continue your debugging later.</p>
     </section>
 
     <section id="support" style="2column">
