@@ -1,0 +1,29 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="load-session">
+
+    <info>
+        <link type="guide" xref="index#session"/>
+        <revision version="0.1" date="2013-04-29" status="stub"/>
+        <desc>How to load a Nemiver session</desc>
+    </info>
+
+    <title>Load a debugging session</title>
+
+    <p><guiseq><gui style="menu">File</gui><gui style="menuitem">Resume Saved 
+    Session…</gui></guiseq> to display the list of saved session.
+    Select the session in the list, where each entry is named <var>application
+    name</var>-<var>yyyy-mm-dd hh:mm:ss</var>, then choose <gui>Execute</gui>.
+    </p>
+
+    <p><app>Nemiver</app> then start the application, and restart the debugging
+    session, where you stopped it previously.</p>
+
+    <section>
+        <title>Load a session from command line</title>
+        <p>You can start a debugging session from the command line, 
+        <cmd>nemiver --session</cmd><var>$id</var> where <var>$id</var> is the
+        identifier of the session you want to load, as listed in the session 
+        interface.</p>
+    </section>
+</page>

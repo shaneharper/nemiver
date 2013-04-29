@@ -1,0 +1,30 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="save-session">
+
+    <info>
+        <link type="guide" xref="index#session"/>
+        <revision version="0.1" date="2013-04-29" status="stub"/>
+        <desc>How to save a Nemiver session</desc>
+    </info>
+
+    <title>Save a debugging session</title>
+
+    <p><app>Nemiver</app> will save debugging sessions automatically when it is
+    closed, so normally you don't have to care about saving your work, however
+    it is possible to save explicitely a session.</p>
+
+    <p>To save a session, choose <guiseq><gui>File</gui><gui>Save Session to 
+    Disk…</gui></guiseq>.</p>
+
+    <section>
+        <title>What is a session</title>
+        <p>A session includes saving information such as which executable is
+        being debugged, what environment variables are set, what command-line
+        options are passed to the executable, which files are open, and which
+        breakpoints are set so that you can get back to where you left off last
+        time as quickly as possible.</p>
+
+    </section>
+
+</page>
