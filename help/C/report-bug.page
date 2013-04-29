@@ -10,11 +10,14 @@
 
     <p>Should you detect a problem, you should report it to in <link
     href="https://bugzilla.gnome.org/enter_bug.cgi?product=nemiver">bug tracker
-    application</link>. Alongside the details about to trigger the bug you 
-    encountered, you'll need to provide some information such as:</p>
+    application</link>, it will permit to fix the problem in future versions.</p>
+
+    <p>Alongside the details about how to trigger the bug you encountered, 
+    you'll need to provide some information such as:</p>
     <list>
         <item><p>the distribution you are running on.</p></item>
         <item><p>the version of Nemiver.</p></item>
         <item><p>the version of GDB</p></item>
     </list>
+
 </page>
