@@ -3,24 +3,25 @@
       id="debug-core-file">
 
       <info>
-		<link type="guide" xref="index#overview"/>
+        <link type="guide" xref="index#overview"/>
       </info>
 
     <title>Debug a program using a core file</title>
 
-	<p>To debug a core file, choose <guiseq><gui>File</gui>, <gui>Load Core File…</gui></guiseq>, then a new window appears:</p>
-	<list>
-		<item><p><gui>Core File</gui>, choose the core file you want to debug.</p></item>
-		<item><p><gui>Executable</gui>, choose the executable file that generate the 
-		core file. It should be the same exact version.</p></item>
-	</list>
+    <p>To debug a core file, choose <guiseq><gui>File</gui>, <gui>Load Core
+    File…</gui></guiseq>, then a new window appears:</p> <list>
+    <item><p><gui>Core File</gui>, choose the core file you want to
+    debug.</p></item> <item><p><gui>Executable</gui>, choose the executable file
+    that generate the core file. It should be the same exact version.</p></item>
+    </list>
 
-	<section id="what-is-core-file">
-		<title>What is a core file</title>
-		
-		<p>A core file is a file that contains a detail description of a program when
-		it crashed. It's useful to do a post-mortem analysis after a crash in order 
-		to reproduce it and correct the underlaying problem that introduced the 
-		crash.</p>
-	</section>
+    <section id="what-is-core-file">
+        <title>What is a core file</title>
+
+        <p>A core file is a file that contains a detail description of a program
+        when it crashed. It's useful to do a post-mortem analysis after a crash
+        in order to reproduce it and correct the underlaying problem that
+        introduced the 
+        crash.</p>
+    </section>
 </page>

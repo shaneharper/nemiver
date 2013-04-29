@@ -3,25 +3,27 @@
       id="debug-remote-target">
 
       <info>
-      	<link type="guide" xref="index#overview"/>
+        <link type="guide" xref="index#overview"/>
       </info>
 
     <title>Debug a remote target</title>
 
-    <p><app>Nemiver</app> can be used program that run either on a remote machine running gdbserver or a device plugged to your local machine.</p>
+    <p><app>Nemiver</app> can be used program that run either on a remote
+    machine running gdbserver or a device plugged to your local machine.</p>
 
-	<p>To debug such program, choose <guiseq><gui>File</gui>, <gui>Connect to Remote Target…</gui></guiseq>, then a new window appears:</p>
-		<list>
-			<item><p><gui>Executable to Load</gui></p></item>
-			<item><p><gui>Shared Libraries Location</gui></p></item>
-			<item><p><gui>Remote Debugging Server</gui></p>
-			<list>
-				<item><p>TCP/IP Connection</p></item>
-				<item><p>Serial Line Connection</p></item>
-			</list>
-			</item>
-		</list>
-	
-	<p>choose <gui>OK</gui> to start the debugging session.</p>
+    <p>To debug such program, choose <guiseq><gui>File</gui>, <gui>Connect to
+    Remote Target…</gui></guiseq>, then a new window appears:</p>
+        <list>
+            <item><p><gui>Executable to Load</gui></p></item>
+            <item><p><gui>Shared Libraries Location</gui></p></item>
+            <item><p><gui>Remote Debugging Server</gui></p>
+            <list>
+                <item><p>TCP/IP Connection</p></item>
+                <item><p>Serial Line Connection</p></item>
+            </list>
+            </item>
+        </list>
+
+    <p>choose <gui>OK</gui> to start the debugging session.</p>
 
 </page>

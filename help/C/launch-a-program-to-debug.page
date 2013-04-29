@@ -1,36 +1,39 @@
 <page xmlns="http://projectmallard.org/1.0/"
-	type="topic"
-	id="launch-a-program-to-debug">
-	
-	<info>
-		<link type="guide" xref="index#overview"/>
-	</info>
+    type="topic"
+    id="launch-a-program-to-debug">
+    
+    <info>
+        <link type="guide" xref="index#overview"/>
+    </info>
 
-	<title>Launch a program to debug</title>
+    <title>Launch a program to debug</title>
 
-	<section id="interface">
-		<title>From <app>Nemiver</app> interface</title>
-	
-		<p>Choose <guiseq><gui>File</gui><gui>Load Executable…</gui></guiseq>, a new window
-		opens:</p> 
-		<list>
-			<item><p><gui>Program</gui> choose the program installed on your machine to launch.</p></item>
-			<item><p><gui>Arguments</gui>, you can enter optional arguments you want to pass to the program to debug.</p></item>
-			<item><p><gui>Working Directory</gui>, the place from where the program will start.</p></item>
-			<item><p><gui>Environment Variables</gui>, optionnal variables that may affect the program to debug to.</p></item>
-		</list>
-		<p>Once set, choose <gui>Execute</gui> to start the debugging session.</p>
-	</section>
+    <section id="interface">
+        <title>From <app>Nemiver</app> interface</title>
 
-	<section id="command-line">
-		<title>From command-line</title>
-		<p>It is possible to launch a debugging session from a terminal,
-		<cmd>nemiver</cmd><var>program</var> where <var>program</var> can be
-		the name of the binary of a program or a full path to a program.</p>
+        <p>Choose <guiseq><gui>File</gui><gui>Load Executable…</gui></guiseq>, a new window
+        opens:</p> 
+        <list>
+            <item><p><gui>Program</gui> choose the program installed on your
+            machine to launch.</p></item> <item><p><gui>Arguments</gui>, you can
+            enter optional arguments you want to pass to the program to
+            debug.</p></item> <item><p><gui>Working Directory</gui>, the place
+            from where the program will start.</p></item>
+            <item><p><gui>Environment Variables</gui>, optionnal variables that
+            may affect the program to debug to.</p></item>
+        </list>
+        <p>Once set, choose <gui>Execute</gui> to start the debugging session.</p>
+    </section>
 
-		<p>Should you need to pass arguments to the program to debug,
-		note you have to enclose the program and the arguments between
-		quotes, <cmd>nemiver</cmd>"<var>program --arg1 --arg2</var>".
-		</p>
-	</section>
+    <section id="command-line">
+        <title>From command-line</title>
+        <p>It is possible to launch a debugging session from a terminal,
+        <cmd>nemiver</cmd><var>program</var> where <var>program</var> can be
+        the name of the binary of a program or a full path to a program.</p>
+
+        <p>Should you need to pass arguments to the program to debug,
+        note you have to enclose the program and the arguments between
+        quotes, <cmd>nemiver</cmd>"<var>program --arg1 --arg2</var>".
+        </p>
+    </section>
 </page>

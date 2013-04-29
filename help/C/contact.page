@@ -1,19 +1,23 @@
 <page xmlns="http://projectmallard.org/1.0/"
-	type="topic"
-	id="support">
+    type="topic"
+    id="support">
 
-	<info>
-	<link type="guide" xref="index#support"/>
-	</info>
+    <info>
+    <link type="guide" xref="index#support"/>
+    </info>
 
-	<title>Contact</title>
+    <title>Contact</title>
 
-	<p>In any case you have question or need support, you can contact users and developers of <app>Nemiver</app> on the following channels:</p>
-	<list>
-		<item><p>email: <app>Nemiver</app> has a <link href="mailto:nemiver-list@gnome.org">mailing-list</link>, where you can ask question.
-		You might want to check the mailing-list <link href="http://mail.gnome.org/archives/nemiver-list">archives</link> before sending a mail.</p></item>
-		<item><p>IRC: Channel <link href="irc://irc.gimp.org/#c++">C++</link> on server
-		<sys>irc.gimpnet.org</sys>. While this channel is not dedicated to <app>Nemiver</app>,
-		the developers are often connected there.</p></item>
-	</list>
+    <p>In any case you have question or need support, you can contact users and
+    developers of <app>Nemiver</app> on the following channels:</p>
+    <list>
+        <item><p>email: <app>Nemiver</app> has a <link
+        href="mailto:nemiver-list@gnome.org">mailing-list</link>, where you can
+        ask question.  You might want to check the mailing-list <link
+        href="http://mail.gnome.org/archives/nemiver-list">archives</link>
+        before sending a mail.</p></item>
+        <item><p>IRC: Channel <link href="irc://irc.gimp.org/#c++">C++</link> on server
+        <sys>irc.gimpnet.org</sys>. While this channel is not dedicated to <app>Nemiver</app>,
+        the developers are often connected there.</p></item>
+    </list>
 </page>
