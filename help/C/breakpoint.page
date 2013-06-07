@@ -1,0 +1,95 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="breakpoint">
+
+    <info>
+        <link type="guide" xref="index#basic-debugging"/>
+        <revision version="0.1" date="2013-04-30" status="stub"/>
+        <desc>Working with breakpoints</desc>
+    </info>
+
+    <section id="set-breakpoint">
+        <title>Set a breakpoint</title>
+
+        <p><app>Nemiver</app> set a first breakpoint at the beginning of the
+        <code>main()</code> function when you start to debug a program. Setting
+        other breakpoints can be done these ways:</p>
+        <list>
+            <item><p>Place your cursor on a line where you want the breakpoint
+            to be set and set the breakpoint by either selecting
+            <guiseq><gui>Debug</gui><gui>Toggle Breakpoint at
+            cursor</gui></guiseq>, or by pressing <key>F8</key>.</p></item>
+            <item><p>Click in the margin next to the line where you want the
+            breakpoint to be set.</p></item>
+            <item><p>Set a breakpoint at a specific function name or at a
+            specific location in a file by selecting
+            <guiseq><gui>Debug</gui><gui>Set Breakpoint …</gui></guiseq> or by
+            pressing <keyseq><key>Ctrl</key><key>B</key></keyseq>.</p></item>
+        </list>
+
+        <p>When a breakpoint is set, you should see a red dot next to the
+        corresponding line, on the left-hand side of the source file.</p>
+    </section>
+
+    <section id="disable-breakpoint">
+        <title>Disable a breakpoint</title>
+
+        <p>Should you do not need a breakpoint just for a while, you can
+        temporarly disable it rather than deleting it.</p>
+        <p>To do so, you can use theses methods</p>
+        <list>
+            <item><p>Choose
+            <guiseq><gui>View</gui><gui>Breakpoints</gui></guiseq> to display
+            the list of breakpoints for the current session, and untick the
+            <gui>checkbox</gui> next to the breakpoint you want to
+            disable.</p></item>
+            <item><p>Place your cursor on a line where there is the breakpoint
+            to disable, and choose <guiseq><gui>Debug</gui><gui>Disable
+            Breakpoint</gui></guiseq>. You can also use the shortcut
+            <keyseq><key>Shift</key><key>F8</key></keyseq>.</p></item>
+        </list>
+        <p>A disabled breakpoint will be diplayed as a white dot next to the
+        corresponding line.</p>
+    </section>
+
+    <section id="delete-breakpoint">
+        <title>Delete a breakpoint</title>
+
+        <p></p>
+        <list>
+            <item><p>Place your cursor on a line where there is the breakpoint
+            to delete, and choose <guiseq><gui>Debug</gui><gui>Remove 
+            Breakpoint</gui></guiseq>. You can also use the shortcut
+            <key>F8</key>.</p></item>
+            <item><p>Click on the red dot in the margin next to the line which
+            contains the breakpoint to remove.</p></item>
+            <item><p>Choose
+            <guiseq><gui>View</gui><gui>Breakpoints</gui></guiseq> to display
+            the list of breakpoints for the current session, right-click the
+            breakpoint to remove, and choose <gui>Delete</gui>.</p></item>
+        </list>
+
+    </section>
+
+    <section id="conditional-breakpoint">
+        <title>Conditional breakpoint</title>
+        <p>PlaceHolder</p>
+    </section>
+
+    <section id="countpoints">
+        <title>Countpoints</title>
+        <p>Countpoints are specific type of breakpoint, as they count the number
+        of time the program run through this mark, and increment a counter,
+        called <gui>Hits</gui>.</p>
+        <p>Countpoints have a blue dot on the left side next the line in the
+        source code view.</p>
+    </section>
+
+
+    <section id="watchpoints">
+        <title>Watchpoints</title>
+        <p>Watchpoints are similar to breakpoints, however they are set on
+        variables rather than on line of code or functions.</p>
+    </section>
+
+</page>
