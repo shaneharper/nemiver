@@ -20,6 +20,16 @@
         <title>Using Nemiver</title>
     </section>
 
+    <section id="basic-debugging" style="2column">
+        <title>Debugging</title>
+    </section>
+
+<!--
+    <section id="advanced-debugging" style="2column">
+        <title>Advanced debugging</title>
+    </section>
+-->
+
     <section id="session" style="2column">
         <title>Working with sessions</title>
         <p>Sessions help to save and continue your debugging later.</p>
