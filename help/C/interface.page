@@ -10,10 +10,44 @@
   <title>Interface</title>
 
   <figure>
-    <title>The Main Interface</title>
+    <title>The Main Interface while debugging an application</title>
     <desc>The main interface of Nemiver, with the menu on top, below the source
     code view, and at the bottom the toolbox.</desc> <media type="image"
     mime="image/png" src="figures/main-interface.png"></media>
   </figure>
+
+  <terms>
+    <title>The notebook</title>
+    <p>dsdsdsd</p>
+    <item>
+        <title>Target Terminal</title>
+        <p>Any output produced by the program you debug will be displayed here.</p>
+    </item>
+    <item>
+        <title>Context</title>
+        <p></p>
+    </item>
+    <item>
+        <title>Breakpoints</title>
+        <p>List the breakpoints set in the source code, and all their properties.</p>
+    </item>
+    <item>
+        <title>Registers</title>
+        <p>This tab displays all of the CPU registers and their values. Should a
+        value change between two steps, the color of the value will be changed to
+        red.</p>
+    </item>
+    <item>
+        <title>Memory</title>
+        <p>The memory inspector displays the content of a memory address in
+        hexadecimal and in ASCII representation. The memory content can be
+        display by byte, word (2 bytes) or long word (4 bytes).</p>
+    </item>
+    <item>
+        <title>Expression Monitor</title>
+        <p>The component will display all variables monitored, their latest
+        value and their type.</p>
+    </item>
+  </terms>
 
 </page>
