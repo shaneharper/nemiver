@@ -5,8 +5,10 @@
     <info>
         <link type="guide" xref="index#basic-debugging"/>
         <revision version="0.1" date="2013-04-30" status="stub"/>
-        <desc>Working with breakpoints</desc>
+        <desc>set, disable, delete breakpoints and special breakpoints</desc>
     </info>
+
+	<title>Working with breakpoints</title>
 
     <section id="set-breakpoint">
         <title>Set a breakpoint</title>
