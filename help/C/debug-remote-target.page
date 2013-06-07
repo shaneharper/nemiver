@@ -4,12 +4,13 @@
 
       <info>
         <link type="guide" xref="index#overview"/>
+        <desc>When you want to remote a program running remotely or on a device</desc>
       </info>
 
     <title>Debug a remote target</title>
 
-    <p><app>Nemiver</app> can be used program that run either on a remote
-    machine running gdbserver or a device plugged to your local machine.</p>
+    <p><app>Nemiver</app> can be used to debug program that run either on a
+    remote machine running gdbserver or a device plugged to your local machine.</p>
 
     <p>To debug such program, choose <guiseq><gui>File</gui>, <gui>Connect to
     Remote Target…</gui></guiseq>, then a new window appears:</p>

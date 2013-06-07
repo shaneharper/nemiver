@@ -4,9 +4,13 @@
 
       <info>
         <link type="guide" xref="index#overview"/>
+        <desc>To debug program already crashed</desc>
       </info>
 
     <title>Debug a program using a core file</title>
+
+    <p>This method is to use when a program has already crashed and you need to
+    understand afterwards what happened.</p>
 
     <p>To debug a core file, choose <guiseq><gui>File</gui>, <gui>Load Core
     File…</gui></guiseq>, then a new window appears:</p> <list>

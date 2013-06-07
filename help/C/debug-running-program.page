@@ -4,9 +4,14 @@
 
       <info>
         <link type="guide" xref="index#overview"/>
+        <desc>When you want to debug a currently running program</desc>
       </info>
 
     <title>Debug a running program</title>
+
+    <p>This method is to use when you need to debug a program you can't stop,
+    because you're not sure you will be able to reproduce the conditions that
+    cause the bug for instance.</p>
 
     <section id="interface">
         <title>From <app>Nemiver</app> interface</title>
