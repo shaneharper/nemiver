@@ -6,7 +6,7 @@
         <link type="guide" xref="index#support"/>
     </info>
 
-    <title>Report a bug</title>
+    <title>Report a bug or ask an enhancement</title>
 
     <p>Should you detect a problem, you should report it to in <link
     href="https://bugzilla.gnome.org/enter_bug.cgi?product=nemiver">bug tracker
@@ -19,5 +19,9 @@
         <item><p>the version of Nemiver.</p></item>
         <item><p>the version of GDB</p></item>
     </list>
+
+    <p>We are also happy to ear any comment ask enhancement to make
+    <app>Nemiver</app> better or easier to use, so don't hesitate to use our bug
+    tracker.</p>
 
 </page>
