@@ -1,6 +1,6 @@
 <page xmlns="http://projectmallard.org/1.0/"
     type="topic"
-    id="launch-a-program-to-debug">
+    id="debug-program">
 
     <info>
         <link type="guide" xref="index#debugging-target"/>
