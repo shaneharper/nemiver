@@ -3,10 +3,11 @@
     id="what-is-nemiver">
 
     <info>
-        <link type="guide" xref="index#introduction"/>
+        <link type="guide" xref="index"/>
     </info>
 
     <title>What is Nemiver</title>
+
     <p><app>Nemiver</app> is a graphical debugger built on top of GNOME 
     technologies, an application that help to analyze bugs and weird behaviors
     in a program.</p>
