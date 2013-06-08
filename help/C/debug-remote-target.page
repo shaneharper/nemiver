@@ -3,7 +3,7 @@
       id="debug-remote-target">
 
       <info>
-        <link type="guide" xref="index#overview"/>
+        <link type="guide" xref="index#debugging-target"/>
         <desc>When you want to remote a program running remotely or on a device</desc>
       </info>
 

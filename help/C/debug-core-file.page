@@ -3,7 +3,7 @@
       id="debug-core-file">
 
       <info>
-        <link type="guide" xref="index#overview"/>
+        <link type="guide" xref="index#debugging-target"/>
         <desc>To debug program already crashed</desc>
       </info>
 

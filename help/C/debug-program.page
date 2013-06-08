@@ -3,7 +3,7 @@
     id="launch-a-program-to-debug">
 
     <info>
-        <link type="guide" xref="index#overview"/>
+        <link type="guide" xref="index#debugging-target"/>
         <desc>The usual way to debug a program</desc>
     </info>
 
