@@ -17,7 +17,7 @@
     <p>To save a session, choose <guiseq><gui>File</gui><gui>Save Session to 
     Disk…</gui></guiseq>.</p>
 
-    <section>
+    <section id="save-session-cmdline">
         <title>What is a session</title>
         <p>A session includes saving information such as which executable is
         being debugged, what environment variables are set, what command-line

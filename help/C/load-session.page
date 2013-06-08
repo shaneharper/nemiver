@@ -19,7 +19,7 @@
     <p><app>Nemiver</app> then start the application, and restart the debugging
     session, where you stopped it previously.</p>
 
-    <section>
+    <section id="load-session-cmdline">
         <title>Load a session from command line</title>
         <p>You can start a debugging session from the command line, 
         <cmd>nemiver --session</cmd><var>$id</var> where <var>$id</var> is the
