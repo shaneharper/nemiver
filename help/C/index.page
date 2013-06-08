@@ -1,5 +1,5 @@
 <page xmlns="http://projectmallard.org/1.0/"
-      type="guide"
+      type="guide" style="2column"
       id="index">
 
     <info>
@@ -12,12 +12,11 @@
     <title><media type="image" src="figures/nemiver.png"></media>Nemiver</title>
     <p><app>Nemiver</app>, the graphical debugger</p>
 
-    <section id="introduction" style="2column">
-        <title>Introduction</title>
-    </section>
+    <p>Welcome to the <app>Nemiver</app> help guide. For a quick introduction on
+    <app>Nemiver</app>, read sdsdds page.</p>
 
-    <section id="overview" style="2column">
-        <title>Using Nemiver</title>
+    <section id="debugging-target" style="2column">
+        <title>Type of target</title>
     </section>
 
     <section id="basic-debugging" style="2column">
@@ -31,12 +30,15 @@
 -->
 
     <section id="session" style="2column">
-        <title>Working with sessions</title>
-        <p>Sessions help to save and continue your debugging later.</p>
+        <title>Sessions</title>
+        <p><app>Nemiver</app> features session support to save your debugging
+        work and continue it later seamlessly.</p>
     </section>
 
     <section id="support" style="2column">
         <title>Getting Support</title>
+        <p>To complain or to praise, we are always open to hear you. Find
+        hereunder the best way to reach us.</p>
     </section>
 
 </page>
