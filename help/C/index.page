@@ -16,7 +16,10 @@
     <app>Nemiver</app>, read sdsdds page.</p>
 
     <section id="debugging-target" style="2column">
-        <title>Type of target</title>
+        <title>Choose your target to debug</title>
+        <p>A target is the execution environment where your program is run to.
+        Often this is in your host environment, but <app>Nemiver</app> can also
+        debug remote program.</p>
     </section>
 
     <section id="basic-debugging" style="2column">
