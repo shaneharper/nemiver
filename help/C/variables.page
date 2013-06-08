@@ -1,0 +1,24 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="variables">
+
+    <info>
+        <link type="guide" xref="index#basic-debugging"/>
+        <revision version="0.1" date="2013-06-08" status="stub"/>
+        <desc>Viewing and manipulating variables</desc>
+    </info>
+
+    <title>Variables</title>
+
+    <section id="variable-view">
+        <title>View variables</title>
+        <p></p>
+    </section>
+
+
+    <section id="variable-editing">
+        <title>Edit variables</title>
+        <p></p>
+    </section>
+
+</page>
