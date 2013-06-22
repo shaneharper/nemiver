@@ -18,7 +18,7 @@ runtestcppparser runtestvarpathexpr \
 runtestlibtoolwrapperdetection \
 runtesttypes runtestdisassemble \
 runtestvariableformat runtestprettyprint \
-runtestthreads
+runtestthreads runtestdbgstates
 
 else
 
@@ -58,6 +58,11 @@ forkchild_LDADD=
 
 prettyprint_SOURCES=$(h)/pretty-print.cc
 prettyprint_LDADD=
+
+runtestdbgstates_SOURCES=$(h)/test-dbg-states.cc
+runtestdbgstates_LDADD=@NEMIVERCOMMON_LIBS@ \
+$(top_builddir)/src/common/libnemivercommon.la \
+$(top_builddir)/src/dbgengine/libdebuggerutils.la
 
 runtestbreakpoint_SOURCES=$(h)/test-breakpoint.cc
 runtestbreakpoint_LDADD=@NEMIVERCOMMON_LIBS@ \

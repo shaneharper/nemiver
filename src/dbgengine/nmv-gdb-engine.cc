@@ -3383,6 +3383,7 @@ GDBEngine::load_program (const UString &a_prog,
         }
     }
     m_priv->set_tty_path (a_slave_tty_path, "load-program");
+    set_state(IDebugger::INFERIOR_LOADED);
     return true;
 }
 
