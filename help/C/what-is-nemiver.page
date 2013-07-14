@@ -39,7 +39,10 @@
             </item>
             <item>
                 <title>Context</title>
-                <p></p>
+                <p>What reaching a breakpoint, provide information of the
+                current location, about parent functions until
+                <code>main()</code>, and their respective arguments, and
+                variables.</p>
             </item>
             <item>
                 <title>Breakpoints</title>
