@@ -1,0 +1,57 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="step">
+
+    <info>
+        <link type="guide" xref="index#basic-debugging"/>
+        <revision version="0.1" date="2013-07-14" status="stub"/>
+        <desc>Navigation in a program</desc>
+    </info>
+
+    <title>Navigation</title>
+
+    <p>The basic debugging actions are available on the main toolbar, in the
+    <gui>Debug</gui> menu, and as keyboard shortcuts. The most common actions are listed
+    below:</p>
+
+    <terms>
+        <item>
+            <title><gui>Continue</gui></title>
+            <p>Starts the program. It will run until it hits a breakpoint or
+            until the program ends, unless it is interrupted manually by the
+            user by clicking Stop. This action can be activated from the
+            keyboard with <key>F5</key>.</p>
+        </item>
+        <item>
+            <title><gui>Next</gui></title>
+            <p>Executes the next statement, and stops when it reaches the next
+            line in this file. Some debuggers may call this action "Step Over".
+            This action can be activated from the keyboard with <key>F6</key>.</p>
+        </item>
+        <item>
+            <title><gui>Step</gui></title>
+            <p>Executes the next statement, stepping into the function if
+            possible. Some debuggers may call this action "Step In". This action
+            can be activated from the keyboard with <key>F7</key>.</p>
+        </item>
+        <item>
+            <title><gui>Step Out</gui></title>
+            <p>Finishes execution of the current function and stops when it
+            returns to the calling function. This action can be activated from
+            the keyboard with <keyseq><key>shift</key><key>F7</key></keyseq>.</p>
+        </item>
+        <item>
+            <title><gui>Restart</gui></title>
+            <p>Reloads the current executable and starts execution from the
+            beginning. This action can be activated from the keyboard with
+            <keyseq><key>shift</key><key>F5</key></keyseq></p>
+        </item>
+        <item>
+            <title><gui>Stop</gui></title>
+            <p>Manually interrupt execution of the program. This action is only
+            available when the debugger is running the executable (e.g. after a
+            user has clicked Continue). This action can be activated from the
+            keyboard with <keyseq><key>F9</key></keyseq>.</p>
+        </item>
+    </terms>
+</page>
