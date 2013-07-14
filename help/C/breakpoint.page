@@ -8,14 +8,14 @@
         <desc>set, disable, delete breakpoints and special breakpoints</desc>
     </info>
 
-	<title>Working with breakpoints</title>
+    <title>Working with breakpoints</title>
 
     <section id="set-breakpoint">
         <title>Set a breakpoint</title>
 
         <p><app>Nemiver</app> set a first breakpoint at the beginning of the
-        <code>main()</code> function when you start to debug a program. Setting
-        other breakpoints can be done these ways:</p>
+        <code>main()</code> function when you start to debug a program.</p>
+        <p>Setting other breakpoints can be done these ways:</p>
         <list>
             <item><p>Place your cursor on a line where you want the breakpoint
             to be set and set the breakpoint by either selecting
@@ -31,6 +31,9 @@
 
         <p>When a breakpoint is set, you should see a red dot next to the
         corresponding line, on the left-hand side of the source file.</p>
+
+        <comment><p>Need to explain that you can set breakpoint not only on line
+        number, but in various other ways, see Ctrl+B dialog.</p></comment>
     </section>
 
     <section id="disable-breakpoint">
@@ -57,7 +60,6 @@
     <section id="delete-breakpoint">
         <title>Delete a breakpoint</title>
 
-        <p></p>
         <list>
             <item><p>Place your cursor on a line where there is the breakpoint
             to delete, and choose <guiseq><gui>Debug</gui><gui>Remove 
@@ -73,25 +75,50 @@
 
     </section>
 
-    <section id="conditional-breakpoint">
-        <title>Conditional breakpoint</title>
-        <p>PlaceHolder</p>
-    </section>
+    <section id="breakpoints-type">
+        <title>Breakpoint types</title>
 
-    <section id="countpoints">
-        <title>Countpoints</title>
-        <p>Countpoints are specific type of breakpoint, as they count the number
-        of time the program run through this mark, and increment a counter,
-        called <gui>Hits</gui>.</p>
-        <p>Countpoints have a blue dot on the left side next the line in the
-        source code view.</p>
-    </section>
+        <section id="type-breakpoint">
+            <title>Breakpoint</title>
+            <p>Breakpoint is a marker you set on a program, and when this marker
+            is reached, the program is stopped to be able to observe it.</p>
+            <p>In <app>Nemiver</app> you can set breakpoint on a source code
+            line but also on function, on source code, on memory address or on
+            events like <code>fork()</code>.</p>
+        </section>
 
+        <section id="type-conditional-breakpoint">
+            <title>Conditional breakpoint</title>
+            <p>Conditional breakpoints are breakpoints triggered under a defined
+            condition, for instance you can set the breakpoint only if a variable
+            has a wanted value.</p>
+            <example>
+            <p>For the following source code:</p>
+                <code mime="text/x-csrc">
+int i = 0;
+char b = 1;
+i = b + 1;
+b = 2;</code>
+            <p>You can set the following conditionnal breakpoint to break when
+            b equals 1:</p>
+            <code>b == 1</code>
+            </example>
+        </section>
 
-    <section id="watchpoints">
-        <title>Watchpoints</title>
-        <p>Watchpoints are similar to breakpoints, however they are set on
-        variables rather than on line of code or functions.</p>
+        <section id="type-countpoints">
+            <title>Countpoints</title>
+            <p>Countpoints are specific type of breakpoint, as they count the number
+            of time the program run through this mark, and increment a counter,
+            called <gui>Hits</gui>.</p>
+            <p>Countpoints have a blue dot on the left side next the line in the
+            source code view.</p>
+        </section>
+
+        <section id="type-watchpoints">
+            <title>Watchpoints</title>
+            <p>Watchpoints are similar to breakpoints, however they are set on
+            variables rather than on line of code or functions.</p>
+        </section>
     </section>
 
 </page>
