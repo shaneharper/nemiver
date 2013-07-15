@@ -3,10 +3,10 @@
       id="shortcut-keys">
 
     <info>
-        <link type="guide" xref="index"/>
+        <!-- <link type="guide" xref="index"/> -->
         <revision version="0.1" date="2013-06-08" status="stub"/>
     </info>
 
     <title>Shortcut Keys</title>
-    <p></p>
+    <comment><p>Need to sort out the various shortcut and their meaning.</p></comment>
 </page>
