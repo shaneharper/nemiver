@@ -3,7 +3,8 @@
     id="support">
 
     <info>
-    <link type="guide" xref="index#support"/>
+        <link type="guide" xref="index#support"/>
+        <revision version="0.1" date="2013-07-15" status="stub"/>
     </info>
 
     <title>Contact</title>
