@@ -13,7 +13,7 @@
     <p><app>Nemiver</app>, the graphical debugger</p>
 
     <p>Welcome to the <app>Nemiver</app> help guide. For a quick introduction on
-    <app>Nemiver</app>, read sdsdds page.</p>
+    <app>Nemiver</app>, read page <link xref="what-is-nemiver" />.</p>
 
     <section id="debugging-target" style="2column">
         <title>Choose your target to debug</title>
