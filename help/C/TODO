@@ -6,3 +6,5 @@ Advanced Debugging (register & memory)
 
 - Things that didn't existed but need to be written
 Preferences
+Expressions (which is more generic than variables)
+Assembly
