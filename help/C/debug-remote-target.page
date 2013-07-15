@@ -4,6 +4,7 @@
 
       <info>
         <link type="guide" xref="index#debugging-target"/>
+        <revision version="0.1" date="2013-07-15" status="stub"/>
         <desc>When you want to debug a program running remotely or on an
         attached device</desc>
       </info>

@@ -5,6 +5,7 @@
     <info>
         <link type="guide" xref="index#debugging-target"/>
         <desc>The usual way to debug a program</desc>
+        <revision version="0.1" date="2013-07-15" status="stub"/>
     </info>
 
     <title>Launch a program to debug</title>
