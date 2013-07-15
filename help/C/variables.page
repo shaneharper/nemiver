@@ -5,12 +5,13 @@
     <info>
         <link type="guide" xref="index#basic-debugging"/>
         <revision version="0.1" date="2013-07-15" status="stub"/>
-        <desc>Viewing and manipulating variables</desc>
+        <!-- <desc>Viewing and manipulating variables</desc> -->
+        <desc>Inspecting variables</desc>
     </info>
 
     <title>Variables</title>
 
-    <section id="variable-view">
+    <section id="variable-inspect">
         <title>Inspect a variable</title>
 
         <p>To view a variable content, choose
@@ -21,6 +22,7 @@
         <p>You can also view a variable when you let the mouse pointer
         hovering a variable, a floating window should appear showing the
         variable structure.</p>
+
     </section>
 
     <section id="variable-monitor">
@@ -36,6 +38,16 @@
         press <key>F12</key>. In the input widget, enter the variable
         you want to examine, and press <gui>Inspect</gui>, then press
         <gui>Monitor</gui> button located on the bottom of the window.</p>
+    </section>
+
+    <section id="global-variables-view">
+        <title>View global variables</title>
+
+        <p>To get the list of global variables for a program, their value and
+        their type, choose <guiseq><gui>Debug</gui><gui>Show Global
+        Variables</gui></guiseq> or press
+        <keyseq><key>shift</key><key>G</key></keyseq>.</p>
+
     </section>
 <!--
     <section id="variable-editing">
