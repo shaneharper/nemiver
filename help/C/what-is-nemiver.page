@@ -4,6 +4,8 @@
 
     <info>
         <link type="guide" xref="index"/>
+        <revision version="0.1" date="2013-07-15" status="stub"/>
+        <desc>Present <app>Nemiver</app> application</desc>
     </info>
 
     <title>What is Nemiver</title>

@@ -5,7 +5,7 @@
     <info>
         <link type="guide" xref="index#basic-debugging"/>
         <revision version="0.1" date="2013-07-14" status="stub"/>
-        <desc>Navigation in a program</desc>
+        <desc>Navigation in a program during a debugging session</desc>
     </info>
 
     <title>Navigation</title>

@@ -6,7 +6,7 @@
         <link type="guide" xref="index#basic-debugging"/>
         <revision version="0.1" date="2013-07-15" status="stub"/>
         <!-- <desc>Viewing and manipulating variables</desc> -->
-        <desc>Inspecting variables</desc>
+        <desc>Viewing and monitoring variables</desc>
     </info>
 
     <title>Variables</title>
