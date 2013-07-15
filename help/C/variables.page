@@ -4,21 +4,43 @@
 
     <info>
         <link type="guide" xref="index#basic-debugging"/>
-        <revision version="0.1" date="2013-06-08" status="stub"/>
+        <revision version="0.1" date="2013-07-15" status="stub"/>
         <desc>Viewing and manipulating variables</desc>
     </info>
 
     <title>Variables</title>
 
     <section id="variable-view">
-        <title>View variables</title>
-        <p></p>
+        <title>Inspect a variable</title>
+
+        <p>To view a variable content, choose
+        <guiseq><gui>Debug</gui><gui>Inspect an Expression</gui></guiseq> or
+        press <key>F12</key>. In the input widget, enter the variable
+        you want to examine, and press <gui>Inspect</gui>.</p>
+
+        <p>You can also view a variable when you let the mouse pointer
+        hovering a variable, a floating window should appear showing the
+        variable structure.</p>
     </section>
 
+    <section id="variable-monitor">
+        <title>Monitor a variable</title>
 
+        <p>Monitoring a variable permits to observe its content has changed
+        during the debugging of an application. Monitored variables are
+        displayed in tab <gui>Expression Monitor</gui>. When a variable has
+        changed, it will be highligth in red.</p>
+
+        <p>To add a monitor on a variable, choose
+        <guiseq><gui>Debug</gui><gui>Inspect an Expression</gui></guiseq> or
+        press <key>F12</key>. In the input widget, enter the variable
+        you want to examine, and press <gui>Inspect</gui>, then press
+        <gui>Monitor</gui> button located on the bottom of the window.</p>
+    </section>
+<!--
     <section id="variable-editing">
         <title>Edit variables</title>
         <p></p>
     </section>
-
+-->
 </page>
