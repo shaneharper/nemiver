@@ -1,0 +1,44 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="memory">
+
+    <info>
+        <link type="guide" xref="index#advanced-debugging"/>
+        <revision version="0.1" date="2013-07-16" status="stub"/>
+        <desc>Presenting the memory widget</desc>
+    </info>
+
+    <title>Memory</title>
+
+    <p>The memory view permits to view the content of memory address. Memory
+    addresses can be retrieved in <gui>Context</gui>, <gui>Breakpoints</gui> or
+    <gui>Registers</gui> tabs.</p>
+
+    <p>To access the <gui>Memory</gui> view, choose
+    <guiseq><gui>View</gui><gui>Memory</gui></guiseq> or press
+    <keyseq><key>Alt</key><key>5</key></keyseq>.</p>
+
+    <section id="memory-view">
+        <title>View content of an address</title>
+
+        <p>To view the content of a memory address, enter an address in the
+        <gui>Address</gui> field and press <gui>Show</gui>. If the memory
+        address value is valid, the content will be presented under.</p>
+
+        <p>Memory segments are presented in two panes, the left-hand one displays the
+        value as hexadecimal representation, either in <gui>Byte</gui>,
+        <gui>Word</gui> (2 bytes) or <gui>Long Word</gui> (4 bytes). The right-hand
+        pane presents the same values in <code>ASCII</code>. The content of the
+        memory view will be updated automatically when the content of the address
+        will changed.</p>
+    </section>
+
+    <section id="memory-edit">
+        <title>Edit memory content</title>
+
+        <p>You can directly edit a memory address from <app>Nemiver</app>. To do
+        so put your pointer on the value you want to edit, either in the
+        hexadecimal view or the <code>ASCII</code> view, and enter the replacing
+        value. Use <key>Del</key> key to delete the value under the cursor.</p>
+    </section>
+</page>
