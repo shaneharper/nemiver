@@ -22,6 +22,7 @@
     program, and you can start to advance step-by-step to carefully watch any
     unusual behaviour, like wrong code-path.</p>
 
-    <p><app>Nemiver</app> provides features like monitoring variables or
+    <p><app>Nemiver</app> provides features like <link
+    xref="variables#variable-monitor">monitoring variables</link> or
     <link xref="breakpoint">breakpoints</link> to better spot error in a code.</p>
 </page>
