@@ -16,6 +16,10 @@
     that traces and collects details of this program, like variables values or
     code path.</p>
 
+    <p>To ease debugging, <app>Nemiver</app> features functions like <link
+    xref="breakpoints" /> (<app>Nemiver</app> implements unseen breakpoints type
+    like countpoints for instance), or <gui>Memory</gui> views.</p>
+
     <p>Nemiver uses underneath <link href="http://www.gnu.org/software/gdb/">
     GDB</link> (the GNU debugger), as debugging engine, so as consequence 
     Nemiver can debug C and C++ programs.</p>
