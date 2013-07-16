@@ -27,11 +27,9 @@
         <title>Debugging</title>
     </section>
 
-<!--
     <section id="advanced-debugging" style="2column">
         <title>Advanced debugging</title>
     </section>
--->
 
     <section id="session" style="2column">
         <title>Sessions</title>
