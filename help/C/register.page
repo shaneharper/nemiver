@@ -1,0 +1,42 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="registers">
+
+    <info>
+        <link type="guide" xref="index#advanced-debugging"/>
+        <revision version="0.1" date="2013-07-16" status="stub"/>
+        <desc>Viewing instructions passed to Processor registers</desc>
+    </info>
+
+    <title>Registers</title>
+
+    <comment><p>Need to details what are registers and why it is sometimes needed
+    to use <gui>Registers</gui> widget.</p></comment>
+    <p>When a program is run, functions and data are translated in processors as
+    instructions and values passed to registers. It is something required to
+    work at this level to found bugs in compiler.... The number and the name of
+    registers available depends on the processor type you have your the system
+    you use to debug.</p>
+
+    <p>To access the <gui>Registers</gui> view, choose
+    <guiseq><gui>View</gui><gui>Registers</gui></guiseq>.</p>
+
+    <section id="registers-view">
+        <title>View registers value</title>
+
+        <p>All registers are presented all together as a list. When a value was
+        modified during the previous step during a debugging session, the value
+        will be displayed in color red.</p>
+
+    </section>
+
+    <section id="registers-edition">
+        <title>Edit registers</title>
+
+        <comment><p>Need to confirm what are the value expected to be passed,
+        seems to be memory address.</p></comment>
+        <p>To edit a value of a register, double-click on the value of the
+        register you want to edit, and enter the new value.</p>
+    </section>
+
+</page>
