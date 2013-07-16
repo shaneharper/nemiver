@@ -5,10 +5,11 @@
     <info>
         <link type="guide" xref="index#basic-debugging"/>
         <revision version="0.1" date="2013-04-30" status="stub"/>
-        <desc>set, disable, delete breakpoints and special breakpoints</desc>
+        <desc>set, disable and delete breakpoints and presenting all types of
+        breakpoints</desc>
     </info>
 
-    <title>Working with breakpoints</title>
+    <title>Breakpoints</title>
 
     <section id="set-breakpoint">
         <title>Set a breakpoint</title>
@@ -81,7 +82,8 @@
         <section id="type-breakpoint">
             <title>Breakpoint</title>
             <p>Breakpoint is a marker you set on a program, and when this marker
-            is reached, the program is stopped to be able to observe it.</p>
+            is reached, the program is stopped to permit to observe its state
+            at this step.</p>
             <p>In <app>Nemiver</app> you can set breakpoint on a source code
             line but also on function, on source code, on memory address or on
             events like <code>fork()</code>.</p>
