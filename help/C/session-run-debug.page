@@ -12,7 +12,10 @@
 
     <p>Once you launch the debug of your program, <app>Nemiver</app> will stop
     at the <code>main()</code> function. Now to debug, you'll have to locate the
-    part of the code you want to analyze. </p>
+    part of the code you want to analyze.</p>
+
+    <p><app>Nemiver</app> will save your progression regularly of your debugging
+    session.</p>
 
     <p>Breakpoint can help you point out the mis-function in a code, because
     when the program will hit the breakpoint, <app>Nemiver</app> will stop the
@@ -20,5 +23,5 @@
     unusual behaviour, like wrong code-path.</p>
 
     <p><app>Nemiver</app> provides features like monitoring variables or
-    breakpoints to better spot error in a code.</p>
+    <link xref="breakpoint">breakpoints</link> to better spot error in a code.</p>
 </page>
