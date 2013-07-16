@@ -11,8 +11,10 @@
     <title>What is Nemiver</title>
 
     <p><app>Nemiver</app> is a graphical debugger built on top of GNOME
-    technologies, an application that help to analyze bugs and weird behaviors
-    in a program.</p>
+    technologies, an application that helps to analyze bugs and weird behaviors
+    in a program. Debugging consists of running a program inside an environment
+    that traces and collects details of this program, like variables values or
+    code path.</p>
 
     <p>Nemiver uses underneath <link href="http://www.gnu.org/software/gdb/">
     GDB</link> (the GNU debugger), as debugging engine, so as consequence 
