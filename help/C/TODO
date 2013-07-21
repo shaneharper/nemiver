@@ -6,3 +6,5 @@ Variables manipulation
 Preferences
 Expressions (which is more generic than variables)
 Assembly
+Tips for debugging Glib/GTK+ software:
+	variables G_SLICE=always-malloc G_DEBUG=gc-friendly
