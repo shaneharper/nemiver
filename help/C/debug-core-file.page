@@ -31,16 +31,18 @@
         crash.</p>
     </section>
 
-    <section id="permit-core-file">
-        <title>If core file are is generated on program crash?</title>
+    <section id="no-core-file">
+        <title>If no core file is generated on program crash?</title>
 
         <p>If no core file is generated when a program crash, you have to check
-        if there are permitted.</p>
-        <p>Open a terminal, and enter the commande <input>ulimit -c</input>, if
+        if they are permitted on your system.</p>
+        <p>Open a terminal, and enter the command <input>ulimit -c</input>, if
         the value returned is <output>0</output>, then it means core won't be
-        created.</p>
-        <p>To permit core generation, edit ~/.bashrc file and add a line
-        <code>ulimit -c unlimited</code>, then save and log-out from your
-        session.</p>
+        generated on a program crash.</p>
+        <p>To permit core file generation, edit the file <file>.bashrc</file> in
+        your <sys>$HOME</sys> directory and add a line <code>ulimit -c
+        unlimited</code> and save the file.</p>
+        <p>To have this setting applied you have to logout from your session and
+        login back again.</p>
     </section>
 </page>
