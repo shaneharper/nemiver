@@ -5,9 +5,15 @@
     <info>
         <title type="link">Nemiver</title>
         <title type="text">Nemiver</title>
-        <revision version="0.1" date="2013-07-15" status="stub"/>
 
-        <include href="legal.xml" xmlns="http://www.w3.org/2001/XInclude" />
+        <revision pkgversion="0.9" date="2013-07-15" status="stub"/>
+
+        <include href="legal.xml" xmlns="http://www.w4.org/2001/XInclude" />
+
+        <credit type="author">
+            <name>Baptiste Mille-Mathias</name>
+            <email>baptistem@gnom.org</email>
+        </credit>
     </info>
 
     <title><media type="image" src="figures/nemiver.png"></media>Nemiver</title>
