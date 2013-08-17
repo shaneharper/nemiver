@@ -5,7 +5,7 @@
     <info>
         <link type="guide" xref="index"/>
         <revision version="0.1" date="2013-07-15" status="stub"/>
-        <desc>Present <app>Nemiver</app> application</desc>
+        <desc>Presenting <app>Nemiver</app> application</desc>
     </info>
 
     <title>What is Nemiver</title>
@@ -20,9 +20,12 @@
     xref="breakpoints" /> (<app>Nemiver</app> implements unseen breakpoints type
     like countpoints for instance), or <gui>Memory</gui> views.</p>
 
-    <p>Nemiver uses underneath <link href="http://www.gnu.org/software/gdb/">
+    <p><app>Nemiver</app> uses underneath <link href="http://www.gnu.org/software/gdb/">
     GDB</link> (the GNU debugger), as debugging engine, so as consequence 
     Nemiver can debug C and C++ programs.</p>
+
+    <p><app>Nemiver</app> was originally developped by Dodji Seketeli and
+    Jonathon Jongsma, with the contribution of other developers.</p>
 
     <section id="interface">
 
@@ -38,7 +41,7 @@
         </figure>
 
         <terms>
-            <title>The notebook</title>
+            <title>The toolbox</title>
             <p>The debugging tools</p>
             <item>
                 <title>Target Terminal</title>

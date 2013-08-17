@@ -11,7 +11,7 @@
     </info>
 
     <title><media type="image" src="figures/nemiver.png"></media>Nemiver</title>
-    <p><app>Nemiver</app>, the graphical debugger</p>
+    <p><app>Nemiver</app>, a graphical debugger</p>
 
     <p>Welcome to the <app>Nemiver</app> help guide. For a quick introduction on
     <app>Nemiver</app>, read page <link xref="what-is-nemiver" />.</p>
@@ -19,8 +19,8 @@
     <section id="debugging-target" style="2column">
         <title>Choose your target to debug</title>
         <p>A target is the execution environment where your program is run to.
-        Often this is in your host environment, but <app>Nemiver</app> can also
-        debug remote program.</p>
+        Often this is in your host environment (your computer), but <app>Nemiver</app> can also
+        debug program remotely.</p>
     </section>
 
     <section id="basic-debugging" style="2column">
