@@ -11,7 +11,8 @@
     <title>Debug a program using a core file</title>
 
     <p>This method is to use when a program has already crashed and you need to
-    understand afterwards what happened.</p>
+    understand afterwards what happened. This method requires the crash created
+    a core file.</p>
 
     <p>To debug a core file, choose <guiseq><gui>File</gui>, <gui>Load Core
     File…</gui></guiseq>, then a new window appears:</p> <list>
@@ -28,5 +29,18 @@
         in order to reproduce it and correct the underlaying problem that
         introduced the 
         crash.</p>
+    </section>
+
+    <section id="permit-core-file">
+        <title>If core file are is generated on program crash?</title>
+
+        <p>If no core file is generated when a program crash, you have to check
+        if there are permitted.</p>
+        <p>Open a terminal, and enter the commande <input>ulimit -c</input>, if
+        the value returned is <output>0</output>, then it means core won't be
+        created.</p>
+        <p>To permit core generation, edit ~/.bashrc file and add a line
+        <code>ulimit -c unlimited</code>, then save and log-out from your
+        session.</p>
     </section>
 </page>
