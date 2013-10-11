@@ -97,6 +97,14 @@ public:
 
     virtual ISessMgr& session_manager () = 0;
 
+    /// Execute commands from a file.
+    /// \param a_file File of commands to execute.
+    virtual void execute_commands_from_file (const UString &a_file) = 0;
+
+    /// Execute commands from an opened file descriptor.
+    /// \param a_fd File descriptor used to read commands.
+    virtual void execute_commands_from_fd (int a_fd) = 0;
+
     virtual void execute_session (ISessMgr::Session &a_session) = 0;
 
     virtual void execute_program () = 0;

@@ -18,7 +18,7 @@ runtestcppparser runtestvarpathexpr \
 runtestlibtoolwrapperdetection \
 runtesttypes runtestdisassemble \
 runtestvariableformat runtestprettyprint \
-runtestthreads runtestdbgstates
+runtestthreads runtestdbgstates runtestcmdinterpreter
 
 else
 
@@ -63,6 +63,12 @@ runtestdbgstates_SOURCES=$(h)/test-dbg-states.cc
 runtestdbgstates_LDADD=@NEMIVERCOMMON_LIBS@ \
 $(top_builddir)/src/common/libnemivercommon.la \
 $(top_builddir)/src/dbgengine/libdebuggerutils.la
+
+runtestcmdinterpreter_SOURCES=$(h)/test-cmd-interpreter.cc
+runtestcmdinterpreter_LDADD=@NEMIVERCOMMON_LIBS@ \
+$(top_builddir)/src/common/libnemivercommon.la \
+$(top_builddir)/src/dbgengine/libdebuggerutils.la \
+$(top_builddir)/src/dbgengine/libcmdinterpreter.la
 
 runtestbreakpoint_SOURCES=$(h)/test-breakpoint.cc
 runtestbreakpoint_LDADD=@NEMIVERCOMMON_LIBS@ \

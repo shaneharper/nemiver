@@ -29,9 +29,11 @@
 #include <sys/types.h>
 // For OpenBSD
 #include <unistd.h>
+#include <fcntl.h>
 #include <algorithm>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <glib/gi18n.h>
 
 #include <giomm/file.h>
@@ -98,6 +100,7 @@
 #endif // WITH_DYNAMICLAYOUT
 #include "nmv-layout-manager.h"
 #include "nmv-expr-monitor.h"
+#include "nmv-cmd-interpreter.h"
 
 using namespace std;
 using namespace nemiver::common;
@@ -566,6 +569,12 @@ public:
 
     ISessMgr& session_manager ();
 
+    void execute_commands_from_line (const UString &a_line);
+
+    void execute_commands_from_file (const UString &a_file);
+
+    void execute_commands_from_fd (int a_fd);
+
     void execute_session (ISessMgr::Session &a_session);
 
     void execute_program ();
@@ -921,6 +930,7 @@ struct DBGPerspective::Priv {
     Path2MonitorMap path_2_monitor_map;
     SafePtr<LocalVarsInspector> variables_editor;
     SafePtr<Gtk::ScrolledWindow> variables_editor_scrolled_win;
+    SafePtr<CmdInterpreter> interpreter;
     SafePtr<Terminal> terminal;
     SafePtr<Gtk::Box> terminal_box;
     SafePtr<Gtk::ScrolledWindow> breakpoints_scrolled_win;
@@ -5876,6 +5886,71 @@ ISessMgr&
 DBGPerspective::session_manager ()
 {
     return *session_manager_ptr ();
+}
+
+void
+DBGPerspective::execute_commands_from_line (const UString &a_line)
+{
+    THROW_IF_FAIL (debugger ());
+
+    if (!m_priv->interpreter) {
+        m_priv->interpreter.reset
+            (new CmdInterpreter (*debugger (), std::cout));
+    }
+
+    THROW_IF_FAIL (m_priv->interpreter);
+
+    std::vector<UString> commands = str_utils::split (a_line, ";");
+    for (std::vector<UString>::iterator iter = commands.begin ();
+         iter != commands.end ();
+         ++iter) {
+        str_utils::chomp (*iter);
+        m_priv->interpreter->execute_command (*iter);
+    }
+}
+
+void
+DBGPerspective::execute_commands_from_file (const UString &a_file)
+{
+    THROW_IF_FAIL (m_priv);
+
+    std::ifstream file (a_file.c_str ());
+    while (file.good ()) {
+        std::string line;
+        std::getline (file, line);
+        execute_commands_from_line (line);
+    }
+    file.close ();
+}
+
+void
+DBGPerspective::execute_commands_from_fd (int a_fd)
+{
+    THROW_IF_FAIL (m_priv);
+
+    struct File {
+        FILE *fd;
+        char buffer[4096];
+
+        explicit File (int a_fd) :
+            fd (fdopen (dup (a_fd), "r"))
+        {
+            THROW_IF_FAIL (fd);
+            int flags = fcntl (fileno (fd), F_GETFL, 0);
+            fcntl (fileno (fd), F_SETFL, flags | O_NONBLOCK);
+        }
+
+        ~File ()
+        {
+            if (fd) {
+                fclose (fd);
+            }
+        }
+    } file (a_fd);
+
+    while (fgets (file.buffer, sizeof (file.buffer), file.fd)) {
+        execute_commands_from_line (file.buffer);
+    }
 }
 
 void

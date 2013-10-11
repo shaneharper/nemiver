@@ -64,6 +64,7 @@ static bool gv_use_launch_terminal = false;
 static gchar *gv_remote = 0;
 static gchar *gv_solib_prefix = 0;
 static gchar *gv_gdb_binary_filepath = 0;
+static gchar *gv_command_filepath = 0;
 static gchar *gv_core_path = 0;
 static bool gv_just_load = false;
 
@@ -189,6 +190,15 @@ static GOptionEntry entries[] =
         _("Do not set a breakpoint in 'main' and do not run the inferior either"),
         0
     },
+    {
+       "exec-command-file",
+        0,
+        0,
+        G_OPTION_ARG_STRING,
+        &gv_command_filepath,
+        _("Set the path of a file of commands to execute at start-up"),
+        "</path/to/command/file>"
+    },
     { 
         "version",
         0,
@@ -200,6 +210,8 @@ static GOptionEntry entries[] =
     },
     {0, 0, 0, (GOptionArg) 0, 0, 0, 0}
 };
+
+static sigc::connection dbg_stopped_signal;
 
 struct GOptionContextUnref {
     void operator () (GOptionContext *a_opt)
@@ -427,6 +439,39 @@ load_debugger_perspective ()
                                            (DBGPERSPECTIVE_PLUGIN_NAME));
 }
 
+static void
+execute_commands (IDBGPerspective *a_debug_persp)
+{
+    if (gv_command_filepath) {
+        char *command_filepath = realpath (gv_command_filepath, 0);
+        if (command_filepath) {
+            a_debug_persp->execute_commands_from_file (command_filepath);
+            free (command_filepath);
+        } else {
+            LOG_ERROR ("Could not resolve the full path "
+                       "of the command file");
+        }
+    } else {
+        a_debug_persp->execute_commands_from_fd (STDIN_FILENO);
+    }
+}
+
+static void
+on_stopped_signal (nemiver::IDebugger::StopReason a_reason,
+                   bool a_has_frame,
+                   const nemiver::IDebugger::Frame &a_frame,
+                   int /*thread id*/,
+                   const string& /*breakpoint number*/,
+                   const UString& /*cookie*/,
+                   IDBGPerspective *a_debug_persp)
+{
+    if (a_reason == nemiver::IDebugger::BREAKPOINT_HIT
+        && a_has_frame && a_frame.function_name () == "main") {
+        dbg_stopped_signal.disconnect ();
+        execute_commands (a_debug_persp);
+    }
+}
+
 /// Return true if Nemiver should keep going after the GUI option(s)
 /// have been processed.
 static bool
@@ -596,11 +641,11 @@ process_gui_options (int& a_argc, char** a_argv)
     IDBGPerspective *debug_persp =
         dynamic_cast<IDBGPerspective*> (s_workbench->get_perspective
                                             (DBGPERSPECTIVE_PLUGIN_NAME));
+    nemiver::IDebuggerSafePtr debugger = debug_persp->debugger ();
     if (debug_persp) {
         if (gv_gdb_binary_filepath) {
             char *debugger_full_path = realpath (gv_gdb_binary_filepath, 0);
             if (debugger_full_path) {
-                nemiver::IDebuggerSafePtr debugger = debug_persp->debugger ();
                 if (!debugger) {
                     cerr << "Could not get the debugger instance" << endl;
                     return false;
@@ -663,6 +708,18 @@ process_gui_options (int& a_argc, char** a_argv)
                                           /*a_cwd=*/".",
                                           /*a_clone_opened_files=*/false,
                                           /*a_break_in_main_run=*/!gv_just_load);
+        }
+
+        // if the user execute a local program and breaks in main then
+        // wait for the 'main' breakpoint to be hit before executing
+        // commands
+        if (!gv_remote && !prog_path.empty () && !gv_just_load) {
+            dbg_stopped_signal =
+                debugger->stopped_signal ().connect
+                    (sigc::bind<IDBGPerspective*>
+                        (sigc::ptr_fun (&on_stopped_signal), debug_persp));
+        } else {
+            execute_commands (debug_persp);
         }
     } else {
         cerr << "Could not find the debugger perspective plugin\n";
