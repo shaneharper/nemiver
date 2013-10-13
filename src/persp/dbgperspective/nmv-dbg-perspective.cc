@@ -101,6 +101,7 @@
 #include "nmv-layout-manager.h"
 #include "nmv-expr-monitor.h"
 #include "nmv-cmd-interpreter.h"
+#include "nmv-console.h"
 
 using namespace std;
 using namespace nemiver::common;
@@ -124,6 +125,7 @@ const char *BREAKPOINTS_VIEW_TITLE       = _("Breakpoints");
 const char *REGISTERS_VIEW_TITLE         = _("Registers");
 const char *MEMORY_VIEW_TITLE            = _("Memory");
 const char *EXPR_MONITOR_VIEW_TITLE      = _("Expression Monitor");
+const char *CONSOLE_VIEW_TITLE           = _("Console");
 
 const char *CAPTION_SESSION_NAME = "captionname";
 const char *SESSION_NAME = "sessionname";
@@ -172,6 +174,77 @@ class DBGPerspective : public IDBGPerspective, public sigc::trackable {
                                      DBGPerspective *a_persp);
 
 private:
+
+    struct OpenCommand : public CmdInterpreter::Command {
+
+        DBGPerspective& dbg_perspective;
+        std::vector<UString> source_files;
+
+        OpenCommand (DBGPerspective& a_dbg_perspective) :
+            dbg_perspective (a_dbg_perspective)
+        {
+            init_signals ();
+        }
+
+        void
+        init_signals ()
+        {
+            IDebuggerSafePtr debugger = dbg_perspective.debugger ();
+            THROW_IF_FAIL (debugger);
+            debugger->files_listed_signal ().connect (sigc::mem_fun
+                (*this, &OpenCommand::on_files_listed_signal));
+        }
+
+        void
+        on_files_listed_signal (const std::vector<UString> &a_files,
+                                const UString&)
+        {
+            source_files = a_files;
+        }
+
+        const std::string&
+        name () const
+        {
+            static const std::string &s_name = "open";
+            return s_name;
+        }
+
+        const std::vector<UString>&
+        aliases () const
+        {
+            static std::vector<UString> s_aliases;
+            if (!s_aliases.size ()) {
+                s_aliases.push_back ("o");
+            }
+            return s_aliases;
+        }
+
+        void
+        completions (const std::vector<UString>&,
+                     std::vector<UString> &a_completion_vector) const
+        {
+            a_completion_vector.insert (a_completion_vector.begin (),
+                                        source_files.begin (),
+                                        source_files.end ());
+        }
+
+        bool
+        execute (const std::vector<UString> &a_argv, std::ostream&)
+        {
+            for (std::vector<UString>::const_iterator iter = a_argv.begin ();
+                 iter != a_argv.end ();
+                 ++iter) {
+                UString path = *iter;
+                if (path.size () && path[0] == '~') {
+                    path = path.replace (0, 1, Glib::get_home_dir ());
+                }
+
+                dbg_perspective.open_file (path, -1);
+            }
+
+            return true;
+        }
+    };
 
     struct SlotedButton : Gtk::Button {
         UString file_path;
@@ -431,6 +504,7 @@ private:
     void on_activate_memory_view ();
 #endif // WITH_MEMORYVIEW
     void on_activate_expr_monitor_view ();
+    void on_activate_console_view ();
     void on_activate_global_variables ();
     void on_default_config_read ();
 
@@ -763,6 +837,10 @@ public:
 
     Gtk::ScrolledWindow& get_local_vars_inspector_scrolled_win ();
 
+    Console& dbg_console ();
+
+    Gtk::Box& console_box ();
+
     Terminal& get_terminal ();
 
     Gtk::Box& get_terminal_box ();
@@ -930,7 +1008,9 @@ struct DBGPerspective::Priv {
     Path2MonitorMap path_2_monitor_map;
     SafePtr<LocalVarsInspector> variables_editor;
     SafePtr<Gtk::ScrolledWindow> variables_editor_scrolled_win;
-    SafePtr<CmdInterpreter> interpreter;
+    SafePtr<Console> dbg_console;
+    CmdInterpreter::CommandSafePtr open_command;
+    SafePtr<Gtk::Box> console_box;
     SafePtr<Terminal> terminal;
     SafePtr<Gtk::Box> terminal_box;
     SafePtr<Gtk::ScrolledWindow> breakpoints_scrolled_win;
@@ -1840,6 +1920,17 @@ DBGPerspective::on_switch_page_signal (Gtk::Widget *a_page,
     NEMIVER_TRY
     m_priv->current_page_num = a_page_num;
     LOG_DD ("current_page_num: " << m_priv->current_page_num);
+
+    map<int, SourceEditor*>::iterator iter, nil;
+    nil = m_priv->pagenum_2_source_editor_map.end ();
+    iter = m_priv->pagenum_2_source_editor_map.find (m_priv->current_page_num);
+    if (iter != nil) {
+        SourceEditor *editor = get_current_source_editor ();
+        if (editor) {
+            dbg_console ().command_interpreter ().current_file_path
+                (editor->get_path ());
+        }
+    }
     NEMIVER_CATCH
 }
 
@@ -2916,6 +3007,19 @@ DBGPerspective::on_activate_target_terminal_view ()
 }
 
 void
+DBGPerspective::on_activate_console_view ()
+{
+    LOG_FUNCTION_SCOPE_NORMAL_DD;
+
+    NEMIVER_TRY;
+
+    THROW_IF_FAIL (m_priv);
+    m_priv->layout ().activate_view (CONSOLE_VIEW_INDEX);
+
+    NEMIVER_CATCH;
+}
+
+void
 DBGPerspective::on_activate_breakpoints_view ()
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD;
@@ -3593,6 +3697,17 @@ DBGPerspective::init_actions ()
             sigc::mem_fun (*this, &DBGPerspective::on_activate_expr_monitor_view),
             ActionEntry::DEFAULT,
             "<alt>6",
+            false
+        },
+        {
+            "ActivateConsoleViewMenuAction",
+            nil_stock_id,
+            CONSOLE_VIEW_TITLE,
+            _("Switch to Console View"),
+            sigc::mem_fun (*this,
+                           &DBGPerspective::on_activate_console_view),
+            ActionEntry::DEFAULT,
+            "<alt>7",
             false
         },
         {
@@ -5149,6 +5264,9 @@ DBGPerspective::add_views_to_layout ()
     m_priv->layout ().append_view (get_expr_monitor_view ().widget (),
                                    EXPR_MONITOR_VIEW_TITLE,
                                    EXPR_MONITOR_VIEW_INDEX);
+    m_priv->layout ().append_view (console_box (),
+                                   CONSOLE_VIEW_TITLE,
+                                   CONSOLE_VIEW_INDEX);
     m_priv->layout ().do_init ();
 
 }
@@ -5889,68 +6007,20 @@ DBGPerspective::session_manager ()
 }
 
 void
-DBGPerspective::execute_commands_from_line (const UString &a_line)
-{
-    THROW_IF_FAIL (debugger ());
-
-    if (!m_priv->interpreter) {
-        m_priv->interpreter.reset
-            (new CmdInterpreter (*debugger (), std::cout));
-    }
-
-    THROW_IF_FAIL (m_priv->interpreter);
-
-    std::vector<UString> commands = str_utils::split (a_line, ";");
-    for (std::vector<UString>::iterator iter = commands.begin ();
-         iter != commands.end ();
-         ++iter) {
-        str_utils::chomp (*iter);
-        m_priv->interpreter->execute_command (*iter);
-    }
-}
-
-void
 DBGPerspective::execute_commands_from_file (const UString &a_file)
 {
-    THROW_IF_FAIL (m_priv);
+    THROW_IF_FAIL (m_priv->dbg_console);
 
-    std::ifstream file (a_file.c_str ());
-    while (file.good ()) {
-        std::string line;
-        std::getline (file, line);
-        execute_commands_from_line (line);
-    }
-    file.close ();
+    m_priv->dbg_console->execute_commands_from_file (a_file);
 }
 
 void
 DBGPerspective::execute_commands_from_fd (int a_fd)
 {
     THROW_IF_FAIL (m_priv);
+    THROW_IF_FAIL (m_priv->dbg_console);
 
-    struct File {
-        FILE *fd;
-        char buffer[4096];
-
-        explicit File (int a_fd) :
-            fd (fdopen (dup (a_fd), "r"))
-        {
-            THROW_IF_FAIL (fd);
-            int flags = fcntl (fileno (fd), F_GETFL, 0);
-            fcntl (fileno (fd), F_SETFL, flags | O_NONBLOCK);
-        }
-
-        ~File ()
-        {
-            if (fd) {
-                fclose (fd);
-            }
-        }
-    } file (a_fd);
-
-    while (fgets (file.buffer, sizeof (file.buffer), file.fd)) {
-        execute_commands_from_line (file.buffer);
-    }
+    m_priv->dbg_console->execute_commands_from_fd (a_fd);
 }
 
 void
@@ -8415,6 +8485,49 @@ DBGPerspective::get_local_vars_inspector_scrolled_win ()
     return *m_priv->variables_editor_scrolled_win;
 }
 
+Console&
+DBGPerspective::dbg_console ()
+{
+    THROW_IF_FAIL (m_priv);
+    if (!m_priv->dbg_console) {
+        string relative_path = Glib::build_filename ("menus",
+                                                     "terminalmenu.xml");
+        string absolute_path;
+        THROW_IF_FAIL (build_absolute_resource_path
+            (Glib::filename_to_utf8 (relative_path), absolute_path));
+
+        IDebuggerSafePtr dbg = debugger ();
+        THROW_IF_FAIL (dbg);
+        m_priv->dbg_console.reset
+            (new Console (*dbg, absolute_path, workbench ().get_ui_manager ()));
+        THROW_IF_FAIL (m_priv->dbg_console);
+
+        m_priv->open_command.reset (new OpenCommand (*this));
+        THROW_IF_FAIL (m_priv->open_command);
+        m_priv->dbg_console->command_interpreter
+            ().register_command (*m_priv->open_command);
+    }
+    THROW_IF_FAIL (m_priv->dbg_console);
+    return *m_priv->dbg_console;
+}
+
+Gtk::Box&
+DBGPerspective::console_box ()
+{
+    THROW_IF_FAIL (m_priv);
+    if (!m_priv->console_box) {
+        m_priv->console_box.reset (new Gtk::HBox);
+        THROW_IF_FAIL (m_priv->console_box);
+        Gtk::VScrollbar *scrollbar = Gtk::manage (new Gtk::VScrollbar);
+        m_priv->console_box->pack_end (*scrollbar, false, false, 0);
+
+        Terminal &terminal = dbg_console ().terminal ();
+        m_priv->console_box->pack_start (terminal.widget ());
+        scrollbar->set_adjustment (terminal.adjustment ());
+    }
+    THROW_IF_FAIL (m_priv->console_box);
+    return *m_priv->console_box;
+}
 
 Terminal&
 DBGPerspective::get_terminal ()

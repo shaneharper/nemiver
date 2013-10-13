@@ -47,6 +47,8 @@
                 name="ActivateRegistersViewMenuItem"/>
 	    <menuitem action="ActivateExprMonitorViewMenuAction"
                 name="ActivateExprMonitorViewMenuItem"/>
+            <menuitem action="ActivateConsoleViewMenuAction"
+                name="ActivateConsoleViewMenuItem"/>
         </menu>
         <menu action="DebugMenuAction" name="DebugMenu">
             <menuitem action="RunMenuItemAction" name="RunMenuItem"/>
