@@ -17,7 +17,7 @@
         <p><app>Nemiver</app> set a first breakpoint at the beginning of the
         <code>main()</code> function when you start to debug a program.</p>
         <p>Setting other breakpoints can be done these ways:</p>
-        <list>
+        <steps>
             <item><p>Place your cursor on a line where you want the breakpoint
             to be set and set the breakpoint by either selecting
             <guiseq><gui>Debug</gui><gui>Toggle Breakpoint at
@@ -28,7 +28,7 @@
             specific location in a file by selecting
             <guiseq><gui>Debug</gui><gui>Set Breakpoint …</gui></guiseq> or by
             pressing <keyseq><key>Ctrl</key><key>B</key></keyseq>.</p></item>
-        </list>
+        </steps>
 
         <p>When a breakpoint is set, you should see a red dot next to the
         corresponding line, on the left-hand side of the source file.</p>
@@ -43,7 +43,7 @@
         <p>Should you do not need a breakpoint just for a while, you can
         temporarly disable it rather than deleting it.</p>
         <p>To do so, you can use theses methods</p>
-        <list>
+        <steps>
             <item><p>Choose
             <guiseq><gui>View</gui><gui>Breakpoints</gui></guiseq> to display
             the list of breakpoints for the current session, and untick the
@@ -53,7 +53,7 @@
             to disable, and choose <guiseq><gui>Debug</gui><gui>Disable
             Breakpoint</gui></guiseq>. You can also use the shortcut
             <keyseq><key>Shift</key><key>F8</key></keyseq>.</p></item>
-        </list>
+        </steps>
         <p>A disabled breakpoint will be diplayed as a white dot next to the
         corresponding line.</p>
     </section>
@@ -61,7 +61,7 @@
     <section id="delete-breakpoint">
         <title>Delete a breakpoint</title>
 
-        <list>
+        <steps>
             <item><p>Place your cursor on a line where there is the breakpoint
             to delete, and choose <guiseq><gui>Debug</gui><gui>Remove 
             Breakpoint</gui></guiseq>. You can also use the shortcut
@@ -72,7 +72,7 @@
             <guiseq><gui>View</gui><gui>Breakpoints</gui></guiseq> to display
             the list of breakpoints for the current session, right-click the
             breakpoint to remove, and choose <gui>Delete</gui>.</p></item>
-        </list>
+        </steps>
 
     </section>
 
