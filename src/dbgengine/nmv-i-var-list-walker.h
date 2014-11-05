@@ -22,7 +22,7 @@
  *
  *See COPYRIGHT file copyright information.
  */
-#ifndef __NMV_VAR_LIST_WALKER_H__
+#ifndef __NMV_I_VAR_LIST_WALKER_H__
 #define __NMV_I_VAR_LIST_WALKER_H__
 
 #include "nmv-i-var-walker.h"

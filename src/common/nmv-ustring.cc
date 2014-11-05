@@ -349,7 +349,7 @@ UString::vprintf (const UString &a_format, va_list a_args)
 }
 
 UString&
-UString::printf (const UString &a_format, ...)
+UString::printf (const char *a_format, ...)
 {
     va_list args;
     va_start (args, a_format);

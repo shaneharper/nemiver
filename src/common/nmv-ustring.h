@@ -76,7 +76,7 @@ public:
 
     UString::size_type get_number_of_words () const;
 
-    UString& printf (const UString &a_format, ...);
+    UString& printf (const char *a_format, ...);
 
     UString& vprintf (const UString &a_format, va_list a_args);
 };//end class UString

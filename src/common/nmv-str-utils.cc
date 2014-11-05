@@ -317,7 +317,7 @@ out:
 }
 
 UString
-printf (const UString &a_format, ...)
+printf (const char *a_format, ...)
 {
     UString result;
     va_list args;

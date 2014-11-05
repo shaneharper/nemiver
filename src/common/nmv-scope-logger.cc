@@ -68,7 +68,6 @@ struct ScopeLoggerPriv
         out->pop_domain ();
 
         timer.start ();
-        out = out;
     }
 
     ~ScopeLoggerPriv ()
