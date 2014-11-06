@@ -40,7 +40,7 @@ using namespace nemiver::common;
 namespace nemiver {
 class OpenFileDialog::Priv {
     public:
-    Gtk::VBox* vbox_file_list;
+    Gtk::Box* vbox_file_list;
     Gtk::RadioButton *radio_button_file_list, *radio_button_chooser;
     Gtk::FileChooserWidget file_chooser;
     FileList file_list;
@@ -66,7 +66,7 @@ public:
                                                           "okbutton");
         THROW_IF_FAIL (okbutton);
         vbox_file_list =
-            ui_utils::get_widget_from_gtkbuilder<Gtk::VBox> (a_gtkbuilder,
+            ui_utils::get_widget_from_gtkbuilder<Gtk::Box> (a_gtkbuilder,
                                                         "vbox_file_list");
         THROW_IF_FAIL (vbox_file_list);
         radio_button_file_list =
@@ -108,14 +108,14 @@ public:
             LOG_DD("Target file list is active");
             // remove existing children of vbox_file_list
             vbox_file_list->foreach (sigc::mem_fun (vbox_file_list,
-                                                    &Gtk::VBox::remove));
+                                                    &Gtk::Box::remove));
             vbox_file_list->pack_start (file_list.widget ());
             file_list.widget ().show ();
         } else if (radio_button_chooser->get_active ()) {
             LOG_DD("file chooser is active");
             // remove existing children of vbox_file_list
             vbox_file_list->foreach (sigc::mem_fun (vbox_file_list,
-                                                    &Gtk::VBox::remove));
+                                                    &Gtk::Box::remove));
             vbox_file_list->pack_start (file_chooser);
             file_chooser.show ();
         }
