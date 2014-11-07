@@ -39,10 +39,8 @@ on_command_done_signal (const UString &a_command,
 
 void
 on_breakpoints_set_signal (const std::map<int, IDebugger::BreakPoint> &a_breaks,
-                           const UString &a_cookie)
+                           const UString & /*a_cookie*/)
 {
-    if (a_cookie.empty ()) {/*keep compiler happy*/}
-
     MESSAGE ("breakpoints set:");
     typedef std::map<int, IDebugger::BreakPoint> Breakpoints;
     for (Breakpoints::const_iterator it=a_breaks.begin (); it != a_breaks.end (); ++it) {
@@ -62,12 +60,11 @@ void
 on_stopped_signal (const UString &a_reason,
                    bool a_has_frame,
                    const IDebugger::Frame &a_frame,
-                   int a_thread_id,
-                   const UString &a_cookie,
+                   int /*a_thread_id*/,
+                   const UString & /*a_cookie*/,
                    IDebuggerSafePtr &a_debugger)
 {
     BOOST_REQUIRE (a_debugger);
-    if (a_thread_id || a_cookie.empty ()) {/*keep compiler happy*/}
     MESSAGE ("debugger stopped. reason == " << a_reason);
 
     if (a_reason == "breakpoint-hit") {
@@ -86,11 +83,10 @@ on_stopped_signal (const UString &a_reason,
 
 void
 on_got_overloads_choice_signal (const vector<IDebugger::OverloadsChoiceEntry> &a_choice,
-                                const UString &a_reason,
+                                const UString & /*a_reason*/,
                                 IDebuggerSafePtr a_debugger)
 {
     BOOST_REQUIRE (a_debugger);
-    if (a_reason.empty ()) {/*keep compiler happy*/}
 
     vector<IDebugger::OverloadsChoiceEntry>::const_iterator it;
     for (it = a_choice.begin (); it != a_choice.end (); ++it) {
@@ -104,10 +100,8 @@ on_got_overloads_choice_signal (const vector<IDebugger::OverloadsChoiceEntry> &a
 }
 
 NEMIVER_API int
-test_main (int argc, char *argv[])
+test_main (int /*argc*/, char ** /*argv*/)
 {
-    if (argc || argv) {/*keep compiler happy*/}
-
     try {
         Initializer::do_init ();
 

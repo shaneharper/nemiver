@@ -88,10 +88,9 @@ on_stopped_signal (IDebugger::StopReason a_reason,
 void
 on_frames_arguments_listed_signal
         (const map<int, list<IDebugger::VariableSafePtr> > &a_frames_params,
-         const UString &a_cookie,
+         const UString & /*a_cookie*/,
          IVarListSafePtr &a_var_list)
 {
-    if (a_cookie.empty ()) {/*keep compiler happy*/}
     BOOST_REQUIRE (a_var_list);
     map<int, list<IDebugger::VariableSafePtr> >::const_iterator it;
     it = a_frames_params.find (0);
@@ -100,7 +99,7 @@ on_frames_arguments_listed_signal
         return;
     }
     a_var_list->remove_variables ();
-    a_var_list->append_variables (it->second,false/*don't update type*/);
+    a_var_list->append_variables (it->second, false/*don't update type*/);
 }
 
 void
@@ -116,15 +115,11 @@ on_local_variables_listed_signal (const DebuggerVariableList &a_variables,
 }
 
 void
-on_variable_value_signal (const UString &a_variable_name,
-                          const IDebugger::VariableSafePtr &a_variable,
-                          const UString &a_cookie,
-                          const IVarListSafePtr &a_var_list)
+on_variable_value_signal (const UString & /*a_variable_name*/,
+                          const IDebugger::VariableSafePtr & /*a_variable*/,
+                          const UString & /*a_cookie*/,
+                          const IVarListSafePtr & /*a_var_list*/)
 {
-    if (a_variable_name.empty () || a_variable ||
-        a_cookie.empty () || a_var_list) {
-        /*keep compiler happy*/
-    }
 }
 
 void
@@ -190,10 +185,8 @@ lookup_variable (IVarListSafePtr &a_var_list)
 }
 
 NEMIVER_API int
-test_main (int argc, char **argv)
+test_main (int /*argc*/, char ** /*argv*/)
 {
-    if (argc || argv) {/*keep compiler happy*/}
-
     NEMIVER_TRY;
 
     Initializer::do_init ();

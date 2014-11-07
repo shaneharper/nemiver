@@ -30,10 +30,8 @@ static const int NB_VARIABLES_TO_VISIT=14;
 
 void
 on_command_done_signal (const UString &a_name,
-                        const UString &a_cookie)
+                        const UString & /*a_cookie*/)
 {
-    if (a_cookie.empty ()) {
-    }
     MESSAGE ("command " << a_name << " done");
 }
 
@@ -56,16 +54,11 @@ void
 on_stopped_signal (const UString &a_reason,
                    bool a_has_frame,
                    const IDebugger::Frame &a_frame,
-                   int a_thread_id,
-                   const UString &a_cookie,
+                   int /*a_thread_id*/,
+                   const UString & /*a_cookie*/,
                    IDebuggerSafePtr &a_debugger)
 {
     BOOST_REQUIRE (a_debugger);
-
-    if (a_reason.empty () || a_has_frame || a_frame.level () || a_thread_id ||
-        a_cookie.empty () || a_debugger) {
-        /*keeps compiler happy*/
-    }
 
     if (a_reason == "exited-normally") {
         MESSAGE ("program exited normally");
@@ -159,11 +152,9 @@ get_var_list_walker (IDebuggerSafePtr a_debugger)
 
 void
 on_global_variables_listed_signal (const std::list<IDebugger::VariableSafePtr> &a_vars,
-                                   const UString &a_cookie,
+                                   const UString & /*a_cookie*/,
                                    IDebuggerSafePtr &a_debugger)
 {
-    if (a_cookie.empty ()) {}
-
     NEMIVER_TRY
 
     THROW_IF_FAIL (a_debugger);
@@ -194,10 +185,8 @@ on_global_variables_listed_signal (const std::list<IDebugger::VariableSafePtr> &
 
 
 NEMIVER_API int
-test_main (int argc, char **argv)
+test_main (int /*argc*/, char ** /*argv*/)
 {
-    if (argc || argv) {/*keep compiler happy*/}
-
     NEMIVER_TRY
 
     Initializer::do_init ();

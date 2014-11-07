@@ -20,10 +20,9 @@ static int nb_type_set = 0;
 
 void
 on_variable_derefed_signal (const IDebugger::VariableSafePtr &a_var,
-                            const UString &a_cookie,
+                            const UString & /*a_cookie*/,
                             IDebuggerSafePtr a_debugger)
 {
-    if (a_cookie.empty ()) {/*keep compiler happy*/}
     BOOST_REQUIRE (a_var);
 
     BOOST_REQUIRE (a_var->is_dereferenced ());
@@ -47,10 +46,9 @@ on_variable_derefed_signal (const IDebugger::VariableSafePtr &a_var,
 void
 on_variable_value_signal (const UString &a_var_name,
                           const IDebugger::VariableSafePtr &a_var,
-                          const UString &a_cookie,
+                          const UString & /*a_cookie*/,
                           const IDebuggerSafePtr &a_debugger)
 {
-    if (a_cookie.empty () || a_var_name.empty ()) {/*keep compiler happy*/}
     BOOST_REQUIRE (a_debugger && a_var);
     BOOST_REQUIRE (a_var->name () == a_var_name);
 
@@ -68,11 +66,9 @@ on_variable_value_signal (const UString &a_var_name,
 
 void
 on_variable_type_set_signal (const IDebugger::VariableSafePtr &a_var,
-                             const UString &a_cookie,
+                             const UString & /*a_cookie*/,
                              IDebuggerSafePtr &a_debugger)
 {
-    if (!a_cookie.empty ()) {}
-
     BOOST_REQUIRE (a_var);
     BOOST_REQUIRE (a_debugger);
 
@@ -127,10 +123,8 @@ on_stopped_signal (IDebugger::StopReason a_reason,
 }
 
 NEMIVER_API int
-test_main (int argc, char **argv)
+test_main (int /*argc*/, char ** /*argv*/)
 {
-    if (argc || argv) {}
-
     NEMIVER_TRY;
 
     Initializer::do_init ();

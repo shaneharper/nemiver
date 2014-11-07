@@ -171,10 +171,8 @@ on_local_variables_listed_signal (const Variables &a_variables,
 
 void
 on_variable_visited_signal (const IVarWalkerSafePtr &a_walker,
-                            IDebuggerSafePtr &a_debugger)
+                            IDebuggerSafePtr & /*a_debugger*/)
 {
-    if (a_debugger) {}
-
     MESSAGE ("in function "
              << s_current_frame.function_name ()
              << ", visited "
@@ -191,10 +189,8 @@ on_variable_list_visited_signal (IDebuggerSafePtr &a_debugger)
 }
 
 NEMIVER_API int
-test_main (int argc, char **argv)
+test_main (int /*argc*/, char ** /*argv*/)
 {
-    if (argc || argv) {/*keep compiler happy*/}
-
     NEMIVER_TRY;
 
     Initializer::do_init ();
@@ -238,6 +234,7 @@ test_main (int argc, char **argv)
     expected_variables ()["func2"] = " j a_a a_b";
     var_list_walker ()["func3"] = create_var_list_walker (debugger);
     expected_variables ()["func3"] = " a_param";
+
     debugger->run ();
 
     //****************************************

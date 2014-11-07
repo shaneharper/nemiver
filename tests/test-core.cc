@@ -31,8 +31,8 @@ on_stopped_signal (IDebugger::StopReason a_reason,
                    bool a_has_frame,
                    const IDebugger::Frame &a_frame,
                    int a_thread_id,
-                   const string &/*bp num*/,
-                   const UString &/*a_cookie*/)
+                   const string & /*bp num*/,
+                   const UString & /*a_cookie*/)
 {
     std::cout << "stopped, reason: " << (int)a_reason << " ";
     if (a_has_frame) {
@@ -41,19 +41,16 @@ on_stopped_signal (IDebugger::StopReason a_reason,
     std::cout << "thread-id: '" << a_thread_id << "'\n";
 }
 void
-on_current_frame_signal (const IDebugger::Frame &a_frame, const UString &a_cookie)
+on_current_frame_signal (const IDebugger::Frame &a_frame,
+                         const UString & /*a_cookie*/)
 {
-    if (a_cookie.empty ()) {}
-
     gv_cur_frame = a_frame.level ();
 }
 
 void
 on_frames_listed_signal (const std::vector<IDebugger::Frame> &a_frames,
-                         const UString &a_cookie)
+                         const UString & /*a_cookie*/)
 {
-    if (a_cookie.empty ()) {}
-
     std::cout << "frame stack list: \n";
     vector<IDebugger::Frame>::size_type i = 0;
     for (i = 0; i < a_frames.size () ; ++i) {
@@ -72,9 +69,8 @@ on_frames_listed_signal (const std::vector<IDebugger::Frame> &a_frames,
 void
 on_frames_params_listed_signal
     (const std::map< int, std::list<IDebugger::VariableSafePtr> >& a_frame_params,
-     const UString &a_cookie)
+     const UString & /*a_cookie*/)
 {
-    if (a_frame_params.empty () || a_cookie.empty ()) {}
 }
 
 void

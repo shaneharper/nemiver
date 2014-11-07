@@ -75,11 +75,9 @@ on_stopped_signal (IDebugger::StopReason a_reason,
 
 void
 on_local_variables_listed_signal (const DebuggerVariableList &a_vars,
-                                  const UString &a_cookie,
+                                  const UString & /*a_cookie*/,
                                   IVarListSafePtr &a_var_list)
 {
-    if (a_cookie.empty ()) {}
-
     BOOST_REQUIRE (a_var_list);
     BOOST_REQUIRE (a_var_list->get_raw_list ().empty ());
     DebuggerVariableList::const_iterator it;
@@ -125,10 +123,8 @@ on_var_value_set (const IDebugger::VariableSafePtr &a_var)
 }
 
 NEMIVER_API int
-test_main (int argc, char **argv)
+test_main (int /*argc*/, char ** /*argv*/)
 {
-    if (argc || argv) {/*keep compiler happy*/}
-
     NEMIVER_TRY;
 
     Initializer::do_init ();

@@ -46,10 +46,8 @@ on_command_done_signal (const UString &a_command,
 
 void
 on_breakpoints_set_signal (const std::map<string, IDebugger::Breakpoint> &a_breaks,
-                           const UString &a_cookie)
+                           const UString & /*a_cookie*/)
 {
-    if (a_cookie.empty ()) {}
-
     MESSAGE ("breakpoints set:");
     std::map<string, IDebugger::Breakpoint>::const_iterator it;
     for (it = a_breaks.begin (); it != a_breaks.end () ; ++it) {
@@ -151,20 +149,16 @@ on_stopped_signal (IDebugger::StopReason a_reason,
 void
 on_variable_type_signal (const UString &a_variable_name,
                          const UString &a_variable_type,
-                         const UString &a_cookie)
+                         const UString & /*a_cookie*/)
 {
-    if (a_cookie.empty ()) {}
-
     MESSAGE ("type of variable '" << a_variable_name
               << "' is '" << a_variable_type);
 }
 
 void
 on_threads_listed_signal (const std::list<int> &a_thread_ids,
-                          const UString &a_cookie)
+                          const UString & /*a_cookie*/)
 {
-
-    if (a_cookie.empty ()) {}
 
     MESSAGE ("number of threads: '" << (int)a_thread_ids.size ());
     std::list<int>::const_iterator it;
@@ -176,10 +170,8 @@ on_threads_listed_signal (const std::list<int> &a_thread_ids,
 void
 on_thread_selected_signal (int a_thread_id,
                            const IDebugger::Frame * const a_frame,
-                           const UString &a_cookie)
+                           const UString & /*a_cookie*/)
 {
-    if (a_cookie.empty ()) {}
-
     MESSAGE ("thread selected: '" << a_thread_id) ;
     if (a_frame) {
         MESSAGE ("frame in thread : '" << a_frame->level ()) ;
@@ -196,10 +188,8 @@ display_help ()
 }
 
 NEMIVER_API int
-test_main (int argc, char *argv[])
+test_main (int /*argc*/, char * /*argv*/ [])
 {
-    if (argc || argv) {/*keep compiler happy*/}
-
     NEMIVER_TRY
 
     Initializer::do_init ();
@@ -221,8 +211,7 @@ test_main (int argc, char *argv[])
 
     debugger->command_done_signal ().connect (&on_command_done_signal);
 
-    debugger->breakpoints_list_signal ().connect
-                                            (&on_breakpoints_set_signal);
+    debugger->breakpoints_list_signal ().connect (&on_breakpoints_set_signal);
 
     debugger->running_signal ().connect (&on_running_signal);
 
@@ -231,11 +220,9 @@ test_main (int argc, char *argv[])
     debugger->stopped_signal ().connect
                             (sigc::bind (&on_stopped_signal, debugger));
 
-    debugger->variable_type_signal ().connect
-                                            (&on_variable_type_signal);
+    debugger->variable_type_signal ().connect (&on_variable_type_signal);
 
-    debugger->threads_listed_signal ().connect
-                                        (&on_threads_listed_signal);
+    debugger->threads_listed_signal ().connect (&on_threads_listed_signal);
 
     debugger->thread_selected_signal ().connect
                                         (&on_thread_selected_signal);

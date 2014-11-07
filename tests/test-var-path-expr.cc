@@ -56,10 +56,8 @@ on_variable_deleted_signal (const IDebugger::VariableSafePtr a_var,
 
 static void
 on_breakpoints_set_signal (const std::map<string, IDebugger::Breakpoint> &a_breaks,
-                           const UString &a_cookie)
+                           const UString & /*a_cookie*/)
 {
-    if (a_cookie.empty ()) {}
-
     MESSAGE ("breakpoints set:");
     std::map<string, IDebugger::Breakpoint>::const_iterator it;
     for (it = a_breaks.begin (); it != a_breaks.end () ; ++it) {
@@ -188,4 +186,3 @@ test_main (int, char **)
 
     return 0;
 }
-

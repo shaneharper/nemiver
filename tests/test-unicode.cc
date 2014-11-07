@@ -43,10 +43,8 @@ void test_ustring_to_wstring ()
 using boost::unit_test::test_suite;
 
 NEMIVER_API test_suite*
-init_unit_test_suite (int argc, char** argv)
+init_unit_test_suite (int /*argc*/, char** /*argv*/)
 {
-    if (argc || argv) {/*keep compiler happy*/}
-
     NEMIVER_TRY
 
     Initializer::do_init ();
