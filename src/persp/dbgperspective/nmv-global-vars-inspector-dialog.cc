@@ -316,7 +316,7 @@ public:
 /// \param a_parent the parent window of the dialog.
 ///
 /// \param a_root_path the path to the root directory of the
-/// ressources of the dialog.
+/// resources of the dialog.
 ///
 /// \param a_debugger the IDebugger interface to use to inspect the
 /// variables.

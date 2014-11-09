@@ -100,7 +100,7 @@ public:
 ///
 ///
 /// \param a_root_path the path to the root directory of the
-/// ressources of the dialog.
+/// resources of the dialog.
 ///
 /// \param a_file the file to locate.
 ///

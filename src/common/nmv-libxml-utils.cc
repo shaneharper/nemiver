@@ -188,7 +188,7 @@ is_empty_element (XMLTextReaderSafePtr &a_reader)
     } else if (status == 0) {
         return false;
     } else if (status < 0) {
-        THROW ("an error occured while calling "
+        THROW ("an error occurred while calling "
                "xmlTextReaderIsEmptyElement()");
     } else {
         THROW ("unknown return value for "

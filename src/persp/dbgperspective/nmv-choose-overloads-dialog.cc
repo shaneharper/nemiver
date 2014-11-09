@@ -168,7 +168,7 @@ struct ChooseOverloadsDialog::Priv {
 /// \param a_parent the parent window of the dialog.x
 ///
 /// \param a_root_path the path to the root directory of the
-/// ressources of the dialog.
+/// resources of the dialog.
 ChooseOverloadsDialog::ChooseOverloadsDialog
 (Gtk::Window &a_parent,
  const UString &a_root_path,

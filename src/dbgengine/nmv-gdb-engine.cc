@@ -4450,9 +4450,9 @@ GDBEngine::run (const UString &a_cookie)
 }
 
 /// Re-run the inferior.  That is, if the inferior is running, stop
-/// it, and re-start it.
+/// it, and restart it.
 ///
-/// \param a_slot the callback slot to invoke upon re-starting
+/// \param a_slot the callback slot to invoke upon restarting
 /// successful restarting of the inferior.  Note that this function
 /// also triggers the emitting of the
 /// IDebugger::inferior_re_run_signal signal.

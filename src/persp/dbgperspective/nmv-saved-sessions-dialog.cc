@@ -179,7 +179,7 @@ public:
 /// \param a_parent the parent window of the dialog.
 ///
 /// \param a_root_path the path to the root directory of the
-/// ressources of the dialog.
+/// resources of the dialog.
 ///
 /// \param a_session_manager the session manager to use.
 SavedSessionsDialog::SavedSessionsDialog (Gtk::Window &a_parent,

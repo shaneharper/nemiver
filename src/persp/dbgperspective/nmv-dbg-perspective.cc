@@ -2422,7 +2422,7 @@ DBGPerspective::on_debugger_breakpoints_list_signal
     // it must be set initially and then immediately disabled.
     // When the breakpoint is set, it
     // will send a 'cookie' along of the form
-    // "initiallly-disabled#filename.cc#123"
+    // "initially-disabled#filename.cc#123"
     if (a_cookie.find ("initially-disabled") != UString::npos) {
         UString::size_type start_of_file = a_cookie.find ('#') + 1;
         UString::size_type start_of_line = a_cookie.rfind ('#') + 1;
@@ -4524,7 +4524,7 @@ DBGPerspective::set_where (SourceEditor *a_editor,
     bring_source_as_current (a_editor);
 
     // The IP points to the *next* instruction to execute. What we want
-    // is the current instruction executed. So lets get the line of the
+    // is the current instruction executed. So let's get the line of the
     // address that comes right before a_address.
     if (!a_editor->move_where_marker_to_address (a_address, a_do_scroll,
                                                  a_approximate)) {
@@ -4902,7 +4902,7 @@ DBGPerspective::record_and_save_new_session ()
 {
     THROW_IF_FAIL (m_priv);
     if (m_priv->prog_path.empty ()) {
-        // Don't save emtpy sessions.
+        // Don't save empty sessions.
         return;
     }
     ISessMgr::Session session;
@@ -4961,7 +4961,7 @@ DBGPerspective::try_to_request_show_variable_value_at_position (int a_x,
 }
 
 /// Popup a tip at a given position, showing some text content.
-/// \param a_x the absissa to consider
+/// \param a_x the abscissa to consider
 /// \param a_y the ordinate to consider
 /// \param a_text the text to show
 void
@@ -4978,7 +4978,7 @@ DBGPerspective::show_underline_tip_at_position (int a_x,
 }
 
 /// Popup a tip at a given position, showing some the content of a variable.
-/// \param a_x the absissa to consider
+/// \param a_x the abscissa to consider
 /// \param a_y the ordinate to consider
 /// \param a_text the text to show
 void
@@ -5082,7 +5082,7 @@ DBGPerspective::hide_popup_tip_if_mouse_is_outside (int x, int y)
         || x + popup_border + 2 < alloc.get_x ()
         || y > alloc.get_y () + alloc.get_height () + popup_border
         || y + popup_border + 2 < alloc.get_y ()) {
-        LOG_DD ("hidding popup tip");
+        LOG_DD ("hiding popup tip");
         m_priv->popup_tip->hide ();
     }
 
@@ -5106,7 +5106,7 @@ DBGPerspective::get_find_text_dialog ()
 }
 
 /// Adds the views of the debugger to the layout.  It adds them in a
-/// left to right manner (if you consider the defaut layout at
+/// left to right manner (if you consider the default layout at
 /// least).
 void
 DBGPerspective::add_views_to_layout ()
@@ -6008,7 +6008,7 @@ DBGPerspective::execute_program ()
     m_priv->reused_session = false;
 }
 
-/// Re starts the last program that was being previously debugged.
+/// Restart the program that was being previously debugged.
 /// If the underlying debugger engine died, this function will restart it,
 /// reload the program that was being debugged,
 /// and set all the breakpoints that were set previously.
@@ -6309,7 +6309,7 @@ DBGPerspective::execute_program
             bps_set[parent_id] = true;
         }
         // Here we are starting (or restarting) the program and we
-        // hope at least one breakpoint is going to be set; so lets
+        // hope at least one breakpoint is going to be set; so let's
         // schedule the continuation of the execution of the inferior.
         run_real (a_restarting);
     }
@@ -6612,7 +6612,7 @@ DBGPerspective::run ()
     }
 }
 
-/// Really run the inferior (invoking IDebugger).  This is sub-routine
+/// Really run the inferior (invoking IDebugger).  This is a sub-routine
 /// of the run and execute_program methods.
 void
 DBGPerspective::run_real (bool a_restarting)
@@ -6842,7 +6842,7 @@ DBGPerspective::do_jump_and_break_to_current_location ()
     do_jump_and_break_to_location (*loc);
 }
 
-/// Jump (transfert execution of the inferior) to a given source
+/// Jump (transfer execution of the inferior) to a given source
 /// location.  This is a callback for the
 /// IDebugger::breakpoint_set_signal signal.
 ///
@@ -6854,7 +6854,7 @@ DBGPerspective::jump_to_location (const map<string, IDebugger::Breakpoint>&,
     debugger ()->jump_to_position (a_loc, &null_default_slot);
 }
 
-/// Jump (transfert execution of the inferior) to a given location
+/// Jump (transfer execution of the inferior) to a given location
 /// that is specified by a dialog.  The dialog must have filled by the
 /// user prior to calling this function.
 ///
@@ -7465,7 +7465,7 @@ DBGPerspective::apply_decorations_to_asm (SourceEditor *a_editor,
                                            debugger ()->is_countpoint
                                            (it->second),
                                            it->second.enabled ())) {
-                LOG_DD ("Could'nt find line for address: "
+                LOG_DD ("Couldn't find line for address: "
                         << addr.to_string ()
                         << " for file: "
                         << a_editor->get_path ());
@@ -7827,7 +7827,7 @@ DBGPerspective::set_breakpoint_using_dialog ()
     SetBreakpointDialog dialog (workbench ().get_root_window (),
                                 plugin_path ());
 
-    // Checkout if the user did select a function number.
+    // Check if the user has selected a function name.
     // If she did, pre-fill the breakpoint setting dialog with the
     // function name so that if the user hits enter, a breakpoint is set
     // to that function by default.
@@ -8010,7 +8010,7 @@ DBGPerspective::disassemble_around_address_and_do
     // Increase the address range of instruction to disassemble by a
     // number N that is equal to m_priv->num_instr_to_disassemble.
     // 17 is the max size (in bytes) of an instruction on intel
-    // archictecture. So let's say N instructions on IA is at
+    // architecture. So let's say N instructions on IA is at
     // maximum N x 17.
     // FIXME: find a way to make this more cross arch.
     const size_t instr_size = 17;

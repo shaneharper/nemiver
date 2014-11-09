@@ -206,7 +206,7 @@ struct WatchpointDialog::Priv {
 /// \param a_debugger the IDebugger interface to use.
 ///
 /// \param a_perspective the IPerspective interface to use.
-/// ressources of the dialog.
+/// resources of the dialog.
 WatchpointDialog::WatchpointDialog (Gtk::Window &a_parent,
                                     const UString &a_root_path,
                                     IDebugger &a_debugger,

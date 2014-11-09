@@ -926,7 +926,7 @@ public:
 /// \param a_layout_manager the layout manager to use.
 ///
 /// \param a_root_path the path to the root directory of the
-/// ressources of the dialog.
+/// resources of the dialog.
 PreferencesDialog::PreferencesDialog (Gtk::Window &a_parent,
                                       IPerspective &a_perspective,
                                       LayoutManager &a_layout_manager,

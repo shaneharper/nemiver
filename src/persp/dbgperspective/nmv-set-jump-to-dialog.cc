@@ -405,7 +405,7 @@ public:
 /// \param a_parent the parent window of the dialog.
 ///
 /// \param a_root_path the path to the root directory of the
-/// ressources of the dialog.
+/// resources of the dialog.
 SetJumpToDialog::SetJumpToDialog (Gtk::Window &a_parent,
                                   const UString &a_root_path)
     : Dialog (a_root_path, "setjumptodialog.ui",
@@ -426,7 +426,7 @@ SetJumpToDialog::get_location () const
     return m_priv->get_location ();
 }
 
-/// Set the location proprosed by the dialog.
+/// Set the location proposed by the dialog.
 ///
 /// \param a_loc the new location to set
 void

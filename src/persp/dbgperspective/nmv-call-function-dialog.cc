@@ -113,7 +113,7 @@ struct CallFunctionDialog::Priv {
     /// pointer is non-null, then *a_iter is filled with an iterator
     /// pointing at the expression found in history.
     ///
-    /// \return true if the expresison exists in history, false
+    /// \return true if the expression exists in history, false
     /// otherwise.
     bool exists_in_history (const UString &a_expr,
                             Gtk::TreeModel::iterator *a_iter = 0) const
@@ -168,7 +168,7 @@ struct CallFunctionDialog::Priv {
         
         // If the expression already exists in history, remove it, so
         // that it can be added again, as to be the latest added item
-        // to historry.
+        // to history.
         Gtk::TreeModel::iterator it;
         if (!allow_dups
             && exists_in_history (a_expr, &it))
@@ -201,7 +201,7 @@ struct CallFunctionDialog::Priv {
 /// \param a_parent the parent window of the dialog.
 ///
 /// \param a_root_path the path to the root directory of the
-/// ressources of the dialog.
+/// resources of the dialog.
 CallFunctionDialog::CallFunctionDialog (Gtk::Window &a_parent,
                                         const UString &a_root_path):
     Dialog (a_root_path, "callfunctiondialog.ui",

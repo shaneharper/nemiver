@@ -44,7 +44,7 @@
     nemiver::ui_utils::display_error_not_transient (e.what ()); \
 } catch (...) { \
     LOG_ERROR ("caught unknown exception"); \
-    nemiver::ui_utils::display_error_not_transient ("An unknown error occured"); \
+    nemiver::ui_utils::display_error_not_transient ("An unknown error occurred"); \
 }
 #endif
 
@@ -60,7 +60,7 @@
     return a_value; \
 } catch (...) { \
     LOG_ERROR ("Caught unknown exception"); \
-    nemiver::ui_utils::display_error_not_transient ("An unknown error occured"); \
+    nemiver::ui_utils::display_error_not_transient ("An unknown error occurred"); \
     return a_value; \
 }
 #endif

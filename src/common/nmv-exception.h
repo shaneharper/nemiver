@@ -99,10 +99,10 @@ LOG_EXCEPTION ("raised " << #type << ": "<< message<< "\n"); \
 _THROW (type (message));
 
 #define TRACE_EXCEPTION(exception) \
-LOG_EXCEPTION ("catched exception: " << exception.what () << "\n")
+LOG_EXCEPTION ("caught exception: " << exception.what () << "\n")
 
 #define RETHROW_EXCEPTION(exception) \
-LOG_EXCEPTION ("catched and rethrowing exception: " << exception.what() << "\n")
+LOG_EXCEPTION ("rethrowing exception: " << exception.what() << "\n")
 
 #define RETURN_VAL_IF_FAIL(expression, value) \
 if (!(expression)) { \
@@ -127,7 +127,7 @@ return; \
 } catch (std::exception &e) { \
     LOG_ERROR (e.what ()); \
 } catch (...) { \
-    LOG_ERROR ("An unknown error occured"); \
+    LOG_ERROR ("An unknown error occurred"); \
 }
 #endif
 
@@ -140,7 +140,7 @@ return; \
     LOG_ERROR (e.what ()); \
     return a_value; \
 } catch (...) { \
-    LOG_ERROR ("An unknown error occured"); \
+    LOG_ERROR ("An unknown error occurred"); \
     return a_value; \
 }
 #endif
