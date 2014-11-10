@@ -147,25 +147,25 @@ public:
         on_radio_button_toggled ();
     }
 
-    bool validate_source_files(const vector<string> &files)
+    bool are_source_filenames_valid(const vector<string> &filenames)
     {
-        if (files.empty()) {
+        if (filenames.empty()) {
             return false;
         }
 
-        for (vector<string>::const_iterator iter = files.begin ();
-             iter != files.end ();
+        for (vector<string>::const_iterator iter = filenames.begin ();
+             iter != filenames.end ();
              ++iter) {
-            if (!validate_source_file (*iter)) {
+            if (!is_source_filename_valid (*iter)) {
                 return false;
             }
         }
         return true;
     }
 
-    bool validate_source_file (const UString &a_file)
+    bool is_source_filename_valid (const UString &a_filename)
     {
-        if (!Glib::file_test (a_file, Glib::FILE_TEST_IS_REGULAR)) {
+        if (!Glib::file_test (a_filename, Glib::FILE_TEST_IS_REGULAR)) {
             return false;
         }
         return true;
@@ -182,7 +182,7 @@ public:
 
         THROW_IF_FAIL(okbutton);
 
-        if (validate_source_file (a_file)) {
+        if (is_source_filename_valid (a_file)) {
             okbutton->clicked ();
         } else {
             okbutton->set_sensitive (false);
@@ -198,11 +198,7 @@ public:
 
         vector<string> filenames;
         file_list.get_filenames (filenames);
-        if (validate_source_files (filenames)){
-            okbutton->set_sensitive (true);
-        } else {
-            okbutton->set_sensitive (false);
-        }
+        okbutton->set_sensitive (are_source_filenames_valid (filenames));
 
         NEMIVER_CATCH
     }
@@ -213,11 +209,9 @@ public:
 
         THROW_IF_FAIL (okbutton);
 
-        if (validate_source_files (file_chooser.get_filenames ())) {
-            okbutton->set_sensitive (true);
-        } else {
-            okbutton->set_sensitive (false);
-        }
+        okbutton->set_sensitive
+                (are_source_filenames_valid (file_chooser.get_filenames ()));
+
         NEMIVER_CATCH
     }
 
@@ -272,4 +266,3 @@ OpenFileDialog::get_filenames (vector<string> &a_files) const
 }
 
 }//end namespace nemiver
-

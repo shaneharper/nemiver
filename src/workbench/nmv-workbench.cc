@@ -181,7 +181,7 @@ Workbench::query_for_shutdown ()
     for (iter = m_priv->perspectives.begin ();
          iter != m_priv->perspectives.end ();
          ++iter) {
-         if ((*iter)->agree_to_shutdown () == false) {
+         if (! (*iter)->agree_to_shutdown ()) {
              retval = false;
              break;
          }

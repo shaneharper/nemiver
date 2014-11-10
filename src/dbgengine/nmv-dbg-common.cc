@@ -30,7 +30,7 @@ NEMIVER_BEGIN_NAMESPACE (nemiver)
 
 struct OutputHandlerList::Priv {
     list<OutputHandlerSafePtr> output_handlers;
-};//end OutputHandlerList
+};
 
 OutputHandlerList::OutputHandlerList ()
 {

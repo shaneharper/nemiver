@@ -683,10 +683,10 @@ main (int a_argc, char *a_argv[])
     Initializer::do_init ();
     Gtk::Main gtk_kit (a_argc, a_argv);
 
-    if (parse_command_line (a_argc, a_argv) == false)
+    if (!parse_command_line (a_argc, a_argv))
         return -1;
 
-    if (process_non_gui_options () != true) {
+    if (!process_non_gui_options ()) {
         return -1;
     }
 
@@ -705,7 +705,7 @@ main (int a_argc, char *a_argv[])
     LOG_D ("workbench refcount: " <<  (int) s_workbench->get_refcount (),
            "refcount-domain");
 
-    if (process_gui_options (a_argc, a_argv) != true) {
+    if (!process_gui_options (a_argc, a_argv)) {
         return -1;
     }
 

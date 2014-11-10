@@ -708,9 +708,6 @@ public:
 
     void update_src_dependant_bp_actions_sensitiveness ();
 
-    bool ask_user_to_select_file (const UString &a_file_name,
-                                  UString& a_selected_file_path);
-
     bool append_visual_breakpoint (SourceEditor *editor,
                                    int linenum,
                                    bool is_countpoint,
@@ -2066,7 +2063,7 @@ DBGPerspective::update_toggle_menu_text (SourceEditor &a_editor,
         break;
     case SourceEditor::BUFFER_TYPE_ASSEMBLY: {
         Address a;
-        if (a_editor.assembly_buf_line_to_addr (line, a) == false) {
+        if (! a_editor.assembly_buf_line_to_addr (line, a)) {
             LOG_DD ("No ASM @ at line " << line);
         }
         else
@@ -4025,9 +4022,8 @@ DBGPerspective::append_source_editor (SourceEditor &a_sv,
     close_button->file_path = path;
     close_button->signal_clicked ().connect
             (sigc::mem_fun (*close_button, &SlotedButton::on_clicked));
-    UString message;
-    message.printf (_("Close %s"), path.c_str ());
-    close_button->set_tooltip_text (message);
+    close_button->set_tooltip_text
+            (nemiver::str_utils::printf (_("Close %s"), path.c_str ()));
 
     SafePtr<Gtk::HBox> hbox (Gtk::manage (new Gtk::HBox ()));
     // add a bit of space between the label and the close button
@@ -6001,8 +5997,8 @@ DBGPerspective::execute_program ()
     THROW_IF_FAIL (cwd != "");
     map<UString, UString> env = dialog.environment_variables();
 
-    vector<IDebugger::Breakpoint> breaks;
-    execute_program (prog, args, env, cwd, breaks,
+    execute_program (prog, args, env, cwd,
+                     /*breakpoints=*/vector<IDebugger::Breakpoint> (),
                      /*a_restarting=*/true,
                      /*a_close_opened_files=*/true);
     m_priv->reused_session = false;
@@ -6228,17 +6224,15 @@ DBGPerspective::execute_program
     // now really load the inferior program (i.e: the one to be
     // debugged)
 
-    if (dbg_engine->load_program (prog, a_args, a_cwd,
-                                  source_search_dirs,
-                                  get_terminal_name (),
-                                  uses_launch_terminal (),
-                                  get_terminal ().slave_pty (),
-                                  a_restarting) == false) {
-        UString message;
-        message.printf (_("Could not load program: %s"),
-                        prog.c_str ());
+    if (! dbg_engine->load_program (prog, a_args, a_cwd,
+                                    source_search_dirs,
+                                    get_terminal_name (),
+                                    uses_launch_terminal (),
+                                    get_terminal ().slave_pty (),
+                                    a_restarting)) {
         display_error (workbench ().get_root_window (),
-                       message);
+                       nemiver::str_utils::printf
+                            (_("Could not load program: %s"), prog.c_str ()));
         return;
     }
 
@@ -6423,8 +6417,8 @@ DBGPerspective::connect_to_remote_target (const UString &a_server_address,
     LOG_DD ("executable path: '" <<  a_prog_path << "'");
     vector<UString> args;
 
-    if (debugger ()->load_program (a_prog_path , args,
-                                   m_priv->prog_cwd) == false) {
+    if (! debugger ()->load_program (a_prog_path , args,
+                                     m_priv->prog_cwd)) {
         UString message;
         message.printf (_("Could not load program: %s"),
                         a_prog_path.c_str ());
@@ -6458,8 +6452,8 @@ DBGPerspective::connect_to_remote_target (const UString &a_serial_line,
     LOG_DD ("executable path: '" <<  a_prog_path << "'");
 
     vector<UString> args;
-    if (debugger ()->load_program (a_prog_path , args,
-                                   m_priv->prog_cwd) == false) {
+    if (! debugger ()->load_program (a_prog_path , args,
+                                     m_priv->prog_cwd)) {
         UString message;
         message.printf (_("Could not load program: %s"),
                         a_prog_path.c_str ());
@@ -7204,21 +7198,6 @@ DBGPerspective::delete_breakpoint (const string &a_breakpoint_num)
     }
     debugger ()->delete_breakpoint (a_breakpoint_num);
     return true;
-}
-
-// Popup a dialog asking the user to select the file a_file_name.
-// \param a_file_name the name of the file we want the user to select.
-// \param a_selected_file_path the path to the file the user actually
-// selected.
-// \return true if the user really selected the file we wanted, false
-// otherwise.
-bool
-DBGPerspective::ask_user_to_select_file (const UString &a_file_name,
-                                         UString &a_selected_file_path)
-{
-    return ui_utils::ask_user_to_select_file (workbench ().get_root_window (),
-                                              a_file_name, m_priv->prog_cwd,
-                                              a_selected_file_path);
 }
 
 bool
@@ -8547,15 +8526,11 @@ DBGPerspective::agree_to_shutdown ()
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD;
     if (debugger ()->is_attached_to_target ()) {
-        UString message;
-        message.printf (_("There is a program being currently debugged. "
-                          "Do you really want to exit from the debugger?"));
-        if (nemiver::ui_utils::ask_yes_no_question
-            (workbench ().get_root_window (), message) == Gtk::RESPONSE_YES) {
-            return true;
-        } else {
-            return false;
-        }
+        return Gtk::RESPONSE_YES ==
+                nemiver::ui_utils::ask_yes_no_question
+                        (workbench ().get_root_window (),
+                         _("There is a program being currently debugged. "
+                         "Do you really want to exit from the debugger?"));
     } else {
         return true;
     }

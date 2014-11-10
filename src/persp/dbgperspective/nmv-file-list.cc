@@ -46,7 +46,7 @@ struct FileListColumns : public Gtk::TreeModel::ColumnRecord {
         add (path);
         add (stock_icon);
     }
-};//end Cols
+};
 
 class FileListView : public Gtk::TreeView {
 public:
@@ -459,11 +459,9 @@ public:
     }
 
     void on_files_listed_signal (const vector<UString> &a_files,
-                                 const UString &a_cookie)
+                                 const UString &/*a_cookie*/)
     {
         NEMIVER_TRY
-
-        if (a_cookie.empty ()) {}
 
         THROW_IF_FAIL (tree_view);
 
@@ -542,4 +540,3 @@ FileList::expand_to_filename (const UString &a_filename)
 }
 
 }//end namespace nemiver
-

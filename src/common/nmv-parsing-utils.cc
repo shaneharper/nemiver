@@ -39,45 +39,33 @@ namespace parsing_utils {
 bool
 is_digit (gunichar a_char)
 {
-    if (a_char >= '0' && a_char <= '9') {
-        return true;
-    }
-    return false;
+    return (a_char >= '0' && a_char <= '9');
 }
 
 bool
 is_alphabet_char (gunichar a_char)
 {
-    if ((a_char >= 'a' && a_char <= 'z')
-            || (a_char >= 'A' && a_char <= 'Z')) {
-        return true;
-    }
-    return false;
+    return (a_char >= 'a' && a_char <= 'z')
+            || (a_char >= 'A' && a_char <= 'Z');
 }
 
 bool
 is_alnum (gunichar a_char)
 {
-    if (is_alphabet_char (a_char)
+    return is_alphabet_char (a_char)
             || is_digit (a_char)
             || a_char == '_'
-            || a_char == '-') {
-        return true;
-    }
-    return false;
+            || a_char == '-';
 }
 
 bool
 is_host_name_char (gunichar a_char)
 {
-    if (is_digit (a_char)
+    return is_digit (a_char)
             || is_alnum (a_char)
             || a_char == '.'
             || a_char == '_'
-            || a_char == '-') {
-        return true;
-    }
-    return false;
+            || a_char == '-';
 }
 
 bool

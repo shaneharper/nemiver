@@ -17,14 +17,12 @@ Glib::RefPtr<Glib::MainLoop> s_loop =
 
 IDebugger::Frame s_current_frame;
 
-void lookup_variable (IVarListSafePtr &a_var_list);
+void test_lookup_variable_in_func3 (IVarListSafePtr &a_var_list);
 
 void
 on_command_done_signal (const UString &a_name,
-                        const UString &a_cookie)
+                        const UString & /*a_cookie*/)
 {
-    if (a_cookie.empty ()) {
-    }
     MESSAGE ("command " << a_name << " done");
 }
 
@@ -49,7 +47,7 @@ on_stopped_signal (IDebugger::StopReason a_reason,
                    const IDebugger::Frame &a_frame,
                    int /*a_thread_id*/,
                    const string & /*bp number*/,
-                   const UString &/*a_cookie*/,
+                   const UString & /*a_cookie*/,
                    IDebuggerSafePtr &a_debugger)
 {
     BOOST_REQUIRE (a_debugger);
@@ -73,16 +71,12 @@ on_stopped_signal (IDebugger::StopReason a_reason,
     a_debugger->list_local_variables ();
     a_debugger->list_frames_arguments ();
 
-    if (a_frame.function_name () == "main") {
-        a_debugger->do_continue();
-    } else if (a_frame.function_name () == "func1") {
-        a_debugger->do_continue();
-    } else if (a_frame.function_name () == "func2") {
-        a_debugger->do_continue();
-    } else if (a_frame.function_name () == "func3") {
+    if (a_frame.function_name () == "main"
+        || a_frame.function_name () == "func1"
+        || a_frame.function_name () == "func2"
+        || a_frame.function_name () == "func3") {
         a_debugger->do_continue();
     }
-
 }
 
 void
@@ -104,11 +98,9 @@ on_frames_arguments_listed_signal
 
 void
 on_local_variables_listed_signal (const DebuggerVariableList &a_variables,
-                                  const UString &a_cookie,
+                                  const UString & /*a_cookie*/,
                                   IVarListSafePtr &a_var_list)
 {
-    if (a_variables.empty () || a_cookie.empty ()) {
-    }
     BOOST_REQUIRE (a_var_list);
     a_var_list->remove_variables ();
     a_var_list->append_variables (a_variables, false/*don't update type*/);
@@ -162,12 +154,12 @@ on_variable_added_signal (const IDebugger::VariableSafePtr &a_var,
     BOOST_REQUIRE (a_var_list->find_variable (a_var->name (), variable));
 
     if (s_current_frame.function_name () == "func3") {
-        lookup_variable (a_var_list);
+        test_lookup_variable_in_func3 (a_var_list);
     }
 }
 
 void
-lookup_variable (IVarListSafePtr &a_var_list)
+test_lookup_variable_in_func3 (IVarListSafePtr &a_var_list)
 {
     BOOST_REQUIRE (a_var_list);
 
