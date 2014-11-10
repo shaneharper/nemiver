@@ -92,6 +92,8 @@ public:
         file_chooser.signal_selection_changed ().connect
             (sigc::mem_fun (*this,
                             &Priv::on_chooser_selection_changed_signal));
+        file_chooser.signal_file_activated ().connect
+                (sigc::mem_fun (*this, &Priv::on_chooser_file_activated));
 
         update_from_debugger_state ();
     }
@@ -167,6 +169,11 @@ public:
             return false;
         }
         return true;
+    }
+
+    void on_chooser_file_activated()
+    {
+        okbutton->clicked ();
     }
 
     void on_file_activated_signal (const UString &a_file)
