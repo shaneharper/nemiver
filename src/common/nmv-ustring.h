@@ -79,6 +79,8 @@ public:
     UString& printf (const char *a_format, ...);
 
     UString& vprintf (const UString &a_format, va_list a_args);
+
+    bool ends_with(const UString &) const;
 };//end class UString
 
 class NEMIVER_API WString : public basic_string<gunichar> {

@@ -358,6 +358,12 @@ UString::printf (const char *a_format, ...)
     return *this;
 }
 
+bool UString::ends_with(const UString &a) const
+{
+    return size () >= a.size ()
+           && 0 == compare (size () - a.size (), a.size (), a);
+}
+
 WString::~WString ()
 {
 }

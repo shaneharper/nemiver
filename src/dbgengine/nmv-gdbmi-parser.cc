@@ -2779,7 +2779,9 @@ GDBMIParser::parse_file_list (UString::size_type a_from,
             }
         }
         THROW_IF_FAIL (!filename.empty());
-        files.push_back (filename);
+        if (! filename.ends_with ("<built-in>")) {
+            files.push_back (filename);
+        }
     }
 
     std::sort (files.begin(), files.end(), QuickUStringLess());
